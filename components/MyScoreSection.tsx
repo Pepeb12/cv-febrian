@@ -105,10 +105,25 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
       {/* 2. HERO SCORE & LEARNING POINTS (2 Kolom Menonjol & Mudah Dilihat) */}
       <View style={styles.scoreRow}>
         {/* CURRENT SCORE CARD (NILAI 90, GRADE A) */}
-        <View style={styles.currentScoreCard}>
+        <View
+          style={[
+            styles.currentScoreCard,
+            {
+              backgroundColor: currentTheme.isDark ? '#062817' : '#F0FDF4',
+              borderColor: currentTheme.isDark ? '#059669' : '#86EFAC',
+            },
+          ]}
+        >
           <View style={styles.scoreTopRow}>
-            <View style={styles.scoreLabelBadge}>
-              <Text style={styles.scoreLabelText}>CURRENT SCORE</Text>
+            <View
+              style={[
+                styles.scoreLabelBadge,
+                { backgroundColor: currentTheme.isDark ? 'rgba(34, 197, 94, 0.2)' : '#DCFCE7' },
+              ]}
+            >
+              <Text style={[styles.scoreLabelText, { color: currentTheme.isDark ? '#4ADE80' : '#166534' }]}>
+                CURRENT SCORE
+              </Text>
             </View>
             <View style={styles.gradeBadge}>
               <Text style={styles.gradeBadgeText}>GRADE {currentScore.grade || 'A'}</Text>
@@ -116,35 +131,70 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
           </View>
 
           <View style={styles.scoreNumberRow}>
-            <Text style={styles.bigScoreNumber}>{currentScore.score ?? 90}</Text>
-            <Text style={styles.scoreOutOf}>/ 100</Text>
+            <Text style={[styles.bigScoreNumber, { color: currentTheme.isDark ? '#4ADE80' : '#15803D' }]}>
+              {currentScore.score ?? 90}
+            </Text>
+            <Text style={[styles.scoreOutOf, { color: currentTheme.isDark ? '#86EFAC' : '#16A34A' }]}>
+              / 100
+            </Text>
           </View>
 
-          <View style={styles.statusPill}>
-            <Ionicons name="sparkles" size={12} color="#15803D" />
-            <Text style={styles.statusPillText}>{currentScore.status || 'Sangat Memuaskan'}</Text>
+          <View
+            style={[
+              styles.statusPill,
+              { backgroundColor: currentTheme.isDark ? 'rgba(34, 197, 94, 0.2)' : '#DCFCE7' },
+            ]}
+          >
+            <Ionicons name="sparkles" size={12} color={currentTheme.isDark ? '#4ADE80' : '#15803D'} />
+            <Text style={[styles.statusPillText, { color: currentTheme.isDark ? '#4ADE80' : '#15803D' }]}>
+              {currentScore.status || 'Sangat Memuaskan'}
+            </Text>
           </View>
         </View>
 
         {/* LEARNING POINTS CARD (19,000 LP) */}
-        <View style={styles.lpCard}>
+        <View
+          style={[
+            styles.lpCard,
+            {
+              backgroundColor: currentTheme.isDark ? '#2D1B05' : '#FFFBEB',
+              borderColor: currentTheme.isDark ? '#D97706' : '#FDE68A',
+            },
+          ]}
+        >
           <View style={styles.lpTopRow}>
-            <View style={styles.lpLabelBadge}>
-              <Text style={styles.lpLabelText}>LEARNING POINTS</Text>
+            <View
+              style={[
+                styles.lpLabelBadge,
+                { backgroundColor: currentTheme.isDark ? 'rgba(245, 158, 11, 0.2)' : '#FEF3C7' },
+              ]}
+            >
+              <Text style={[styles.lpLabelText, { color: currentTheme.isDark ? '#FBBF24' : '#92400E' }]}>
+                LEARNING POINTS
+              </Text>
             </View>
             <Ionicons name="trophy" size={16} color="#D97706" />
           </View>
 
           <View style={styles.lpNumberRow}>
-            <Text style={styles.bigLpNumber}>
+            <Text style={[styles.bigLpNumber, { color: currentTheme.isDark ? '#FBBF24' : '#B45309' }]}>
               {Number(learningPoints.total ?? 19000).toLocaleString('id-ID')}
             </Text>
-            <Text style={styles.lpUnit}>{learningPoints.unit || 'LP'}</Text>
+            <Text style={[styles.lpUnit, { color: currentTheme.isDark ? '#F59E0B' : '#D97706' }]}>
+              {learningPoints.unit || 'LP'}
+            </Text>
           </View>
 
-          <View style={styles.rankPill}>
-            <Ionicons name="ribbon" size={12} color="#B45309" />
-            <Text style={styles.rankPillText}>{learningPoints.rank || 'Top Tier Scholar'}</Text>
+          <View
+            style={[
+              styles.rankPill,
+              { backgroundColor: currentTheme.isDark ? 'rgba(245, 158, 11, 0.2)' : '#FEF3C7' },
+            ]}
+          >
+            <Ionicons name="ribbon" size={12} color={currentTheme.isDark ? '#FBBF24' : '#B45309'} />
+            <Text style={[styles.rankPillText, { color: currentTheme.isDark ? '#FBBF24' : '#B45309' }]}>
+              {learningPoints.rank || 'Top Tier Scholar'}
+            </Text>
           </View>
         </View>
       </View>
@@ -516,3 +566,4 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
 });
+

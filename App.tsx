@@ -508,8 +508,23 @@ export default function App() {
 
                 {/* FOOTER INFORMASI UTS & PANDUAN SIDANG */}
                 <View style={[styles.footer, { borderTopColor: theme.border }]}>
+                  {/* Motto Pribadi Mahasiswa (Terinspirasi Kang Solihin) */}
+                  <Text style={[styles.mottoText, { color: theme.textPrimary }]}>
+                    Analyze • Build • Deliver
+                  </Text>
+                  <Text style={[styles.mottoSubtext, { color: theme.textMuted }]}>
+                    Fokus pada Rekayasa Perangkat Lunak Berkualitas & Analisis Proses Bisnis
+                  </Text>
+
+                  {/* Panduan Konsep UTS */}
                   <TouchableOpacity
-                    style={[styles.conceptDefenseBtn, { backgroundColor: isDarkMode ? '#1E293B' : '#EFF6FF', borderColor: theme.primary }]}
+                    style={[
+                      styles.conceptDefenseBtn,
+                      {
+                        backgroundColor: isDarkMode ? '#1E293B' : '#EFF6FF',
+                        borderColor: theme.primary,
+                      },
+                    ]}
                     onPress={() => setShowConceptModal(true)}
                     activeOpacity={0.8}
                     accessibilityRole="button"
@@ -517,18 +532,53 @@ export default function App() {
                   >
                     <MaterialCommunityIcons name="school" size={18} color={theme.primary} />
                     <Text style={[styles.conceptDefenseBtnText, { color: theme.primary }]}>
-                      Panduan Konsep React Native (Materi P1 - P10)
+                      Panduan Penguasaan Konsep (Materi P1 - P10)
                     </Text>
                   </TouchableOpacity>
+
+                  {/* Quick Channels */}
+                  <View style={styles.footerLinksRow}>
+                    <TouchableOpacity
+                      style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
+                      onPress={() => {
+                        const alertMsg = 'Membuka GitHub: https://github.com/febrian-iradat';
+                        if (Platform.OS === 'web') window.alert(alertMsg);
+                        else Alert.alert('GitHub', alertMsg);
+                      }}
+                    >
+                      <MaterialCommunityIcons name="github" size={14} color={theme.textPrimary} />
+                      <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>GitHub</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
+                      onPress={() => {
+                        const alertMsg = 'Kirim Email ke: febrian.iradat@gmail.com';
+                        if (Platform.OS === 'web') window.alert(alertMsg);
+                        else Alert.alert('Email', alertMsg);
+                      }}
+                    >
+                      <MaterialCommunityIcons name="email-outline" size={14} color={theme.textPrimary} />
+                      <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>Email</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
+                      onPress={scrollToContactSection}
+                    >
+                      <MaterialCommunityIcons name="send-outline" size={14} color={theme.textPrimary} />
+                      <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>Kontak</Text>
+                    </TouchableOpacity>
+                  </View>
 
                   <Text style={[styles.footerText, { color: theme.textSecondary }]}>
                     UTS Pemrograman Mobile 2 • Masoem University
                   </Text>
                   <Text style={[styles.footerSubtext, { color: theme.textMuted }]}>
-                    Personal CV & Academic Score App — LEVEL 10 (Full Screen Responsive TSX)
+                    Dosen Pengampu: Iin, M.Kom • Semester Ganjil 2026/2027
                   </Text>
                   <Text style={[styles.copyrightText, { color: theme.textLight }]}>
-                    © 2026 {profileData.nama} ({profileData.nim})
+                    © 2026 {profileData.nama} ({profileData.nim}) — LEVEL 10 PRODUCTION READY
                   </Text>
                 </View>
               </View>
@@ -603,6 +653,17 @@ const styles = StyleSheet.create({
     gap: 8,
     width: '100%',
   },
+  mottoText: {
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+  },
+  mottoSubtext: {
+    fontSize: 11.5,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
   conceptDefenseBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -616,6 +677,24 @@ const styles = StyleSheet.create({
   conceptDefenseBtnText: {
     fontSize: 12,
     fontWeight: '800',
+  },
+  footerLinksRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 8,
+  },
+  footerLinkChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 6,
+  },
+  footerLinkText: {
+    fontSize: 11,
+    fontWeight: '600',
   },
   footerText: {
     fontSize: 12,

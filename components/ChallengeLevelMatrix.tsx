@@ -37,7 +37,7 @@ const CHALLENGE_LEVELS = [
       'Deskripsi singkat tentang diri sendiri',
       'Menampilkan judul / heading yang sesuai',
     ],
-    components: 'SectionHeading.js, PersonalIntroCard.js',
+    components: 'SectionHeading.tsx, ProfileCard.tsx, AboutSection.tsx',
     concept: 'Materi P2 — JavaScript, JSX, dan Component',
   },
   {
@@ -52,7 +52,7 @@ const CHALLENGE_LEVELS = [
       'Design tokens warna, jarak, & tipografi terpusat',
       'Tidak ada teks yang terpotong pada layar ponsel',
     ],
-    components: 'theme/index.js, MetricBar.js, SkillMatrixCard.js',
+    components: 'theme/index.ts, MetricBar.tsx, SkillMatrixCard.tsx',
     concept: 'Materi P4 — Layout dan Styling React Native',
   },
   {
@@ -67,7 +67,7 @@ const CHALLENGE_LEVELS = [
       'State useState untuk form input & endorsement',
       'Formulir kontak (nama, email, pesan) dengan validasi',
     ],
-    components: 'ContactFormCard.js, InteractiveEndorseBar.js',
+    components: 'ContactForm.tsx, ContactFormCard.tsx, InteractiveEndorseBar.tsx',
     concept: 'Materi P3 & P5 — Props, State, Form Input, & Event Handling',
   },
   {
@@ -113,7 +113,7 @@ const CHALLENGE_LEVELS = [
       'Dual-theme switcher (Dark Mode & Light Mode)',
       'Timeline pengalaman organisasi & seksi hobi',
     ],
-    components: 'PortfolioGallery.js, ExperienceTimeline.js, HobbySection.js',
+    components: 'PortfolioGallery.tsx, ExperienceTimeline.tsx, HobbySection.tsx',
     concept: 'Advanced React Native Components, Modal, State Filter',
   },
   {
@@ -448,3 +448,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+

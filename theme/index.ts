@@ -32,6 +32,9 @@ export const LIGHT_THEME = {
   border: '#E2E8F0',        // Slate 200
   borderLight: '#F1F5F9',
 
+  secondary: '#059669',
+  error: '#DC2626',
+
   success: '#16A34A',
   successLight: '#F0FDF4',
   successBorder: '#BBF7D0',
@@ -68,6 +71,9 @@ export const DARK_THEME = {
   border: '#283548',        // Dark subtle borders
   borderLight: '#1F293D',
 
+  secondary: '#10B981',
+  error: '#EF4444',
+
   success: '#4ADE80',
   successLight: '#052E16',
   successBorder: '#166534',
@@ -77,7 +83,9 @@ export const DARK_THEME = {
   inputBackground: '#1A2333',
 };
 
-export const getTheme = (isDark = false) => (isDark ? DARK_THEME : LIGHT_THEME);
+export type Theme = typeof LIGHT_THEME;
+
+export const getTheme = (isDark = false): Theme => (isDark ? DARK_THEME : LIGHT_THEME);
 
 // Default export untuk backward-compatibility
 export const COLORS = LIGHT_THEME;
@@ -95,36 +103,36 @@ export const SPACING = {
 export const TYPOGRAPHY = {
   h1: {
     fontSize: 22,
-    fontWeight: '800',
+    fontWeight: '800' as const,
     letterSpacing: -0.5,
   },
   h2: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '700' as const,
     letterSpacing: -0.3,
   },
   h3: {
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '700' as const,
   },
   body: {
     fontSize: 13,
-    fontWeight: '400',
+    fontWeight: '400' as const,
     lineHeight: 20,
   },
   bodyBold: {
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: '700' as const,
     lineHeight: 20,
   },
   caption: {
     fontSize: 11,
-    fontWeight: '500',
+    fontWeight: '500' as const,
     lineHeight: 16,
   },
   badge: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '700' as const,
     letterSpacing: 0.5,
   },
 };
@@ -143,6 +151,9 @@ export const SHADOWS = {
     web: {
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
     },
+    default: {
+      elevation: 2,
+    },
   }),
   md: Platform.select({
     ios: {
@@ -156,6 +167,9 @@ export const SHADOWS = {
     },
     web: {
       boxShadow: '0 4px 14px rgba(15, 23, 42, 0.08)',
+    },
+    default: {
+      elevation: 4,
     },
   }),
   lg: Platform.select({
@@ -171,5 +185,9 @@ export const SHADOWS = {
     web: {
       boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
     },
+    default: {
+      elevation: 6,
+    },
   }),
 };
+

@@ -183,3 +183,4 @@ export interface AcademicScoreData {
   };
   learningProgress: LearningProgressItem[];
 }
+

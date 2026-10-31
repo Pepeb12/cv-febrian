@@ -3,14 +3,20 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
+import { ContactItem, ThemeColors } from '../types';
+
+interface ContactGridCardProps {
+  contactItems?: ContactItem[];
+  theme?: ThemeColors | any;
+}
 
 /**
- * ContactGridCard Component (Level 7: Theme Adaptable Contact Grid)
+ * ContactGridCard Component (Clean Direct Communication Grid in TSX)
  */
-export default function ContactGridCard({ contactItems, theme }) {
+export default function ContactGridCard({ contactItems, theme }: ContactGridCardProps) {
   const currentTheme = theme || COLORS;
 
-  const handleContactPress = (item) => {
+  const handleContactPress = (item: ContactItem) => {
     const message = `${item.label}:\n${item.value}`;
     if (Platform.OS === 'web') {
       window.alert(message);
@@ -25,13 +31,15 @@ export default function ContactGridCard({ contactItems, theme }) {
         styles.card,
         {
           backgroundColor: currentTheme.surface,
-          borderColor: currentTheme.borderLight,
+          borderColor: currentTheme.border,
         },
       ]}
+      accessibilityRole="region"
+      accessibilityLabel="Informasi Kontak & Jaringan"
     >
       <SectionHeading
-        title="Informasi Kontak & Jaringan"
-        subtitle="Kanal Komunikasi & Lokasi Mahasiswa"
+        title="Kanal Kontak & Jaringan"
+        subtitle="Komunikasi & Kolaborasi Profesional"
         icon="share-social-outline"
         badgeText="Kontak"
         theme={currentTheme}
@@ -50,9 +58,11 @@ export default function ContactGridCard({ contactItems, theme }) {
             ]}
             activeOpacity={0.7}
             onPress={() => handleContactPress(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.label}: ${item.displayValue}`}
           >
             <View style={[styles.iconCircle, { backgroundColor: item.color + '18' }]}>
-              <Ionicons name={item.icon} size={18} color={item.color} />
+              <Ionicons name={item.icon as any} size={18} color={item.color} />
             </View>
             <View style={styles.textContainer}>
               <Text style={[styles.itemLabel, { color: currentTheme.textMuted }]}>
@@ -79,16 +89,17 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
     borderWidth: 1,
     marginBottom: SPACING.lg,
-    ...SHADOWS.md,
+    ...SHADOWS.sm,
   },
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: SPACING.md,
+    gap: SPACING.sm,
     marginTop: SPACING.xs,
   },
   gridItem: {
-    width: '48%',
+    flex: 1,
+    minWidth: 140,
     borderRadius: 12,
     padding: SPACING.md,
     borderWidth: 1,
@@ -107,13 +118,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemLabel: {
-    fontSize: 10,
-    fontWeight: '600',
+    fontSize: 9,
+    fontWeight: '700',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   itemValue: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
     marginTop: 2,
   },
 });
+
