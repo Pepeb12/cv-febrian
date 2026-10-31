@@ -85,3 +85,4 @@ Jika dosen meminta penjelasan kode:
 4. **File `App.js`**:
    - Memanfaatkan `SafeAreaProvider` dan `SafeAreaView` agar tampilan tidak tertutup oleh *notch* / *status bar* HP.
    - Menggunakan `ScrollView` agar tampilan tetap responsif dan dapat di-scroll dengan nyaman di berbagai ukuran layar.
+
