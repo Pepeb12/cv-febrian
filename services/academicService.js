@@ -129,3 +129,4 @@ export const AcademicService = {
 };
 
 export default AcademicService;
+

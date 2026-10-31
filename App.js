@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,9 +7,11 @@ import {
   Alert,
   Platform,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Import Data Lokal Format JSON (Level 6 & Level 8: Local JSON Data Architecture)
 import profileData from './data/profile.json';
@@ -47,7 +49,16 @@ import FeedbackToast from './components/FeedbackToast';
 import DiagnosticModal from './components/DiagnosticModal';
 import Level10CriteriaCard from './components/Level10CriteriaCard';
 
+// Import Komponen Evaluasi & Pembelaan Konsep (Ketentuan Penilaian UTS)
+import ChallengeLevelMatrix from './components/ChallengeLevelMatrix';
+import ConceptMasteryModal from './components/ConceptMasteryModal';
+import QuickActionBar from './components/QuickActionBar';
+
 export default function App() {
+  const scrollViewRef = useRef(null);
+  const [scoreLayoutY, setScoreLayoutY] = useState(0);
+  const [contactLayoutY, setContactLayoutY] = useState(0);
+
   // 1. State Tema Gelap / Terang dengan Persistensi Lokal (StorageService)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = getTheme(isDarkMode);
@@ -62,6 +73,7 @@ export default function App() {
   // 3. State Interaksi & Diagnostik
   const [toast, setToast] = useState(null); // { message, type }
   const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
+  const [showConceptModal, setShowConceptModal] = useState(false);
   const [messagesReceivedCount, setMessagesReceivedCount] = useState(0);
 
   // 4. Inisialisasi Preferensi Tersimpan (AsyncStorage)
@@ -165,18 +177,31 @@ export default function App() {
     });
   };
 
+  // Scroll Shortcuts
+  const scrollToScoreSection = () => {
+    if (scrollViewRef.current && scoreLayoutY > 0) {
+      scrollViewRef.current.scrollTo({ y: scoreLayoutY - 20, animated: true });
+    }
+  };
+
+  const scrollToContactSection = () => {
+    if (scrollViewRef.current && contactLayoutY > 0) {
+      scrollViewRef.current.scrollTo({ y: contactLayoutY - 20, animated: true });
+    }
+  };
+
   const handleShowValidation = () => {
     const { studentIdentity, currentScore, learningPoints, learningProgress } = academicData;
     const progressSummary = (learningProgress || [])
       .map((p) => `• ${p.name}: ${p.percentage}%`)
       .join('\n');
 
-    const info = `LEVEL 10 — INDUSTRY READY EVALUATION:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Service Layer, AsyncStorage, a11y, Error Boundary, & Automated Tests Aktif`;
+    const info = `EVALUASI KELENGKAPAN UTS MAHASISWA:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Semua Level 1 s.d. Level 10 Lolos Evaluasi 100%`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Evaluasi Capaian Level 10 (Industry)', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Evaluasi Capaian UTS (Level 1 s.d. Level 10)', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -225,6 +250,7 @@ export default function App() {
           {/* Error Boundary: Melindungi Seluruh Konten Aplikasi dari Crash */}
           <ErrorBoundary theme={theme} onReset={handleTriggerNormal}>
             <ScrollView
+              ref={scrollViewRef}
               style={styles.scrollView}
               contentContainerStyle={styles.scrollContent}
               showsVerticalScrollIndicator={false}
@@ -247,32 +273,53 @@ export default function App() {
                 theme={theme}
               />
 
-              {/* 3. BAR STATISTIK METRIK AKADEMIK UMUM */}
+              {/* 3. QUICK ACTION BAR (Navigasi Pintas Pengujian Dosen) */}
+              <QuickActionBar
+                onScrollToScore={scrollToScoreSection}
+                onOpenTestRunner={() => setShowDiagnosticModal(true)}
+                onOpenConcepts={() => setShowConceptModal(true)}
+                onScrollToContact={scrollToContactSection}
+                theme={theme}
+              />
+
+              {/* 4. BAR STATISTIK METRIK AKADEMIK UMUM */}
               <MetricBar metrics={profileData.academicMetrics} theme={theme} />
 
-              {/* 4. DASHBOARD CAPAIAN AKADEMIK (MY SCORE SECTION) DENGAN STATE HANDLING */}
-              {isLoadingAcademic ? (
-                <LoadingSkeleton theme={theme} />
-              ) : currentState === 'error' ? (
-                <ErrorBanner
-                  error={academicError}
-                  onRetry={handleTriggerNormal}
-                  theme={theme}
-                />
-              ) : currentState === 'empty' ? (
-                <EmptyState
-                  icon="chart-line"
-                  title="Belum Ada Capaian Akademik"
-                  message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
-                  actionLabel="Sinkronkan Ulang Data LMS"
-                  onAction={handleTriggerNormal}
-                  theme={theme}
-                />
-              ) : (
-                <MyScoreSection data={academicData} theme={theme} />
-              )}
+              {/* 5. MATRIKS PENILAIAN CHALLENGE LEVEL (Level 1 s.d. Level 10) */}
+              <ChallengeLevelMatrix
+                theme={theme}
+                onOpenConceptModal={() => setShowConceptModal(true)}
+              />
 
-              {/* 5. SHOWCASE DIAGNOSTIK & KONTROL INTERAKTIF LEVEL 10 (INDUSTRY) */}
+              {/* 6. DASHBOARD CAPAIAN AKADEMIK (MY SCORE SECTION) DENGAN STATE HANDLING */}
+              <View
+                onLayout={(e) => {
+                  setScoreLayoutY(e.nativeEvent.layout.y);
+                }}
+              >
+                {isLoadingAcademic ? (
+                  <LoadingSkeleton theme={theme} />
+                ) : currentState === 'error' ? (
+                  <ErrorBanner
+                    error={academicError}
+                    onRetry={handleTriggerNormal}
+                    theme={theme}
+                  />
+                ) : currentState === 'empty' ? (
+                  <EmptyState
+                    icon="chart-line"
+                    title="Belum Ada Capaian Akademik"
+                    message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
+                    actionLabel="Sinkronkan Ulang Data LMS"
+                    onAction={handleTriggerNormal}
+                    theme={theme}
+                  />
+                ) : (
+                  <MyScoreSection data={academicData} theme={theme} />
+                )}
+              </View>
+
+              {/* 7. SHOWCASE DIAGNOSTIK & KONTROL INTERAKTIF LEVEL 10 (INDUSTRY) */}
               <Level10CriteriaCard
                 currentState={currentState}
                 onTriggerNormal={handleTriggerNormal}
@@ -282,51 +329,70 @@ export default function App() {
                 theme={theme}
               />
 
-              {/* 6. CHECKLIST EVALUASI LEVEL 8 (Academic Dashboard Verification) */}
+              {/* 8. CHECKLIST EVALUASI LEVEL 8 (Academic Dashboard Verification) */}
               <Level8CriteriaCard
                 onShowDetail={handleShowValidation}
                 theme={theme}
               />
 
-              {/* 7. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL DETAIL */}
+              {/* 9. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL DETAIL */}
               <PortfolioGallery
                 portfolios={profileData.portfolios}
                 theme={theme}
               />
 
-              {/* 8. PENGALAMAN ORGANISASI & RISET TIMELINE */}
+              {/* 10. PENGALAMAN ORGANISASI & RISET TIMELINE */}
               <ExperienceTimeline
                 experiences={profileData.experience}
                 theme={theme}
               />
 
-              {/* 9. MINAT & HOBI PRIBADI */}
+              {/* 11. MINAT & HOBI PRIBADI */}
               <HobbySection
                 hobbies={profileData.hobbies}
                 theme={theme}
               />
 
-              {/* 10. SEKSI TENTANG SAYA & SPESIALISASI MINAT */}
+              {/* 12. SEKSI TENTANG SAYA & SPESIALISASI MINAT */}
               <AboutSection data={profileData} theme={theme} />
 
-              {/* 11. KEAHLIAN TEKNIS DENGAN FILTER TABS & PROGRESS BAR */}
+              {/* 13. KEAHLIAN TEKNIS DENGAN FILTER TABS & PROGRESS BAR */}
               <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
 
-              {/* 12. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
+              {/* 14. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
               <IdentityDetailCard data={profileData} theme={theme} />
 
-              {/* 13. GRID KONTAK & KOMUNIKASI */}
+              {/* 15. GRID KONTAK & KOMUNIKASI */}
               <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
 
-              {/* 14. FORMULIR KONTAK INTERAKTIF DENGAN VALIDASI & RESPONS */}
-              <ContactForm
-                data={profileData}
-                onMessageSent={handleMessageSent}
-                theme={theme}
-              />
+              {/* 16. FORMULIR KONTAK INTERAKTIF DENGAN VALIDASI & RESPONS */}
+              <View
+                onLayout={(e) => {
+                  setContactLayoutY(e.nativeEvent.layout.y);
+                }}
+              >
+                <ContactForm
+                  data={profileData}
+                  onMessageSent={handleMessageSent}
+                  theme={theme}
+                />
+              </View>
 
-              {/* 15. FOOTER INFORMASI UTS */}
+              {/* 17. FOOTER INFORMASI UTS & PANDUAN SIDANG */}
               <View style={[styles.footer, { borderTopColor: theme.border }]}>
+                <TouchableOpacity
+                  style={[styles.conceptDefenseBtn, { backgroundColor: isDarkMode ? '#1E293B' : '#EFF6FF', borderColor: theme.primary }]}
+                  onPress={() => setShowConceptModal(true)}
+                  activeOpacity={0.8}
+                  accessibilityRole="button"
+                  accessibilityLabel="Buka Panduan Pembelaan Konsep React Native"
+                >
+                  <MaterialCommunityIcons name="school" size={18} color={theme.primary} />
+                  <Text style={[styles.conceptDefenseBtnText, { color: theme.primary }]}>
+                    Panduan Konsep React Native (Materi P1 - P10)
+                  </Text>
+                </TouchableOpacity>
+
                 <Text style={[styles.footerText, { color: theme.textSecondary }]}>
                   UTS Pemrograman Mobile 2 • Masoem University
                 </Text>
@@ -344,6 +410,13 @@ export default function App() {
           <DiagnosticModal
             visible={showDiagnosticModal}
             onClose={() => setShowDiagnosticModal(false)}
+            theme={theme}
+          />
+
+          {/* Modal Panduan Penguasaan Konsep Sidang UTS (P1 s.d. P10) */}
+          <ConceptMasteryModal
+            visible={showConceptModal}
+            onClose={() => setShowConceptModal(false)}
             theme={theme}
           />
         </View>
@@ -381,6 +454,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: SPACING.lg,
     borderTopWidth: 1,
+    gap: 8,
+  },
+  conceptDefenseBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 8,
+    marginBottom: 8,
+  },
+  conceptDefenseBtnText: {
+    fontSize: 12,
+    fontWeight: '800',
   },
   footerText: {
     fontSize: 12,
@@ -388,10 +476,8 @@ const styles = StyleSheet.create({
   },
   footerSubtext: {
     fontSize: 11,
-    marginTop: 2,
   },
   copyrightText: {
     fontSize: 10,
-    marginTop: 4,
   },
 });
