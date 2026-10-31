@@ -1,15 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * ProfileCard Component (Level 1 & Level 2)
- * Menampilkan:
- * 1. Foto Profil Mahasiswa (Level 1)
- * 2. Nama Lengkap Mahasiswa (Level 1)
- * 3. NIM Mahasiswa (Level 1)
- * 4. Profesi / Gelar Minat Profesional (Level 2)
- * 5. Tagline & Status Kemahasiswaan Aktif (Level 2)
+ * ProfileCard Component (Materi P4: Layout, Flexbox, & Visual Hierarchy)
+ * Menggabungkan foto profil, nama, NIM, profesi, dan status aktif dengan estetika modern.
  */
 export default function ProfileCard({ profile }) {
   return (
@@ -29,41 +25,41 @@ export default function ProfileCard({ profile }) {
           <View style={styles.activeDot} />
         </View>
 
-        {/* Nama Lengkap Mahasiswa (Persyaratan Level 1) */}
+        {/* Nama Lengkap Mahasiswa (Level 1) */}
         <Text style={styles.fullName}>{profile.fullName}</Text>
 
-        {/* Profesi & Minat Utama (Persyaratan Level 2) */}
+        {/* Profesi / Minat Utama (Level 2) */}
         <View style={styles.professionContainer}>
-          <Ionicons name="briefcase" size={14} color="#1E40AF" />
+          <Ionicons name="briefcase" size={14} color={COLORS.primary} />
           <Text style={styles.professionText}>{profile.professionTitle}</Text>
         </View>
 
-        {/* Tagline Personal */}
+        {/* Personal Tagline */}
         <Text style={styles.taglineText}>"{profile.tagline}"</Text>
 
-        {/* Badge NIM Mahasiswa (Persyaratan Level 1) */}
+        {/* Badge NIM Mahasiswa (Level 1) */}
         <View style={styles.nimContainer}>
-          <Ionicons name="card-outline" size={15} color="#0369A1" />
+          <Ionicons name="card-outline" size={15} color={COLORS.accentCyan} />
           <Text style={styles.nimLabel}>NIM:</Text>
           <Text style={styles.nimValue}>{profile.nim}</Text>
         </View>
 
-        {/* Program Studi & Perguruan Tinggi */}
+        {/* Program Studi & Semester */}
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
-            <Ionicons name="book-outline" size={14} color="#64748B" />
+            <Ionicons name="book-outline" size={14} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{profile.studyProgram}</Text>
           </View>
           <Text style={styles.metaSeparator}>•</Text>
           <View style={styles.metaItem}>
-            <Ionicons name="calendar-outline" size={14} color="#64748B" />
+            <Ionicons name="calendar-outline" size={14} color={COLORS.textMuted} />
             <Text style={styles.metaText}>Semester {profile.semester}</Text>
           </View>
         </View>
 
         {/* Nama Kampus */}
         <View style={styles.universityRow}>
-          <Ionicons name="business" size={14} color="#475569" />
+          <Ionicons name="business" size={14} color={COLORS.textSecondary} />
           <Text style={styles.universityText}>{profile.university}</Text>
         </View>
 
@@ -79,45 +75,35 @@ export default function ProfileCard({ profile }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderRadius: 20,
     overflow: 'hidden',
-    marginBottom: 20,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.08,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
+    marginBottom: SPACING.lg,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.md,
   },
   cardHeaderBanner: {
-    height: 85,
-    backgroundColor: '#1E40AF',
+    height: 90,
+    backgroundColor: COLORS.primary,
   },
   cardContent: {
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 22,
+    paddingHorizontal: SPACING.xl,
+    paddingBottom: SPACING.xl,
     marginTop: -50,
   },
   avatarWrapper: {
     position: 'relative',
-    marginBottom: 10,
+    marginBottom: SPACING.sm,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
     borderWidth: 4,
-    borderColor: '#FFFFFF',
-    backgroundColor: '#E2E8F0',
+    borderColor: COLORS.surface,
+    backgroundColor: COLORS.border,
   },
   activeDot: {
     position: 'absolute',
@@ -126,41 +112,41 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#22C55E',
+    backgroundColor: COLORS.success,
     borderWidth: 3,
-    borderColor: '#FFFFFF',
+    borderColor: COLORS.surface,
   },
   fullName: {
     fontSize: 21,
     fontWeight: '800',
-    color: '#0F172A',
+    color: COLORS.textPrimary,
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   professionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFF6FF',
+    backgroundColor: COLORS.primaryLight,
     paddingVertical: 5,
-    paddingHorizontal: 12,
+    paddingHorizontal: SPACING.md,
     borderRadius: 20,
     gap: 6,
-    marginBottom: 6,
+    marginBottom: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#DBEAFE',
+    borderColor: COLORS.primaryBorder,
   },
   professionText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#1E40AF',
+    color: COLORS.primary,
   },
   taglineText: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: '#64748B',
+    color: COLORS.textMuted,
     textAlign: 'center',
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    marginBottom: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
   },
   nimContainer: {
     flexDirection: 'row',
@@ -171,25 +157,25 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#BAE6FD',
-    marginBottom: 12,
+    marginBottom: SPACING.md,
     gap: 6,
   },
   nimLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#0369A1',
+    color: COLORS.accentCyan,
   },
   nimValue: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0369A1',
+    color: COLORS.accentCyan,
     letterSpacing: 0.8,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 6,
+    gap: SPACING.sm,
+    marginBottom: SPACING.xs,
   },
   metaItem: {
     flexDirection: 'row',
@@ -197,30 +183,30 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metaSeparator: {
-    color: '#CBD5E1',
+    color: COLORS.textLight,
     fontSize: 14,
   },
   metaText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#334155',
+    color: COLORS.textSecondary,
   },
   universityRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    marginBottom: 12,
+    marginBottom: SPACING.md,
   },
   universityText: {
     fontSize: 13,
-    color: '#475569',
+    color: COLORS.textSecondary,
     fontWeight: '600',
   },
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0FDF4',
-    paddingHorizontal: 12,
+    backgroundColor: COLORS.successLight,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderRadius: 12,
     borderWidth: 1,
@@ -231,11 +217,11 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: '#22C55E',
+    backgroundColor: COLORS.success,
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#16A34A',
+    fontWeight: '700',
+    color: COLORS.success,
   },
 });

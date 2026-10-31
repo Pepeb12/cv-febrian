@@ -12,19 +12,23 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
+import MetricBar from './components/MetricBar';
 import PersonalIntroCard from './components/PersonalIntroCard';
+import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
-import Level2CriteriaCard from './components/Level2CriteriaCard';
+import ContactGridCard from './components/ContactGridCard';
+import Level3CriteriaCard from './components/Level3CriteriaCard';
 import { STUDENT_PROFILE } from './data/profileData';
+import { COLORS, SPACING } from './theme';
 
 export default function App() {
   const handleShowValidation = () => {
-    const info = `LEVEL 2 — BEGINNER VALIDATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Profesi/Minat: ${STUDENT_PROFILE.professionTitle}\n• Program Studi: ${STUDENT_PROFILE.studyProgram} (Semester ${STUDENT_PROFILE.semester})\n• Kampus: ${STUDENT_PROFILE.university}\n• Fokus Minat: Mobile App, Systems Analysis, UI/UX, Database`;
+    const info = `LEVEL 3 — ELEMENTARY EVALUATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Layout: Terstruktur dengan Flexbox & Design Tokens\n• Bagian: Profile, Metrics, Intro, Skills Matrix, Timeline, & Contact Grid\n• Responsivitas: Terbaca nyaman pada layar ponsel & browser tanpa terpotong.`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 2', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 3', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -35,7 +39,7 @@ export default function App() {
 
         {/* Outer Container (Simulator Frame di Web & Full Screen di Android) */}
         <View style={styles.appContainer}>
-          {/* Header Institusi & Level Badge */}
+          {/* Header Institusi & Level 3 Badge */}
           <Header />
 
           <ScrollView
@@ -43,25 +47,34 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU PROFIL UTAMA (Level 1 & Level 2: Foto, Nama, NIM, Profesi) */}
+            {/* 1. KARTU IDENTITAS UTAMA (Digital Student Card) */}
             <ProfileCard profile={STUDENT_PROFILE} />
 
-            {/* 2. CHECKLIST EVALUASI LEVEL 2 (Menampilkan Pemenuhan Kriteria) */}
-            <Level2CriteriaCard onShowDetail={handleShowValidation} />
+            {/* 2. STATISTIK METRIK AKADEMIK (Materi P4: Flexbox Grid Row) */}
+            <MetricBar metrics={STUDENT_PROFILE.academicMetrics} />
 
-            {/* 3. PERSONAL INTRODUCTION & BIDANG MINAT (Fokus Utama Level 2) */}
+            {/* 3. CHECKLIST EVALUASI LEVEL 3 (Layout & Styling Verification) */}
+            <Level3CriteriaCard onShowDetail={handleShowValidation} />
+
+            {/* 4. PERSONAL INTRODUCTION & BIDANG MINAT SPESIALISASI */}
             <PersonalIntroCard profile={STUDENT_PROFILE} />
 
-            {/* 4. DETAIL RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
+            {/* 5. KEAHLIAN TEKNIS DENGAN VISUAL PROGRESS BARS (Materi P4) */}
+            <SkillMatrixCard skills={STUDENT_PROFILE.technicalSkills} />
+
+            {/* 6. RIWAYAT PENDIDIKAN (TIMELINE) & DOMISILI ALAMAT */}
             <IdentityDetailCard profile={STUDENT_PROFILE} />
 
-            {/* 5. FOOTER INFORMASI UTS */}
+            {/* 7. GRID KONTAK & KOMUNIKASI (Materi P4: 2-Column Wrap Grid) */}
+            <ContactGridCard contactItems={STUDENT_PROFILE.contactItems} />
+
+            {/* 8. FOOTER INFORMASI UTS */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>
                 UTS Pemrograman Mobile • Masoem University
               </Text>
               <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App — Level 2 (Beginner)
+                Personal CV & Academic Score App — LEVEL 3 (Elementary)
               </Text>
               <Text style={styles.copyrightText}>
                 © 2026 Febrian Iradatul Rahman ({STUDENT_PROFILE.nim})
@@ -77,20 +90,20 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Platform.select({ web: '#F1F5F9', default: '#F8FAFC' }),
+    backgroundColor: Platform.select({ web: '#F1F5F9', default: COLORS.background }),
     alignItems: 'center',
   },
   appContainer: {
     flex: 1,
     width: '100%',
-    maxWidth: 500, // Menjaga rasio tampilan mobile di layar Web desktop
-    backgroundColor: '#F8FAFC',
+    maxWidth: 500, // Menjaga rasio smartphone pada layar browser desktop
+    backgroundColor: COLORS.background,
     ...Platform.select({
       web: {
-        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
+        boxShadow: '0 4px 28px rgba(15, 23, 42, 0.08)',
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: COLORS.border,
       },
     }),
   },
@@ -98,29 +111,29 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
-    paddingBottom: 36,
+    padding: SPACING.lg,
+    paddingBottom: 40,
   },
   footer: {
-    marginTop: 16,
+    marginTop: SPACING.md,
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: SPACING.lg,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: COLORS.border,
   },
   footerText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#475569',
+    color: COLORS.textSecondary,
   },
   footerSubtext: {
     fontSize: 11,
-    color: '#64748B',
+    color: COLORS.textMuted,
     marginTop: 2,
   },
   copyrightText: {
     fontSize: 10,
-    color: '#94A3B8',
+    color: COLORS.textLight,
     marginTop: 4,
   },
 });

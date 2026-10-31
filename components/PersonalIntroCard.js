@@ -1,26 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
+import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * PersonalIntroCard Component (Pemenuhan Fokus Utama LEVEL 2 — BEGINNER)
- * 1. Personal Introduction (Deskripsi Singkat Diri Sendiri)
- * 2. Bidang Minat / Areas of Interest dengan JSX Component
- * 3. Nilai Keunggulan / Core Attributes
+ * PersonalIntroCard Component (Level 2 & Level 3)
+ * Menampilkan:
+ * 1. Personal Introduction & Kutipan Nilai Diri
+ * 2. 4 Bidang Minat Sistem Informasi dengan Icon & Chips
+ * 3. Nilai Atribut Keunggulan Personal
  */
 export default function PersonalIntroCard({ profile }) {
   const { introduction, fieldsOfInterest, coreAttributes } = profile;
 
   return (
     <View style={styles.container}>
-      {/* SECTION 1: Personal Introduction (Deskripsi Diri Sendiri) */}
+      {/* SECTION 1: Personal Introduction */}
       <View style={styles.card}>
         <SectionHeading
           title="Tentang Saya"
           subtitle="Personal Introduction & Career Vision"
           icon="person-circle"
-          badgeText="Introduction"
+          badgeText="Intro"
         />
 
         <View style={styles.introContent}>
@@ -30,7 +32,7 @@ export default function PersonalIntroCard({ profile }) {
 
           {/* Kutipan / Personal Motto */}
           <View style={styles.quoteBox}>
-            <Ionicons name="chatbubble-ellipses" size={16} color="#2563EB" />
+            <Ionicons name="chatbubble-ellipses" size={16} color={COLORS.primary} />
             <Text style={styles.quoteText}>{introduction.motto}</Text>
           </View>
         </View>
@@ -55,7 +57,7 @@ export default function PersonalIntroCard({ profile }) {
           title="Bidang Minat & Spesialisasi"
           subtitle="Areas of Interest in Information Systems"
           icon="sparkles"
-          badgeText="Skills & Interest"
+          badgeText="Spesialisasi"
         />
 
         <View style={styles.interestsList}>
@@ -105,77 +107,67 @@ export default function PersonalIntroCard({ profile }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 16,
-    marginBottom: 20,
+    gap: SPACING.lg,
+    marginBottom: SPACING.lg,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderRadius: 16,
-    padding: 16,
+    padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.md,
   },
   introContent: {
-    gap: 10,
-    marginTop: 4,
+    gap: SPACING.sm,
+    marginTop: SPACING.xs,
   },
   headlineText: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#1E293B',
+    fontWeight: '800',
+    color: COLORS.textPrimary,
   },
   paragraphText: {
     fontSize: 13,
-    color: '#334155',
-    lineHeight: 20,
+    color: COLORS.textSecondary,
+    lineHeight: 21,
     textAlign: 'justify',
   },
   quoteBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFF6FF',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
-    padding: 12,
-    gap: 10,
-    marginTop: 4,
+    padding: SPACING.md,
+    gap: SPACING.sm,
+    marginTop: SPACING.xs,
     borderLeftWidth: 3,
-    borderLeftColor: '#2563EB',
+    borderLeftColor: COLORS.primary,
   },
   quoteText: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: '#1D4ED8',
+    color: COLORS.primary,
     flex: 1,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   attributesContainer: {
-    marginTop: 14,
-    paddingTop: 12,
+    marginTop: SPACING.md,
+    paddingTop: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
-    gap: 8,
+    borderTopColor: COLORS.borderLight,
+    gap: SPACING.sm,
   },
   attributeItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 8,
+    gap: SPACING.sm,
   },
   attrBullet: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#3B82F6',
+    backgroundColor: COLORS.primary,
     marginTop: 6,
   },
   attrTextCol: {
@@ -184,29 +176,29 @@ const styles = StyleSheet.create({
   attrLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#1E293B',
+    color: COLORS.textPrimary,
   },
   attrDesc: {
     fontSize: 11,
-    color: '#64748B',
+    color: COLORS.textMuted,
     lineHeight: 16,
   },
   interestsList: {
-    gap: 12,
-    marginTop: 6,
+    gap: SPACING.md,
+    marginTop: SPACING.xs,
   },
   interestCard: {
     backgroundColor: '#FAFAFA',
     borderRadius: 12,
-    padding: 12,
+    padding: SPACING.md,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     borderLeftWidth: 4,
   },
   interestTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: SPACING.sm,
     marginBottom: 6,
   },
   interestIconBox: {
@@ -222,18 +214,18 @@ const styles = StyleSheet.create({
   interestTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#0F172A',
+    color: COLORS.textPrimary,
   },
   interestCategory: {
     fontSize: 11,
-    color: '#64748B',
+    color: COLORS.textMuted,
     fontWeight: '500',
   },
   interestDescription: {
     fontSize: 12,
-    color: '#475569',
+    color: COLORS.textSecondary,
     lineHeight: 18,
-    marginBottom: 10,
+    marginBottom: SPACING.sm,
   },
   tagWrap: {
     flexDirection: 'row',
@@ -241,17 +233,16 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   tagPill: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.border,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
   },
   tagPillText: {
     fontSize: 11,
-    color: '#334155',
+    color: COLORS.textSecondary,
     fontWeight: '600',
   },
 });
-

@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
+import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * IdentityDetailCard Component
+ * IdentityDetailCard Component (Level 3 Layout & Timeline Styling)
  * Menampilkan:
- * 1. Riwayat Jenjang Pendidikan (SD 2011-2018, SMP 2018-2021, SMA 2021-2024, Masoem Univ 2024-Sekarang)
- * 2. Domisili / Alamat Lengkap
+ * 1. Riwayat Jenjang Pendidikan Vertikal Timeline (SD, SMP, SMA, Masoem Univ)
+ * 2. Alamat & Domisili Lengkap
  */
 export default function IdentityDetailCard({ profile }) {
   return (
     <View style={styles.container}>
-      {/* SECTION: Riwayat Jenjang Pendidikan */}
+      {/* SECTION: Riwayat Jenjang Pendidikan (Vertical Timeline Layout) */}
       <View style={styles.card}>
         <SectionHeading
           title="Riwayat Pendidikan"
@@ -53,6 +54,9 @@ export default function IdentityDetailCard({ profile }) {
                     {edu.level} {edu.major ? `• ${edu.major}` : ''}
                   </Text>
                   <Text style={styles.educationStatus}>Status: {edu.status}</Text>
+                  {edu.description && (
+                    <Text style={styles.educationDesc}>{edu.description}</Text>
+                  )}
                 </View>
               </View>
             );
@@ -64,7 +68,7 @@ export default function IdentityDetailCard({ profile }) {
       <View style={styles.card}>
         <SectionHeading
           title="Alamat & Domisili"
-          subtitle="Informasi Tempat Tinggal & Kontak"
+          subtitle="Informasi Tempat Tinggal & Wilayah"
           icon="location"
           badgeText="Domisili"
         />
@@ -74,15 +78,15 @@ export default function IdentityDetailCard({ profile }) {
 
           <View style={styles.addressTags}>
             <View style={styles.tag}>
-              <Ionicons name="home-outline" size={13} color="#475569" />
+              <Ionicons name="home-outline" size={13} color={COLORS.textSecondary} />
               <Text style={styles.tagText}>{profile.address.village}</Text>
             </View>
             <View style={styles.tag}>
-              <Ionicons name="map-outline" size={13} color="#475569" />
+              <Ionicons name="map-outline" size={13} color={COLORS.textSecondary} />
               <Text style={styles.tagText}>{profile.address.subDistrict}</Text>
             </View>
             <View style={styles.tag}>
-              <Ionicons name="navigate-outline" size={13} color="#475569" />
+              <Ionicons name="navigate-outline" size={13} color={COLORS.textSecondary} />
               <Text style={styles.tagText}>{profile.address.district}</Text>
             </View>
           </View>
@@ -94,67 +98,57 @@ export default function IdentityDetailCard({ profile }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 16,
-    marginBottom: 20,
+    gap: SPACING.lg,
+    marginBottom: SPACING.lg,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderRadius: 16,
-    padding: 16,
+    padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.md,
   },
   cardBody: {
-    gap: 8,
-    marginTop: 6,
+    gap: SPACING.sm,
+    marginTop: SPACING.xs,
   },
   addressText: {
     fontSize: 14,
-    color: '#334155',
+    color: COLORS.textSecondary,
     lineHeight: 20,
     fontWeight: '500',
   },
   addressTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 4,
+    gap: SPACING.sm,
+    marginTop: SPACING.xs,
   },
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: COLORS.border,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
   },
   tagText: {
     fontSize: 12,
-    color: '#475569',
+    color: COLORS.textSecondary,
     fontWeight: '600',
   },
   timelineContainer: {
     paddingLeft: 4,
-    marginTop: 8,
+    marginTop: SPACING.sm,
   },
   timelineItem: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: 16,
+    marginBottom: SPACING.lg,
   },
   timelineLeftCol: {
     width: 24,
@@ -166,22 +160,22 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#CBD5E1',
     borderWidth: 2,
-    borderColor: '#FFFFFF',
-    marginTop: 2,
+    borderColor: COLORS.surface,
+    marginTop: 3,
     zIndex: 2,
   },
   timelineDotActive: {
-    backgroundColor: '#1E40AF',
+    backgroundColor: COLORS.primary,
     width: 14,
     height: 14,
     borderRadius: 7,
   },
   timelineLine: {
     position: 'absolute',
-    top: 14,
-    bottom: -16,
+    top: 15,
+    bottom: -20,
     width: 2,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: COLORS.border,
     zIndex: 1,
   },
   timelineContent: {
@@ -197,25 +191,31 @@ const styles = StyleSheet.create({
   educationSchool: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1E293B',
+    color: COLORS.textPrimary,
   },
   activeSchoolText: {
-    color: '#1E40AF',
+    color: COLORS.primary,
   },
   educationPeriod: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#64748B',
+    color: COLORS.textMuted,
   },
   educationLevel: {
     fontSize: 13,
-    color: '#475569',
+    color: COLORS.textSecondary,
     fontWeight: '500',
     marginBottom: 2,
   },
   educationStatus: {
     fontSize: 11,
-    color: '#94A3B8',
+    color: COLORS.textMuted,
     fontStyle: 'italic',
+  },
+  educationDesc: {
+    fontSize: 11,
+    color: COLORS.textMuted,
+    lineHeight: 16,
+    marginTop: 4,
   },
 });

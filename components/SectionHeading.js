@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SPACING } from '../theme';
 
 /**
- * SectionHeading Component (Materi P2: Reusable Component & JSX Props)
+ * SectionHeading Component (Materi P4: Reusable Component & Typography Hierarchy)
  * Menampilkan judul section hierarkis dengan ikon dan subjudul deskriptif.
  */
 export default function SectionHeading({ title, subtitle, icon, badgeText }) {
@@ -13,7 +14,7 @@ export default function SectionHeading({ title, subtitle, icon, badgeText }) {
         <View style={styles.titleWithIcon}>
           {icon && (
             <View style={styles.iconWrapper}>
-              <Ionicons name={icon} size={18} color="#1E40AF" />
+              <Ionicons name={icon} size={18} color={COLORS.primary} />
             </View>
           )}
           <Text style={styles.mainTitle}>{title}</Text>
@@ -31,8 +32,8 @@ export default function SectionHeading({ title, subtitle, icon, badgeText }) {
 
 const styles = StyleSheet.create({
   headingContainer: {
-    marginBottom: 12,
-    marginTop: 8,
+    marginBottom: SPACING.md,
+    marginTop: 2,
   },
   topRow: {
     flexDirection: 'row',
@@ -42,30 +43,30 @@ const styles = StyleSheet.create({
   titleWithIcon: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.sm,
   },
   iconWrapper: {
     width: 28,
     height: 28,
     borderRadius: 7,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mainTitle: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#0F172A',
+    color: COLORS.textPrimary,
     letterSpacing: 0.3,
   },
   subTitle: {
     fontSize: 12,
-    color: '#64748B',
+    color: COLORS.textMuted,
     marginTop: 2,
     paddingLeft: 36,
   },
   badge: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.surfaceMuted,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
@@ -73,8 +74,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#475569',
+    color: COLORS.textSecondary,
     textTransform: 'uppercase',
   },
 });
-
