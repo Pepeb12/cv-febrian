@@ -10,16 +10,18 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-// Import Data Lokal Format JSON (Materi Level 6 & Level 7)
+// Import Data Lokal Format JSON (Level 6 & Level 8: Local JSON Data Architecture)
 import profileData from './data/profile.json';
+import academicScoreData from './data/academicScore.json';
 
-// Import Theme System (Materi Level 7: Dark / Light Mode Switcher)
+// Import Theme System (Dual-Theme Switcher: Dark/Light Mode)
 import { getTheme, SPACING } from './theme';
 
-// Import Komponen UI Bersih & Modular
+// Import Komponen UI Modular
 import Header from './components/Header';
 import ProfileHeader from './components/ProfileHeader';
 import MetricBar from './components/MetricBar';
+import MyScoreSection from './components/MyScoreSection';
 import InteractiveEndorseBar from './components/InteractiveEndorseBar';
 import PortfolioGallery from './components/PortfolioGallery';
 import ExperienceTimeline from './components/ExperienceTimeline';
@@ -29,14 +31,14 @@ import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
 import ContactForm from './components/ContactForm';
-import Level7CriteriaCard from './components/Level7CriteriaCard';
+import Level8CriteriaCard from './components/Level8CriteriaCard';
 
 export default function App() {
-  // 1. State Tema Gelap / Terang (Theme Switcher - Level 7)
+  // 1. State Tema Gelap / Terang (Theme Switcher)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = getTheme(isDarkMode);
 
-  // 2. State untuk interaksi pesan kontak
+  // 2. State untuk interaksi formulir kontak
   const [messagesReceivedCount, setMessagesReceivedCount] = useState(0);
 
   const handleMessageSent = () => {
@@ -48,12 +50,15 @@ export default function App() {
   };
 
   const handleShowValidation = () => {
-    const info = `LEVEL 7 — ADVANCED EVALUATION:\n\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Mode Tema: ${isDarkMode ? 'Dark Mode (Mode Gelap)' : 'Light Mode (Mode Terang)'}\n• Fitur Eksplorasi 1: Portfolio Gallery dengan Real-Time Search & Category Filter\n• Fitur Eksplorasi 2: Interactive Modal Popup Rincian Proyek\n• Fitur Eksplorasi 3: Experience Timeline Organisasi & Riset\n• Fitur Eksplorasi 4: Hobby & Personal Interests Section dari JSON\n• Fitur Eksplorasi 5: Dual-Theme Switcher (Dark/Light)\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
+    const { studentIdentity, currentScore, learningPoints, learningProgress } = academicScoreData;
+    const progressSummary = learningProgress.map((p) => `• ${p.name}: ${p.percentage}%`).join('\n');
+
+    const info = `LEVEL 8 — EXPERT EVALUATION:\n\n• Mahasiswa: ${studentIdentity.name} (${studentIdentity.nim})\n• Mata Kuliah: ${studentIdentity.course}\n• Dosen Pengampu: ${studentIdentity.lecturer}\n• Current Score: ${currentScore.score} (Grade ${currentScore.grade})\n• Learning Points: ${learningPoints.total.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary}\n• Status: Data akademik terpisah di data/academicScore.json & terintegrasi penuh`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 7', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 8 (Expert)', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -83,7 +88,7 @@ export default function App() {
             },
           ]}
         >
-          {/* Header Institusi, Badge Level 7, & Theme Switcher Button */}
+          {/* Header Institusi, Badge Level 8, & Theme Switcher Button */}
           <Header
             isDarkMode={isDarkMode}
             onToggleTheme={handleToggleTheme}
@@ -95,7 +100,7 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU IDENTITAS UTAMA (Digital Student Card) */}
+            {/* 1. KARTU IDENTITAS MAHASISWA (Digital Student Card) */}
             <ProfileHeader data={profileData} theme={theme} />
 
             {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Endorse Mahasiswa) */}
@@ -105,59 +110,62 @@ export default function App() {
               theme={theme}
             />
 
-            {/* 3. BAR STATISTIK METRIK AKADEMIK */}
+            {/* 3. BAR STATISTIK METRIK AKADEMIK UMUM */}
             <MetricBar metrics={profileData.academicMetrics} theme={theme} />
 
-            {/* 4. CHECKLIST EVALUASI LEVEL 7 (Advanced Features Verification) */}
-            <Level7CriteriaCard
+            {/* 4. DASHBOARD CAPAIAN AKADEMIK (MY SCORE SECTION - Materi Level 8 Expert) */}
+            <MyScoreSection data={academicScoreData} theme={theme} />
+
+            {/* 5. CHECKLIST EVALUASI LEVEL 8 (Academic Dashboard Verification) */}
+            <Level8CriteriaCard
               onShowDetail={handleShowValidation}
               theme={theme}
             />
 
-            {/* 5. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL DETAIL (Eksplorasi Level 7) */}
+            {/* 6. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL DETAIL */}
             <PortfolioGallery
               portfolios={profileData.portfolios}
               theme={theme}
             />
 
-            {/* 6. PENGALAMAN ORGANISASI & RISET TIMELINE (Eksplorasi Level 7) */}
+            {/* 7. PENGALAMAN ORGANISASI & RISET TIMELINE */}
             <ExperienceTimeline
               experiences={profileData.experience}
               theme={theme}
             />
 
-            {/* 7. MINAT & HOBI PRIBADI (Eksplorasi Level 7) */}
+            {/* 8. MINAT & HOBI PRIBADI */}
             <HobbySection
               hobbies={profileData.hobbies}
               theme={theme}
             />
 
-            {/* 8. SEKSI TENTANG SAYA & SPESIALISASI MINAT */}
+            {/* 9. SEKSI TENTANG SAYA & SPESIALISASI MINAT */}
             <AboutSection data={profileData} theme={theme} />
 
-            {/* 9. KEAHLIAN TEKNIS DENGAN FILTER TABS & PROGRESS BAR */}
+            {/* 10. KEAHLIAN TEKNIS DENGAN FILTER TABS & PROGRESS BAR */}
             <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
 
-            {/* 10. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
+            {/* 11. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
             <IdentityDetailCard data={profileData} theme={theme} />
 
-            {/* 11. GRID KONTAK & KOMUNIKASI */}
+            {/* 12. GRID KONTAK & KOMUNIKASI */}
             <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
 
-            {/* 12. FORMULIR KONTAK INTERAKTIF DENGAN VALIDASI & RESPONS */}
+            {/* 13. FORMULIR KONTAK INTERAKTIF DENGAN VALIDASI & RESPONS */}
             <ContactForm
               data={profileData}
               onMessageSent={handleMessageSent}
               theme={theme}
             />
 
-            {/* 13. FOOTER INFORMASI UTS */}
+            {/* 14. FOOTER INFORMASI UTS */}
             <View style={[styles.footer, { borderTopColor: theme.border }]}>
               <Text style={[styles.footerText, { color: theme.textSecondary }]}>
-                UTS Pemrograman Mobile • Masoem University
+                UTS Pemrograman Mobile 2 • Masoem University
               </Text>
               <Text style={[styles.footerSubtext, { color: theme.textMuted }]}>
-                Personal CV & Academic Score App — LEVEL 7 (Advanced)
+                Personal CV & Academic Score App — LEVEL 8 (Expert)
               </Text>
               <Text style={[styles.copyrightText, { color: theme.textLight }]}>
                 © 2026 {profileData.nama} ({profileData.nim})

@@ -1,0 +1,67 @@
+{
+  "studentIdentity": {
+    "name": "Febrian",
+    "fullName": "Febrian Iradatul Rahman",
+    "nim": "242505024",
+    "course": "Pemrograman Mobile 2",
+    "courseCode": "SI-MBL202",
+    "lecturer": "Iin, M.Kom",
+    "semester": 5,
+    "academicYear": "2024/2025 Gasal",
+    "university": "Masoem University"
+  },
+  "currentScore": {
+    "score": 90,
+    "grade": "A",
+    "status": "Sangat Memuaskan",
+    "description": "Capaian akademik istimewa pada mata kuliah Pemrograman Mobile 2 dengan penguasaan konsep React Native, State, Props, dan integrasi JSON."
+  },
+  "learningPoints": {
+    "total": 19000,
+    "unit": "LP",
+    "rank": "Top Tier Scholar",
+    "badgeTitle": "Elite Mobile Developer"
+  },
+  "learningProgress": [
+    {
+      "id": "prog-attendance",
+      "name": "Attendance",
+      "label": "Kehadiran Kuliah",
+      "percentage": 100,
+      "icon": "calendar-outline",
+      "color": "#16A34A",
+      "bgColor": "#DCFCE7",
+      "details": "14 dari 14 pertemuan (Hadir 100%)"
+    },
+    {
+      "id": "prog-practice",
+      "name": "Practice",
+      "label": "Praktikum Coding",
+      "percentage": 95,
+      "icon": "code-slash-outline",
+      "color": "#2563EB",
+      "bgColor": "#EFF6FF",
+      "details": "19 dari 20 modul hands-on selesai"
+    },
+    {
+      "id": "prog-quest",
+      "name": "Quest",
+      "label": "Tugas Mandiri & Kuis",
+      "percentage": 100,
+      "icon": "trophy-outline",
+      "color": "#7C3AED",
+      "bgColor": "#F5F3FF",
+      "details": "Seluruh evaluasi modul nilai maksimal"
+    },
+    {
+      "id": "prog-challenge",
+      "name": "Challenge",
+      "label": "Challenge UTS (Level 1-8)",
+      "percentage": 100,
+      "icon": "flame-outline",
+      "color": "#D97706",
+      "bgColor": "#FFFBEB",
+      "details": "Penyelesaian penuh jenjang Novice s.d. Expert"
+    }
+  ]
+}

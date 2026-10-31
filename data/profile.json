@@ -25,17 +25,62 @@
     "motto": "“Mengubah tantangan proses bisnis menjadi aplikasi digital yang bernilai nyata.”"
   },
   "academicMetrics": [
-    { "label": "Semester", "value": "05", "unit": "Reguler", "icon": "calendar-outline" },
-    { "label": "IPK Kumulatif", "value": "3.84", "unit": "Skala 4.00", "icon": "ribbon-outline" },
-    { "label": "SKS Selesai", "value": "92", "unit": "SKS Tempuh", "icon": "school-outline" },
-    { "label": "Status Kuliah", "value": "Aktif", "unit": "2024 - Skrg", "icon": "checkmark-circle-outline" }
+    {
+      "label": "Semester",
+      "value": "05",
+      "unit": "Reguler",
+      "icon": "calendar-outline"
+    },
+    {
+      "label": "IPK Kumulatif",
+      "value": "3.84",
+      "unit": "Skala 4.00",
+      "icon": "ribbon-outline"
+    },
+    {
+      "label": "SKS Selesai",
+      "value": "92",
+      "unit": "SKS Tempuh",
+      "icon": "school-outline"
+    },
+    {
+      "label": "Status Kuliah",
+      "value": "Aktif",
+      "unit": "2024 - Skrg",
+      "icon": "checkmark-circle-outline"
+    }
   ],
   "technicalSkills": [
-    { "name": "React Native & Expo", "level": "Intermediate", "percentage": 85, "color": "#2563EB" },
-    { "name": "JavaScript (ES6+) & JSX", "level": "Advanced", "percentage": 88, "color": "#D97706" },
-    { "name": "Systems Analysis (UML/DFD)", "level": "Advanced", "percentage": 90, "color": "#059669" },
-    { "name": "UI/UX Design (Figma)", "level": "Intermediate", "percentage": 80, "color": "#7C3AED" },
-    { "name": "Database & SQL (MySQL)", "level": "Intermediate", "percentage": 82, "color": "#0284C7" }
+    {
+      "name": "React Native & Expo",
+      "level": "Intermediate",
+      "percentage": 85,
+      "color": "#2563EB"
+    },
+    {
+      "name": "JavaScript (ES6+) & JSX",
+      "level": "Advanced",
+      "percentage": 88,
+      "color": "#D97706"
+    },
+    {
+      "name": "Systems Analysis (UML/DFD)",
+      "level": "Advanced",
+      "percentage": 90,
+      "color": "#059669"
+    },
+    {
+      "name": "UI/UX Design (Figma)",
+      "level": "Intermediate",
+      "percentage": 80,
+      "color": "#7C3AED"
+    },
+    {
+      "name": "Database & SQL (MySQL)",
+      "level": "Intermediate",
+      "percentage": 82,
+      "color": "#0284C7"
+    }
   ],
   "fieldsOfInterest": [
     {
@@ -46,7 +91,12 @@
       "accentColor": "#2563EB",
       "bgColor": "#EFF6FF",
       "description": "Pengembangan aplikasi mobile lintas platform (Android & iOS) dengan React Native, Expo, dan integrasi RESTful API.",
-      "tags": ["React Native", "Expo", "JavaScript (ES6+)", "Mobile UI"]
+      "tags": [
+        "React Native",
+        "Expo",
+        "JavaScript (ES6+)",
+        "Mobile UI"
+      ]
     },
     {
       "id": "interest-2",
@@ -56,7 +106,12 @@
       "accentColor": "#059669",
       "bgColor": "#ECFDF5",
       "description": "Analisis kebutuhan pengguna, pemodelan proses bisnis, pembuatan diagram alir sistem (DFD, UML Use Case, ERD), dan penyusunan SRS.",
-      "tags": ["UML", "DFD", "BPMN", "Business Requirements"]
+      "tags": [
+        "UML",
+        "DFD",
+        "BPMN",
+        "Business Requirements"
+      ]
     },
     {
       "id": "interest-3",
@@ -66,7 +121,12 @@
       "accentColor": "#7C3AED",
       "bgColor": "#F5F3FF",
       "description": "Perancangan wireframe interaktif, user flow, dan desain antarmuka aplikasi yang ergonomis serta mengutamakan user experience.",
-      "tags": ["Figma", "Design System", "Wireframing", "User Research"]
+      "tags": [
+        "Figma",
+        "Design System",
+        "Wireframing",
+        "User Research"
+      ]
     },
     {
       "id": "interest-4",
@@ -76,7 +136,12 @@
       "accentColor": "#D97706",
       "bgColor": "#FFFBEB",
       "description": "Perancangan relasional basis data, normalisasi data, query SQL teroptimasi, dan integritas data untuk sistem enterprise.",
-      "tags": ["MySQL", "PostgreSQL", "ERD Modeling", "Data Flow"]
+      "tags": [
+        "MySQL",
+        "PostgreSQL",
+        "ERD Modeling",
+        "Data Flow"
+      ]
     }
   ],
   "portfolios": [
@@ -90,7 +155,13 @@
       "accentColor": "#2563EB",
       "shortDesc": "Aplikasi digital identitas mahasiswa, portofolio interaktif, dan capaian akademik berbasis React Native & Expo.",
       "fullDesc": "Aplikasi komprehensif yang dirancang sebagai identitas digital mahasiswa Masoem University. Memadukan modular architecture, visual progress bars, validasi formulir kontak interaktif, integrasi data JSON lokal, dan fitur pengubah tema gelap/terang.",
-      "technologies": ["React Native", "Expo SDK", "JavaScript ES6+", "Flexbox", "Local JSON"],
+      "technologies": [
+        "React Native",
+        "Expo SDK",
+        "JavaScript ES6+",
+        "Flexbox",
+        "Local JSON"
+      ],
       "features": [
         "Pemisahan data murni melalui profile.json",
         "Formulir kontak interaktif dengan validasi real-time",
@@ -108,7 +179,13 @@
       "accentColor": "#059669",
       "shortDesc": "Analisis dan rancang bangun sistem informasi manajemen nilai, KRS, dan absensi mahasiswa.",
       "fullDesc": "Proyek perancangan sistem informasi akademik untuk otomatisasi proses pengisian KRS dan rekapitulasi nilai. Dilengkapi diagram UML lengkap (Use Case, Activity, Sequence) dan skema ERD basis data terenkripsi.",
-      "technologies": ["Systems Analysis", "UML", "BPMN", "MySQL", "Figma"],
+      "technologies": [
+        "Systems Analysis",
+        "UML",
+        "BPMN",
+        "MySQL",
+        "Figma"
+      ],
       "features": [
         "Dokumentasi Software Requirements Specification (SRS)",
         "Pemodelan DFD Level 0 s.d. Level 2",
@@ -126,7 +203,12 @@
       "accentColor": "#7C3AED",
       "shortDesc": "Desain antarmuka mobile modern untuk portal terintegrasi mahasiswa dan kegiatan kampus.",
       "fullDesc": "Riset pengalaman pengguna (UX research) dan perancangan antarmuka mobile beresolusi tinggi (High-Fidelity) di Figma. Menerapkan Human Interface Guidelines dan Material Design 3 dengan komponen auto-layout.",
-      "technologies": ["Figma", "User Journey", "Wireframing", "Design System"],
+      "technologies": [
+        "Figma",
+        "User Journey",
+        "Wireframing",
+        "Design System"
+      ],
       "features": [
         "Pembuatan 24+ layar aplikasi mobile interaktif",
         "Design System dengan 40+ varian reusable component",
@@ -144,7 +226,12 @@
       "accentColor": "#D97706",
       "shortDesc": "Perancangan arsitektur basis data relasional untuk sistem pergudangan dan pencatatan stok barang.",
       "fullDesc": "Implementasi basis data terdistribusi yang mengelola pencatatan stok masuk, stok keluar, purchase order, dan alert stok minimum menggunakan stored procedure dan database trigger.",
-      "technologies": ["MySQL", "Stored Procedure", "SQL Query Optimization", "ERD"],
+      "technologies": [
+        "MySQL",
+        "Stored Procedure",
+        "SQL Query Optimization",
+        "ERD"
+      ],
       "features": [
         "Penerapan Indexing untuk percepatan query transaksi besar",
         "Otomatisasi trigger audit log histori mutasi barang",
@@ -311,5 +398,72 @@
       "bgColor": "#F5F3FF"
     }
   ],
-  "initialEndorseCount": 48
+  "initialEndorseCount": 48,
+  "academicScore": {
+    "studentIdentity": {
+      "name": "Febrian",
+      "fullName": "Febrian Iradatul Rahman",
+      "nim": "242505024",
+      "course": "Pemrograman Mobile 2",
+      "courseCode": "SI-MBL202",
+      "lecturer": "Iin, M.Kom",
+      "semester": 5,
+      "academicYear": "2024/2025 Gasal",
+      "university": "Masoem University"
+    },
+    "currentScore": {
+      "score": 90,
+      "grade": "A",
+      "status": "Sangat Memuaskan",
+      "description": "Capaian akademik istimewa pada mata kuliah Pemrograman Mobile 2 dengan penguasaan konsep React Native, State, Props, dan integrasi JSON."
+    },
+    "learningPoints": {
+      "total": 19000,
+      "unit": "LP",
+      "rank": "Top Tier Scholar",
+      "badgeTitle": "Elite Mobile Developer"
+    },
+    "learningProgress": [
+      {
+        "id": "prog-attendance",
+        "name": "Attendance",
+        "label": "Kehadiran Kuliah",
+        "percentage": 100,
+        "icon": "calendar-outline",
+        "color": "#16A34A",
+        "bgColor": "#DCFCE7",
+        "details": "14 dari 14 pertemuan (Hadir 100%)"
+      },
+      {
+        "id": "prog-practice",
+        "name": "Practice",
+        "label": "Praktikum Coding",
+        "percentage": 95,
+        "icon": "code-slash-outline",
+        "color": "#2563EB",
+        "bgColor": "#EFF6FF",
+        "details": "19 dari 20 modul hands-on selesai"
+      },
+      {
+        "id": "prog-quest",
+        "name": "Quest",
+        "label": "Tugas Mandiri & Kuis",
+        "percentage": 100,
+        "icon": "trophy-outline",
+        "color": "#7C3AED",
+        "bgColor": "#F5F3FF",
+        "details": "Seluruh evaluasi modul nilai maksimal"
+      },
+      {
+        "id": "prog-challenge",
+        "name": "Challenge",
+        "label": "Challenge UTS (Level 1-8)",
+        "percentage": 100,
+        "icon": "flame-outline",
+        "color": "#D97706",
+        "bgColor": "#FFFBEB",
+        "details": "Penyelesaian penuh jenjang Novice s.d. Expert"
+      }
+    ]
+  }
 }

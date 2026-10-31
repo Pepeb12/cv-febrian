@@ -4,8 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { SPACING, SHADOWS } from '../theme';
 
 /**
- * Header Component (Level 7: Theme Switcher & Institutional Identity)
- * Menampilkan nama kampus, judul aplikasi, badge level 7, dan tombol pengubah tema.
+ * Header Component (Level 8: Expert Academic Dashboard & Theme Switcher)
+ * Menampilkan nama kampus, judul aplikasi, badge Level 8, dan tombol pengubah tema.
  */
 export default function Header({ isDarkMode, onToggleTheme, theme }) {
   const currentTheme = theme || {};
@@ -34,13 +34,13 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
             MASOEM UNIVERSITY
           </Text>
           <Text style={[styles.appTitle, { color: currentTheme.textPrimary || '#0F172A' }]}>
-            Personal CV & Portfolio
+            CV & Academic Score
           </Text>
         </View>
       </View>
 
       <View style={styles.headerRight}>
-        {/* TOMBOL PENGUBAH TEMA (THEME SWITCHER - Materi Level 7) */}
+        {/* TOMBOL PENGUBAH TEMA (Dark/Light Switcher) */}
         <TouchableOpacity
           style={[
             styles.themeButton,
@@ -59,23 +59,23 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
           />
         </TouchableOpacity>
 
-        {/* Badge Level 7 */}
+        {/* Badge Level 8 (Expert) */}
         <View
           style={[
             styles.badgeLevel,
             {
-              backgroundColor: isDarkMode ? '#1E293B' : '#FEF3C7',
-              borderColor: isDarkMode ? '#475569' : '#FDE68A',
+              backgroundColor: isDarkMode ? '#064E3B' : '#DCFCE7',
+              borderColor: isDarkMode ? '#059669' : '#86EFAC',
             },
           ]}
         >
           <Text
             style={[
               styles.badgeText,
-              { color: isDarkMode ? '#38BDF8' : '#B45309' },
+              { color: isDarkMode ? '#4ADE80' : '#15803D' },
             ]}
           >
-            LEVEL 7
+            LEVEL 8
           </Text>
         </View>
       </View>
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: '900',
+    letterSpacing: 0.5,
   },
 });

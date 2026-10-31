@@ -1,6 +1,6 @@
 # Personal CV & Academic Score App — UTS Pemrograman Mobile
 
-Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan personal branding, identitas diri, portofolio, dan capaian akademik berbasis **React Native** dan **Expo**.
+Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan personal branding, identitas diri, portofolio interaktif, dan capaian akademik berbasis **React Native** dan **Expo**.
 
 ---
 
@@ -13,12 +13,14 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 | **Program Studi** | Sistem Informasi |
 | **Semester** | 5 |
 | **Perguruan Tinggi** | Masoem University |
+| **Mata Kuliah UTS** | **Pemrograman Mobile 2** |
+| **Dosen Pengampu** | **Iin, M.Kom** |
 | **Profesi / Minat Utama** | **Junior Systems Analyst & Mobile App Developer** |
 | **Alamat** | Kp Babakan Stasiun Cicalengka, Kec. Cicalengka, Kab. Bandung |
 
 ---
 
-## 🎯 Evaluasi Challenge Level (Lengkap Level 1 s.d. Level 7)
+## 🎯 Evaluasi Challenge Level (Lengkap Level 1 s.d. Level 8)
 
 ### LEVEL 1 — NOVICE (Status: ✅ Selesai)
 - [x] **NIM Mahasiswa**: Ditampilkan jelas dengan badge khusus (`242505024`).
@@ -75,52 +77,68 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 - [x] **Materi Utama: Pemisahan Data, Struktur JSON, dan Rendering Data**.
 
 ### LEVEL 7 — ADVANCED (Status: ✅ Selesai)
-- [x] **Seluruh Persyaratan Level 6**: Dipertahankan secara menyeluruh.
-- [x] **Galeri Portofolio Proyek Interaktif (Portfolio Gallery)**:
-  - Menampilkan 4 portofolio riil mahasiswa sistem informasi (*Personal CV App*, *SIMAK Masoem*, *Mobile Student Hub UI/UX*, *Inventory Logistics Database*).
-- [x] **Pencarian Real-Time & Filter Kategori Proyek**:
-  - `TextInput` pencarian kata kunci langsung memfilter kartu proyek secara instan.
-  - Filter chips kategori (*Semua, Mobile App, Web System, UI/UX Design, Database*).
-- [x] **Eksplorasi Komponen Modal React Native**:
-  - Dialog pop-up rincian proyek menggunakan komponen native `<Modal />` dengan animasi `slide`, backdrop transparan, rincian arsitektur software, dan daftar fitur utama.
-- [x] **Fitur Theme Switcher (Dark Mode / Light Mode)**:
-  - Tombol pengubah tema di header dengan transisi warna instan (latar belakang, kartu, teks, dan status bar).
-- [x] **Experience Timeline (Organisasi & Kepemimpinan)**:
-  - Menampilkan riwayat keaktifan di HIMASI Masoem University dan riset akademik dalam bentuk timeline vertikal berikon.
-- [x] **Hobby & Personal Interests Section**:
-  - Seksi hobi mahasiswa IT (Mobile App Tinkering, Tech Gadget, Chess, Photography) yang dimuat dinamis dari data JSON.
-- [x] **Materi Utama: Dynamic Content & React Native Exploration**.
+- [x] **Galeri Portofolio Proyek Dinamis**:
+  - 4 portofolio riil dengan pencarian real-time dan filter kategori.
+- [x] **Eksplorasi Komponen Native `<Modal />`**:
+  - Dialog pop-up interaktif untuk melihat rincian software architecture & features.
+- [x] **Dual-Theme Switcher (Dark & Light Mode)**:
+  - Tombol pengubah tema di Header dengan transisi warna menyeluruh secara dinamis.
+- [x] **Timeline Pengalaman Organisasi & Seksi Hobi**:
+  - Riwayat keaktifan di HIMASI Masoem University dan seksi hobi dari JSON.
+
+### LEVEL 8 — EXPERT (Status: ✅ Selesai)
+- [x] **Seluruh Persyaratan Level 7**: Dipertahankan secara menyeluruh.
+- [x] **Section My Score Terintegrasi Penuh ke Aplikasi**:
+  - Dashboard visual capaian akademik Pemrograman Mobile 2 Masoem University.
+- [x] **Struktur Data Terpisah (`data/academicScore.json`)**:
+  - Data nilai dan indikator disimpan terisolasi dalam format JSON murni.
+- [x] **Identitas Akademik Lengkap**:
+  - Nama: **Febrian**, NIM: **242505024**, MK: **Pemrograman Mobile 2**, Dosen: **Iin, M.Kom**.
+- [x] **Current Score Menonjol & Jelas**:
+  - Nilai: **90 / 100**, Grade: **A**, Status: **Sangat Memuaskan**.
+- [x] **Learning Points Tampil Jelas**:
+  - Total: **19,000 LP**, Predikat: **Top Tier Scholar**.
+- [x] **Indikator Capaian Belajar (Learning Progress) Dinamis**:
+  - **Attendance**: **100%** (14 dari 14 pertemuan)
+  - **Practice**: **95%** (19 dari 20 modul hands-on coding)
+  - **Quest**: **100%** (Tugas mandiri & kuis tuntas)
+  - **Challenge**: **100%** (Challenge UTS Level 1 - Level 8 tuntas)
+- [x] **Komponen Reusable Berbasis Props**:
+  - `<MyScoreSection data={academicScoreData} theme={theme} />` merender seluruh list dan progress bar dinamis.
+- [x] **Materi Utama: Props, Component, JSON, List Data, dan Layout**.
 
 ---
 
-## 📁 Struktur Proyek (Level 7 Architecture)
+## 📁 Struktur Proyek (Level 8 Expert Architecture)
 
 ```text
 ├── assets/
 │   └── profile.png                 # Foto profil formal Febrian Iradatul Rahman
 ├── components/
-│   ├── Header.js                   # Header institusi, Level 7 Badge, & Theme Toggle Button
-│   ├── ProfileHeader.js            # Komponen Header Profil: <ProfileHeader data={profileData} />
+│   ├── Header.js                   # Header institusi, Level 8 Badge, & Theme Toggle
+│   ├── ProfileHeader.js            # Header Profil: <ProfileHeader data={profileData} />
 │   ├── ProfileCard.js              # Kartu identitas adaptif tema
-│   ├── PortfolioGallery.js         # [Level 7] Galeri proyek: Search, Filter, & Native Modal
-│   ├── ExperienceTimeline.js       # [Level 7] Timeline riwayat organisasi & riset kampus
-│   ├── HobbySection.js             # [Level 7] Seksi hobi & minat personal dari JSON
+│   ├── MyScoreSection.js           # [Level 8] Dashboard Capaian Akademik (Score, LP, Progress)
+│   ├── PortfolioGallery.js         # Galeri portofolio: Search, Filter, & Native Modal
+│   ├── ExperienceTimeline.js       # Timeline organisasi & riset kampus
+│   ├── HobbySection.js             # Seksi hobi & minat personal dari JSON
 │   ├── AboutSection.js             # Komponen Tentang & Minat adaptif tema
 │   ├── ContactForm.js              # Komponen Form Kontak adaptif tema
 │   ├── ContactFormCard.js          # Logika form kontak, input state, dan validasi
 │   ├── InteractiveEndorseBar.js    # Tombol rekomendasi/endorse
-│   ├── MetricBar.js                # Bar statistik metrik akademik
+│   ├── MetricBar.js                # Bar statistik metrik akademik umum
 │   ├── SectionHeading.js           # Reusable heading hierarkis adaptif tema
 │   ├── SkillMatrixCard.js          # Progress bar keahlian dengan filter tabs
 │   ├── IdentityDetailCard.js       # Timeline riwayat pendidikan & domisili alamat
 │   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif
-│   └── Level7CriteriaCard.js       # Checklist evaluasi kriteria Level 7
+│   └── Level8CriteriaCard.js       # Checklist evaluasi kriteria Level 8
 ├── data/
+│   ├── academicScore.json          # [Level 8] Data akademik murni: MK, Dosen, Nilai, LP, Progress
 │   ├── profile.json                # Data lokal murni: profil, portofolio, hobi, & pengalaman
 │   └── profileData.js              # Bridge re-exporting data JSON
 ├── theme/
-│   └── index.js                    # Dual-theme tokens (LIGHT_THEME & DARK_THEME, getTheme)
-├── App.js                          # Root component: Theme Switcher & Level 7 state management
+│   └── index.js                    # Dual-theme tokens (LIGHT_THEME, DARK_THEME, getTheme)
+├── App.js                          # Root component: Dashboard My Score & Theme Switcher
 ├── app.json                        # Konfigurasi aplikasi Expo
 └── package.json                    # Dependensi Expo & React Native Web
 ```
@@ -150,18 +168,18 @@ Aplikasi mendukung tampilan ganda (**Web & Android**):
 
 ---
 
-## 💡 Panduan Menjelaskan Materi Level 7 ke Dosen Penguji
+## 💡 Panduan Menjelaskan Materi Level 8 (My Score & Academic Dashboard) ke Dosen Penguji
 
-Jika dosen menanyakan fitur eksplorasi mandiri **Level 7 (Dynamic Content & React Native Exploration)**:
+Jika dosen menanyakan implementasi **Level 8 — Expert (My Score & Academic Dashboard)**:
 
-1. **Eksplorasi Komponen Modal Native React Native (`PortfolioGallery.js`)**:
-   > *"Untuk menampilkan rincian proyek secara mendalam tanpa berpindah layar navigasi, saya mengeksplorasi komponen bawaan `<Modal />` dari React Native. Ketika tombol 'Lihat Detail' ditekan, state `activeProject` diisi dengan objek proyek yang dipilih, lalu Modal muncul dengan animasi halus `animationType="slide"` dan latar transparan."*
+1. **Pemisahan Data Akademik (`data/academicScore.json`)**:
+   > *"Sesuai dengan instruksi Level 8, data capaian akademik disimpan dalam berkas terpisah `data/academicScore.json`. Berkas ini memuat identitas mata kuliah (Pemrograman Mobile 2), dosen pengampu (Iin, M.Kom), identitas mahasiswa (Febrian, NIM 242505024), Current Score (90, Grade A), Total Learning Points (19,000 LP), serta array list capaian belajar (Attendance 100%, Practice 95%, Quest 100%, Challenge 100%)."*
 
-2. **Pencarian Real-Time dan Multi-Filtering**:
-   > *"Pada `PortfolioGallery.js`, saya menggabungkan state `searchQuery` dan `selectedCategory`. Fungsi filter membandingkan query teks dengan judul, deskripsi, serta array teknologi (`proj.technologies.some(...)`), sehingga pengguna dapat mencari proyek berdasarkan keyword teknologi seperti 'React', 'Figma', atau 'MySQL' secara instan."*
+2. **Arsitektur Komponen Reusable (`MyScoreSection.js`)**:
+   > *"Komponen `MyScoreSection.js` menerima data melalui prop `data` dari berkas `academicScore.json`. Komponen ini murni mengandalkan data props sehingga bila semester depan nilai diubah atau mata kuliah diganti, tampilan antarmuka akan langsung menyesuaikan secara otomatis."*
 
-3. **Eksplorasi Theme Switcher (Dark Mode / Light Mode)**:
-   > *"Pada `theme/index.js`, saya membuat arsitektur dual-theme: `LIGHT_THEME` dan `DARK_THEME` dengan fungsi `getTheme(isDark)`. State `isDarkMode` dikelola di root `App.js` dan dapat diubah melalui tombol toggle bulan/matahari di header. Saat tema berganti, seluruh komponen, kartu, teks, border, serta `<StatusBar />` berubah warna secara dinamis."*
+3. **Visibilitas Current Score & Learning Points**:
+   > *"Untuk memastikan nilai utama mudah dilihat sesuai ketentuan UI, saya merancang kartu grid 2 kolom dengan tipografi tegas: angka nilai raksasa `90/100` berbingkai hijau dengan badge `Grade A`, bersanding dengan kartu `19,000 LP` berhiaskan ikon piala dan gelar `Top Tier Scholar`."*
 
-4. **Timeline Pengalaman Organisasi & Seksi Hobi**:
-   > *"Saya menambahkan data pengalaman organisasi mahasiswa (HIMASI Masoem University) dan seksi hobi di `data/profile.json`. Data ini dirender secara dinamis menggunakan komponen terisolasi `ExperienceTimeline.js` dan `HobbySection.js` dengan visual bullet node dan palet warna representatif."*
+4. **Rendering Dinamis Indikator Belajar (List Data & Progress Bar)**:
+   > *"Keempat indikator capaian belajar dirender menggunakan fungsi array mapping (`data.learningProgress.map(...)`). Setiap kartu indikator menampilkan nama komponen, persentase nilai tebal, dan visualisasi bar horizontal menggunakan Flexbox (`width: `${item.percentage}%``) dengan kode warna tematik."*
