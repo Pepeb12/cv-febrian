@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,22 +13,31 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
 import MetricBar from './components/MetricBar';
+import InteractiveEndorseBar from './components/InteractiveEndorseBar';
 import PersonalIntroCard from './components/PersonalIntroCard';
 import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
-import Level3CriteriaCard from './components/Level3CriteriaCard';
+import ContactFormCard from './components/ContactFormCard';
+import Level4CriteriaCard from './components/Level4CriteriaCard';
 import { STUDENT_PROFILE } from './data/profileData';
 import { COLORS, SPACING } from './theme';
 
 export default function App() {
+  // State di level root (Materi P3 & P5: Props & State)
+  const [messagesReceivedCount, setMessagesReceivedCount] = useState(0);
+
+  const handleMessageSent = (payload) => {
+    setMessagesReceivedCount((prev) => prev + 1);
+  };
+
   const handleShowValidation = () => {
-    const info = `LEVEL 3 — ELEMENTARY EVALUATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Layout: Terstruktur dengan Flexbox & Design Tokens\n• Bagian: Profile, Metrics, Intro, Skills Matrix, Timeline, & Contact Grid\n• Responsivitas: Terbaca nyaman pada layar ponsel & browser tanpa terpotong.`;
+    const info = `LEVEL 4 — INTERMEDIATE EVALUATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Pengelolaan State: Form Kontak (nama, email, pesan), Filter Keahlian, & Counter Endorsement\n• Validasi Input: Validasi string kosong, panjang karakter, & format email regex\n• Respons UI: Kartu respon sukses pesan & notifikasi popup\n• Total Pesan Terkirim di Sesi Ini: ${messagesReceivedCount}`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 3', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 4', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -37,9 +46,9 @@ export default function App() {
       <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
         <StatusBar style="dark" backgroundColor="#FFFFFF" />
 
-        {/* Outer Container (Simulator Frame di Web & Full Screen di Android) */}
+        {/* Outer Container (Responsive Mobile Simulator Frame di Web & Full Screen di Android) */}
         <View style={styles.appContainer}>
-          {/* Header Institusi & Level 3 Badge */}
+          {/* Header Institusi & Level 4 Indicator */}
           <Header />
 
           <ScrollView
@@ -47,34 +56,46 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU IDENTITAS UTAMA (Digital Student Card) */}
+            {/* 1. KARTU PROFIL UTAMA (Digital Student Card) */}
             <ProfileCard profile={STUDENT_PROFILE} />
 
-            {/* 2. STATISTIK METRIK AKADEMIK (Materi P4: Flexbox Grid Row) */}
+            {/* 2. TOMBOL INTERAKSI DUKUNGAN / ENDORSE (Materi P3 & P5: State & Event Handling) */}
+            <InteractiveEndorseBar
+              studentName={STUDENT_PROFILE.shortName}
+              initialCount={48}
+            />
+
+            {/* 3. BAR STATISTIK METRIK AKADEMIK (Materi P4: Flexbox Grid) */}
             <MetricBar metrics={STUDENT_PROFILE.academicMetrics} />
 
-            {/* 3. CHECKLIST EVALUASI LEVEL 3 (Layout & Styling Verification) */}
-            <Level3CriteriaCard onShowDetail={handleShowValidation} />
+            {/* 4. CHECKLIST EVALUASI LEVEL 4 (Interactive CV Verification) */}
+            <Level4CriteriaCard onShowDetail={handleShowValidation} />
 
-            {/* 4. PERSONAL INTRODUCTION & BIDANG MINAT SPESIALISASI */}
+            {/* 5. FORMULIR KONTAK INTERAKTIF (Materi P5: TextInput, State, Validasi, & Respons) */}
+            <ContactFormCard
+              recipientName={STUDENT_PROFILE.fullName}
+              onMessageSent={handleMessageSent}
+            />
+
+            {/* 6. PERSONAL INTRODUCTION & SPESIALISASI MINAT */}
             <PersonalIntroCard profile={STUDENT_PROFILE} />
 
-            {/* 5. KEAHLIAN TEKNIS DENGAN VISUAL PROGRESS BARS (Materi P4) */}
+            {/* 7. KEAHLIAN TEKNIS DENGAN FILTER TABS INTERAKTIF (Materi P3, P4, & P5) */}
             <SkillMatrixCard skills={STUDENT_PROFILE.technicalSkills} />
 
-            {/* 6. RIWAYAT PENDIDIKAN (TIMELINE) & DOMISILI ALAMAT */}
+            {/* 8. RIWAYAT PENDIDIKAN (TIMELINE) & DOMISILI ALAMAT */}
             <IdentityDetailCard profile={STUDENT_PROFILE} />
 
-            {/* 7. GRID KONTAK & KOMUNIKASI (Materi P4: 2-Column Wrap Grid) */}
+            {/* 9. GRID KONTAK & KOMUNIKASI (Flexbox 2-Kolom) */}
             <ContactGridCard contactItems={STUDENT_PROFILE.contactItems} />
 
-            {/* 8. FOOTER INFORMASI UTS */}
+            {/* 10. FOOTER INFORMASI UTS */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>
                 UTS Pemrograman Mobile • Masoem University
               </Text>
               <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App — LEVEL 3 (Elementary)
+                Personal CV & Academic Score App — LEVEL 4 (Intermediate)
               </Text>
               <Text style={styles.copyrightText}>
                 © 2026 Febrian Iradatul Rahman ({STUDENT_PROFILE.nim})
@@ -96,7 +117,7 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     width: '100%',
-    maxWidth: 500, // Menjaga rasio smartphone pada layar browser desktop
+    maxWidth: 500, // Menjaga rasio tampilan mobile di layar Web desktop
     backgroundColor: COLORS.background,
     ...Platform.select({
       web: {

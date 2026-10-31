@@ -40,25 +40,44 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
   - ES6+ destructuring, array `.map()`, modular components.
 
 ### LEVEL 3 — ELEMENTARY (Status: ✅ Selesai)
-- [x] **Seluruh Persyaratan Level 2**: Dipertahankan dan ditingkatkan secara menyeluruh.
 - [x] **Layout Terstruktur & Visual Hierarchy**:
-  - Tampilan CV modern terbagi dalam 7 bagian terorganisasi:
-    1. *Header Kampus & Level Indicator*
-    2. *Digital Student Profile Card (Hero Section)*
-    3. *Academic Metrics Bar (4 Kolom Stat Card Flexbox)*
-    4. *Personal Introduction & 4 Spesialisasi Minat*
-    5. *Keahlian Teknis (Technical Skills) dengan Visual Progress Bar*
-    6. *Riwayat Pendidikan (Timeline Vertikal) & Alamat Domisili*
-    7. *Grid Kontak & Komunikasi (2-Kolom Flexbox Wrap)*
-- [x] **Pengaturan Tipografi, Warna, Jarak, & Ukuran Elemen (Design Tokens)**:
-  - Dibuat file terpusat `theme/index.js` yang mengatur palet warna (Masoem Deep Blue, Slate, Emerald), skala tipografi (H1, H2, H3, Body, Caption), ukuran jarak baku (SPACING), dan sistem bayangan (*Shadows*).
-- [x] **Pemanfaatan Flexbox & StyleSheet Murni**:
-  - Penerapan `flexDirection: 'row'`, `justifyContent: 'space-between'`, `alignItems: 'center'`, `flexWrap: 'wrap'`, dan visual progress bars.
-  - 100% kode styling menggunakan `StyleSheet.create` tanpa inline style yang berantakan.
-- [x] **Optimal & Nyaman Dibaca di Layar Ponsel**:
-  - Tidak ada teks yang terpotong tanpa sengaja, batas padding responsif, dan dukungan *mobile simulator frame* saat diakses melalui browser.
+  - Tampilan CV terbagi dalam seksi-seksi terorganisasi (Header, Digital Student Card, Academic Metrics, Intro, Skills Matrix, Timeline Pendidikan, Grid Kontak).
+- [x] **Design Tokens & Theme System**:
+  - Pengaturan palet warna kampus Masoem (`COLORS`), tipografi (`TYPOGRAPHY`), jarak (`SPACING`), dan bayangan (`SHADOWS`) terpusat di `theme/index.js`.
+- [x] **Flexbox & StyleSheet**:
+  - Flex direction, alignment, wrap, grid 2-kolom, dan visual progress bar.
 - [x] **Materi Utama: P4 — Layout dan Styling React Native**:
-  - Pemisahan token desain, flexbox container model, dan responsivitas lintas platform (Android & Web).
+  - Model box layout flexbox dan responsivitas layar ponsel tanpa teks terpotong.
+
+### LEVEL 4 — INTERMEDIATE (Status: ✅ Selesai)
+- [x] **Seluruh Persyaratan Level 3**: Dipertahankan secara menyeluruh.
+- [x] **Penggunaan Props**:
+  - Mengirimkan data profil, daftar keahlian, status tombol, dan callback event antar komponen (`ProfileCard`, `ContactFormCard`, `InteractiveEndorseBar`, `SkillMatrixCard`).
+- [x] **Penggunaan State (`useState`)**:
+  - State form input: `name`, `email`, `message`.
+  - State error validasi: `errors`.
+  - State respons pengiriman pesan: `submittedData`.
+  - State counter endorsement: `endorseCount`, `isEndorsed`.
+  - State filter kategori keahlian aktif: `selectedCategory`.
+- [x] **Tombol & Interaksi Sederhana**:
+  - Tombol interaktif *Endorse/Dukung Profil* dengan update counter otomatis.
+  - Filter tabs kategori keahlian (*Semua, Mobile, Systems, UI/UX, Database*).
+  - Tombol submit formulir dan tombol reset pesan.
+- [x] **Formulir Kontak (Nama, Email, Pesan)**:
+  - Dibangun dengan `TextInput`, label informatif, placeholder, dan indikator required field.
+- [x] **Event Handling**:
+  - `onChangeText` untuk update state input secara real-time.
+  - `onPress` untuk submit, reset, endorsement, dan pergantian filter.
+- [x] **Validasi Input Kosong & Format Email**:
+  - Pengecekan input kosong (`trim()`).
+  - Pengecekan batas minimal karakter (nama min 3 huruf, pesan min 5 huruf).
+  - Pengecekan format alamat email menggunakan RegEx (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`).
+  - Tampilan visual error border merah dan teks peringatan di bawah input.
+- [x] **Respons Setelah Formulir Diproses**:
+  - Kartu notifikasi sukses berwarna hijau dengan timestamp waktu pengiriman.
+  - Rincian ringkasan data yang baru saja dikirim (Nama, Email, Isi Pesan).
+  - Tombol untuk kembali mengirim pesan baru.
+- [x] **Materi Utama: P3 dan P5 — Props, State, Input Form, dan Event Handling**.
 
 ---
 
@@ -68,20 +87,22 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 ├── assets/
 │   └── profile.png                 # Foto profil formal Febrian Iradatul Rahman
 ├── components/
-│   ├── Header.js                   # Header institusi Masoem University & Level Badge
+│   ├── Header.js                   # Header institusi Masoem University & Level 4 Badge
 │   ├── ProfileCard.js              # Kartu identitas utama mahasiswa
-│   ├── MetricBar.js                # Bar statistik metrik akademik (Materi P4)
+│   ├── InteractiveEndorseBar.js    # Tombol rekomendasi/endorse berbasis State (Level 4)
+│   ├── MetricBar.js                # Bar statistik metrik akademik
 │   ├── SectionHeading.js           # Reusable heading hierarkis dengan ikon
+│   ├── ContactFormCard.js          # Formulir kontak: Input, Validasi, State, & Respons (Level 4)
 │   ├── PersonalIntroCard.js        # Personal introduction & 4 bidang minat
-│   ├── SkillMatrixCard.js          # Progress bar keahlian teknis (Materi P4)
+│   ├── SkillMatrixCard.js          # Progress bar keahlian dengan State Filter Tabs (Level 4)
 │   ├── IdentityDetailCard.js       # Timeline riwayat pendidikan & domisili alamat
-│   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif (Materi P4)
-│   └── Level3CriteriaCard.js       # Checklist evaluasi kriteria Level 3
+│   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif
+│   └── Level4CriteriaCard.js       # Checklist evaluasi kriteria Level 4
 ├── data/
 │   └── profileData.js              # Single source of truth data mahasiswa Febrian
 ├── theme/
 │   └── index.js                    # Design tokens: COLORS, SPACING, TYPOGRAPHY, SHADOWS
-├── App.js                          # Root component dengan Safe Area & responsive container
+├── App.js                          # Root component dengan Safe Area & State manajemen
 ├── app.json                        # Konfigurasi aplikasi Expo
 └── package.json                    # Dependensi Expo & React Native Web
 ```
@@ -104,26 +125,28 @@ Aplikasi mendukung tampilan ganda (**Web & Android**):
 3. **Melihat di HP Android**:
    - Hubungkan HP Android ke jaringan Wi-Fi yang sama dengan komputer.
    - Buka aplikasi **Expo Go** di HP Android.
-   - Pilih **Enter URL manually** dan masukkan IP lokal:
+   - Masukkan IP lokal:
      ```text
      exp://10.163.121.98:8081
      ```
-   - Atau scan QR code yang tertera pada terminal.
 
 ---
 
-## 💡 Panduan Menjelaskan Materi P4 ke Dosen Penguji
+## 💡 Panduan Menjelaskan Materi P3 & P5 ke Dosen Penguji
 
-Jika dosen menanyakan implementasi materi **P4 — Layout dan Styling React Native**:
+Jika dosen menanyakan korelasi kode dengan materi **P3 & P5 (Props, State, Input Form, Event Handling)**:
 
-1. **Design Tokens & Theme System (`theme/index.js`)**:
-   > *"Untuk menjamin konsistensi visual dan kemudahan pemeliharaan kode (maintainability), saya membuat sistem token desain di `theme/index.js` yang mencakup palet warna kampus `COLORS`, skala tipografi `TYPOGRAPHY`, spacing baku `SPACING`, serta elevasi bayangan `SHADOWS` untuk Android, iOS, dan Web."*
+1. **Penggunaan State (`useState`)**:
+   > *"Pada file `ContactFormCard.js`, saya menggunakan hook `useState` untuk mengelola input teks: `const [name, setName] = useState('')`, `const [email, setEmail] = useState('')`, dan `const [message, setMessage] = useState('')`. State ini menjamin input bersifat controlled component dan data terbarui secara reaktif."*
 
-2. **Pemanfaatan Flexbox**:
-   > *"Pada `MetricBar.js`, saya menggunakan `flexDirection: 'row'` dan `gap` untuk membagi metrik menjadi 4 kolom berukuran seimbang (`flex: 1`). Pada `ContactGridCard.js`, saya menerapkan `flexWrap: 'wrap'` dengan lebar elemen `48%` untuk membentuk grid 2 kolom yang otomatis menyesuaikan lebar layar."*
+2. **Penggunaan Props**:
+   > *"Komponen `ContactFormCard` menerima props `recipientName` dan callback function `onMessageSent`. Nilai props dikirimkan dari komponen induk `App.js` sehingga komponen form bersifat reusable dan data-driven."*
 
-3. **Komponen Visual Progress Bar (`SkillMatrixCard.js`)**:
-   > *"Untuk menampilkan persentase keahlian, saya mendesain relasi dua View menggunakan Flexbox: `progressTrack` sebagai lintasan abu-abu dengan `overflow: 'hidden'`, dan `progressFill` di dalamnya dengan lebar dinamis `{ width: `${skill.percentage}%` }`."*
+3. **Event Handling pada Form**:
+   > *"Event `onChangeText` pada `TextInput` secara real-time memperbarui nilai state dan menghapus pesan error saat pengguna mulai mengetik ulang. Sementara itu, event `onPress` pada tombol kirim memicu fungsi `handleSubmit` untuk menjalankan logika validasi."*
 
-4. **Pencegahan Teks Terpotong**:
-   > *"Semua teks utama memiliki toleransi padding dan `lineHeight` yang proporsional. Pada teks nilai kontak, saya menerapkan `numberOfLines={1}` dan `ellipsizeMode='tail'` sehingga jika nilai terlalu panjang pada ponsel berlayar sempit, teks tidak akan merusak layout kartu."*
+4. **Logika Validasi Input**:
+   > *"Fungsi `validateForm` memeriksa apakah ada input kosong menggunakan `.trim()`. Untuk email, saya menerapkan Regular Expression untuk memvalidasi format email yang benar. Jika ditemukan kesalahan, state `errors` akan diisi sehingga bingkai input berubah menjadi merah dan memunculkan label error."*
+
+5. **Tampilan Respons Formulir**:
+   > *"Setelah formulir lolos validasi, objek data pengirim disimpan ke dalam state `submittedData`. Menggunakan conditional rendering `{submittedData ? <SuccessView /> : <FormView />}`, aplikasi langsung mengganti formulir dengan kartu ringkasan pesan yang berhasil diproses."*

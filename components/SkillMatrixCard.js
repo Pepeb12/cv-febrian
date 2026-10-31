@@ -1,26 +1,74 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * SkillMatrixCard Component (Materi P4: Flexbox Styling & Progress Bars)
- * Menampilkan keahlian teknis dengan bar persentase visual yang rapi dan terukur.
+ * SkillMatrixCard Component (Level 3 & Level 4: Props, State & Filter Event Handling)
+ * Menampilkan keahlian teknis dengan filter interaktif berbasis State dan progress bar visual.
  */
 export default function SkillMatrixCard({ skills }) {
+  // State untuk filter kategori aktif (Materi P3 & P5)
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
+
+  const categories = [
+    { key: 'ALL', label: 'Semua' },
+    { key: 'MOBILE', label: 'Mobile App' },
+    { key: 'ANALYSIS', label: 'Systems' },
+    { key: 'DESIGN', label: 'UI/UX' },
+    { key: 'DATA', label: 'Database' },
+  ];
+
+  // Memfilter data berdasarkan State aktif
+  const filteredSkills = skills.filter((skill) => {
+    if (selectedCategory === 'ALL') return true;
+    if (selectedCategory === 'MOBILE') return skill.name.toLowerCase().includes('react') || skill.name.toLowerCase().includes('javascript');
+    if (selectedCategory === 'ANALYSIS') return skill.name.toLowerCase().includes('systems') || skill.name.toLowerCase().includes('analysis');
+    if (selectedCategory === 'DESIGN') return skill.name.toLowerCase().includes('ui') || skill.name.toLowerCase().includes('figma');
+    if (selectedCategory === 'DATA') return skill.name.toLowerCase().includes('database') || skill.name.toLowerCase().includes('sql');
+    return true;
+  });
+
   return (
     <View style={styles.card}>
       <SectionHeading
         title="Keahlian Teknis (Technical Skills)"
-        subtitle="Kompetensi Utama dalam Rekayasa Perangkat Lunak"
+        subtitle="Filter Interaktif Kompetensi Rekayasa Perangkat Lunak"
         icon="code-slash"
-        badgeText="Skills"
+        badgeText={`${filteredSkills.length} Skills`}
       />
 
+      {/* FILTER PILL TABS BERBASIS STATE (Materi P3 & P5) */}
+      <View style={styles.filterTabsRow}>
+        {categories.map((cat) => {
+          const isActive = selectedCategory === cat.key;
+          return (
+            <TouchableOpacity
+              key={cat.key}
+              style={[
+                styles.filterTab,
+                isActive ? styles.filterTabActive : null,
+              ]}
+              activeOpacity={0.7}
+              onPress={() => setSelectedCategory(cat.key)}
+            >
+              <Text
+                style={[
+                  styles.filterTabText,
+                  isActive ? styles.filterTabTextActive : null,
+                ]}
+              >
+                {cat.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      {/* DAFTAR SKILL SESUAI STATE FILTER */}
       <View style={styles.skillList}>
-        {skills.map((skill, index) => (
+        {filteredSkills.map((skill, index) => (
           <View key={index} style={styles.skillItem}>
-            {/* Top Row: Nama Skill & Label Level */}
             <View style={styles.skillHeader}>
               <Text style={styles.skillName}>{skill.name}</Text>
               <View style={styles.levelBadge}>
@@ -29,7 +77,7 @@ export default function SkillMatrixCard({ skills }) {
               </View>
             </View>
 
-            {/* Visual Progress Bar (Flexbox relative track & fill) */}
+            {/* Visual Progress Bar (Flexbox layout) */}
             <View style={styles.progressTrack}>
               <View
                 style={[
@@ -58,9 +106,36 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
+  filterTabsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: SPACING.md,
+    marginTop: 2,
+  },
+  filterTab: {
+    backgroundColor: COLORS.surfaceMuted,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  filterTabActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  filterTabText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: COLORS.textSecondary,
+  },
+  filterTabTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+  },
   skillList: {
     gap: SPACING.md,
-    marginTop: SPACING.xs,
   },
   skillItem: {
     gap: SPACING.xs,
@@ -101,4 +176,3 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
 });
-
