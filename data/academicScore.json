@@ -31,7 +31,7 @@
       "icon": "calendar-outline",
       "color": "#16A34A",
       "bgColor": "#DCFCE7",
-      "details": "14 dari 14 pertemuan (Hadir 100%)"
+      "details": "8 dari 8 pertemuan (Hadir 100%)"
     },
     {
       "id": "prog-practice",
@@ -56,7 +56,7 @@
     {
       "id": "prog-challenge",
       "name": "Challenge",
-      "label": "Challenge UTS (Level 1-8)",
+      "label": "Challenge UTS (Level 1-10)",
       "percentage": 100,
       "icon": "flame-outline",
       "color": "#D97706",
