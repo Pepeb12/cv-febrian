@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -18,85 +19,90 @@ import { STUDENT_PROFILE } from './data/profileData';
 
 export default function App() {
   const handleVerifyAlert = () => {
-    Alert.alert(
-      'Verifikasi Identitas Mahasiswa',
-      `Nama: ${STUDENT_PROFILE.fullName}\nNIM: ${STUDENT_PROFILE.nim}\nProdi: ${STUDENT_PROFILE.studyProgram}\nSemester: ${STUDENT_PROFILE.semester}\nStatus: ${STUDENT_PROFILE.status}\nKampus: ${STUDENT_PROFILE.university}`,
-      [{ text: 'OK', style: 'default' }]
-    );
+    const info = `Nama: ${STUDENT_PROFILE.fullName}\nNIM: ${STUDENT_PROFILE.nim}\nProdi: ${STUDENT_PROFILE.studyProgram}\nSemester: ${STUDENT_PROFILE.semester}\nStatus: ${STUDENT_PROFILE.status}\nKampus: ${STUDENT_PROFILE.university}`;
+    
+    if (Platform.OS === 'web') {
+      window.alert(`Verifikasi Identitas Mahasiswa:\n\n${info}`);
+    } else {
+      Alert.alert('Verifikasi Identitas Mahasiswa', info, [{ text: 'OK', style: 'default' }]);
+    }
   };
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
         <StatusBar style="dark" backgroundColor="#FFFFFF" />
 
-        {/* Header Identitas Institusi */}
-        <Header />
+        {/* Wrapper Responsif untuk Tampilan Mobile & Web */}
+        <View style={styles.appContainer}>
+          {/* Header Identitas Institusi */}
+          <Header />
 
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Card Utama: Foto Profil, Nama Lengkap & NIM (Persyaratan Level 1) */}
-          <ProfileCard profile={STUDENT_PROFILE} />
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Card Utama: Foto Profil, Nama Lengkap & NIM (Persyaratan Level 1) */}
+            <ProfileCard profile={STUDENT_PROFILE} />
 
-          {/* Banner Checklist Verifikasi Persyaratan Level 1 */}
-          <View style={styles.criteriaCard}>
-            <View style={styles.criteriaHeader}>
-              <Ionicons name="shield-checkmark" size={18} color="#16A34A" />
-              <Text style={styles.criteriaTitle}>Checklist Evaluasi Level 1 (Novice)</Text>
+            {/* Banner Checklist Verifikasi Persyaratan Level 1 */}
+            <View style={styles.criteriaCard}>
+              <View style={styles.criteriaHeader}>
+                <Ionicons name="shield-checkmark" size={18} color="#16A34A" />
+                <Text style={styles.criteriaTitle}>Checklist Evaluasi Level 1 (Novice)</Text>
+              </View>
+              <View style={styles.criteriaList}>
+                <View style={styles.criteriaItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
+                  <Text style={styles.criteriaText}>
+                    NIM Ditampilkan: <Text style={styles.boldText}>{STUDENT_PROFILE.nim}</Text>
+                  </Text>
+                </View>
+                <View style={styles.criteriaItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
+                  <Text style={styles.criteriaText}>
+                    Nama Lengkap: <Text style={styles.boldText}>{STUDENT_PROFILE.fullName}</Text>
+                  </Text>
+                </View>
+                <View style={styles.criteriaItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
+                  <Text style={styles.criteriaText}>
+                    Foto Profil Mahasiswa: <Text style={styles.boldText}>Aktif & Ditampilkan</Text>
+                  </Text>
+                </View>
+                <View style={styles.criteriaItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
+                  <Text style={styles.criteriaText}>
+                    Status Aplikasi: <Text style={styles.boldText}>Berjalan Lancar (Android & Web)</Text>
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                style={styles.verifyButton}
+                activeOpacity={0.8}
+                onPress={handleVerifyAlert}
+              >
+                <Ionicons name="information-circle-outline" size={18} color="#1E40AF" />
+                <Text style={styles.verifyButtonText}>Cek Detail Validasi Data</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.criteriaList}>
-              <View style={styles.criteriaItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                <Text style={styles.criteriaText}>
-                  NIM Ditampilkan: <Text style={styles.boldText}>{STUDENT_PROFILE.nim}</Text>
-                </Text>
-              </View>
-              <View style={styles.criteriaItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                <Text style={styles.criteriaText}>
-                  Nama Lengkap: <Text style={styles.boldText}>{STUDENT_PROFILE.fullName}</Text>
-                </Text>
-              </View>
-              <View style={styles.criteriaItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                <Text style={styles.criteriaText}>
-                  Foto Profil Mahasiswa: <Text style={styles.boldText}>Aktif & Ditampilkan</Text>
-                </Text>
-              </View>
-              <View style={styles.criteriaItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                <Text style={styles.criteriaText}>
-                  Status Aplikasi: <Text style={styles.boldText}>Berjalan Lancar (Running)</Text>
-                </Text>
-              </View>
+
+            {/* Rincian Identitas Lengkap (Domisili, Pendidikan, Bio) */}
+            <IdentityDetailCard profile={STUDENT_PROFILE} />
+
+            {/* Footer Ujian Tengah Semester */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>
+                UTS Pemrograman Mobile • Masoem University
+              </Text>
+              <Text style={styles.footerSubtext}>
+                Personal CV & Academic Score App © 2026 Febrian Iradatul Rahman
+              </Text>
             </View>
-
-            <TouchableOpacity
-              style={styles.verifyButton}
-              activeOpacity={0.8}
-              onPress={handleVerifyAlert}
-            >
-              <Ionicons name="information-circle-outline" size={18} color="#1E40AF" />
-              <Text style={styles.verifyButtonText}>Cek Detail Validasi Data</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Rincian Identitas Lengkap (Domisili, Pendidikan, Bio) */}
-          <IdentityDetailCard profile={STUDENT_PROFILE} />
-
-          {/* Footer Ujian Tengah Semester */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>
-              UTS Pemrograman Mobile • Masoem University
-            </Text>
-            <Text style={styles.footerSubtext}>
-              Personal CV & Academic Score App © 2026 Febrian Iradatul Rahman
-            </Text>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -105,7 +111,22 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: Platform.select({ web: '#F1F5F9', default: '#F8FAFC' }),
+    alignItems: 'center',
+  },
+  appContainer: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 500, // Menjaga rasio tampilan mobile phone pada web browser
     backgroundColor: '#F8FAFC',
+    ...Platform.select({
+      web: {
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderColor: '#E2E8F0',
+      },
+    }),
   },
   scrollView: {
     flex: 1,
