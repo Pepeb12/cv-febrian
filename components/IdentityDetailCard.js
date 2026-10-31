@@ -5,12 +5,14 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * IdentityDetailCard Component (Level 3 Layout & Timeline Styling)
- * Menampilkan:
- * 1. Riwayat Jenjang Pendidikan Vertikal Timeline (SD, SMP, SMA, Masoem Univ)
- * 2. Alamat & Domisili Lengkap
+ * IdentityDetailCard Component (Level 5: Separation of UI and Data)
+ * Menerima data melalui Props: <IdentityDetailCard data={profileData} />
  */
-export default function IdentityDetailCard({ profile }) {
+export default function IdentityDetailCard({ data, profile }) {
+  const student = data || profile;
+
+  if (!student) return null;
+
   return (
     <View style={styles.container}>
       {/* SECTION: Riwayat Jenjang Pendidikan (Vertical Timeline Layout) */}
@@ -23,7 +25,7 @@ export default function IdentityDetailCard({ profile }) {
         />
 
         <View style={styles.timelineContainer}>
-          {profile.educationHistory.map((edu, index) => {
+          {student.educationHistory.map((edu, index) => {
             const isLatest = index === 0;
             return (
               <View key={index} style={styles.timelineItem}>
@@ -34,7 +36,7 @@ export default function IdentityDetailCard({ profile }) {
                       isLatest ? styles.timelineDotActive : null,
                     ]}
                   />
-                  {index < profile.educationHistory.length - 1 && (
+                  {index < student.educationHistory.length - 1 && (
                     <View style={styles.timelineLine} />
                   )}
                 </View>
@@ -74,20 +76,20 @@ export default function IdentityDetailCard({ profile }) {
         />
 
         <View style={styles.cardBody}>
-          <Text style={styles.addressText}>{profile.address.fullAddress}</Text>
+          <Text style={styles.addressText}>{student.address.fullAddress}</Text>
 
           <View style={styles.addressTags}>
             <View style={styles.tag}>
               <Ionicons name="home-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{profile.address.village}</Text>
+              <Text style={styles.tagText}>{student.address.village}</Text>
             </View>
             <View style={styles.tag}>
               <Ionicons name="map-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{profile.address.subDistrict}</Text>
+              <Text style={styles.tagText}>{student.address.subDistrict}</Text>
             </View>
             <View style={styles.tag}>
               <Ionicons name="navigate-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{profile.address.district}</Text>
+              <Text style={styles.tagText}>{student.address.district}</Text>
             </View>
           </View>
         </View>

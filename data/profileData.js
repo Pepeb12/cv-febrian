@@ -1,32 +1,39 @@
-// Data Profil Mahasiswa untuk Personal CV & Academic Score App
-// Sesuai dengan data Febrian Iradatul Rahman (NIM: 242505024)
-// Diperbarui untuk pemenuhan LEVEL 3 — ELEMENTARY: Layout dan Styling React Native
+/**
+ * DATA PROFIL MAHASISWA (Separation of Data and UI - Materi Level 5)
+ * 
+ * File ini bertindak sebagai "Single Source of Truth" untuk seluruh data aplikasi.
+ * Komponen UI sama sekali TIDAK menyimpan data hardcoded, melainkan menerima
+ * data ini melalui mekanisme Props dari file ini.
+ * 
+ * Untuk mengubah profil, cukup ubah file ini tanpa mengubah komponen UI apapun.
+ */
 
-export const STUDENT_PROFILE = {
-  // Identitas Utama (Level 1)
+const profileData = {
+  // Identitas Mahasiswa (Level 1)
   nim: "242505024",
+  nama: "Febrian Iradatul Rahman",
+  namaPanggilan: "Febrian",
   fullName: "Febrian Iradatul Rahman",
   shortName: "Febrian",
+  prodi: "Sistem Informasi",
   studyProgram: "Sistem Informasi",
+  fakultas: "Fakultas Ilmu Komputer",
   faculty: "Fakultas Ilmu Komputer",
+  kampus: "Masoem University",
   university: "Masoem University",
   semester: 5,
+  tahunAkademik: "2024/2025 - Gasal",
   academicYear: "2024/2025 - Gasal",
   status: "Mahasiswa Aktif",
 
-  // Metrik Akademik Cepat (Materi P4: Visual Metric Stat Cards)
-  academicMetrics: [
-    { label: "Semester", value: "05", unit: "Reguler", icon: "calendar-outline" },
-    { label: "IPK Kumulatif", value: "3.84", unit: "Skala 4.00", icon: "ribbon-outline" },
-    { label: "SKS Selesai", value: "92", unit: "SKS Tempuh", icon: "school-outline" },
-    { label: "Status Kuliah", value: "Aktif", unit: "2024 - Skrg", icon: "checkmark-circle-outline" },
-  ],
-
   // Profesi & Spesialisasi (Level 2)
+  profesi: "Junior Systems Analyst & Mobile App Developer",
   professionTitle: "Junior Systems Analyst & Mobile App Developer",
   tagline: "Bridging Business Logic & Modern Mobile Experiences",
 
-  // Deskripsi Singkat / Personal Introduction (Level 2)
+  // Deskripsi Diri & Personal Introduction (Level 2 & 5)
+  deskripsi:
+    "Saya adalah mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University dengan dedikasi tinggi dalam menjembatani kebutuhan proses bisnis dengan solusi teknologi perangkat lunak yang inovatif, efisien, dan ramah pengguna.",
   introduction: {
     headline: "Halo! Saya Febrian Iradatul Rahman",
     summary:
@@ -36,7 +43,15 @@ export const STUDENT_PROFILE = {
     motto: "“Mengubah tantangan proses bisnis menjadi aplikasi digital yang bernilai nyata.”",
   },
 
-  // Hard Skills dengan Metrik Persentase (Materi P4: Styling Flexbox Progress Bar)
+  // Statistik Metrik Akademik (Level 3)
+  academicMetrics: [
+    { label: "Semester", value: "05", unit: "Reguler", icon: "calendar-outline" },
+    { label: "IPK Kumulatif", value: "3.84", unit: "Skala 4.00", icon: "ribbon-outline" },
+    { label: "SKS Selesai", value: "92", unit: "SKS Tempuh", icon: "school-outline" },
+    { label: "Status Kuliah", value: "Aktif", unit: "2024 - Skrg", icon: "checkmark-circle-outline" },
+  ],
+
+  // Keahlian Teknis dengan Persentase (Level 3 & 4)
   technicalSkills: [
     { name: "React Native & Expo", level: "Intermediate", percentage: 85, color: "#2563EB" },
     { name: "JavaScript (ES6+) & JSX", level: "Advanced", percentage: 88, color: "#D97706" },
@@ -93,7 +108,7 @@ export const STUDENT_PROFILE = {
     },
   ],
 
-  // Keunggulan Diri / Key Attributes
+  // Nilai Atribut Keunggulan Personal
   coreAttributes: [
     {
       label: "Problem Solving",
@@ -119,7 +134,7 @@ export const STUDENT_PROFILE = {
     fullAddress: "Kp Babakan Stasiun Cicalengka, Kec. Cicalengka, Kab. Bandung",
   },
 
-  // Riwayat Pendidikan Lengkap
+  // Riwayat Pendidikan Lengkap (SD hingga Perguruan Tinggi)
   educationHistory: [
     {
       level: "Perguruan Tinggi (S1)",
@@ -153,7 +168,7 @@ export const STUDENT_PROFILE = {
     },
   ],
 
-  // Kontak Informasi Terstruktur (Materi P4: Flexbox Grid Layout)
+  // Kontak Informasi Terstruktur
   contactItems: [
     {
       type: "email",
@@ -192,4 +207,13 @@ export const STUDENT_PROFILE = {
       bgColor: "#F5F3FF",
     },
   ],
+
+  // Parameter Interaksi Default
+  initialEndorseCount: 48,
 };
+
+// Export default sesuai contoh pada spesifikasi Level 5
+export default profileData;
+
+// Export named untuk fleksibilitas import
+export { profileData, profileData as STUDENT_PROFILE };

@@ -50,59 +50,61 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
   - Model box layout flexbox dan responsivitas layar ponsel tanpa teks terpotong.
 
 ### LEVEL 4 — INTERMEDIATE (Status: ✅ Selesai)
-- [x] **Seluruh Persyaratan Level 3**: Dipertahankan secara menyeluruh.
-- [x] **Penggunaan Props**:
-  - Mengirimkan data profil, daftar keahlian, status tombol, dan callback event antar komponen (`ProfileCard`, `ContactFormCard`, `InteractiveEndorseBar`, `SkillMatrixCard`).
-- [x] **Penggunaan State (`useState`)**:
-  - State form input: `name`, `email`, `message`.
-  - State error validasi: `errors`.
-  - State respons pengiriman pesan: `submittedData`.
-  - State counter endorsement: `endorseCount`, `isEndorsed`.
-  - State filter kategori keahlian aktif: `selectedCategory`.
-- [x] **Tombol & Interaksi Sederhana**:
-  - Tombol interaktif *Endorse/Dukung Profil* dengan update counter otomatis.
-  - Filter tabs kategori keahlian (*Semua, Mobile, Systems, UI/UX, Database*).
-  - Tombol submit formulir dan tombol reset pesan.
+- [x] **Penggunaan Props & State (`useState`)**:
+  - Form input (`name`, `email`, `message`), validasi error (`errors`), data terkirim (`submittedData`), endorse counter (`endorseCount`, `isEndorsed`), dan filter kategori aktif (`selectedCategory`).
 - [x] **Formulir Kontak (Nama, Email, Pesan)**:
-  - Dibangun dengan `TextInput`, label informatif, placeholder, dan indikator required field.
-- [x] **Event Handling**:
-  - `onChangeText` untuk update state input secara real-time.
-  - `onPress` untuk submit, reset, endorsement, dan pergantian filter.
-- [x] **Validasi Input Kosong & Format Email**:
-  - Pengecekan input kosong (`trim()`).
-  - Pengecekan batas minimal karakter (nama min 3 huruf, pesan min 5 huruf).
-  - Pengecekan format alamat email menggunakan RegEx (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`).
-  - Tampilan visual error border merah dan teks peringatan di bawah input.
-- [x] **Respons Setelah Formulir Diproses**:
+  - Input form interaktif dengan validasi string kosong dan regex email.
+- [x] **Respons Pemrosesan Formulir**:
   - Kartu notifikasi sukses berwarna hijau dengan timestamp waktu pengiriman.
-  - Rincian ringkasan data yang baru saja dikirim (Nama, Email, Isi Pesan).
-  - Tombol untuk kembali mengirim pesan baru.
 - [x] **Materi Utama: P3 dan P5 — Props, State, Input Form, dan Event Handling**.
+
+### LEVEL 5 — COMPETENT (Status: ✅ Selesai)
+- [x] **Seluruh Persyaratan Level 4**: Dipertahankan secara menyeluruh.
+- [x] **Data Profil Tidak Ditulis Langsung pada Elemen UI (Zero Hardcoded Data)**:
+  - Seluruh informasi profil disimpan terpusat di `data/profileData.js`.
+  - Komponen antarmuka visual murni bersifat presentasional tanpa string nama/NIM statis di dalam komponen.
+- [x] **Data Disimpan dalam File Terpisah**:
+  - File `data/profileData.js` bertindak sebagai *Single Source of Truth* dan mengekspor objek data melalui `export default profileData;`.
+- [x] **Komponen UI Menerima Data Melalui Props**:
+  - `<ProfileHeader data={profileData} />`
+  - `<AboutSection data={profileData} />`
+  - `<ContactForm data={profileData} onMessageSent={...} />`
+  - `<MetricBar metrics={profileData.academicMetrics} />`
+  - `<SkillMatrixCard skills={profileData.technicalSkills} />`
+  - `<IdentityDetailCard data={profileData} />`
+  - `<ContactGridCard contactItems={profileData.contactItems} />`
+- [x] **Struktur Kode Terorganisasi & Mudah Dikembangkan (Separation of Concerns)**:
+  - Memisahkan direktori data (`data/`), tema (`theme/`), komponen presentasional (`components/`), dan root (`App.js`).
+- [x] **Reusabilitas & Bukti Perubahan Data**:
+  - Mengubah data di `profileData.js` secara otomatis memperbarui seluruh UI tanpa perlu mengubah satu baris pun kode komponen.
+- [x] **Materi Utama: Component, Props, dan Pengorganisasian Kode**.
 
 ---
 
-## 📁 Struktur Komponen Proyek (Clean Architecture)
+## 📁 Struktur Proyek (Clean Architecture Level 5)
 
 ```text
 ├── assets/
 │   └── profile.png                 # Foto profil formal Febrian Iradatul Rahman
 ├── components/
-│   ├── Header.js                   # Header institusi Masoem University & Level 4 Badge
-│   ├── ProfileCard.js              # Kartu identitas utama mahasiswa
-│   ├── InteractiveEndorseBar.js    # Tombol rekomendasi/endorse berbasis State (Level 4)
+│   ├── Header.js                   # Header institusi Masoem University & Level 5 Badge
+│   ├── ProfileHeader.js            # [Level 5] Profile header: <ProfileHeader data={profileData} />
+│   ├── ProfileCard.js              # Kartu identitas presentasional
+│   ├── AboutSection.js             # [Level 5] About & Interests: <AboutSection data={profileData} />
+│   ├── ContactForm.js              # [Level 5] Contact form wrapper: <ContactForm data={profileData} />
+│   ├── ContactFormCard.js          # Formulir kontak dengan validasi & state
+│   ├── InteractiveEndorseBar.js    # Tombol rekomendasi interaktif
 │   ├── MetricBar.js                # Bar statistik metrik akademik
 │   ├── SectionHeading.js           # Reusable heading hierarkis dengan ikon
-│   ├── ContactFormCard.js          # Formulir kontak: Input, Validasi, State, & Respons (Level 4)
-│   ├── PersonalIntroCard.js        # Personal introduction & 4 bidang minat
-│   ├── SkillMatrixCard.js          # Progress bar keahlian dengan State Filter Tabs (Level 4)
+│   ├── SkillMatrixCard.js          # Progress bar keahlian dengan State Filter Tabs
 │   ├── IdentityDetailCard.js       # Timeline riwayat pendidikan & domisili alamat
 │   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif
-│   └── Level4CriteriaCard.js       # Checklist evaluasi kriteria Level 4
+│   └── Level5CriteriaCard.js       # Checklist evaluasi kriteria Level 5
 ├── data/
-│   └── profileData.js              # Single source of truth data mahasiswa Febrian
+│   └── profileData.js              # [Level 5] Single source of truth (export default profileData)
 ├── theme/
 │   └── index.js                    # Design tokens: COLORS, SPACING, TYPOGRAPHY, SHADOWS
-├── App.js                          # Root component dengan Safe Area & State manajemen
+├── App.js                          # Root component pengatur aliran Props
 ├── app.json                        # Konfigurasi aplikasi Expo
 └── package.json                    # Dependensi Expo & React Native Web
 ```
@@ -132,21 +134,15 @@ Aplikasi mendukung tampilan ganda (**Web & Android**):
 
 ---
 
-## 💡 Panduan Menjelaskan Materi P3 & P5 ke Dosen Penguji
+## 💡 Panduan Menjelaskan Materi Level 5 (Separation of UI and Data) ke Dosen Penguji
 
-Jika dosen menanyakan korelasi kode dengan materi **P3 & P5 (Props, State, Input Form, Event Handling)**:
+Jika dosen menanyakan implementasi **Separation of UI and Data**:
 
-1. **Penggunaan State (`useState`)**:
-   > *"Pada file `ContactFormCard.js`, saya menggunakan hook `useState` untuk mengelola input teks: `const [name, setName] = useState('')`, `const [email, setEmail] = useState('')`, dan `const [message, setMessage] = useState('')`. State ini menjamin input bersifat controlled component dan data terbarui secara reaktif."*
+1. **Pemisahan Tanggung Jawab (*Separation of Concerns*)**:
+   > *"Sesuai dengan kriteria Level 5, tidak ada satu pun komponen UI yang menuliskan data mahasiswa secara hardcoded di dalam JSX-nya. Semua informasi nama, NIM, prodi, riwayat pendidikan, kontak, dan keahlian dipisahkan secara murni ke dalam berkas `data/profileData.js`."*
 
-2. **Penggunaan Props**:
-   > *"Komponen `ContactFormCard` menerima props `recipientName` dan callback function `onMessageSent`. Nilai props dikirimkan dari komponen induk `App.js` sehingga komponen form bersifat reusable dan data-driven."*
+2. **Aliran Data (*Data Flow*) Melalui Props**:
+   > *"Aliran data dimulai dari `data/profileData.js` yang diekspor menggunakan `export default profileData;`. Berkas root `App.js` mengimpor data tersebut lalu mendistribusikannya ke masing-masing komponen anak melalui properti `data` (misalnya `<ProfileHeader data={profileData} />`, `<AboutSection data={profileData} />`, dan `<ContactForm data={profileData} />`)."*
 
-3. **Event Handling pada Form**:
-   > *"Event `onChangeText` pada `TextInput` secara real-time memperbarui nilai state dan menghapus pesan error saat pengguna mulai mengetik ulang. Sementara itu, event `onPress` pada tombol kirim memicu fungsi `handleSubmit` untuk menjalankan logika validasi."*
-
-4. **Logika Validasi Input**:
-   > *"Fungsi `validateForm` memeriksa apakah ada input kosong menggunakan `.trim()`. Untuk email, saya menerapkan Regular Expression untuk memvalidasi format email yang benar. Jika ditemukan kesalahan, state `errors` akan diisi sehingga bingkai input berubah menjadi merah dan memunculkan label error."*
-
-5. **Tampilan Respons Formulir**:
-   > *"Setelah formulir lolos validasi, objek data pengirim disimpan ke dalam state `submittedData`. Menggunakan conditional rendering `{submittedData ? <SuccessView /> : <FormView />}`, aplikasi langsung mengganti formulir dengan kartu ringkasan pesan yang berhasil diproses."*
+3. **Kemudahan Pengembangan (*Maintainability & Scalability*)**:
+   > *"Keuntungan utama dari arsitektur ini adalah reusabilitas dan kemudahan pengujian. Jika kita ingin mengganti profil mahasiswa, kita hanya perlu mengubah berkas `profileData.js` tanpa harus menyentuh satu baris pun kode logika antarmuka atau styling komponen."*

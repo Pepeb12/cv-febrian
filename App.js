@@ -10,34 +10,37 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+// Import Data Terpisah (Materi Level 5: Separation of UI and Data)
+import profileData from './data/profileData';
+
+// Import Komponen UI Bersih & Reusable (Level 5 Structure)
 import Header from './components/Header';
-import ProfileCard from './components/ProfileCard';
+import ProfileHeader from './components/ProfileHeader';
+import AboutSection from './components/AboutSection';
+import ContactForm from './components/ContactForm';
 import MetricBar from './components/MetricBar';
 import InteractiveEndorseBar from './components/InteractiveEndorseBar';
-import PersonalIntroCard from './components/PersonalIntroCard';
 import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
-import ContactFormCard from './components/ContactFormCard';
-import Level4CriteriaCard from './components/Level4CriteriaCard';
-import { STUDENT_PROFILE } from './data/profileData';
+import Level5CriteriaCard from './components/Level5CriteriaCard';
 import { COLORS, SPACING } from './theme';
 
 export default function App() {
-  // State di level root (Materi P3 & P5: Props & State)
+  // State untuk menghitung pesan terkirim secara dinamis
   const [messagesReceivedCount, setMessagesReceivedCount] = useState(0);
 
-  const handleMessageSent = (payload) => {
+  const handleMessageSent = () => {
     setMessagesReceivedCount((prev) => prev + 1);
   };
 
   const handleShowValidation = () => {
-    const info = `LEVEL 4 — INTERMEDIATE EVALUATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Pengelolaan State: Form Kontak (nama, email, pesan), Filter Keahlian, & Counter Endorsement\n• Validasi Input: Validasi string kosong, panjang karakter, & format email regex\n• Respons UI: Kartu respon sukses pesan & notifikasi popup\n• Total Pesan Terkirim di Sesi Ini: ${messagesReceivedCount}`;
+    const info = `LEVEL 5 — COMPETENT EVALUATION:\n\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Pemisahan Data & UI: 100% data tersimpan di data/profileData.js\n• Aliran Data: Data dikirimkan ke ProfileHeader, AboutSection, ContactForm, dsb melalui Props 'data'\n• Reusable: Komponen bersifat presentasional murni tanpa dependensi data hardcoded\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 4', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 5', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -48,7 +51,7 @@ export default function App() {
 
         {/* Outer Container (Responsive Mobile Simulator Frame di Web & Full Screen di Android) */}
         <View style={styles.appContainer}>
-          {/* Header Institusi & Level 4 Indicator */}
+          {/* Header Institusi & Level 5 Indicator */}
           <Header />
 
           <ScrollView
@@ -56,38 +59,38 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU PROFIL UTAMA (Digital Student Card) */}
-            <ProfileCard profile={STUDENT_PROFILE} />
+            {/* 1. KARTU IDENTITAS UTAMA (Menerima data via Props: <ProfileHeader data={profileData} />) */}
+            <ProfileHeader data={profileData} />
 
-            {/* 2. TOMBOL INTERAKSI DUKUNGAN / ENDORSE (Materi P3 & P5: State & Event Handling) */}
+            {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Menerima data via Props) */}
             <InteractiveEndorseBar
-              studentName={STUDENT_PROFILE.shortName}
-              initialCount={48}
+              studentName={profileData.namaPanggilan}
+              initialCount={profileData.initialEndorseCount}
             />
 
-            {/* 3. BAR STATISTIK METRIK AKADEMIK (Materi P4: Flexbox Grid) */}
-            <MetricBar metrics={STUDENT_PROFILE.academicMetrics} />
+            {/* 3. BAR STATISTIK METRIK AKADEMIK (Menerima data via Props) */}
+            <MetricBar metrics={profileData.academicMetrics} />
 
-            {/* 4. CHECKLIST EVALUASI LEVEL 4 (Interactive CV Verification) */}
-            <Level4CriteriaCard onShowDetail={handleShowValidation} />
+            {/* 4. CHECKLIST EVALUASI LEVEL 5 (Separation of UI and Data Verification) */}
+            <Level5CriteriaCard onShowDetail={handleShowValidation} />
 
-            {/* 5. FORMULIR KONTAK INTERAKTIF (Materi P5: TextInput, State, Validasi, & Respons) */}
-            <ContactFormCard
-              recipientName={STUDENT_PROFILE.fullName}
+            {/* 5. SEKSI TENTANG SAYA & SPESIALISASI MINAT (Menerima data via Props: <AboutSection data={profileData} />) */}
+            <AboutSection data={profileData} />
+
+            {/* 6. KEAHLIAN TEKNIS DENGAN PROGRESS BAR (Menerima data via Props) */}
+            <SkillMatrixCard skills={profileData.technicalSkills} />
+
+            {/* 7. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT (Menerima data via Props) */}
+            <IdentityDetailCard data={profileData} />
+
+            {/* 8. GRID KONTAK & KOMUNIKASI (Menerima data via Props) */}
+            <ContactGridCard contactItems={profileData.contactItems} />
+
+            {/* 9. FORMULIR KONTAK INTERAKTIF (Menerima data via Props: <ContactForm data={profileData} />) */}
+            <ContactForm
+              data={profileData}
               onMessageSent={handleMessageSent}
             />
-
-            {/* 6. PERSONAL INTRODUCTION & SPESIALISASI MINAT */}
-            <PersonalIntroCard profile={STUDENT_PROFILE} />
-
-            {/* 7. KEAHLIAN TEKNIS DENGAN FILTER TABS INTERAKTIF (Materi P3, P4, & P5) */}
-            <SkillMatrixCard skills={STUDENT_PROFILE.technicalSkills} />
-
-            {/* 8. RIWAYAT PENDIDIKAN (TIMELINE) & DOMISILI ALAMAT */}
-            <IdentityDetailCard profile={STUDENT_PROFILE} />
-
-            {/* 9. GRID KONTAK & KOMUNIKASI (Flexbox 2-Kolom) */}
-            <ContactGridCard contactItems={STUDENT_PROFILE.contactItems} />
 
             {/* 10. FOOTER INFORMASI UTS */}
             <View style={styles.footer}>
@@ -95,10 +98,10 @@ export default function App() {
                 UTS Pemrograman Mobile • Masoem University
               </Text>
               <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App — LEVEL 4 (Intermediate)
+                Personal CV & Academic Score App — LEVEL 5 (Competent)
               </Text>
               <Text style={styles.copyrightText}>
-                © 2026 Febrian Iradatul Rahman ({STUDENT_PROFILE.nim})
+                © 2026 {profileData.nama} ({profileData.nim})
               </Text>
             </View>
           </ScrollView>

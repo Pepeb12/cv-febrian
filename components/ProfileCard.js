@@ -4,10 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * ProfileCard Component (Materi P4: Layout, Flexbox, & Visual Hierarchy)
- * Menggabungkan foto profil, nama, NIM, profesi, dan status aktif dengan estetika modern.
+ * ProfileCard Component (Level 5: Separation of UI and Data)
+ * Menerima seluruh data melalui Props `data` (atau `profile`) tanpa data hardcoded.
  */
-export default function ProfileCard({ profile }) {
+export default function ProfileCard({ data, profile }) {
+  // Dukungan fleksibel untuk prop `data` (sesuai spesifikasi Level 5) maupun `profile`
+  const student = data || profile;
+
+  if (!student) return null;
+
   return (
     <View style={styles.card}>
       {/* Background Banner Header */}
@@ -26,47 +31,49 @@ export default function ProfileCard({ profile }) {
         </View>
 
         {/* Nama Lengkap Mahasiswa (Level 1) */}
-        <Text style={styles.fullName}>{profile.fullName}</Text>
+        <Text style={styles.fullName}>{student.nama || student.fullName}</Text>
 
         {/* Profesi / Minat Utama (Level 2) */}
         <View style={styles.professionContainer}>
           <Ionicons name="briefcase" size={14} color={COLORS.primary} />
-          <Text style={styles.professionText}>{profile.professionTitle}</Text>
+          <Text style={styles.professionText}>{student.profesi || student.professionTitle}</Text>
         </View>
 
         {/* Personal Tagline */}
-        <Text style={styles.taglineText}>"{profile.tagline}"</Text>
+        {student.tagline && (
+          <Text style={styles.taglineText}>"{student.tagline}"</Text>
+        )}
 
         {/* Badge NIM Mahasiswa (Level 1) */}
         <View style={styles.nimContainer}>
           <Ionicons name="card-outline" size={15} color={COLORS.accentCyan} />
           <Text style={styles.nimLabel}>NIM:</Text>
-          <Text style={styles.nimValue}>{profile.nim}</Text>
+          <Text style={styles.nimValue}>{student.nim}</Text>
         </View>
 
         {/* Program Studi & Semester */}
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
             <Ionicons name="book-outline" size={14} color={COLORS.textMuted} />
-            <Text style={styles.metaText}>{profile.studyProgram}</Text>
+            <Text style={styles.metaText}>{student.prodi || student.studyProgram}</Text>
           </View>
           <Text style={styles.metaSeparator}>•</Text>
           <View style={styles.metaItem}>
             <Ionicons name="calendar-outline" size={14} color={COLORS.textMuted} />
-            <Text style={styles.metaText}>Semester {profile.semester}</Text>
+            <Text style={styles.metaText}>Semester {student.semester}</Text>
           </View>
         </View>
 
         {/* Nama Kampus */}
         <View style={styles.universityRow}>
           <Ionicons name="business" size={14} color={COLORS.textSecondary} />
-          <Text style={styles.universityText}>{profile.university}</Text>
+          <Text style={styles.universityText}>{student.kampus || student.university}</Text>
         </View>
 
         {/* Status Mahasiswa Aktif Pill */}
         <View style={styles.statusPill}>
           <View style={styles.greenCircle} />
-          <Text style={styles.statusText}>{profile.status}</Text>
+          <Text style={styles.statusText}>{student.status}</Text>
         </View>
       </View>
     </View>
