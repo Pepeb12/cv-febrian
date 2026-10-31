@@ -2,12 +2,19 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SPACING, SHADOWS } from '../theme';
+import { ThemeColors } from '../types';
+
+interface HeaderProps {
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
+  theme: ThemeColors | any;
+}
 
 /**
  * Header Component (Level 10: Industry Production Header with Accessibility & Dark Mode)
- * Menampilkan nama kampus, judul aplikasi, badge Level 10 Industry, dan tombol pengubah tema dengan a11y.
+ * Menampilkan nama kampus, judul aplikasi, badge Level 10 Industry, dan tombol pengubah tema.
  */
-export default function Header({ isDarkMode, onToggleTheme, theme }) {
+export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps) {
   const currentTheme = theme || {};
 
   return (
@@ -35,7 +42,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
             MASOEM UNIVERSITY
           </Text>
           <Text style={[styles.appTitle, { color: currentTheme.textPrimary || '#0F172A' }]}>
-            CV & Academic Score
+            Personal CV & Academic Score
           </Text>
         </View>
       </View>
@@ -93,6 +100,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -116,34 +124,35 @@ const styles = StyleSheet.create({
   universityName: {
     fontSize: 11,
     fontWeight: '800',
-    letterSpacing: 1,
+    letterSpacing: 1.2,
   },
   appTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 15,
+    fontWeight: '800',
+    letterSpacing: -0.3,
   },
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.sm,
   },
   themeButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 1,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
   },
   badgeLevel: {
     paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
     borderWidth: 1,
   },
   badgeText: {
     fontSize: 11,
-    fontWeight: '900',
-    letterSpacing: 0.5,
+    fontWeight: '800',
+    letterSpacing: 0.6,
   },
 });

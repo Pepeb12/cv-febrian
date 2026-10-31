@@ -2,11 +2,18 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS, SPACING } from '../theme';
+import { StudentProfile, ThemeColors } from '../types';
+
+interface ProfileCardProps {
+  data?: StudentProfile | any;
+  profile?: StudentProfile | any;
+  theme?: ThemeColors | any;
+}
 
 /**
- * ProfileCard Component (Level 7: Theme Adaptable Student ID Card)
+ * ProfileCard Component (TSX: Theme Adaptable Student ID Card)
  */
-export default function ProfileCard({ data, profile, theme }) {
+export default function ProfileCard({ data, profile, theme }: ProfileCardProps) {
   const student = data || profile;
   const currentTheme = theme || COLORS;
 
@@ -21,6 +28,8 @@ export default function ProfileCard({ data, profile, theme }) {
           borderColor: currentTheme.borderLight,
         },
       ]}
+      accessibilityRole="region"
+      accessibilityLabel="Kartu Profil Mahasiswa"
     >
       {/* Background Banner Header */}
       <View
@@ -37,6 +46,7 @@ export default function ProfileCard({ data, profile, theme }) {
             source={require('../assets/profile.png')}
             style={[styles.avatar, { borderColor: currentTheme.surface }]}
             resizeMode="cover"
+            accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
           />
           {/* Active Status Indicator */}
           <View
@@ -98,38 +108,39 @@ export default function ProfileCard({ data, profile, theme }) {
               {student.prodi || student.studyProgram}
             </Text>
           </View>
-          <Text style={[styles.metaSeparator, { color: currentTheme.textLight }]}>•</Text>
+          <View style={[styles.metaDivider, { backgroundColor: currentTheme.borderLight }]} />
           <View style={styles.metaItem}>
-            <Ionicons name="calendar-outline" size={14} color={currentTheme.textMuted} />
+            <Ionicons name="school-outline" size={14} color={currentTheme.textMuted} />
             <Text style={[styles.metaText, { color: currentTheme.textSecondary }]}>
               Semester {student.semester}
             </Text>
           </View>
+          <View style={[styles.metaDivider, { backgroundColor: currentTheme.borderLight }]} />
+          <View style={styles.metaItem}>
+            <Ionicons name="business-outline" size={14} color={currentTheme.textMuted} />
+            <Text style={[styles.metaText, { color: currentTheme.textSecondary }]}>
+              {student.kampus || student.university}
+            </Text>
+          </View>
         </View>
 
-        {/* Nama Kampus */}
-        <View style={styles.universityRow}>
-          <Ionicons name="business" size={14} color={currentTheme.textSecondary} />
-          <Text style={[styles.universityText, { color: currentTheme.textSecondary }]}>
-            {student.kampus || student.university}
-          </Text>
-        </View>
-
-        {/* Status Mahasiswa Aktif Pill */}
-        <View
-          style={[
-            styles.statusPill,
-            {
-              backgroundColor: currentTheme.successLight,
-              borderColor: currentTheme.successBorder,
-            },
-          ]}
-        >
-          <View style={[styles.greenCircle, { backgroundColor: currentTheme.success }]} />
-          <Text style={[styles.statusText, { color: currentTheme.success }]}>
-            {student.status}
-          </Text>
-        </View>
+        {/* Alamat Domisili Lengkap */}
+        {student.address && (
+          <View
+            style={[
+              styles.addressBox,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+          >
+            <Ionicons name="location-outline" size={16} color={currentTheme.primary} />
+            <Text style={[styles.addressText, { color: currentTheme.textSecondary }]}>
+              {student.address.fullAddress}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -138,55 +149,57 @@ export default function ProfileCard({ data, profile, theme }) {
 const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
-    overflow: 'hidden',
-    marginBottom: SPACING.lg,
     borderWidth: 1,
+    overflow: 'hidden',
     ...SHADOWS.md,
+    marginBottom: SPACING.lg,
   },
   cardHeaderBanner: {
-    height: 90,
+    height: 70,
+    width: '100%',
   },
   cardContent: {
     alignItems: 'center',
     paddingHorizontal: SPACING.xl,
     paddingBottom: SPACING.xl,
-    marginTop: -50,
+    marginTop: -45,
   },
   avatarWrapper: {
     position: 'relative',
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.md,
   },
   avatar: {
-    width: 104,
-    height: 104,
-    borderRadius: 52,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     borderWidth: 4,
     backgroundColor: '#E2E8F0',
   },
   activeDot: {
     position: 'absolute',
-    bottom: 4,
-    right: 4,
+    bottom: 2,
+    right: 2,
     width: 18,
     height: 18,
     borderRadius: 9,
     borderWidth: 3,
   },
   fullName: {
-    fontSize: 21,
+    fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: SPACING.xs,
+    letterSpacing: -0.4,
   },
   professionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 5,
     paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
     borderRadius: 20,
+    borderWidth: 1,
     gap: 6,
     marginBottom: SPACING.xs,
-    borderWidth: 1,
   },
   professionText: {
     fontSize: 12,
@@ -196,72 +209,63 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontStyle: 'italic',
     textAlign: 'center',
-    marginBottom: SPACING.sm,
-    paddingHorizontal: SPACING.sm,
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.md,
   },
   nimContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    borderRadius: 16,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    borderRadius: 12,
     borderWidth: 1,
-    marginBottom: SPACING.md,
     gap: 6,
+    marginBottom: SPACING.md,
   },
   nimLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '700',
   },
   nimValue: {
-    fontSize: 13,
-    fontWeight: '800',
-    letterSpacing: 0.8,
+    fontSize: 14,
+    fontWeight: '900',
+    letterSpacing: 1.2,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
     gap: SPACING.sm,
-    marginBottom: SPACING.xs,
+    marginBottom: SPACING.md,
   },
   metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  metaSeparator: {
-    fontSize: 14,
+  metaDivider: {
+    width: 1,
+    height: 14,
   },
   metaText: {
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: '600',
   },
-  universityRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    marginBottom: SPACING.md,
-  },
-  universityText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  statusPill: {
+  addressBox: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingVertical: SPACING.sm,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 6,
+    gap: 8,
+    width: '100%',
   },
-  greenCircle: {
-    width: 7,
-    height: 7,
-    borderRadius: 3.5,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '700',
+  addressText: {
+    fontSize: 11,
+    lineHeight: 16,
+    flex: 1,
+    fontWeight: '500',
   },
 });

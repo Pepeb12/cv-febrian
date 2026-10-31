@@ -3,17 +3,22 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { SHADOWS, SPACING } from '../theme';
+import { AcademicScoreData, ThemeColors } from '../types';
+
+interface MyScoreSectionProps {
+  data: AcademicScoreData | any;
+  theme: ThemeColors | any;
+}
 
 /**
- * MyScoreSection Component (Materi LEVEL 8 — EXPERT: My Score & Academic Dashboard)
+ * MyScoreSection Component (Materi LEVEL 8 — EXPERT: My Score & Academic Dashboard in TSX)
  * Menampilkan:
  * 1. Identitas Akademik (Nama, NIM, MK Pemrograman Mobile 2, Dosen Iin, M.Kom)
  * 2. Current Score (Nilai 90, Grade A - Tampil Jelas & Menonjol)
  * 3. Learning Points (19,000 LP)
  * 4. Learning Progress Cards (Attendance 100%, Practice 95%, Quest 100%, Challenge 100%)
- * Menerima data melalui Props: <MyScoreSection data={academicScoreData} theme={theme} />
  */
-export default function MyScoreSection({ data, theme }) {
+export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
   if (!data) return null;
 
   const {
@@ -34,6 +39,8 @@ export default function MyScoreSection({ data, theme }) {
           borderColor: currentTheme.borderLight,
         },
       ]}
+      accessibilityRole="region"
+      accessibilityLabel="Dashboard Capaian Akademik My Score"
     >
       <SectionHeading
         title="My Score & Capaian Akademik"
@@ -59,10 +66,10 @@ export default function MyScoreSection({ data, theme }) {
           </View>
           <View style={styles.courseTitleCol}>
             <Text style={[styles.courseName, { color: currentTheme.textPrimary }]}>
-              {studentIdentity.course || 'Pemrograman Mobile 2'}
+              {studentIdentity.course || studentIdentity.mataKuliah || 'Pemrograman Mobile 2'}
             </Text>
             <Text style={[styles.courseMeta, { color: currentTheme.textMuted }]}>
-              Dosen: {studentIdentity.lecturer || 'Iin, M.Kom'}
+              Dosen: {studentIdentity.lecturer || studentIdentity.dosen || 'Iin, M.Kom'}
             </Text>
           </View>
           <View style={styles.semesterBadge}>
@@ -75,7 +82,7 @@ export default function MyScoreSection({ data, theme }) {
           <View style={styles.infoCol}>
             <Text style={[styles.infoLabel, { color: currentTheme.textMuted }]}>NAMA MAHASISWA</Text>
             <Text style={[styles.infoValue, { color: currentTheme.textPrimary }]}>
-              {studentIdentity.name || 'Febrian'}
+              {studentIdentity.name || studentIdentity.nama || 'Febrian'}
             </Text>
           </View>
           <View style={styles.dividerV} />
@@ -88,7 +95,9 @@ export default function MyScoreSection({ data, theme }) {
           <View style={styles.dividerV} />
           <View style={styles.infoCol}>
             <Text style={[styles.infoLabel, { color: currentTheme.textMuted }]}>KAMPUS</Text>
-            <Text style={[styles.infoValue, { color: currentTheme.textPrimary }]}>Masoem Univ</Text>
+            <Text style={[styles.infoValue, { color: currentTheme.textPrimary }]}>
+              {studentIdentity.kampus || 'Masoem Univ'}
+            </Text>
           </View>
         </View>
       </View>
@@ -107,7 +116,7 @@ export default function MyScoreSection({ data, theme }) {
           </View>
 
           <View style={styles.scoreNumberRow}>
-            <Text style={styles.bigScoreNumber}>{currentScore.score || 90}</Text>
+            <Text style={styles.bigScoreNumber}>{currentScore.score ?? 90}</Text>
             <Text style={styles.scoreOutOf}>/ 100</Text>
           </View>
 
@@ -128,7 +137,7 @@ export default function MyScoreSection({ data, theme }) {
 
           <View style={styles.lpNumberRow}>
             <Text style={styles.bigLpNumber}>
-              {Number(learningPoints.total || 19000).toLocaleString('id-ID')}
+              {Number(learningPoints.total ?? 19000).toLocaleString('id-ID')}
             </Text>
             <Text style={styles.lpUnit}>{learningPoints.unit || 'LP'}</Text>
           </View>
@@ -147,70 +156,76 @@ export default function MyScoreSection({ data, theme }) {
             Indikator Capaian Belajar (Learning Progress)
           </Text>
           <Text style={[styles.progressSectionSubtitle, { color: currentTheme.textMuted }]}>
-            4 Komponen Penilaian
+            {learningProgress.length} Komponen Penilaian
           </Text>
         </View>
 
         <View style={styles.progressList}>
-          {learningProgress.map((item) => (
-            <View
-              key={item.id || item.name}
-              style={[
-                styles.progressCard,
-                {
-                  backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.border,
-                },
-              ]}
-            >
-              {/* Header Baris: Icon, Nama Komponen, dan Persentase */}
-              <View style={styles.progressCardHeader}>
-                <View style={styles.progressLeft}>
-                  <View style={[styles.progressIconBox, { backgroundColor: item.color + '1A' }]}>
-                    <Ionicons name={item.icon || 'checkmark-circle'} size={18} color={item.color} />
-                  </View>
-                  <View>
-                    <Text style={[styles.progressName, { color: currentTheme.textPrimary }]}>
-                      {item.name}
-                    </Text>
-                    <Text style={[styles.progressLabel, { color: currentTheme.textMuted }]}>
-                      {item.label}
-                    </Text>
-                  </View>
-                </View>
+          {learningProgress.map((item: any) => {
+            const label = item.name || item.label || 'Progress';
+            const pct = item.percentage ?? 0;
+            const desc = item.details || item.description || `${pct}% tercapai`;
+            const color =
+              pct >= 100
+                ? '#10B981'
+                : pct >= 90
+                ? '#0284C7'
+                : pct >= 75
+                ? '#F59E0B'
+                : '#EF4444';
 
-                {/* Nilai Persentase Besar & Menonjol */}
-                <View style={[styles.percentageBadge, { backgroundColor: item.color + '18' }]}>
-                  <Text style={[styles.percentageText, { color: item.color }]}>
-                    {item.percentage}%
-                  </Text>
-                </View>
-              </View>
-
-              {/* Visual Progress Bar Flexbox */}
+            return (
               <View
+                key={item.id || label}
                 style={[
-                  styles.progressTrack,
-                  { backgroundColor: currentTheme.isDark ? '#283548' : '#E2E8F0' },
+                  styles.progressCard,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                  },
                 ]}
               >
+                {/* Header Baris */}
+                <View style={styles.progressCardHeader}>
+                  <View style={styles.progressLeft}>
+                    <View style={[styles.progressIconBox, { backgroundColor: color + '1A' }]}>
+                      <Ionicons name="checkmark-circle" size={18} color={color} />
+                    </View>
+                    <View>
+                      <Text style={[styles.progressName, { color: currentTheme.textPrimary }]}>
+                        {label}
+                      </Text>
+                      <Text style={[styles.progressLabel, { color: currentTheme.textMuted }]}>
+                        {desc}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={[styles.percentageBadge, { backgroundColor: color + '18' }]}>
+                    <Text style={[styles.percentageText, { color }]}>{pct}%</Text>
+                  </View>
+                </View>
+
+                {/* Visual Progress Bar Flexbox */}
                 <View
                   style={[
-                    styles.progressFill,
-                    {
-                      width: `${item.percentage}%`,
-                      backgroundColor: item.color,
-                    },
+                    styles.progressTrack,
+                    { backgroundColor: currentTheme.isDark ? '#283548' : '#E2E8F0' },
                   ]}
-                />
+                >
+                  <View
+                    style={[
+                      styles.progressFill,
+                      {
+                        width: `${Math.min(100, Math.max(0, pct))}%`,
+                        backgroundColor: color,
+                      },
+                    ]}
+                  />
+                </View>
               </View>
-
-              {/* Rincian Keterangan Progres */}
-              <Text style={[styles.progressDetails, { color: currentTheme.textSecondary }]}>
-                {item.details}
-              </Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
       </View>
     </View>
@@ -225,7 +240,6 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
-  // 1. Identitas Akademik Card
   identityCard: {
     borderRadius: 12,
     padding: SPACING.md,
@@ -297,8 +311,6 @@ const styles = StyleSheet.create({
     height: 22,
     backgroundColor: '#CBD5E1',
   },
-
-  // 2. Score & LP Row (2 Kolom)
   scoreRow: {
     flexDirection: 'row',
     gap: SPACING.md,
@@ -349,15 +361,15 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   bigScoreNumber: {
-    fontSize: 40,
+    fontSize: 42,
     fontWeight: '900',
     color: '#15803D',
     letterSpacing: -1,
   },
   scoreOutOf: {
     fontSize: 13,
-    fontWeight: '600',
-    color: '#166534',
+    fontWeight: '700',
+    color: '#16A34A',
     marginLeft: 4,
   },
   statusPill: {
@@ -366,7 +378,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCFCE7',
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: 12,
     gap: 4,
   },
   statusPillText: {
@@ -374,8 +386,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#15803D',
   },
-
-  // Learning Points Card
   lpCard: {
     flex: 1,
     backgroundColor: '#FFFBEB',
@@ -410,7 +420,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   bigLpNumber: {
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: '900',
     color: '#B45309',
     letterSpacing: -0.5,
@@ -418,8 +428,8 @@ const styles = StyleSheet.create({
   lpUnit: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#92400E',
-    marginLeft: 3,
+    color: '#D97706',
+    marginLeft: 4,
   },
   rankPill: {
     flexDirection: 'row',
@@ -427,21 +437,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF3C7',
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: 12,
     gap: 4,
   },
   rankPillText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#92400E',
+    color: '#B45309',
   },
-
-  // 3. Learning Progress
   progressSection: {
-    gap: SPACING.sm,
+    gap: 8,
   },
   progressHeaderRow: {
-    marginBottom: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
   },
   progressSectionTitle: {
     fontSize: 13,
@@ -449,64 +460,59 @@ const styles = StyleSheet.create({
   },
   progressSectionSubtitle: {
     fontSize: 11,
-    marginTop: 1,
+    fontWeight: '600',
   },
   progressList: {
-    gap: 10,
+    gap: 8,
   },
   progressCard: {
-    borderRadius: 12,
-    padding: SPACING.md,
+    padding: 10,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 8,
+    gap: 6,
   },
   progressCardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   progressLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
     flex: 1,
   },
   progressIconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
   progressName: {
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  progressLabel: {
-    fontSize: 11,
-    marginTop: 1,
-  },
-  percentageBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  percentageText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '800',
   },
+  progressLabel: {
+    fontSize: 10,
+  },
+  percentageBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  percentageText: {
+    fontSize: 12,
+    fontWeight: '900',
+  },
   progressTrack: {
-    height: 7,
+    height: 8,
     borderRadius: 4,
     overflow: 'hidden',
+    width: '100%',
   },
   progressFill: {
     height: '100%',
     borderRadius: 4,
   },
-  progressDetails: {
-    fontSize: 11,
-    fontStyle: 'italic',
-  },
 });
-

@@ -1,14 +1,16 @@
-/**
- * Error Banner & Retry Component (Level 10 Industry)
- * Ditampilkan saat terjadi kegagalan jaringan atau respons error API (500/503)
- */
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
 
-export default function ErrorBanner({ error, onRetry, theme }) {
+interface ErrorBannerProps {
+  error?: any;
+  onRetry?: () => void;
+  theme?: ThemeColors | any;
+}
+
+export default function ErrorBanner({ error, onRetry, theme }: ErrorBannerProps) {
   const isDark = theme?.isDark || false;
 
   return (
@@ -112,4 +114,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-

@@ -1,12 +1,16 @@
-/**
- * Quick Action Bar
- * Tombol pintas navigasi interaktif untuk mempermudah dosen menguji fitur-fitur utama
- */
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
+
+interface QuickActionBarProps {
+  onScrollToScore: () => void;
+  onOpenTestRunner: () => void;
+  onOpenConcepts: () => void;
+  onScrollToContact: () => void;
+  theme: ThemeColors | any;
+}
 
 export default function QuickActionBar({
   onScrollToScore,
@@ -14,35 +18,35 @@ export default function QuickActionBar({
   onOpenConcepts,
   onScrollToContact,
   theme,
-}) {
+}: QuickActionBarProps) {
   const isDark = theme?.isDark || false;
 
   const actions = [
     {
       id: 'score',
       label: 'Nilai UTS (L8)',
-      icon: 'school',
+      icon: 'school' as const,
       color: '#0284C7',
       onPress: onScrollToScore,
     },
     {
       id: 'test',
       label: 'Test Suite (L10)',
-      icon: 'speedometer',
+      icon: 'speedometer' as const,
       color: '#0D9488',
       onPress: onOpenTestRunner,
     },
     {
       id: 'concepts',
       label: 'Konsep RN (P1-P10)',
-      icon: 'book-open-page-variant',
+      icon: 'book-open-page-variant' as const,
       color: '#8B5CF6',
       onPress: onOpenConcepts,
     },
     {
       id: 'contact',
       label: 'Form Kontak (L4)',
-      icon: 'email-edit-outline',
+      icon: 'email-edit-outline' as const,
       color: '#D97706',
       onPress: onScrollToContact,
     },
@@ -86,6 +90,7 @@ export default function QuickActionBar({
 const styles = StyleSheet.create({
   wrapper: {
     marginVertical: SPACING.xs,
+    width: '100%',
   },
   container: {
     flexDirection: 'row',

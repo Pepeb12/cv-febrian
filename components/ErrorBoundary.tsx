@@ -1,24 +1,30 @@
-/**
- * Production Error Boundary
- * Menangkap runtime error React Native pada pohon komponen anak,
- * mencegah app crash (white screen of death), dan memberikan tombol pemulihan.
- */
-
-import React, { Component } from 'react';
+import React, { Component, ReactNode, ErrorInfo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ThemeColors } from '../types';
 
-export class ErrorBoundary extends Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  theme?: ThemeColors | any;
+  onReset?: () => void;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('[ErrorBoundary caught an error]:', error, errorInfo);
   }
 
@@ -128,4 +134,3 @@ const styles = StyleSheet.create({
 });
 
 export default ErrorBoundary;
-

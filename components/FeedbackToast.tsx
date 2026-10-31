@@ -1,14 +1,20 @@
-/**
- * Production Feedback Toast Banner
- * Memberikan umpan balik instan (Success, Error, Info) dengan animasi halus dan auto-dismiss
- */
-
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SPACING } from '../theme';
 
-export default function FeedbackToast({ message, type = 'info', onDismiss, duration = 3500 }) {
+interface FeedbackToastProps {
+  message?: string | null;
+  type?: 'success' | 'error' | 'warning' | 'info' | string;
+  onDismiss?: () => void;
+  duration?: number;
+}
+
+export default function FeedbackToast({
+  message,
+  type = 'info',
+  onDismiss,
+  duration = 3500,
+}: FeedbackToastProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(-20)).current;
 
@@ -19,12 +25,12 @@ export default function FeedbackToast({ message, type = 'info', onDismiss, durat
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(slideAnim, {
         toValue: 0,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
 
@@ -40,12 +46,12 @@ export default function FeedbackToast({ message, type = 'info', onDismiss, durat
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(slideAnim, {
         toValue: -20,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start(() => {
       if (onDismiss) onDismiss();
@@ -59,7 +65,7 @@ export default function FeedbackToast({ message, type = 'info', onDismiss, durat
   const isWarning = type === 'warning';
 
   let bgColor = '#0284C7';
-  let iconName = 'information-outline';
+  let iconName: any = 'information-outline';
 
   if (isSuccess) {
     bgColor = '#10B981';
@@ -134,4 +140,3 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
-

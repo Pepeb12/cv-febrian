@@ -1,13 +1,17 @@
-/**
- * Level 10 Industry Criteria & Interactive Diagnostic Showcase
- * Memberikan kontrol interaktif untuk menguji error state, empty state, normal state,
- * serta memicu live test runner untuk dosen/penguji.
- */
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
+
+interface Level10CriteriaCardProps {
+  onTriggerNormal: () => void;
+  onTriggerError: () => void;
+  onTriggerEmpty: () => void;
+  onOpenTestRunner: () => void;
+  currentState?: string;
+  theme: ThemeColors | any;
+}
 
 export default function Level10CriteriaCard({
   onTriggerNormal,
@@ -16,7 +20,7 @@ export default function Level10CriteriaCard({
   onOpenTestRunner,
   currentState = 'normal',
   theme,
-}) {
+}: Level10CriteriaCardProps) {
   const isDark = theme?.isDark || false;
 
   return (
@@ -336,4 +340,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-

@@ -1,13 +1,17 @@
-/**
- * Loading Skeleton & Spinner Component (Level 10 Industry)
- * Ditampilkan saat data sedang dimuat secara asinkron dari API LMS
- */
-
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
 
-export default function LoadingSkeleton({ message = 'Memuat data dari Academic War LMS...', theme }) {
+interface LoadingSkeletonProps {
+  message?: string;
+  theme?: ThemeColors | any;
+}
+
+export default function LoadingSkeleton({
+  message = 'Memuat data dari Academic War LMS...',
+  theme,
+}: LoadingSkeletonProps) {
   const isDark = theme?.isDark || false;
 
   return (
@@ -83,4 +87,3 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
 });
-

@@ -1,9 +1,3 @@
-/**
- * Concept Mastery & Oral Defense Modal
- * Membantu mahasiswa mempertanggungjawabkan dan menjelaskan konsep React Native
- * dari Materi P1 hingga P10 secara sistematis saat penilaian UTS oleh Dosen Penguji.
- */
-
 import React, { useState } from 'react';
 import {
   Modal,
@@ -15,12 +9,19 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
+
+interface ConceptMasteryModalProps {
+  visible: boolean;
+  onClose: () => void;
+  theme: ThemeColors | any;
+}
 
 const CONCEPTS = [
   {
     id: 'c1',
     topic: 'P1 & P2: Komponen, JSX, & Virtual DOM',
-    icon: 'react',
+    icon: 'react' as const,
     color: '#0284C7',
     summary: 'Komponen fungsional sebagai unit independen antarmuka dengan sintaks JSX.',
     keyPoints: [
@@ -28,12 +29,12 @@ const CONCEPTS = [
       'Semua tampilan dibangun dengan komponen bawaan React Native (<View>, <Text>, <Image>, <ScrollView>).',
       'Virtual DOM melakukan reconcilation yang efisien sehingga hanya elemen yang berubah yang dirender ulang.',
     ],
-    codeReference: 'components/ProfileHeader.js, components/SectionHeading.js',
+    codeReference: 'components/ProfileHeader.tsx, components/SectionHeading.js',
   },
   {
     id: 'c2',
     topic: 'P3: Aliran Data Props (Unidirectional Flow)',
-    icon: 'swap-horizontal-bold',
+    icon: 'swap-horizontal-bold' as const,
     color: '#10B981',
     summary: 'Props mengalirkan data satu arah dari parent ke child sebagai parameter murni (read-only).',
     keyPoints: [
@@ -41,12 +42,12 @@ const CONCEPTS = [
       'Contoh nyata: <MyScoreSection data={academicScoreData} theme={theme} /> menerima data akademik murni.',
       'Perubahan data di file JSON otomatis merender ulang seluruh komponen penerima props tanpa mengubah JSX.',
     ],
-    codeReference: 'App.js -> MyScoreSection.js, ProfileCard.js',
+    codeReference: 'App.tsx -> MyScoreSection.tsx, ProfileCard.tsx',
   },
   {
     id: 'c3',
     topic: 'P4: Layout Flexbox & StyleSheet',
-    icon: 'view-dashboard-outline',
+    icon: 'view-dashboard-outline' as const,
     color: '#8B5CF6',
     summary: 'Sistem tata letak deklaratif mobile menggunakan Flexbox murni tanpa layout kaku (absolute).',
     keyPoints: [
@@ -54,12 +55,12 @@ const CONCEPTS = [
       'justifyContent dan alignItems mengatur perataan konten secara responsif di berbagai resolusi layar ponsel.',
       'Progress Bar capaian belajar dibuat murni dengan dua <View> Flexbox: track background & dynamic fill { width: `${percentage}%` }.',
     ],
-    codeReference: 'theme/index.js, components/MetricBar.js, components/MyScoreSection.js',
+    codeReference: 'theme/index.js, components/MetricBar.js, components/MyScoreSection.tsx',
   },
   {
     id: 'c4',
     topic: 'P5: State Management & Event Handling',
-    icon: 'cursor-pointer',
+    icon: 'cursor-pointer' as const,
     color: '#F59E0B',
     summary: 'Pengelolaan data dinamis lokal yang memicu re-render antarmuka saat mengalami perubahan.',
     keyPoints: [
@@ -72,7 +73,7 @@ const CONCEPTS = [
   {
     id: 'c5',
     topic: 'P6: Pemisahan Data JSON Lokal (Separation of Concerns)',
-    icon: 'code-json',
+    icon: 'code-json' as const,
     color: '#EC4899',
     summary: 'Pemisahan mutlak antara data bisnis (Business Logic/Model) dengan antarmuka presentasional (View).',
     keyPoints: [
@@ -85,7 +86,7 @@ const CONCEPTS = [
   {
     id: 'c6',
     topic: 'P7 & P8: Eksplorasi Fitur Lanjut & My Score Dashboard',
-    icon: 'trophy-award',
+    icon: 'trophy-award' as const,
     color: '#F97316',
     summary: 'Implementasi komponen native tingkat lanjut dan visualisasi pencapaian akademik terpadu.',
     keyPoints: [
@@ -93,12 +94,12 @@ const CONCEPTS = [
       'Dual-Theme Switcher (Dark/Light) mengalirkan token warna terpusat ke seluruh subsistem aplikasi.',
       'Hero Score Card menampilkan Nilai 90 (Grade A), 19.000 LP, dan 4 pilar progres (Attendance, Practice, Quest, Challenge).',
     ],
-    codeReference: 'components/PortfolioGallery.js, components/MyScoreSection.js',
+    codeReference: 'components/PortfolioGallery.js, components/MyScoreSection.tsx',
   },
   {
     id: 'c7',
     topic: 'P10: Standar Industri, Service Layer, Error Boundary, & Testing',
-    icon: 'shield-check',
+    icon: 'shield-check' as const,
     color: '#0D9488',
     summary: 'Praktik rekayasa perangkat lunak mobile tingkat lanjut mendekati standar industri produksi.',
     keyPoints: [
@@ -107,11 +108,11 @@ const CONCEPTS = [
       'StorageService menggunakan @react-native-async-storage/async-storage untuk persistensi tema & draft.',
       'Automated Unit Testing Suite (tests/run-tests.js) memverifikasi 10 assertions (100% PASS) via npm test.',
     ],
-    codeReference: 'services/academicService.js, services/storageService.js, components/ErrorBoundary.js, tests/run-tests.js',
+    codeReference: 'services/academicService.js, services/storageService.js, components/ErrorBoundary.tsx, tests/run-tests.js',
   },
 ];
 
-export default function ConceptMasteryModal({ visible, onClose, theme }) {
+export default function ConceptMasteryModal({ visible, onClose, theme }: ConceptMasteryModalProps) {
   const [selectedConcept, setSelectedConcept] = useState('c1');
   const isDark = theme?.isDark || false;
 
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 540,
     maxHeight: '85%',
     borderRadius: 20,
     borderWidth: 1,

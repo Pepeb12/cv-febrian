@@ -1,8 +1,3 @@
-/**
- * Diagnostic & Automated Test Runner Modal (Level 10 Industry)
- * Memungkinkan dosen / penguji menjalankan suite pengujian otomatis secara live di dalam aplikasi
- */
-
 import React, { useState } from 'react';
 import {
   Modal,
@@ -16,10 +11,17 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
 import { runAllTests } from '../tests/unitTests';
+import { ThemeColors } from '../types';
 
-export default function DiagnosticModal({ visible, onClose, theme }) {
+interface DiagnosticModalProps {
+  visible: boolean;
+  onClose: () => void;
+  theme: ThemeColors | any;
+}
+
+export default function DiagnosticModal({ visible, onClose, theme }: DiagnosticModalProps) {
   const [isRunning, setIsRunning] = useState(false);
-  const [testReport, setTestReport] = useState(null);
+  const [testReport, setTestReport] = useState<any>(null);
 
   const isDark = theme?.isDark || false;
 
@@ -27,7 +29,6 @@ export default function DiagnosticModal({ visible, onClose, theme }) {
     setIsRunning(true);
     setTestReport(null);
     try {
-      // Sedikit jeda untuk memberikan efek visual progres
       await new Promise((resolve) => setTimeout(resolve, 350));
       const report = await runAllTests();
       setTestReport(report);
@@ -163,7 +164,7 @@ export default function DiagnosticModal({ visible, onClose, theme }) {
             ) : null}
 
             {/* List of Test Results */}
-            {testReport?.results?.map((item, index) => (
+            {testReport?.results?.map((item: any, index: number) => (
               <View
                 key={index}
                 style={[
@@ -344,4 +345,3 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 });
-

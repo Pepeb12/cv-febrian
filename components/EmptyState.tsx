@@ -1,12 +1,17 @@
-/**
- * Empty State Component (Level 10 Industry)
- * Ditampilkan saat data kosong / belum ada penilaian / hasil pencarian nihil
- */
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
+
+interface EmptyStateProps {
+  icon?: any;
+  title?: string;
+  message?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  theme?: ThemeColors | any;
+}
 
 export default function EmptyState({
   icon = 'clipboard-text-outline',
@@ -15,7 +20,7 @@ export default function EmptyState({
   actionLabel,
   onAction,
   theme,
-}) {
+}: EmptyStateProps) {
   const isDark = theme?.isDark || false;
 
   return (
@@ -91,4 +96,3 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-

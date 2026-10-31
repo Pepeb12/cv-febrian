@@ -4,14 +4,22 @@ import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
+interface IdentityDetailCardProps {
+  data?: any;
+  profile?: any;
+  theme?: any;
+}
+
 /**
- * IdentityDetailCard Component (Level 7: Theme Adaptable Education & Address)
+ * IdentityDetailCard Component (Level 10: TSX Supported Education & Address)
  */
-export default function IdentityDetailCard({ data, profile, theme }) {
+export default function IdentityDetailCard({ data, profile, theme }: IdentityDetailCardProps) {
   const student = data || profile;
   const currentTheme = theme || COLORS;
 
   if (!student) return null;
+
+  const educationList = student.educationHistory || student.education || [];
 
   return (
     <View style={styles.container}>
@@ -34,7 +42,7 @@ export default function IdentityDetailCard({ data, profile, theme }) {
         />
 
         <View style={styles.timelineContainer}>
-          {student.educationHistory.map((edu, index) => {
+          {educationList.map((edu: any, index: number) => {
             const isLatest = index === 0;
             return (
               <View key={index} style={styles.timelineItem}>
@@ -46,7 +54,7 @@ export default function IdentityDetailCard({ data, profile, theme }) {
                       isLatest ? { backgroundColor: currentTheme.primary } : null,
                     ]}
                   />
-                  {index < student.educationHistory.length - 1 && (
+                  {index < educationList.length - 1 && (
                     <View style={[styles.timelineLine, { backgroundColor: currentTheme.border }]} />
                   )}
                 </View>
@@ -59,7 +67,7 @@ export default function IdentityDetailCard({ data, profile, theme }) {
                         isLatest ? { color: currentTheme.primary } : null,
                       ]}
                     >
-                      {edu.school}
+                      {edu.school || edu.institution}
                     </Text>
                     <Text style={[styles.educationPeriod, { color: currentTheme.textMuted }]}>
                       {edu.period}
@@ -84,74 +92,76 @@ export default function IdentityDetailCard({ data, profile, theme }) {
       </View>
 
       {/* SECTION: Alamat & Domisili */}
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: currentTheme.surface,
-            borderColor: currentTheme.borderLight,
-          },
-        ]}
-      >
-        <SectionHeading
-          title="Alamat & Domisili"
-          subtitle="Informasi Tempat Tinggal & Wilayah"
-          icon="location"
-          badgeText="Domisili"
-          theme={currentTheme}
-        />
+      {student.address && (
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: currentTheme.surface,
+              borderColor: currentTheme.borderLight,
+            },
+          ]}
+        >
+          <SectionHeading
+            title="Alamat & Domisili"
+            subtitle="Informasi Tempat Tinggal & Wilayah"
+            icon="location"
+            badgeText="Domisili"
+            theme={currentTheme}
+          />
 
-        <View style={styles.cardBody}>
-          <Text style={[styles.addressText, { color: currentTheme.textSecondary }]}>
-            {student.address.fullAddress}
-          </Text>
+          <View style={styles.cardBody}>
+            <Text style={[styles.addressText, { color: currentTheme.textSecondary }]}>
+              {student.address.fullAddress}
+            </Text>
 
-          <View style={styles.addressTags}>
-            <View
-              style={[
-                styles.tag,
-                {
-                  backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.border,
-                },
-              ]}
-            >
-              <Ionicons name="home-outline" size={13} color={currentTheme.textSecondary} />
-              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                {student.address.village}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.tag,
-                {
-                  backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.border,
-                },
-              ]}
-            >
-              <Ionicons name="map-outline" size={13} color={currentTheme.textSecondary} />
-              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                {student.address.subDistrict}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.tag,
-                {
-                  backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.border,
-                },
-              ]}
-            >
-              <Ionicons name="navigate-outline" size={13} color={currentTheme.textSecondary} />
-              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                {student.address.district}
-              </Text>
+            <View style={styles.addressTags}>
+              <View
+                style={[
+                  styles.tag,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                  },
+                ]}
+              >
+                <Ionicons name="home-outline" size={13} color={currentTheme.textSecondary} />
+                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                  {student.address.village}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.tag,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                  },
+                ]}
+              >
+                <Ionicons name="map-outline" size={13} color={currentTheme.textSecondary} />
+                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                  {student.address.subDistrict}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.tag,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                  },
+                ]}
+              >
+                <Ionicons name="navigate-outline" size={13} color={currentTheme.textSecondary} />
+                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                  {student.address.district}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }

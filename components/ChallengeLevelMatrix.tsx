@@ -1,13 +1,13 @@
-/**
- * Challenge Level Matrix Navigator
- * Menampilkan matriks pencapaian Challenge Level 1 s.d. Level 10 secara terstruktur,
- * interaktif, dan dapat diinspeksi oleh dosen untuk mempermudah penilaian UTS.
- */
-
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SPACING } from '../theme';
+import { ThemeColors } from '../types';
+
+interface ChallengeLevelMatrixProps {
+  theme: ThemeColors | any;
+  onOpenConceptModal?: () => void;
+}
 
 const CHALLENGE_LEVELS = [
   {
@@ -22,7 +22,7 @@ const CHALLENGE_LEVELS = [
       'Menampilkan Foto Profil (assets/profile.png)',
       'Aplikasi dapat dijalankan di Web & Android',
     ],
-    components: 'ProfileHeader.js, ProfileCard.js',
+    components: 'ProfileHeader.tsx, ProfileCard.tsx',
     concept: 'JSX, Basic Components (<Image>, <Text>, <View>)',
   },
   {
@@ -82,7 +82,7 @@ const CHALLENGE_LEVELS = [
       'Data disimpan dalam berkas terpisah',
       'Komponen UI menerima data melalui Props pipeline',
     ],
-    components: 'App.js -> Props Pipeline ke semua komponen anak',
+    components: 'App.tsx -> Props Pipeline ke semua komponen anak',
     concept: 'Separation of Concerns & Unidirectional Data Flow',
   },
   {
@@ -97,7 +97,7 @@ const CHALLENGE_LEVELS = [
       'Impor JSON lokal secara native oleh aplikasi',
       'Struktur JSON 100% valid dan lolos parsing schema',
     ],
-    components: 'data/profile.json, App.js',
+    components: 'data/profile.json, App.tsx',
     concept: 'Data Modeling, JSON Parsing, & List Mapping',
   },
   {
@@ -130,7 +130,7 @@ const CHALLENGE_LEVELS = [
       'Learning Points: 19.000 LP',
       'Learning Progress: Attendance 100%, Practice 95%, Quest 100%, Challenge 100%',
     ],
-    components: 'data/academicScore.json, MyScoreSection.js',
+    components: 'data/academicScore.json, MyScoreSection.tsx',
     concept: 'Academic Metrics Dashboard, Dynamic Flexbox Progress Bars',
   },
   {
@@ -148,13 +148,13 @@ const CHALLENGE_LEVELS = [
       'Aksesibilitas (a11y) & gesture Pull-to-Refresh',
       'Automated testing suite (npm test: 10/10 PASS)',
     ],
-    components: 'services/*, tests/*, components/ErrorBoundary.js',
+    components: 'services/*, tests/*, components/ErrorBoundary.tsx',
     concept: 'Production Resilience, Async Storage, Automated Testing, a11y',
   },
 ];
 
-export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }) {
-  const [expandedLevel, setExpandedLevel] = useState(10); // Default open Level 10
+export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: ChallengeLevelMatrixProps) {
+  const [expandedLevel, setExpandedLevel] = useState(10);
   const isDark = theme?.isDark || false;
 
   return (

@@ -4,10 +4,16 @@ import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
+interface AboutSectionProps {
+  data?: any;
+  profile?: any;
+  theme?: any;
+}
+
 /**
- * AboutSection Component (Level 7: Theme Adaptable)
+ * AboutSection Component (Level 10: TSX Supported)
  */
-export default function AboutSection({ data, profile, theme }) {
+export default function AboutSection({ data, profile, theme }: AboutSectionProps) {
   const student = data || profile;
   const currentTheme = theme || COLORS;
 
@@ -77,7 +83,7 @@ export default function AboutSection({ data, profile, theme }) {
               { borderTopColor: currentTheme.borderLight },
             ]}
           >
-            {coreAttributes.map((attr, index) => (
+            {coreAttributes.map((attr: any, index: number) => (
               <View key={index} style={styles.attributeItem}>
                 <View style={[styles.attrBullet, { backgroundColor: currentTheme.primary }]} />
                 <View style={styles.attrTextCol}>
@@ -114,7 +120,7 @@ export default function AboutSection({ data, profile, theme }) {
           />
 
           <View style={styles.interestsList}>
-            {fieldsOfInterest.map((item) => (
+            {fieldsOfInterest.map((item: any) => (
               <View
                 key={item.id}
                 style={[
@@ -155,7 +161,7 @@ export default function AboutSection({ data, profile, theme }) {
 
                 {/* Tag / Chips Keahlian terkait Minat */}
                 <View style={styles.tagWrap}>
-                  {item.tags.map((tag, tagIdx) => (
+                  {item.tags.map((tag: string, tagIdx: number) => (
                     <View
                       key={tagIdx}
                       style={[
