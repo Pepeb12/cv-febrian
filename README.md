@@ -18,7 +18,7 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 
 ---
 
-## 🎯 Evaluasi Challenge Level (Lengkap Level 1 s.d. Level 6)
+## 🎯 Evaluasi Challenge Level (Lengkap Level 1 s.d. Level 7)
 
 ### LEVEL 1 — NOVICE (Status: ✅ Selesai)
 - [x] **NIM Mahasiswa**: Ditampilkan jelas dengan badge khusus (`242505024`).
@@ -66,49 +66,61 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 - [x] **Materi Utama: Component, Props, dan Pengorganisasian Kode**.
 
 ### LEVEL 6 — PROFICIENT (Status: ✅ Selesai)
-- [x] **Seluruh Persyaratan Level 5**: Dipertahankan secara menyeluruh.
 - [x] **Penyimpanan Data Lokal Format `.json`**:
   - Data profil disimpan murni dalam berkas terpisah: [`data/profile.json`](file:///d:/UTS%20FEBRIAN/data/profile.json).
 - [x] **Aplikasi Membaca & Menampilkan Data JSON Secara Langsung**:
-  - Diimpor langsung pada file root `App.js`:
-    ```javascript
-    import profileData from './data/profile.json';
-    ```
+  - Diimpor langsung pada file root `App.js`: `import profileData from './data/profile.json';`.
 - [x] **Struktur Data JSON Valid**:
   - Sintaks JSON 100% valid dan lolos uji parsing `JSON.parse()`.
-- [x] **Pemetaan Data ke Komponen UI Tanpa Menulis Ulang Seluruh Konten**:
-  - Objek dan array JSON langsung dipetakan ke dalam komponen presentasional melalui Props.
-- [x] **Pemisahan Data dan UI Tetap Terjaga**:
-  - Mengubah isi JSON otomatis mengubah tampilan antarmuka secara instan.
 - [x] **Materi Utama: Pemisahan Data, Struktur JSON, dan Rendering Data**.
+
+### LEVEL 7 — ADVANCED (Status: ✅ Selesai)
+- [x] **Seluruh Persyaratan Level 6**: Dipertahankan secara menyeluruh.
+- [x] **Galeri Portofolio Proyek Interaktif (Portfolio Gallery)**:
+  - Menampilkan 4 portofolio riil mahasiswa sistem informasi (*Personal CV App*, *SIMAK Masoem*, *Mobile Student Hub UI/UX*, *Inventory Logistics Database*).
+- [x] **Pencarian Real-Time & Filter Kategori Proyek**:
+  - `TextInput` pencarian kata kunci langsung memfilter kartu proyek secara instan.
+  - Filter chips kategori (*Semua, Mobile App, Web System, UI/UX Design, Database*).
+- [x] **Eksplorasi Komponen Modal React Native**:
+  - Dialog pop-up rincian proyek menggunakan komponen native `<Modal />` dengan animasi `slide`, backdrop transparan, rincian arsitektur software, dan daftar fitur utama.
+- [x] **Fitur Theme Switcher (Dark Mode / Light Mode)**:
+  - Tombol pengubah tema di header dengan transisi warna instan (latar belakang, kartu, teks, dan status bar).
+- [x] **Experience Timeline (Organisasi & Kepemimpinan)**:
+  - Menampilkan riwayat keaktifan di HIMASI Masoem University dan riset akademik dalam bentuk timeline vertikal berikon.
+- [x] **Hobby & Personal Interests Section**:
+  - Seksi hobi mahasiswa IT (Mobile App Tinkering, Tech Gadget, Chess, Photography) yang dimuat dinamis dari data JSON.
+- [x] **Materi Utama: Dynamic Content & React Native Exploration**.
 
 ---
 
-## 📁 Struktur Proyek (Level 6 Architecture)
+## 📁 Struktur Proyek (Level 7 Architecture)
 
 ```text
 ├── assets/
 │   └── profile.png                 # Foto profil formal Febrian Iradatul Rahman
 ├── components/
-│   ├── Header.js                   # Header institusi Masoem University & Level 6 Badge
-│   ├── ProfileHeader.js            # [Level 5/6] Header Profil: <ProfileHeader data={profileData} />
-│   ├── ProfileCard.js              # Kartu identitas presentasional
-│   ├── AboutSection.js             # [Level 5/6] Tentang & Minat: <AboutSection data={profileData} />
-│   ├── ContactForm.js              # [Level 5/6] Form Kontak: <ContactForm data={profileData} />
+│   ├── Header.js                   # Header institusi, Level 7 Badge, & Theme Toggle Button
+│   ├── ProfileHeader.js            # Komponen Header Profil: <ProfileHeader data={profileData} />
+│   ├── ProfileCard.js              # Kartu identitas adaptif tema
+│   ├── PortfolioGallery.js         # [Level 7] Galeri proyek: Search, Filter, & Native Modal
+│   ├── ExperienceTimeline.js       # [Level 7] Timeline riwayat organisasi & riset kampus
+│   ├── HobbySection.js             # [Level 7] Seksi hobi & minat personal dari JSON
+│   ├── AboutSection.js             # Komponen Tentang & Minat adaptif tema
+│   ├── ContactForm.js              # Komponen Form Kontak adaptif tema
 │   ├── ContactFormCard.js          # Logika form kontak, input state, dan validasi
 │   ├── InteractiveEndorseBar.js    # Tombol rekomendasi/endorse
 │   ├── MetricBar.js                # Bar statistik metrik akademik
-│   ├── SectionHeading.js           # Reusable heading hierarkis dengan ikon
+│   ├── SectionHeading.js           # Reusable heading hierarkis adaptif tema
 │   ├── SkillMatrixCard.js          # Progress bar keahlian dengan filter tabs
 │   ├── IdentityDetailCard.js       # Timeline riwayat pendidikan & domisili alamat
 │   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif
-│   └── Level6CriteriaCard.js       # Checklist evaluasi kriteria Level 6
+│   └── Level7CriteriaCard.js       # Checklist evaluasi kriteria Level 7
 ├── data/
-│   ├── profile.json                # [Level 6] Data lokal murni berekstensi .json
-│   └── profileData.js              # Bridge re-exporting profile.json
+│   ├── profile.json                # Data lokal murni: profil, portofolio, hobi, & pengalaman
+│   └── profileData.js              # Bridge re-exporting data JSON
 ├── theme/
-│   └── index.js                    # Design tokens: COLORS, SPACING, TYPOGRAPHY, SHADOWS
-├── App.js                          # Root component yang mengimpor profile.json langsung
+│   └── index.js                    # Dual-theme tokens (LIGHT_THEME & DARK_THEME, getTheme)
+├── App.js                          # Root component: Theme Switcher & Level 7 state management
 ├── app.json                        # Konfigurasi aplikasi Expo
 └── package.json                    # Dependensi Expo & React Native Web
 ```
@@ -138,18 +150,18 @@ Aplikasi mendukung tampilan ganda (**Web & Android**):
 
 ---
 
-## 💡 Panduan Menjelaskan Materi Level 6 ke Dosen Penguji
+## 💡 Panduan Menjelaskan Materi Level 7 ke Dosen Penguji
 
-Jika dosen menanyakan implementasi **Level 6 (Local JSON Data)**:
+Jika dosen menanyakan fitur eksplorasi mandiri **Level 7 (Dynamic Content & React Native Exploration)**:
 
-1. **Penyimpanan Data Berformat JSON (`data/profile.json`)**:
-   > *"Pada Level 6 ini, data identitas mahasiswa disimpan dalam format universal JSON (`data/profile.json`). Berkas ini berisi pasangan key-value murni tanpa fungsi ataupun sintaks JavaScript khusus, sehingga data bersifat independen dari bahasa pemrograman (language-agnostic)."*
+1. **Eksplorasi Komponen Modal Native React Native (`PortfolioGallery.js`)**:
+   > *"Untuk menampilkan rincian proyek secara mendalam tanpa berpindah layar navigasi, saya mengeksplorasi komponen bawaan `<Modal />` dari React Native. Ketika tombol 'Lihat Detail' ditekan, state `activeProject` diisi dengan objek proyek yang dipilih, lalu Modal muncul dengan animasi halus `animationType="slide"` dan latar transparan."*
 
-2. **Cara Membaca File JSON di Expo / React Native**:
-   > *"Ekosistem Expo dan Metro Bundler mendukung pembacaan berkas JSON secara native. Di dalam `App.js`, saya cukup menuliskan `import profileData from './data/profile.json';`. Bundler Metro secara otomatis mem-parsing teks JSON menjadi JavaScript Object yang siap pakai."*
+2. **Pencarian Real-Time dan Multi-Filtering**:
+   > *"Pada `PortfolioGallery.js`, saya menggabungkan state `searchQuery` dan `selectedCategory`. Fungsi filter membandingkan query teks dengan judul, deskripsi, serta array teknologi (`proj.technologies.some(...)`), sehingga pengguna dapat mencari proyek berdasarkan keyword teknologi seperti 'React', 'Figma', atau 'MySQL' secara instan."*
 
-3. **Perbedaan Mendasar Data JSON dengan Komponen UI**:
-   > *"**Data JSON** hanyalah representasi teks statis yang menyimpan informasi terstruktur (hanya mendukung tipe data string, number, boolean, array, object, dan null). Sedangkan **Komponen UI** adalah fungsi React yang menghasilkan elemen visual dinamis (JSX), memiliki siklus hidup (lifecycle), dapat menyimpan state internal, serta mampu merespons interaksi pengguna melalui event handling."*
+3. **Eksplorasi Theme Switcher (Dark Mode / Light Mode)**:
+   > *"Pada `theme/index.js`, saya membuat arsitektur dual-theme: `LIGHT_THEME` dan `DARK_THEME` dengan fungsi `getTheme(isDark)`. State `isDarkMode` dikelola di root `App.js` dan dapat diubah melalui tombol toggle bulan/matahari di header. Saat tema berganti, seluruh komponen, kartu, teks, border, serta `<StatusBar />` berubah warna secara dinamis."*
 
-4. **Pemetaan Data (*Data Mapping*)**:
-   > *"Data yang dimuat dari JSON diteruskan ke komponen-komponen antarmuka melalui props (misalnya `<ProfileHeader data={profileData} />` dan `<AboutSection data={profileData} />`). Komponen kemudian melakukan pemetaan array (seperti `profileData.fieldsOfInterest.map(...)`) untuk menampilkan daftar kartu secara efisien tanpa menuliskan ulang konten secara manual."*
+4. **Timeline Pengalaman Organisasi & Seksi Hobi**:
+   > *"Saya menambahkan data pengalaman organisasi mahasiswa (HIMASI Masoem University) dan seksi hobi di `data/profile.json`. Data ini dirender secara dinamis menggunakan komponen terisolasi `ExperienceTimeline.js` dan `HobbySection.js` dengan visual bullet node dan palet warna representatif."*

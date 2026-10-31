@@ -4,11 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * InteractiveEndorseBar Component (Materi P3 & P5: Props, State & Event Handling)
- * Tombol interaksi untuk memberikan dukungan / rekomendasi keahlian mahasiswa.
+ * InteractiveEndorseBar Component (Level 7: Theme Adaptable Endorse Button)
  */
-export default function InteractiveEndorseBar({ studentName, initialCount = 48 }) {
-  // State untuk mengelola jumlah dukungan dan status apakah user sudah endorse (Materi P3 & P5)
+export default function InteractiveEndorseBar({ studentName, initialCount = 48, theme }) {
+  const currentTheme = theme || COLORS;
   const [endorseCount, setEndorseCount] = useState(initialCount);
   const [isEndorsed, setIsEndorsed] = useState(false);
 
@@ -30,11 +29,21 @@ export default function InteractiveEndorseBar({ studentName, initialCount = 48 }
   };
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.primaryBorder,
+        },
+      ]}
+    >
       <View style={styles.contentRow}>
         <View style={styles.textCol}>
-          <Text style={styles.titleText}>Rekomendasikan Profil Mahasiswa</Text>
-          <Text style={styles.subText}>
+          <Text style={[styles.titleText, { color: currentTheme.textPrimary }]}>
+            Rekomendasikan Profil Mahasiswa
+          </Text>
+          <Text style={[styles.subText, { color: currentTheme.textMuted }]}>
             Dukung keahlian Sistem Informasi & Mobile Development {studentName}
           </Text>
         </View>
@@ -42,7 +51,13 @@ export default function InteractiveEndorseBar({ studentName, initialCount = 48 }
         <TouchableOpacity
           style={[
             styles.endorseButton,
-            isEndorsed ? styles.endorsedActiveButton : null,
+            {
+              backgroundColor: currentTheme.primaryLight,
+              borderColor: currentTheme.primaryBorder,
+            },
+            isEndorsed
+              ? { backgroundColor: currentTheme.primary, borderColor: currentTheme.primary }
+              : null,
           ]}
           activeOpacity={0.8}
           onPress={handleToggleEndorse}
@@ -50,12 +65,12 @@ export default function InteractiveEndorseBar({ studentName, initialCount = 48 }
           <Ionicons
             name={isEndorsed ? 'thumbs-up' : 'thumbs-up-outline'}
             size={18}
-            color={isEndorsed ? '#FFFFFF' : COLORS.primary}
+            color={isEndorsed ? '#FFFFFF' : currentTheme.primary}
           />
           <Text
             style={[
               styles.endorseButtonText,
-              isEndorsed ? styles.endorsedActiveText : null,
+              { color: isEndorsed ? '#FFFFFF' : currentTheme.primary },
             ]}
           >
             {isEndorsed ? 'Didukung' : 'Endorse'} ({endorseCount})
@@ -68,11 +83,9 @@ export default function InteractiveEndorseBar({ studentName, initialCount = 48 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
     marginBottom: SPACING.lg,
     ...SHADOWS.sm,
   },
@@ -88,36 +101,23 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 13,
     fontWeight: '800',
-    color: COLORS.textPrimary,
   },
   subText: {
     fontSize: 11,
-    color: COLORS.textMuted,
     marginTop: 2,
     lineHeight: 15,
   },
   endorseButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.primaryLight,
     paddingVertical: 9,
     paddingHorizontal: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
     gap: 6,
-  },
-  endorsedActiveButton: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
   },
   endorseButtonText: {
     fontSize: 12,
     fontWeight: '800',
-    color: COLORS.primary,
-  },
-  endorsedActiveText: {
-    color: '#FFFFFF',
   },
 });
-

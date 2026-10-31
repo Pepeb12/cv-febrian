@@ -10,97 +10,156 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-// Import Data Lokal Format JSON (Materi LEVEL 6: Local JSON Data Integration)
+// Import Data Lokal Format JSON (Materi Level 6 & Level 7)
 import profileData from './data/profile.json';
 
-// Import Komponen UI Bersih & Reusable (Level 5 & Level 6 Structure)
+// Import Theme System (Materi Level 7: Dark / Light Mode Switcher)
+import { getTheme, SPACING } from './theme';
+
+// Import Komponen UI Bersih & Modular
 import Header from './components/Header';
 import ProfileHeader from './components/ProfileHeader';
-import AboutSection from './components/AboutSection';
-import ContactForm from './components/ContactForm';
 import MetricBar from './components/MetricBar';
 import InteractiveEndorseBar from './components/InteractiveEndorseBar';
+import PortfolioGallery from './components/PortfolioGallery';
+import ExperienceTimeline from './components/ExperienceTimeline';
+import HobbySection from './components/HobbySection';
+import AboutSection from './components/AboutSection';
 import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
-import Level6CriteriaCard from './components/Level6CriteriaCard';
-import { COLORS, SPACING } from './theme';
+import ContactForm from './components/ContactForm';
+import Level7CriteriaCard from './components/Level7CriteriaCard';
 
 export default function App() {
-  // State untuk menghitung pesan terkirim secara dinamis
+  // 1. State Tema Gelap / Terang (Theme Switcher - Level 7)
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const theme = getTheme(isDarkMode);
+
+  // 2. State untuk interaksi pesan kontak
   const [messagesReceivedCount, setMessagesReceivedCount] = useState(0);
 
   const handleMessageSent = () => {
     setMessagesReceivedCount((prev) => prev + 1);
   };
 
+  const handleToggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
+
   const handleShowValidation = () => {
-    const info = `LEVEL 6 — PROFICIENT EVALUATION:\n\n• Sumber Data: data/profile.json (Format JSON Asli)\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Program Studi: ${profileData.prodi} (Semester ${profileData.semester})\n• Kampus: ${profileData.kampus}\n• Status JSON: Valid & Berhasil diimpor langsung via "import profileData from './data/profile.json'"\n• Pemetaan Data: Dipetakan ke UI secara otomatis via Props tanpa hardcoding\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
+    const info = `LEVEL 7 — ADVANCED EVALUATION:\n\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Mode Tema: ${isDarkMode ? 'Dark Mode (Mode Gelap)' : 'Light Mode (Mode Terang)'}\n• Fitur Eksplorasi 1: Portfolio Gallery dengan Real-Time Search & Category Filter\n• Fitur Eksplorasi 2: Interactive Modal Popup Rincian Proyek\n• Fitur Eksplorasi 3: Experience Timeline Organisasi & Riset\n• Fitur Eksplorasi 4: Hobby & Personal Interests Section dari JSON\n• Fitur Eksplorasi 5: Dual-Theme Switcher (Dark/Light)\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 6', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 7', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
-        <StatusBar style="dark" backgroundColor="#FFFFFF" />
+      <SafeAreaView
+        style={[
+          styles.safeArea,
+          {
+            backgroundColor: Platform.select({
+              web: isDarkMode ? '#050811' : '#F1F5F9',
+              default: theme.background,
+            }),
+          },
+        ]}
+        edges={['top', 'left', 'right', 'bottom']}
+      >
+        <StatusBar style={isDarkMode ? 'light' : 'dark'} backgroundColor={theme.surface} />
 
-        {/* Outer Container (Responsive Mobile Simulator Frame di Web & Full Screen di Android) */}
-        <View style={styles.appContainer}>
-          {/* Header Institusi & Level 6 Indicator */}
-          <Header />
+        {/* Outer Container (Simulator Frame di Web & Full Screen di Android) */}
+        <View
+          style={[
+            styles.appContainer,
+            {
+              backgroundColor: theme.background,
+              borderColor: theme.border,
+            },
+          ]}
+        >
+          {/* Header Institusi, Badge Level 7, & Theme Switcher Button */}
+          <Header
+            isDarkMode={isDarkMode}
+            onToggleTheme={handleToggleTheme}
+            theme={theme}
+          />
 
           <ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU IDENTITAS UTAMA (Menerima data JSON via Props: <ProfileHeader data={profileData} />) */}
-            <ProfileHeader data={profileData} />
+            {/* 1. KARTU IDENTITAS UTAMA (Digital Student Card) */}
+            <ProfileHeader data={profileData} theme={theme} />
 
-            {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Menerima data JSON via Props) */}
+            {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Endorse Mahasiswa) */}
             <InteractiveEndorseBar
               studentName={profileData.namaPanggilan}
               initialCount={profileData.initialEndorseCount}
+              theme={theme}
             />
 
-            {/* 3. BAR STATISTIK METRIK AKADEMIK (Menerima data JSON via Props) */}
-            <MetricBar metrics={profileData.academicMetrics} />
+            {/* 3. BAR STATISTIK METRIK AKADEMIK */}
+            <MetricBar metrics={profileData.academicMetrics} theme={theme} />
 
-            {/* 4. CHECKLIST EVALUASI LEVEL 6 (Local JSON Data Verification) */}
-            <Level6CriteriaCard onShowDetail={handleShowValidation} />
+            {/* 4. CHECKLIST EVALUASI LEVEL 7 (Advanced Features Verification) */}
+            <Level7CriteriaCard
+              onShowDetail={handleShowValidation}
+              theme={theme}
+            />
 
-            {/* 5. SEKSI TENTANG SAYA & SPESIALISASI MINAT (Menerima data JSON via Props: <AboutSection data={profileData} />) */}
-            <AboutSection data={profileData} />
+            {/* 5. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL DETAIL (Eksplorasi Level 7) */}
+            <PortfolioGallery
+              portfolios={profileData.portfolios}
+              theme={theme}
+            />
 
-            {/* 6. KEAHLIAN TEKNIS DENGAN PROGRESS BAR (Menerima data JSON via Props) */}
-            <SkillMatrixCard skills={profileData.technicalSkills} />
+            {/* 6. PENGALAMAN ORGANISASI & RISET TIMELINE (Eksplorasi Level 7) */}
+            <ExperienceTimeline
+              experiences={profileData.experience}
+              theme={theme}
+            />
 
-            {/* 7. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT (Menerima data JSON via Props) */}
-            <IdentityDetailCard data={profileData} />
+            {/* 7. MINAT & HOBI PRIBADI (Eksplorasi Level 7) */}
+            <HobbySection
+              hobbies={profileData.hobbies}
+              theme={theme}
+            />
 
-            {/* 8. GRID KONTAK & KOMUNIKASI (Menerima data JSON via Props) */}
-            <ContactGridCard contactItems={profileData.contactItems} />
+            {/* 8. SEKSI TENTANG SAYA & SPESIALISASI MINAT */}
+            <AboutSection data={profileData} theme={theme} />
 
-            {/* 9. FORMULIR KONTAK INTERAKTIF (Menerima data JSON via Props: <ContactForm data={profileData} />) */}
+            {/* 9. KEAHLIAN TEKNIS DENGAN FILTER TABS & PROGRESS BAR */}
+            <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+
+            {/* 10. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
+            <IdentityDetailCard data={profileData} theme={theme} />
+
+            {/* 11. GRID KONTAK & KOMUNIKASI */}
+            <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
+
+            {/* 12. FORMULIR KONTAK INTERAKTIF DENGAN VALIDASI & RESPONS */}
             <ContactForm
               data={profileData}
               onMessageSent={handleMessageSent}
+              theme={theme}
             />
 
-            {/* 10. FOOTER INFORMASI UTS */}
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>
+            {/* 13. FOOTER INFORMASI UTS */}
+            <View style={[styles.footer, { borderTopColor: theme.border }]}>
+              <Text style={[styles.footerText, { color: theme.textSecondary }]}>
                 UTS Pemrograman Mobile • Masoem University
               </Text>
-              <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App — LEVEL 6 (Proficient)
+              <Text style={[styles.footerSubtext, { color: theme.textMuted }]}>
+                Personal CV & Academic Score App — LEVEL 7 (Advanced)
               </Text>
-              <Text style={styles.copyrightText}>
+              <Text style={[styles.copyrightText, { color: theme.textLight }]}>
                 © 2026 {profileData.nama} ({profileData.nim})
               </Text>
             </View>
@@ -114,20 +173,17 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Platform.select({ web: '#F1F5F9', default: COLORS.background }),
     alignItems: 'center',
   },
   appContainer: {
     flex: 1,
     width: '100%',
     maxWidth: 500, // Menjaga rasio tampilan mobile di layar Web desktop
-    backgroundColor: COLORS.background,
     ...Platform.select({
       web: {
-        boxShadow: '0 4px 28px rgba(15, 23, 42, 0.08)',
+        boxShadow: '0 4px 32px rgba(0, 0, 0, 0.15)',
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        borderColor: COLORS.border,
       },
     }),
   },
@@ -143,21 +199,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: SPACING.lg,
     borderTopWidth: 1,
-    borderTopColor: COLORS.border,
   },
   footerText: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textSecondary,
   },
   footerSubtext: {
     fontSize: 11,
-    color: COLORS.textMuted,
     marginTop: 2,
   },
   copyrightText: {
     fontSize: 10,
-    color: COLORS.textLight,
     marginTop: 4,
   },
 });

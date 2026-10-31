@@ -4,28 +4,48 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING } from '../theme';
 
 /**
- * SectionHeading Component (Materi P4: Reusable Component & Typography Hierarchy)
- * Menampilkan judul section hierarkis dengan ikon dan subjudul deskriptif.
+ * SectionHeading Component (Reusable Typography Component)
+ * Mendukung warna dinamis melalui prop `theme`.
  */
-export default function SectionHeading({ title, subtitle, icon, badgeText }) {
+export default function SectionHeading({ title, subtitle, icon, badgeText, theme }) {
+  const currentTheme = theme || COLORS;
+
   return (
     <View style={styles.headingContainer}>
       <View style={styles.topRow}>
         <View style={styles.titleWithIcon}>
           {icon && (
-            <View style={styles.iconWrapper}>
-              <Ionicons name={icon} size={18} color={COLORS.primary} />
+            <View
+              style={[
+                styles.iconWrapper,
+                { backgroundColor: currentTheme.primaryLight },
+              ]}
+            >
+              <Ionicons name={icon} size={18} color={currentTheme.primary} />
             </View>
           )}
-          <Text style={styles.mainTitle}>{title}</Text>
+          <Text style={[styles.mainTitle, { color: currentTheme.textPrimary }]}>
+            {title}
+          </Text>
         </View>
         {badgeText && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{badgeText}</Text>
+          <View
+            style={[
+              styles.badge,
+              { backgroundColor: currentTheme.surfaceMuted },
+            ]}
+          >
+            <Text style={[styles.badgeText, { color: currentTheme.textSecondary }]}>
+              {badgeText}
+            </Text>
           </View>
         )}
       </View>
-      {subtitle ? <Text style={styles.subTitle}>{subtitle}</Text> : null}
+      {subtitle ? (
+        <Text style={[styles.subTitle, { color: currentTheme.textMuted }]}>
+          {subtitle}
+        </Text>
+      ) : null}
     </View>
   );
 }
@@ -49,24 +69,20 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 7,
-    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mainTitle: {
     fontSize: 16,
     fontWeight: '800',
-    color: COLORS.textPrimary,
     letterSpacing: 0.3,
   },
   subTitle: {
     fontSize: 12,
-    color: COLORS.textMuted,
     marginTop: 2,
     paddingLeft: 36,
   },
   badge: {
-    backgroundColor: COLORS.surfaceMuted,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
@@ -74,7 +90,6 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: COLORS.textSecondary,
     textTransform: 'uppercase',
   },
 });

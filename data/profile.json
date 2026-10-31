@@ -79,6 +79,146 @@
       "tags": ["MySQL", "PostgreSQL", "ERD Modeling", "Data Flow"]
     }
   ],
+  "portfolios": [
+    {
+      "id": "proj-1",
+      "title": "Personal CV & Score App",
+      "category": "Mobile App",
+      "role": "Lead Mobile Developer",
+      "year": "2026",
+      "icon": "phone-portrait",
+      "accentColor": "#2563EB",
+      "shortDesc": "Aplikasi digital identitas mahasiswa, portofolio interaktif, dan capaian akademik berbasis React Native & Expo.",
+      "fullDesc": "Aplikasi komprehensif yang dirancang sebagai identitas digital mahasiswa Masoem University. Memadukan modular architecture, visual progress bars, validasi formulir kontak interaktif, integrasi data JSON lokal, dan fitur pengubah tema gelap/terang.",
+      "technologies": ["React Native", "Expo SDK", "JavaScript ES6+", "Flexbox", "Local JSON"],
+      "features": [
+        "Pemisahan data murni melalui profile.json",
+        "Formulir kontak interaktif dengan validasi real-time",
+        "Filter keahlian dinamis dan sistem progress bar",
+        "Dukungan tampilan ganda Android dan Web"
+      ]
+    },
+    {
+      "id": "proj-2",
+      "title": "Sistem Akademik Kampus (SIMAK)",
+      "category": "Web System",
+      "role": "Systems Analyst & UI Designer",
+      "year": "2025",
+      "icon": "globe",
+      "accentColor": "#059669",
+      "shortDesc": "Analisis dan rancang bangun sistem informasi manajemen nilai, KRS, dan absensi mahasiswa.",
+      "fullDesc": "Proyek perancangan sistem informasi akademik untuk otomatisasi proses pengisian KRS dan rekapitulasi nilai. Dilengkapi diagram UML lengkap (Use Case, Activity, Sequence) dan skema ERD basis data terenkripsi.",
+      "technologies": ["Systems Analysis", "UML", "BPMN", "MySQL", "Figma"],
+      "features": [
+        "Dokumentasi Software Requirements Specification (SRS)",
+        "Pemodelan DFD Level 0 s.d. Level 2",
+        "Perancangan 12 tabel relasional ternormalisasi (3NF)",
+        "Prototyping interaktif antarmuka portal mahasiswa"
+      ]
+    },
+    {
+      "id": "proj-3",
+      "title": "Masoem Student Mobile Hub (UI/UX)",
+      "category": "UI/UX Design",
+      "role": "UI/UX Designer",
+      "year": "2025",
+      "icon": "color-palette",
+      "accentColor": "#7C3AED",
+      "shortDesc": "Desain antarmuka mobile modern untuk portal terintegrasi mahasiswa dan kegiatan kampus.",
+      "fullDesc": "Riset pengalaman pengguna (UX research) dan perancangan antarmuka mobile beresolusi tinggi (High-Fidelity) di Figma. Menerapkan Human Interface Guidelines dan Material Design 3 dengan komponen auto-layout.",
+      "technologies": ["Figma", "User Journey", "Wireframing", "Design System"],
+      "features": [
+        "Pembuatan 24+ layar aplikasi mobile interaktif",
+        "Design System dengan 40+ varian reusable component",
+        "Pengujian usabilitas (Usability Testing) kepada 15 mahasiswa",
+        "Skor SUS (System Usability Scale) mencapai 84.5"
+      ]
+    },
+    {
+      "id": "proj-4",
+      "title": "Inventory & Logistics Information System",
+      "category": "Database System",
+      "role": "Database Architect",
+      "year": "2024",
+      "icon": "server",
+      "accentColor": "#D97706",
+      "shortDesc": "Perancangan arsitektur basis data relasional untuk sistem pergudangan dan pencatatan stok barang.",
+      "fullDesc": "Implementasi basis data terdistribusi yang mengelola pencatatan stok masuk, stok keluar, purchase order, dan alert stok minimum menggunakan stored procedure dan database trigger.",
+      "technologies": ["MySQL", "Stored Procedure", "SQL Query Optimization", "ERD"],
+      "features": [
+        "Penerapan Indexing untuk percepatan query transaksi besar",
+        "Otomatisasi trigger audit log histori mutasi barang",
+        "Pencegahan deadlock dengan transaksi ACID yang ketat",
+        "Integrasi backup otomatis dan restore recovery plan"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "id": "exp-1",
+      "role": "Anggota Divisi Pengembangan Teknologi",
+      "organization": "Himpunan Mahasiswa Sistem Informasi (HIMASI)",
+      "period": "2024 - Sekarang",
+      "type": "Organisasi Kampus",
+      "icon": "people",
+      "color": "#2563EB",
+      "description": "Mengembangkan inisiatif workshop pemrograman mobile dan mentoring coding bagi mahasiswa baru Sistem Informasi Masoem University."
+    },
+    {
+      "id": "exp-2",
+      "role": "Ketua Tim Proyek Riset Rekayasa Perangkat Lunak",
+      "organization": "Fakultas Ilmu Komputer Masoem University",
+      "period": "2025",
+      "type": "Akademik & Riset",
+      "icon": "bulb",
+      "color": "#059669",
+      "description": "Memimpin tim 4 mahasiswa dalam merancang arsitektur perangkat lunak mobile untuk digitalisasi layanan akademik."
+    },
+    {
+      "id": "exp-3",
+      "role": "Peserta Pelatihan Mobile App Development",
+      "organization": "Digital Talent & Technology Bootcamp",
+      "period": "2024",
+      "type": "Pelatihan Eksternal",
+      "icon": "ribbon",
+      "color": "#7C3AED",
+      "description": "Menyelesaikan kurikulum intensif React Native, API consumption, dan state management modern."
+    }
+  ],
+  "hobbies": [
+    {
+      "id": "hobby-1",
+      "name": "Mobile App Tinkering",
+      "icon": "code-slash",
+      "color": "#2563EB",
+      "bg": "#EFF6FF",
+      "desc": "Mengeksplorasi library baru di Expo dan mencoba implementasi UI modern."
+    },
+    {
+      "id": "hobby-2",
+      "name": "Tech Reading & Gadget",
+      "icon": "newspaper",
+      "color": "#059669",
+      "bg": "#ECFDF5",
+      "desc": "Mengikuti perkembangan teknologi AI, arsitektur software, dan mobile hardware terkini."
+    },
+    {
+      "id": "hobby-3",
+      "name": "Chess & Strategic Games",
+      "icon": "game-controller",
+      "color": "#7C3AED",
+      "bg": "#F5F3FF",
+      "desc": "Melatih kemampuan berpikir analitis, pemecahan masalah bertahap, dan konsentrasi."
+    },
+    {
+      "id": "hobby-4",
+      "name": "Photography & Design",
+      "icon": "camera",
+      "color": "#D97706",
+      "bg": "#FFFBEB",
+      "desc": "Mengabadikan estetika visual perkotaan dan merancang komposisi layout visual."
+    }
+  ],
   "coreAttributes": [
     {
       "label": "Problem Solving",
@@ -173,4 +313,3 @@
   ],
   "initialEndorseCount": 48
 }
-

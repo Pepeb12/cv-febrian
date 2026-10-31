@@ -5,11 +5,11 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * AboutSection Component (Level 5: Separation of UI and Data)
- * Menerima data melalui Props `data` sesuai konvensi Level 5.
+ * AboutSection Component (Level 7: Theme Adaptable)
  */
-export default function AboutSection({ data, profile }) {
+export default function AboutSection({ data, profile, theme }) {
   const student = data || profile;
+  const currentTheme = theme || COLORS;
 
   if (!student) return null;
 
@@ -18,43 +18,75 @@ export default function AboutSection({ data, profile }) {
   return (
     <View style={styles.container}>
       {/* SECTION 1: Personal Introduction */}
-      <View style={styles.card}>
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: currentTheme.surface,
+            borderColor: currentTheme.borderLight,
+          },
+        ]}
+      >
         <SectionHeading
           title="Tentang Saya"
           subtitle="Personal Introduction & Career Vision"
           icon="person-circle"
           badgeText="Intro"
+          theme={currentTheme}
         />
 
         <View style={styles.introContent}>
           {introduction?.headline && (
-            <Text style={styles.headlineText}>{introduction.headline}</Text>
+            <Text style={[styles.headlineText, { color: currentTheme.textPrimary }]}>
+              {introduction.headline}
+            </Text>
           )}
-          <Text style={styles.paragraphText}>
+          <Text style={[styles.paragraphText, { color: currentTheme.textSecondary }]}>
             {deskripsi || introduction?.summary}
           </Text>
           {introduction?.detailedBio && (
-            <Text style={styles.paragraphText}>{introduction.detailedBio}</Text>
+            <Text style={[styles.paragraphText, { color: currentTheme.textSecondary }]}>
+              {introduction.detailedBio}
+            </Text>
           )}
 
           {/* Kutipan / Personal Motto */}
           {introduction?.motto && (
-            <View style={styles.quoteBox}>
-              <Ionicons name="chatbubble-ellipses" size={16} color={COLORS.primary} />
-              <Text style={styles.quoteText}>{introduction.motto}</Text>
+            <View
+              style={[
+                styles.quoteBox,
+                {
+                  backgroundColor: currentTheme.primaryLight,
+                  borderLeftColor: currentTheme.primary,
+                },
+              ]}
+            >
+              <Ionicons name="chatbubble-ellipses" size={16} color={currentTheme.primary} />
+              <Text style={[styles.quoteText, { color: currentTheme.primary }]}>
+                {introduction.motto}
+              </Text>
             </View>
           )}
         </View>
 
         {/* Core Attributes Pill Grid */}
         {coreAttributes && (
-          <View style={styles.attributesContainer}>
+          <View
+            style={[
+              styles.attributesContainer,
+              { borderTopColor: currentTheme.borderLight },
+            ]}
+          >
             {coreAttributes.map((attr, index) => (
               <View key={index} style={styles.attributeItem}>
-                <View style={styles.attrBullet} />
+                <View style={[styles.attrBullet, { backgroundColor: currentTheme.primary }]} />
                 <View style={styles.attrTextCol}>
-                  <Text style={styles.attrLabel}>{attr.label}</Text>
-                  <Text style={styles.attrDesc}>{attr.desc}</Text>
+                  <Text style={[styles.attrLabel, { color: currentTheme.textPrimary }]}>
+                    {attr.label}
+                  </Text>
+                  <Text style={[styles.attrDesc, { color: currentTheme.textMuted }]}>
+                    {attr.desc}
+                  </Text>
                 </View>
               </View>
             ))}
@@ -64,25 +96,41 @@ export default function AboutSection({ data, profile }) {
 
       {/* SECTION 2: Bidang Minat / Areas of Interest */}
       {fieldsOfInterest && (
-        <View style={styles.card}>
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: currentTheme.surface,
+              borderColor: currentTheme.borderLight,
+            },
+          ]}
+        >
           <SectionHeading
             title="Bidang Minat & Spesialisasi"
             subtitle="Areas of Interest in Information Systems"
             icon="sparkles"
             badgeText="Spesialisasi"
+            theme={currentTheme}
           />
 
           <View style={styles.interestsList}>
             {fieldsOfInterest.map((item) => (
               <View
                 key={item.id}
-                style={[styles.interestCard, { borderLeftColor: item.accentColor }]}
+                style={[
+                  styles.interestCard,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                    borderLeftColor: item.accentColor,
+                  },
+                ]}
               >
                 <View style={styles.interestTopRow}>
                   <View
                     style={[
                       styles.interestIconBox,
-                      { backgroundColor: item.bgColor },
+                      { backgroundColor: item.accentColor + '18' },
                     ]}
                   >
                     <Ionicons
@@ -92,20 +140,35 @@ export default function AboutSection({ data, profile }) {
                     />
                   </View>
                   <View style={styles.interestTitleCol}>
-                    <Text style={styles.interestTitle}>{item.title}</Text>
-                    <Text style={styles.interestCategory}>{item.category}</Text>
+                    <Text style={[styles.interestTitle, { color: currentTheme.textPrimary }]}>
+                      {item.title}
+                    </Text>
+                    <Text style={[styles.interestCategory, { color: currentTheme.textMuted }]}>
+                      {item.category}
+                    </Text>
                   </View>
                 </View>
 
-                <Text style={styles.interestDescription}>
+                <Text style={[styles.interestDescription, { color: currentTheme.textSecondary }]}>
                   {item.description}
                 </Text>
 
                 {/* Tag / Chips Keahlian terkait Minat */}
                 <View style={styles.tagWrap}>
                   {item.tags.map((tag, tagIdx) => (
-                    <View key={tagIdx} style={styles.tagPill}>
-                      <Text style={styles.tagPillText}>{tag}</Text>
+                    <View
+                      key={tagIdx}
+                      style={[
+                        styles.tagPill,
+                        {
+                          backgroundColor: currentTheme.surface,
+                          borderColor: currentTheme.border,
+                        },
+                      ]}
+                    >
+                      <Text style={[styles.tagPillText, { color: currentTheme.textSecondary }]}>
+                        {tag}
+                      </Text>
                     </View>
                   ))}
                 </View>
@@ -124,11 +187,9 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     ...SHADOWS.md,
   },
   introContent: {
@@ -138,29 +199,24 @@ const styles = StyleSheet.create({
   headlineText: {
     fontSize: 16,
     fontWeight: '800',
-    color: COLORS.textPrimary,
   },
   paragraphText: {
     fontSize: 13,
-    color: COLORS.textSecondary,
     lineHeight: 21,
     textAlign: 'justify',
   },
   quoteBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
     padding: SPACING.md,
     gap: SPACING.sm,
     marginTop: SPACING.xs,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.primary,
   },
   quoteText: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: COLORS.primary,
     flex: 1,
     fontWeight: '600',
   },
@@ -168,7 +224,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     paddingTop: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.borderLight,
     gap: SPACING.sm,
   },
   attributeItem: {
@@ -180,7 +235,6 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: COLORS.primary,
     marginTop: 6,
   },
   attrTextCol: {
@@ -189,11 +243,9 @@ const styles = StyleSheet.create({
   attrLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   attrDesc: {
     fontSize: 11,
-    color: COLORS.textMuted,
     lineHeight: 16,
   },
   interestsList: {
@@ -201,11 +253,9 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
   },
   interestCard: {
-    backgroundColor: '#FAFAFA',
     borderRadius: 12,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border,
     borderLeftWidth: 4,
   },
   interestTopRow: {
@@ -227,16 +277,13 @@ const styles = StyleSheet.create({
   interestTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   interestCategory: {
     fontSize: 11,
-    color: COLORS.textMuted,
     fontWeight: '500',
   },
   interestDescription: {
     fontSize: 12,
-    color: COLORS.textSecondary,
     lineHeight: 18,
     marginBottom: SPACING.sm,
   },
@@ -246,17 +293,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   tagPill: {
-    backgroundColor: COLORS.surface,
     borderWidth: 1,
-    borderColor: COLORS.border,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
   },
   tagPillText: {
     fontSize: 11,
-    color: COLORS.textSecondary,
     fontWeight: '600',
   },
 });
-

@@ -1,19 +1,17 @@
 import { Platform } from 'react-native';
 
 /**
- * Design Tokens & Theme System (Materi P4: Layout & Styling React Native)
- * Standarisasi warna, tipografi, jarak (spacing), dan bayangan (shadow)
- * untuk menjamin konsistensi visual di seluruh aplikasi.
+ * Design Tokens & Dual-Theme System (Materi Level 7: Theme Switcher Exploration)
+ * Mendukung mode Terang (Light Mode) dan mode Gelap (Dark Mode) secara dinamis.
  */
 
-export const COLORS = {
-  // Brand & Primary
-  primary: '#1E40AF',       // Deep Royal Blue (Masoem University Brand)
-  primaryLight: '#EFF6FF',  // Soft Blue Tint
+export const LIGHT_THEME = {
+  isDark: false,
+  primary: '#1E40AF',       // Deep Royal Blue
+  primaryLight: '#EFF6FF',
   primaryHover: '#1D4ED8',
   primaryBorder: '#BFDBFE',
 
-  // Secondary & Accents
   accentCyan: '#0284C7',
   accentEmerald: '#059669',
   accentEmeraldLight: '#ECFDF5',
@@ -23,25 +21,66 @@ export const COLORS = {
   accentAmber: '#D97706',
   accentAmberLight: '#FFFBEB',
 
-  // Neutral Colors (Slate Scale)
-  textPrimary: '#0F172A',   // Slate 900 (High contrast readability)
-  textSecondary: '#334155', // Slate 700 (Body text)
-  textMuted: '#64748B',     // Slate 500 (Subtitles & captions)
-  textLight: '#94A3B8',     // Slate 400 (Dividers & placeholders)
-  
-  // Surfaces & Backgrounds
-  background: '#F8FAFC',    // Slate 50 (Screen background)
-  surface: '#FFFFFF',       // Pure white card surface
-  surfaceMuted: '#F1F5F9',  // Slate 100 (Secondary card background)
-  border: '#E2E8F0',        // Slate 200 (Clean divider lines)
+  textPrimary: '#0F172A',   // Slate 900
+  textSecondary: '#334155', // Slate 700
+  textMuted: '#64748B',     // Slate 500
+  textLight: '#94A3B8',     // Slate 400
+
+  background: '#F8FAFC',    // Slate 50
+  surface: '#FFFFFF',       // Pure white
+  surfaceMuted: '#F1F5F9',  // Slate 100
+  border: '#E2E8F0',        // Slate 200
   borderLight: '#F1F5F9',
 
-  // Status
   success: '#16A34A',
   successLight: '#F0FDF4',
   successBorder: '#BBF7D0',
   successText: '#15803D',
+
+  cardHeaderBanner: '#1E40AF',
+  inputBackground: '#F8FAFC',
 };
+
+export const DARK_THEME = {
+  isDark: true,
+  primary: '#3B82F6',       // Brighter Blue for Dark Mode readability
+  primaryLight: '#1E293B',
+  primaryHover: '#60A5FA',
+  primaryBorder: '#334155',
+
+  accentCyan: '#38BDF8',
+  accentEmerald: '#34D399',
+  accentEmeraldLight: '#064E3B',
+  accentEmeraldBorder: '#059669',
+  accentViolet: '#A78BFA',
+  accentVioletLight: '#2E1065',
+  accentAmber: '#FBBF24',
+  accentAmberLight: '#451A03',
+
+  textPrimary: '#F8FAFC',   // Slate 50
+  textSecondary: '#E2E8F0', // Slate 200
+  textMuted: '#94A3B8',     // Slate 400
+  textLight: '#64748B',     // Slate 500
+
+  background: '#0B0F19',    // Deep Dark Navy
+  surface: '#151C2C',       // Elevated Card Dark Surface
+  surfaceMuted: '#1E293B',  // Slate 800
+  border: '#283548',        // Dark subtle borders
+  borderLight: '#1F293D',
+
+  success: '#4ADE80',
+  successLight: '#052E16',
+  successBorder: '#166534',
+  successText: '#86EFAC',
+
+  cardHeaderBanner: '#1E3A8A',
+  inputBackground: '#1A2333',
+};
+
+export const getTheme = (isDark = false) => (isDark ? DARK_THEME : LIGHT_THEME);
+
+// Default export untuk backward-compatibility
+export const COLORS = LIGHT_THEME;
 
 export const SPACING = {
   xs: 4,
@@ -57,36 +96,30 @@ export const TYPOGRAPHY = {
   h1: {
     fontSize: 22,
     fontWeight: '800',
-    color: COLORS.textPrimary,
     letterSpacing: -0.5,
   },
   h2: {
     fontSize: 18,
     fontWeight: '700',
-    color: COLORS.textPrimary,
     letterSpacing: -0.3,
   },
   h3: {
     fontSize: 15,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   body: {
     fontSize: 13,
     fontWeight: '400',
-    color: COLORS.textSecondary,
     lineHeight: 20,
   },
   bodyBold: {
     fontSize: 13,
     fontWeight: '700',
-    color: COLORS.textPrimary,
     lineHeight: 20,
   },
   caption: {
     fontSize: 11,
     fontWeight: '500',
-    color: COLORS.textMuted,
     lineHeight: 16,
   },
   badge: {
@@ -140,4 +173,3 @@ export const SHADOWS = {
     },
   }),
 };
-

@@ -4,11 +4,10 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * SkillMatrixCard Component (Level 3 & Level 4: Props, State & Filter Event Handling)
- * Menampilkan keahlian teknis dengan filter interaktif berbasis State dan progress bar visual.
+ * SkillMatrixCard Component (Level 7: Theme Adaptable Technical Skills)
  */
-export default function SkillMatrixCard({ skills }) {
-  // State untuk filter kategori aktif (Materi P3 & P5)
+export default function SkillMatrixCard({ skills, theme }) {
+  const currentTheme = theme || COLORS;
   const [selectedCategory, setSelectedCategory] = useState('ALL');
 
   const categories = [
@@ -19,8 +18,7 @@ export default function SkillMatrixCard({ skills }) {
     { key: 'DATA', label: 'Database' },
   ];
 
-  // Memfilter data berdasarkan State aktif
-  const filteredSkills = skills.filter((skill) => {
+  const filteredSkills = (skills || []).filter((skill) => {
     if (selectedCategory === 'ALL') return true;
     if (selectedCategory === 'MOBILE') return skill.name.toLowerCase().includes('react') || skill.name.toLowerCase().includes('javascript');
     if (selectedCategory === 'ANALYSIS') return skill.name.toLowerCase().includes('systems') || skill.name.toLowerCase().includes('analysis');
@@ -30,15 +28,24 @@ export default function SkillMatrixCard({ skills }) {
   });
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.borderLight,
+        },
+      ]}
+    >
       <SectionHeading
         title="Keahlian Teknis (Technical Skills)"
         subtitle="Filter Interaktif Kompetensi Rekayasa Perangkat Lunak"
         icon="code-slash"
         badgeText={`${filteredSkills.length} Skills`}
+        theme={currentTheme}
       />
 
-      {/* FILTER PILL TABS BERBASIS STATE (Materi P3 & P5) */}
+      {/* FILTER PILL TABS */}
       <View style={styles.filterTabsRow}>
         {categories.map((cat) => {
           const isActive = selectedCategory === cat.key;
@@ -47,7 +54,13 @@ export default function SkillMatrixCard({ skills }) {
               key={cat.key}
               style={[
                 styles.filterTab,
-                isActive ? styles.filterTabActive : null,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+                isActive
+                  ? { backgroundColor: currentTheme.primary, borderColor: currentTheme.primary }
+                  : null,
               ]}
               activeOpacity={0.7}
               onPress={() => setSelectedCategory(cat.key)}
@@ -55,7 +68,8 @@ export default function SkillMatrixCard({ skills }) {
               <Text
                 style={[
                   styles.filterTabText,
-                  isActive ? styles.filterTabTextActive : null,
+                  { color: currentTheme.textSecondary },
+                  isActive ? { color: '#FFFFFF', fontWeight: '700' } : null,
                 ]}
               >
                 {cat.label}
@@ -70,21 +84,32 @@ export default function SkillMatrixCard({ skills }) {
         {filteredSkills.map((skill, index) => (
           <View key={index} style={styles.skillItem}>
             <View style={styles.skillHeader}>
-              <Text style={styles.skillName}>{skill.name}</Text>
+              <Text style={[styles.skillName, { color: currentTheme.textPrimary }]}>
+                {skill.name}
+              </Text>
               <View style={styles.levelBadge}>
-                <Text style={styles.levelText}>{skill.level}</Text>
-                <Text style={styles.percentageText}>{skill.percentage}%</Text>
+                <Text style={[styles.levelText, { color: currentTheme.textMuted }]}>
+                  {skill.level}
+                </Text>
+                <Text style={[styles.percentageText, { color: currentTheme.primary }]}>
+                  {skill.percentage}%
+                </Text>
               </View>
             </View>
 
-            {/* Visual Progress Bar (Flexbox layout) */}
-            <View style={styles.progressTrack}>
+            {/* Visual Progress Bar */}
+            <View
+              style={[
+                styles.progressTrack,
+                { backgroundColor: currentTheme.isDark ? '#1E293B' : '#E2E8F0' },
+              ]}
+            >
               <View
                 style={[
                   styles.progressFill,
                   {
                     width: `${skill.percentage}%`,
-                    backgroundColor: skill.color || COLORS.primary,
+                    backgroundColor: skill.color || currentTheme.primary,
                   },
                 ]}
               />
@@ -98,11 +123,9 @@ export default function SkillMatrixCard({ skills }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
@@ -114,25 +137,14 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   filterTab: {
-    backgroundColor: COLORS.surfaceMuted,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  filterTabActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
   },
   filterTabText: {
     fontSize: 11,
     fontWeight: '600',
-    color: COLORS.textSecondary,
-  },
-  filterTabTextActive: {
-    color: '#FFFFFF',
-    fontWeight: '700',
   },
   skillList: {
     gap: SPACING.md,
@@ -148,7 +160,6 @@ const styles = StyleSheet.create({
   skillName: {
     fontSize: 13,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   levelBadge: {
     flexDirection: 'row',
@@ -158,16 +169,13 @@ const styles = StyleSheet.create({
   levelText: {
     fontSize: 11,
     fontWeight: '600',
-    color: COLORS.textMuted,
   },
   percentageText: {
     fontSize: 11,
     fontWeight: '700',
-    color: COLORS.primary,
   },
   progressTrack: {
     height: 7,
-    backgroundColor: '#E2E8F0',
     borderRadius: 4,
     overflow: 'hidden',
   },

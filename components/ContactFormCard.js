@@ -13,26 +13,17 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * ContactFormCard Component (Materi P3 & P5: Props, State, Input Form, Event Handling)
- * Menangani:
- * 1. State form input (nama, email, pesan)
- * 2. Event handling (onChangeText, onPress)
- * 3. Validasi input kosong & format email
- * 4. Tampilan respons setelah formulir berhasil diproses
+ * ContactFormCard Component (Level 7: Theme Adaptable Interactive Form)
  */
-export default function ContactFormCard({ recipientName, onMessageSent }) {
-  // State untuk mengelola data input yang berubah (Materi P3 & P5)
+export default function ContactFormCard({ recipientName, onMessageSent, theme }) {
+  const currentTheme = theme || COLORS;
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-
-  // State untuk validasi error
   const [errors, setErrors] = useState({});
-
-  // State untuk status pengiriman dan data yang berhasil dikirim
   const [submittedData, setSubmittedData] = useState(null);
 
-  // Fungsi validasi form
   const validateForm = () => {
     const newErrors = {};
 
@@ -61,7 +52,6 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Event handler saat tombol Kirim Pesan ditekan
   const handleSubmit = () => {
     if (validateForm()) {
       const payload = {
@@ -75,10 +65,8 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
         }),
       };
 
-      // Simpan respons data ke state
       setSubmittedData(payload);
 
-      // Notifikasi popup responsif
       const alertMsg = `Terima kasih, ${payload.senderName}!\n\nPesan Anda berhasil diproses dan dikirim ke profil ${recipientName}.\n\nRingkasan Pesan:\n"${payload.messageContent}"`;
       if (Platform.OS === 'web') {
         window.alert(alertMsg);
@@ -99,7 +87,6 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
     }
   };
 
-  // Event handler untuk reset formulir
   const handleReset = () => {
     setName('');
     setEmail('');
@@ -109,67 +96,133 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
   };
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.borderLight,
+        },
+      ]}
+    >
       <SectionHeading
         title="Kirim Pesan / Kontak"
         subtitle={`Hubungi ${recipientName} untuk Kolaborasi Proyek`}
         icon="paper-plane-outline"
         badgeText="Form Interaktif"
+        theme={currentTheme}
       />
 
       {submittedData ? (
-        // TAMPILAN RESPONS SETELAH FORMULIR BERHASIL DIPROSES (Kriteria Level 4)
-        <View style={styles.successContainer}>
+        // TAMPILAN RESPONS SETELAH FORMULIR BERHASIL DIPROSES
+        <View
+          style={[
+            styles.successContainer,
+            {
+              backgroundColor: currentTheme.successLight,
+              borderColor: currentTheme.successBorder,
+            },
+          ]}
+        >
           <View style={styles.successBadgeRow}>
-            <View style={styles.successIconCircle}>
-              <Ionicons name="checkmark-done-circle" size={32} color={COLORS.success} />
+            <View
+              style={[
+                styles.successIconCircle,
+                { backgroundColor: currentTheme.isDark ? '#064E3B' : '#DCFCE7' },
+              ]}
+            >
+              <Ionicons name="checkmark-done-circle" size={32} color={currentTheme.success} />
             </View>
             <View style={styles.successTitleCol}>
-              <Text style={styles.successHeading}>Pesan Berhasil Diproses!</Text>
-              <Text style={styles.successTimestamp}>Terkirim pada pukul {submittedData.sentAt} WIB</Text>
+              <Text style={[styles.successHeading, { color: currentTheme.successText }]}>
+                Pesan Berhasil Diproses!
+              </Text>
+              <Text style={[styles.successTimestamp, { color: currentTheme.successText }]}>
+                Terkirim pada pukul {submittedData.sentAt} WIB
+              </Text>
             </View>
           </View>
 
-          <View style={styles.summaryBox}>
+          <View
+            style={[
+              styles.summaryBox,
+              {
+                backgroundColor: currentTheme.surface,
+                borderColor: currentTheme.border,
+              },
+            ]}
+          >
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Nama Pengirim:</Text>
-              <Text style={styles.summaryValue}>{submittedData.senderName}</Text>
+              <Text style={[styles.summaryLabel, { color: currentTheme.textMuted }]}>
+                Nama Pengirim:
+              </Text>
+              <Text style={[styles.summaryValue, { color: currentTheme.textPrimary }]}>
+                {submittedData.senderName}
+              </Text>
             </View>
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Email:</Text>
-              <Text style={styles.summaryValue}>{submittedData.senderEmail}</Text>
+              <Text style={[styles.summaryLabel, { color: currentTheme.textMuted }]}>
+                Email:
+              </Text>
+              <Text style={[styles.summaryValue, { color: currentTheme.textPrimary }]}>
+                {submittedData.senderEmail}
+              </Text>
             </View>
-            <View style={styles.summaryItemMessage}>
-              <Text style={styles.summaryLabel}>Isi Pesan:</Text>
-              <Text style={styles.summaryMessageText}>"{submittedData.messageContent}"</Text>
+            <View
+              style={[
+                styles.summaryItemMessage,
+                { borderTopColor: currentTheme.borderLight },
+              ]}
+            >
+              <Text style={[styles.summaryLabel, { color: currentTheme.textMuted }]}>
+                Isi Pesan:
+              </Text>
+              <Text style={[styles.summaryMessageText, { color: currentTheme.textSecondary }]}>
+                "{submittedData.messageContent}"
+              </Text>
             </View>
           </View>
 
           <TouchableOpacity
-            style={styles.resetButton}
+            style={[
+              styles.resetButton,
+              {
+                backgroundColor: currentTheme.surface,
+                borderColor: currentTheme.primaryBorder,
+              },
+            ]}
             activeOpacity={0.8}
             onPress={handleReset}
           >
-            <Ionicons name="refresh-outline" size={16} color={COLORS.primary} />
-            <Text style={styles.resetButtonText}>Kirim Pesan Baru</Text>
+            <Ionicons name="refresh-outline" size={16} color={currentTheme.primary} />
+            <Text style={[styles.resetButtonText, { color: currentTheme.primary }]}>
+              Kirim Pesan Baru
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
-        // FORMULIR INPUT KONTAK (NAMA, EMAIL, PESAN)
+        // FORMULIR INPUT KONTAK
         <View style={styles.formContainer}>
           {/* Input 1: Nama Pengirim */}
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <Ionicons name="person-outline" size={14} color={COLORS.textSecondary} />
-              <Text style={styles.inputLabel}>Nama Lengkap Pengirim <Text style={styles.requiredStar}>*</Text></Text>
+              <Ionicons name="person-outline" size={14} color={currentTheme.textSecondary} />
+              <Text style={[styles.inputLabel, { color: currentTheme.textPrimary }]}>
+                Nama Lengkap Pengirim <Text style={styles.requiredStar}>*</Text>
+              </Text>
             </View>
             <TextInput
               style={[
                 styles.textInput,
+                {
+                  backgroundColor: currentTheme.inputBackground || currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                  color: currentTheme.textPrimary,
+                },
                 errors.name ? styles.inputErrorBorder : null,
               ]}
               placeholder="Contoh: Budi Santoso"
-              placeholderTextColor={COLORS.textLight}
+              placeholderTextColor={currentTheme.textLight}
               value={name}
               onChangeText={(text) => {
                 setName(text);
@@ -190,16 +243,23 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
           {/* Input 2: Email Pengirim */}
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <Ionicons name="mail-outline" size={14} color={COLORS.textSecondary} />
-              <Text style={styles.inputLabel}>Alamat Email Aktif <Text style={styles.requiredStar}>*</Text></Text>
+              <Ionicons name="mail-outline" size={14} color={currentTheme.textSecondary} />
+              <Text style={[styles.inputLabel, { color: currentTheme.textPrimary }]}>
+                Alamat Email Aktif <Text style={styles.requiredStar}>*</Text>
+              </Text>
             </View>
             <TextInput
               style={[
                 styles.textInput,
+                {
+                  backgroundColor: currentTheme.inputBackground || currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                  color: currentTheme.textPrimary,
+                },
                 errors.email ? styles.inputErrorBorder : null,
               ]}
               placeholder="Contoh: budi.santoso@gmail.com"
-              placeholderTextColor={COLORS.textLight}
+              placeholderTextColor={currentTheme.textLight}
               value={email}
               onChangeText={(text) => {
                 setEmail(text);
@@ -222,17 +282,24 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
           {/* Input 3: Pesan */}
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <Ionicons name="chatbox-ellipses-outline" size={14} color={COLORS.textSecondary} />
-              <Text style={styles.inputLabel}>Pesan / Keperluan Kolaborasi <Text style={styles.requiredStar}>*</Text></Text>
+              <Ionicons name="chatbox-ellipses-outline" size={14} color={currentTheme.textSecondary} />
+              <Text style={[styles.inputLabel, { color: currentTheme.textPrimary }]}>
+                Pesan / Keperluan Kolaborasi <Text style={styles.requiredStar}>*</Text>
+              </Text>
             </View>
             <TextInput
               style={[
                 styles.textInput,
                 styles.textAreaInput,
+                {
+                  backgroundColor: currentTheme.inputBackground || currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                  color: currentTheme.textPrimary,
+                },
                 errors.message ? styles.inputErrorBorder : null,
               ]}
               placeholder="Tuliskan pesan, penawaran proyek, atau feedback Anda di sini..."
-              placeholderTextColor={COLORS.textLight}
+              placeholderTextColor={currentTheme.textLight}
               value={message}
               onChangeText={(text) => {
                 setMessage(text);
@@ -255,7 +322,7 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
           {/* Tombol Submit & Reset */}
           <View style={styles.actionRow}>
             <TouchableOpacity
-              style={styles.submitButton}
+              style={[styles.submitButton, { backgroundColor: currentTheme.primary }]}
               activeOpacity={0.8}
               onPress={handleSubmit}
             >
@@ -265,11 +332,17 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
 
             {(name || email || message) ? (
               <TouchableOpacity
-                style={styles.clearButton}
+                style={[
+                  styles.clearButton,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.border,
+                  },
+                ]}
                 activeOpacity={0.7}
                 onPress={handleReset}
               >
-                <Ionicons name="trash-outline" size={16} color={COLORS.textMuted} />
+                <Ionicons name="trash-outline" size={16} color={currentTheme.textMuted} />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -281,11 +354,9 @@ export default function ContactFormCard({ recipientName, onMessageSent }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
@@ -304,21 +375,17 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   requiredStar: {
     color: '#DC2626',
     fontWeight: '800',
   },
   textInput: {
-    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: COLORS.border,
     borderRadius: 10,
     paddingHorizontal: SPACING.md,
     paddingVertical: 10,
     fontSize: 13,
-    color: COLORS.textPrimary,
   },
   textAreaInput: {
     minHeight: 90,
@@ -326,7 +393,6 @@ const styles = StyleSheet.create({
   },
   inputErrorBorder: {
     borderColor: '#EF4444',
-    backgroundColor: '#FEF2F2',
   },
   errorRow: {
     flexDirection: 'row',
@@ -350,7 +416,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.primary,
     paddingVertical: 12,
     borderRadius: 10,
     gap: 8,
@@ -365,19 +430,15 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 10,
-    backgroundColor: COLORS.surfaceMuted,
     borderWidth: 1,
-    borderColor: COLORS.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
   // Tampilan Sukses
   successContainer: {
-    backgroundColor: COLORS.successLight,
     borderRadius: 12,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.successBorder,
     marginTop: SPACING.xs,
     gap: SPACING.md,
   },
@@ -390,7 +451,6 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#DCFCE7',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -400,20 +460,16 @@ const styles = StyleSheet.create({
   successHeading: {
     fontSize: 15,
     fontWeight: '800',
-    color: COLORS.successText,
   },
   successTimestamp: {
     fontSize: 11,
-    color: '#166534',
     marginTop: 2,
   },
   summaryBox: {
-    backgroundColor: COLORS.surface,
     borderRadius: 10,
     padding: SPACING.md,
     gap: 8,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
   },
   summaryItem: {
     flexDirection: 'row',
@@ -424,21 +480,17 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingTop: 6,
     borderTopWidth: 1,
-    borderTopColor: COLORS.borderLight,
   },
   summaryLabel: {
     fontSize: 11,
     fontWeight: '600',
-    color: COLORS.textMuted,
   },
   summaryValue: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textPrimary,
   },
   summaryMessageText: {
     fontSize: 12,
-    color: COLORS.textSecondary,
     fontStyle: 'italic',
     lineHeight: 18,
   },
@@ -446,17 +498,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.surface,
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
     gap: 6,
   },
   resetButtonText: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.primary,
   },
 });
-

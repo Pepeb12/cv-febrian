@@ -5,23 +5,32 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * IdentityDetailCard Component (Level 5: Separation of UI and Data)
- * Menerima data melalui Props: <IdentityDetailCard data={profileData} />
+ * IdentityDetailCard Component (Level 7: Theme Adaptable Education & Address)
  */
-export default function IdentityDetailCard({ data, profile }) {
+export default function IdentityDetailCard({ data, profile, theme }) {
   const student = data || profile;
+  const currentTheme = theme || COLORS;
 
   if (!student) return null;
 
   return (
     <View style={styles.container}>
       {/* SECTION: Riwayat Jenjang Pendidikan (Vertical Timeline Layout) */}
-      <View style={styles.card}>
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: currentTheme.surface,
+            borderColor: currentTheme.borderLight,
+          },
+        ]}
+      >
         <SectionHeading
           title="Riwayat Pendidikan"
           subtitle="Education Timeline (2011 — Sekarang)"
           icon="school"
           badgeText="Akademik"
+          theme={currentTheme}
         />
 
         <View style={styles.timelineContainer}>
@@ -33,11 +42,12 @@ export default function IdentityDetailCard({ data, profile }) {
                   <View
                     style={[
                       styles.timelineDot,
-                      isLatest ? styles.timelineDotActive : null,
+                      { backgroundColor: currentTheme.border, borderColor: currentTheme.surface },
+                      isLatest ? { backgroundColor: currentTheme.primary } : null,
                     ]}
                   />
                   {index < student.educationHistory.length - 1 && (
-                    <View style={styles.timelineLine} />
+                    <View style={[styles.timelineLine, { backgroundColor: currentTheme.border }]} />
                   )}
                 </View>
                 <View style={styles.timelineContent}>
@@ -45,19 +55,26 @@ export default function IdentityDetailCard({ data, profile }) {
                     <Text
                       style={[
                         styles.educationSchool,
-                        isLatest ? styles.activeSchoolText : null,
+                        { color: currentTheme.textPrimary },
+                        isLatest ? { color: currentTheme.primary } : null,
                       ]}
                     >
                       {edu.school}
                     </Text>
-                    <Text style={styles.educationPeriod}>{edu.period}</Text>
+                    <Text style={[styles.educationPeriod, { color: currentTheme.textMuted }]}>
+                      {edu.period}
+                    </Text>
                   </View>
-                  <Text style={styles.educationLevel}>
+                  <Text style={[styles.educationLevel, { color: currentTheme.textSecondary }]}>
                     {edu.level} {edu.major ? `• ${edu.major}` : ''}
                   </Text>
-                  <Text style={styles.educationStatus}>Status: {edu.status}</Text>
+                  <Text style={[styles.educationStatus, { color: currentTheme.textMuted }]}>
+                    Status: {edu.status}
+                  </Text>
                   {edu.description && (
-                    <Text style={styles.educationDesc}>{edu.description}</Text>
+                    <Text style={[styles.educationDesc, { color: currentTheme.textMuted }]}>
+                      {edu.description}
+                    </Text>
                   )}
                 </View>
               </View>
@@ -67,29 +84,70 @@ export default function IdentityDetailCard({ data, profile }) {
       </View>
 
       {/* SECTION: Alamat & Domisili */}
-      <View style={styles.card}>
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: currentTheme.surface,
+            borderColor: currentTheme.borderLight,
+          },
+        ]}
+      >
         <SectionHeading
           title="Alamat & Domisili"
           subtitle="Informasi Tempat Tinggal & Wilayah"
           icon="location"
           badgeText="Domisili"
+          theme={currentTheme}
         />
 
         <View style={styles.cardBody}>
-          <Text style={styles.addressText}>{student.address.fullAddress}</Text>
+          <Text style={[styles.addressText, { color: currentTheme.textSecondary }]}>
+            {student.address.fullAddress}
+          </Text>
 
           <View style={styles.addressTags}>
-            <View style={styles.tag}>
-              <Ionicons name="home-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{student.address.village}</Text>
+            <View
+              style={[
+                styles.tag,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+            >
+              <Ionicons name="home-outline" size={13} color={currentTheme.textSecondary} />
+              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                {student.address.village}
+              </Text>
             </View>
-            <View style={styles.tag}>
-              <Ionicons name="map-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{student.address.subDistrict}</Text>
+            <View
+              style={[
+                styles.tag,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+            >
+              <Ionicons name="map-outline" size={13} color={currentTheme.textSecondary} />
+              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                {student.address.subDistrict}
+              </Text>
             </View>
-            <View style={styles.tag}>
-              <Ionicons name="navigate-outline" size={13} color={COLORS.textSecondary} />
-              <Text style={styles.tagText}>{student.address.district}</Text>
+            <View
+              style={[
+                styles.tag,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+            >
+              <Ionicons name="navigate-outline" size={13} color={currentTheme.textSecondary} />
+              <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
+                {student.address.district}
+              </Text>
             </View>
           </View>
         </View>
@@ -104,11 +162,9 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     ...SHADOWS.md,
   },
   cardBody: {
@@ -117,7 +173,6 @@ const styles = StyleSheet.create({
   },
   addressText: {
     fontSize: 14,
-    color: COLORS.textSecondary,
     lineHeight: 20,
     fontWeight: '500',
   },
@@ -131,16 +186,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: COLORS.background,
     borderWidth: 1,
-    borderColor: COLORS.border,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
   },
   tagText: {
     fontSize: 12,
-    color: COLORS.textSecondary,
     fontWeight: '600',
   },
   timelineContainer: {
@@ -160,24 +212,15 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#CBD5E1',
     borderWidth: 2,
-    borderColor: COLORS.surface,
     marginTop: 3,
     zIndex: 2,
-  },
-  timelineDotActive: {
-    backgroundColor: COLORS.primary,
-    width: 14,
-    height: 14,
-    borderRadius: 7,
   },
   timelineLine: {
     position: 'absolute',
     top: 15,
     bottom: -20,
     width: 2,
-    backgroundColor: COLORS.border,
     zIndex: 1,
   },
   timelineContent: {
@@ -193,30 +236,22 @@ const styles = StyleSheet.create({
   educationSchool: {
     fontSize: 14,
     fontWeight: '700',
-    color: COLORS.textPrimary,
-  },
-  activeSchoolText: {
-    color: COLORS.primary,
   },
   educationPeriod: {
     fontSize: 12,
     fontWeight: '600',
-    color: COLORS.textMuted,
   },
   educationLevel: {
     fontSize: 13,
-    color: COLORS.textSecondary,
     fontWeight: '500',
     marginBottom: 2,
   },
   educationStatus: {
     fontSize: 11,
-    color: COLORS.textMuted,
     fontStyle: 'italic',
   },
   educationDesc: {
     fontSize: 11,
-    color: COLORS.textMuted,
     lineHeight: 16,
     marginTop: 4,
   },

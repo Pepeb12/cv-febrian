@@ -5,10 +5,11 @@ import SectionHeading from './SectionHeading';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * ContactGridCard Component (Materi P4: 2-Column Responsive Flexbox Grid)
- * Menampilkan kontak dan kanal komunikasi mahasiswa secara terorganisir.
+ * ContactGridCard Component (Level 7: Theme Adaptable Contact Grid)
  */
-export default function ContactGridCard({ contactItems }) {
+export default function ContactGridCard({ contactItems, theme }) {
+  const currentTheme = theme || COLORS;
+
   const handleContactPress = (item) => {
     const message = `${item.label}:\n${item.value}`;
     if (Platform.OS === 'web') {
@@ -19,28 +20,49 @@ export default function ContactGridCard({ contactItems }) {
   };
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.borderLight,
+        },
+      ]}
+    >
       <SectionHeading
         title="Informasi Kontak & Jaringan"
         subtitle="Kanal Komunikasi & Lokasi Mahasiswa"
         icon="share-social-outline"
         badgeText="Kontak"
+        theme={currentTheme}
       />
 
       <View style={styles.gridContainer}>
-        {contactItems.map((item, index) => (
+        {(contactItems || []).map((item, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.gridItem}
+            style={[
+              styles.gridItem,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.border,
+              },
+            ]}
             activeOpacity={0.7}
             onPress={() => handleContactPress(item)}
           >
-            <View style={[styles.iconCircle, { backgroundColor: item.bgColor }]}>
+            <View style={[styles.iconCircle, { backgroundColor: item.color + '18' }]}>
               <Ionicons name={item.icon} size={18} color={item.color} />
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.itemLabel}>{item.label}</Text>
-              <Text style={styles.itemValue} numberOfLines={1} ellipsizeMode="tail">
+              <Text style={[styles.itemLabel, { color: currentTheme.textMuted }]}>
+                {item.label}
+              </Text>
+              <Text
+                style={[styles.itemValue, { color: currentTheme.textPrimary }]}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
                 {item.displayValue}
               </Text>
             </View>
@@ -53,11 +75,9 @@ export default function ContactGridCard({ contactItems }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 16,
     padding: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
@@ -69,11 +89,9 @@ const styles = StyleSheet.create({
   },
   gridItem: {
     width: '48%',
-    backgroundColor: COLORS.background,
     borderRadius: 12,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.border,
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.sm,
@@ -91,14 +109,11 @@ const styles = StyleSheet.create({
   itemLabel: {
     fontSize: 10,
     fontWeight: '600',
-    color: COLORS.textMuted,
     textTransform: 'uppercase',
   },
   itemValue: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textPrimary,
     marginTop: 2,
   },
 });
-

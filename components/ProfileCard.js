@@ -4,76 +4,131 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * ProfileCard Component (Level 5: Separation of UI and Data)
- * Menerima seluruh data melalui Props `data` (atau `profile`) tanpa data hardcoded.
+ * ProfileCard Component (Level 7: Theme Adaptable Student ID Card)
  */
-export default function ProfileCard({ data, profile }) {
-  // Dukungan fleksibel untuk prop `data` (sesuai spesifikasi Level 5) maupun `profile`
+export default function ProfileCard({ data, profile, theme }) {
   const student = data || profile;
+  const currentTheme = theme || COLORS;
 
   if (!student) return null;
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.borderLight,
+        },
+      ]}
+    >
       {/* Background Banner Header */}
-      <View style={styles.cardHeaderBanner} />
+      <View
+        style={[
+          styles.cardHeaderBanner,
+          { backgroundColor: currentTheme.cardHeaderBanner || currentTheme.primary },
+        ]}
+      />
 
       <View style={styles.cardContent}>
         {/* Foto Profil Mahasiswa (Persyaratan Level 1) */}
         <View style={styles.avatarWrapper}>
           <Image
             source={require('../assets/profile.png')}
-            style={styles.avatar}
+            style={[styles.avatar, { borderColor: currentTheme.surface }]}
             resizeMode="cover"
           />
           {/* Active Status Indicator */}
-          <View style={styles.activeDot} />
+          <View
+            style={[
+              styles.activeDot,
+              { backgroundColor: currentTheme.success, borderColor: currentTheme.surface },
+            ]}
+          />
         </View>
 
         {/* Nama Lengkap Mahasiswa (Level 1) */}
-        <Text style={styles.fullName}>{student.nama || student.fullName}</Text>
+        <Text style={[styles.fullName, { color: currentTheme.textPrimary }]}>
+          {student.nama || student.fullName}
+        </Text>
 
         {/* Profesi / Minat Utama (Level 2) */}
-        <View style={styles.professionContainer}>
-          <Ionicons name="briefcase" size={14} color={COLORS.primary} />
-          <Text style={styles.professionText}>{student.profesi || student.professionTitle}</Text>
+        <View
+          style={[
+            styles.professionContainer,
+            {
+              backgroundColor: currentTheme.primaryLight,
+              borderColor: currentTheme.primaryBorder,
+            },
+          ]}
+        >
+          <Ionicons name="briefcase" size={14} color={currentTheme.primary} />
+          <Text style={[styles.professionText, { color: currentTheme.primary }]}>
+            {student.profesi || student.professionTitle}
+          </Text>
         </View>
 
         {/* Personal Tagline */}
         {student.tagline && (
-          <Text style={styles.taglineText}>"{student.tagline}"</Text>
+          <Text style={[styles.taglineText, { color: currentTheme.textMuted }]}>
+            "{student.tagline}"
+          </Text>
         )}
 
         {/* Badge NIM Mahasiswa (Level 1) */}
-        <View style={styles.nimContainer}>
-          <Ionicons name="card-outline" size={15} color={COLORS.accentCyan} />
-          <Text style={styles.nimLabel}>NIM:</Text>
-          <Text style={styles.nimValue}>{student.nim}</Text>
+        <View
+          style={[
+            styles.nimContainer,
+            {
+              backgroundColor: currentTheme.isDark ? '#082F49' : '#F0F9FF',
+              borderColor: currentTheme.isDark ? '#0284C7' : '#BAE6FD',
+            },
+          ]}
+        >
+          <Ionicons name="card-outline" size={15} color={currentTheme.accentCyan} />
+          <Text style={[styles.nimLabel, { color: currentTheme.accentCyan }]}>NIM:</Text>
+          <Text style={[styles.nimValue, { color: currentTheme.accentCyan }]}>{student.nim}</Text>
         </View>
 
         {/* Program Studi & Semester */}
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
-            <Ionicons name="book-outline" size={14} color={COLORS.textMuted} />
-            <Text style={styles.metaText}>{student.prodi || student.studyProgram}</Text>
+            <Ionicons name="book-outline" size={14} color={currentTheme.textMuted} />
+            <Text style={[styles.metaText, { color: currentTheme.textSecondary }]}>
+              {student.prodi || student.studyProgram}
+            </Text>
           </View>
-          <Text style={styles.metaSeparator}>•</Text>
+          <Text style={[styles.metaSeparator, { color: currentTheme.textLight }]}>•</Text>
           <View style={styles.metaItem}>
-            <Ionicons name="calendar-outline" size={14} color={COLORS.textMuted} />
-            <Text style={styles.metaText}>Semester {student.semester}</Text>
+            <Ionicons name="calendar-outline" size={14} color={currentTheme.textMuted} />
+            <Text style={[styles.metaText, { color: currentTheme.textSecondary }]}>
+              Semester {student.semester}
+            </Text>
           </View>
         </View>
 
         {/* Nama Kampus */}
         <View style={styles.universityRow}>
-          <Ionicons name="business" size={14} color={COLORS.textSecondary} />
-          <Text style={styles.universityText}>{student.kampus || student.university}</Text>
+          <Ionicons name="business" size={14} color={currentTheme.textSecondary} />
+          <Text style={[styles.universityText, { color: currentTheme.textSecondary }]}>
+            {student.kampus || student.university}
+          </Text>
         </View>
 
         {/* Status Mahasiswa Aktif Pill */}
-        <View style={styles.statusPill}>
-          <View style={styles.greenCircle} />
-          <Text style={styles.statusText}>{student.status}</Text>
+        <View
+          style={[
+            styles.statusPill,
+            {
+              backgroundColor: currentTheme.successLight,
+              borderColor: currentTheme.successBorder,
+            },
+          ]}
+        >
+          <View style={[styles.greenCircle, { backgroundColor: currentTheme.success }]} />
+          <Text style={[styles.statusText, { color: currentTheme.success }]}>
+            {student.status}
+          </Text>
         </View>
       </View>
     </View>
@@ -82,17 +137,14 @@ export default function ProfileCard({ data, profile }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: 20,
     overflow: 'hidden',
     marginBottom: SPACING.lg,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     ...SHADOWS.md,
   },
   cardHeaderBanner: {
     height: 90,
-    backgroundColor: COLORS.primary,
   },
   cardContent: {
     alignItems: 'center',
@@ -109,8 +161,7 @@ const styles = StyleSheet.create({
     height: 104,
     borderRadius: 52,
     borderWidth: 4,
-    borderColor: COLORS.surface,
-    backgroundColor: COLORS.border,
+    backgroundColor: '#E2E8F0',
   },
   activeDot: {
     position: 'absolute',
@@ -119,38 +170,31 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: COLORS.success,
     borderWidth: 3,
-    borderColor: COLORS.surface,
   },
   fullName: {
     fontSize: 21,
     fontWeight: '800',
-    color: COLORS.textPrimary,
     textAlign: 'center',
     marginBottom: SPACING.xs,
   },
   professionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.primaryLight,
     paddingVertical: 5,
     paddingHorizontal: SPACING.md,
     borderRadius: 20,
     gap: 6,
     marginBottom: SPACING.xs,
     borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
   },
   professionText: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.primary,
   },
   taglineText: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: COLORS.textMuted,
     textAlign: 'center',
     marginBottom: SPACING.sm,
     paddingHorizontal: SPACING.sm,
@@ -158,24 +202,20 @@ const styles = StyleSheet.create({
   nimContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0F9FF',
     paddingVertical: 5,
     paddingHorizontal: 14,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#BAE6FD',
     marginBottom: SPACING.md,
     gap: 6,
   },
   nimLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: COLORS.accentCyan,
   },
   nimValue: {
     fontSize: 13,
     fontWeight: '800',
-    color: COLORS.accentCyan,
     letterSpacing: 0.8,
   },
   metaRow: {
@@ -190,13 +230,11 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metaSeparator: {
-    color: COLORS.textLight,
     fontSize: 14,
   },
   metaText: {
     fontSize: 13,
     fontWeight: '600',
-    color: COLORS.textSecondary,
   },
   universityRow: {
     flexDirection: 'row',
@@ -206,29 +244,24 @@ const styles = StyleSheet.create({
   },
   universityText: {
     fontSize: 13,
-    color: COLORS.textSecondary,
     fontWeight: '600',
   },
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.successLight,
     paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#DCFCE7',
     gap: 6,
   },
   greenCircle: {
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: COLORS.success,
   },
   statusText: {
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.success,
   },
 });

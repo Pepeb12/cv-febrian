@@ -1,24 +1,45 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SHADOWS, TYPOGRAPHY, SPACING } from '../theme';
+import { COLORS, SHADOWS, SPACING } from '../theme';
 
 /**
- * MetricBar Component (Materi P4: Flexbox Grid & Card Styling)
- * Menampilkan ringkasan metrik akademik mahasiswa secara proporsional.
+ * MetricBar Component (Level 7: Theme Adaptable Stat Cards)
  */
-export default function MetricBar({ metrics }) {
+export default function MetricBar({ metrics, theme }) {
+  const currentTheme = theme || COLORS;
+
   return (
     <View style={styles.container}>
       <View style={styles.gridRow}>
-        {metrics.map((item, index) => (
-          <View key={index} style={styles.metricCard}>
-            <View style={styles.iconCircle}>
-              <Ionicons name={item.icon} size={16} color={COLORS.primary} />
+        {(metrics || []).map((item, index) => (
+          <View
+            key={index}
+            style={[
+              styles.metricCard,
+              {
+                backgroundColor: currentTheme.surface,
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.iconCircle,
+                { backgroundColor: currentTheme.primaryLight },
+              ]}
+            >
+              <Ionicons name={item.icon} size={16} color={currentTheme.primary} />
             </View>
-            <Text style={styles.metricValue}>{item.value}</Text>
-            <Text style={styles.metricLabel}>{item.label}</Text>
-            <Text style={styles.metricUnit}>{item.unit}</Text>
+            <Text style={[styles.metricValue, { color: currentTheme.textPrimary }]}>
+              {item.value}
+            </Text>
+            <Text style={[styles.metricLabel, { color: currentTheme.textSecondary }]}>
+              {item.label}
+            </Text>
+            <Text style={[styles.metricUnit, { color: currentTheme.textMuted }]}>
+              {item.unit}
+            </Text>
           </View>
         ))}
       </View>
@@ -37,20 +58,17 @@ const styles = StyleSheet.create({
   },
   metricCard: {
     flex: 1,
-    backgroundColor: COLORS.surface,
     borderRadius: 14,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xs,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
     ...SHADOWS.sm,
   },
   iconCircle: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: SPACING.xs,
@@ -58,21 +76,17 @@ const styles = StyleSheet.create({
   metricValue: {
     fontSize: 16,
     fontWeight: '800',
-    color: COLORS.textPrimary,
     letterSpacing: -0.3,
   },
   metricLabel: {
     fontSize: 11,
     fontWeight: '700',
-    color: COLORS.textSecondary,
     marginTop: 2,
     textAlign: 'center',
   },
   metricUnit: {
     fontSize: 9,
-    color: COLORS.textMuted,
     marginTop: 1,
     textAlign: 'center',
   },
 });
-
