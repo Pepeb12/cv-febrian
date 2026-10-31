@@ -4,27 +4,27 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   Alert,
   Platform,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
+import PersonalIntroCard from './components/PersonalIntroCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
+import Level2CriteriaCard from './components/Level2CriteriaCard';
 import { STUDENT_PROFILE } from './data/profileData';
 
 export default function App() {
-  const handleVerifyAlert = () => {
-    const info = `Nama: ${STUDENT_PROFILE.fullName}\nNIM: ${STUDENT_PROFILE.nim}\nProdi: ${STUDENT_PROFILE.studyProgram}\nSemester: ${STUDENT_PROFILE.semester}\nStatus: ${STUDENT_PROFILE.status}\nKampus: ${STUDENT_PROFILE.university}`;
-    
+  const handleShowValidation = () => {
+    const info = `LEVEL 2 — BEGINNER VALIDATION:\n\n• Mahasiswa: ${STUDENT_PROFILE.fullName}\n• NIM: ${STUDENT_PROFILE.nim}\n• Profesi/Minat: ${STUDENT_PROFILE.professionTitle}\n• Program Studi: ${STUDENT_PROFILE.studyProgram} (Semester ${STUDENT_PROFILE.semester})\n• Kampus: ${STUDENT_PROFILE.university}\n• Fokus Minat: Mobile App, Systems Analysis, UI/UX, Database`;
+
     if (Platform.OS === 'web') {
-      window.alert(`Verifikasi Identitas Mahasiswa:\n\n${info}`);
+      window.alert(info);
     } else {
-      Alert.alert('Verifikasi Identitas Mahasiswa', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 2', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -33,9 +33,9 @@ export default function App() {
       <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
         <StatusBar style="dark" backgroundColor="#FFFFFF" />
 
-        {/* Wrapper Responsif untuk Tampilan Mobile & Web */}
+        {/* Outer Container (Simulator Frame di Web & Full Screen di Android) */}
         <View style={styles.appContainer}>
-          {/* Header Identitas Institusi */}
+          {/* Header Institusi & Level Badge */}
           <Header />
 
           <ScrollView
@@ -43,62 +43,28 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* Card Utama: Foto Profil, Nama Lengkap & NIM (Persyaratan Level 1) */}
+            {/* 1. KARTU PROFIL UTAMA (Level 1 & Level 2: Foto, Nama, NIM, Profesi) */}
             <ProfileCard profile={STUDENT_PROFILE} />
 
-            {/* Banner Checklist Verifikasi Persyaratan Level 1 */}
-            <View style={styles.criteriaCard}>
-              <View style={styles.criteriaHeader}>
-                <Ionicons name="shield-checkmark" size={18} color="#16A34A" />
-                <Text style={styles.criteriaTitle}>Checklist Evaluasi Level 1 (Novice)</Text>
-              </View>
-              <View style={styles.criteriaList}>
-                <View style={styles.criteriaItem}>
-                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                  <Text style={styles.criteriaText}>
-                    NIM Ditampilkan: <Text style={styles.boldText}>{STUDENT_PROFILE.nim}</Text>
-                  </Text>
-                </View>
-                <View style={styles.criteriaItem}>
-                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                  <Text style={styles.criteriaText}>
-                    Nama Lengkap: <Text style={styles.boldText}>{STUDENT_PROFILE.fullName}</Text>
-                  </Text>
-                </View>
-                <View style={styles.criteriaItem}>
-                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                  <Text style={styles.criteriaText}>
-                    Foto Profil Mahasiswa: <Text style={styles.boldText}>Aktif & Ditampilkan</Text>
-                  </Text>
-                </View>
-                <View style={styles.criteriaItem}>
-                  <Ionicons name="checkmark-circle" size={16} color="#16A34A" />
-                  <Text style={styles.criteriaText}>
-                    Status Aplikasi: <Text style={styles.boldText}>Berjalan Lancar (Android & Web)</Text>
-                  </Text>
-                </View>
-              </View>
+            {/* 2. CHECKLIST EVALUASI LEVEL 2 (Menampilkan Pemenuhan Kriteria) */}
+            <Level2CriteriaCard onShowDetail={handleShowValidation} />
 
-              <TouchableOpacity
-                style={styles.verifyButton}
-                activeOpacity={0.8}
-                onPress={handleVerifyAlert}
-              >
-                <Ionicons name="information-circle-outline" size={18} color="#1E40AF" />
-                <Text style={styles.verifyButtonText}>Cek Detail Validasi Data</Text>
-              </TouchableOpacity>
-            </View>
+            {/* 3. PERSONAL INTRODUCTION & BIDANG MINAT (Fokus Utama Level 2) */}
+            <PersonalIntroCard profile={STUDENT_PROFILE} />
 
-            {/* Rincian Identitas Lengkap (Domisili, Pendidikan, Bio) */}
+            {/* 4. DETAIL RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
             <IdentityDetailCard profile={STUDENT_PROFILE} />
 
-            {/* Footer Ujian Tengah Semester */}
+            {/* 5. FOOTER INFORMASI UTS */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>
                 UTS Pemrograman Mobile • Masoem University
               </Text>
               <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App © 2026 Febrian Iradatul Rahman
+                Personal CV & Academic Score App — Level 2 (Beginner)
+              </Text>
+              <Text style={styles.copyrightText}>
+                © 2026 Febrian Iradatul Rahman ({STUDENT_PROFILE.nim})
               </Text>
             </View>
           </ScrollView>
@@ -117,11 +83,11 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     width: '100%',
-    maxWidth: 500, // Menjaga rasio tampilan mobile phone pada web browser
+    maxWidth: 500, // Menjaga rasio tampilan mobile di layar Web desktop
     backgroundColor: '#F8FAFC',
     ...Platform.select({
       web: {
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderColor: '#E2E8F0',
@@ -133,72 +99,27 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 32,
-  },
-  criteriaCard: {
-    backgroundColor: '#F0FDF4',
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
-    marginBottom: 20,
-  },
-  criteriaHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 12,
-  },
-  criteriaTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#15803D',
-  },
-  criteriaList: {
-    gap: 8,
-  },
-  criteriaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  criteriaText: {
-    fontSize: 13,
-    color: '#166534',
-  },
-  boldText: {
-    fontWeight: '700',
-    color: '#14532D',
-  },
-  verifyButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 14,
-    borderWidth: 1,
-    borderColor: '#BFDBFE',
-    gap: 6,
-  },
-  verifyButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#1E40AF',
+    paddingBottom: 36,
   },
   footer: {
-    marginTop: 28,
+    marginTop: 16,
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
   },
   footerText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#64748B',
+    fontWeight: '700',
+    color: '#475569',
   },
   footerSubtext: {
     fontSize: 11,
+    color: '#64748B',
+    marginTop: 2,
+  },
+  copyrightText: {
+    fontSize: 10,
     color: '#94A3B8',
     marginTop: 4,
   },

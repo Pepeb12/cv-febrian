@@ -1,39 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import SectionHeading from './SectionHeading';
 
+/**
+ * IdentityDetailCard Component
+ * Menampilkan:
+ * 1. Riwayat Jenjang Pendidikan (SD 2011-2018, SMP 2018-2021, SMA 2021-2024, Masoem Univ 2024-Sekarang)
+ * 2. Domisili / Alamat Lengkap
+ */
 export default function IdentityDetailCard({ profile }) {
   return (
     <View style={styles.container}>
-      {/* Kartu Informasi Domisili / Alamat */}
+      {/* SECTION: Riwayat Jenjang Pendidikan */}
       <View style={styles.card}>
-        <View style={styles.cardTitleRow}>
-          <View style={[styles.iconBox, { backgroundColor: '#FEF3C7' }]}>
-            <Ionicons name="location" size={18} color="#D97706" />
-          </View>
-          <Text style={styles.cardTitle}>Alamat & Domisili</Text>
-        </View>
-        <View style={styles.cardBody}>
-          <Text style={styles.addressText}>{profile.address.fullAddress}</Text>
-          <View style={styles.addressTags}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>{profile.address.subDistrict}</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>{profile.address.district}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+        <SectionHeading
+          title="Riwayat Pendidikan"
+          subtitle="Education Timeline (2011 — Sekarang)"
+          icon="school"
+          badgeText="Akademik"
+        />
 
-      {/* Kartu Jenjang Pendidikan */}
-      <View style={styles.card}>
-        <View style={styles.cardTitleRow}>
-          <View style={[styles.iconBox, { backgroundColor: '#EDE9FE' }]}>
-            <Ionicons name="school" size={18} color="#7C3AED" />
-          </View>
-          <Text style={styles.cardTitle}>Riwayat Pendidikan</Text>
-        </View>
         <View style={styles.timelineContainer}>
           {profile.educationHistory.map((edu, index) => {
             const isLatest = index === 0;
@@ -73,15 +60,33 @@ export default function IdentityDetailCard({ profile }) {
         </View>
       </View>
 
-      {/* Kartu Profil & Minat Sistem Informasi */}
+      {/* SECTION: Alamat & Domisili */}
       <View style={styles.card}>
-        <View style={styles.cardTitleRow}>
-          <View style={[styles.iconBox, { backgroundColor: '#E0F2FE' }]}>
-            <Ionicons name="person" size={18} color="#0284C7" />
+        <SectionHeading
+          title="Alamat & Domisili"
+          subtitle="Informasi Tempat Tinggal & Kontak"
+          icon="location"
+          badgeText="Domisili"
+        />
+
+        <View style={styles.cardBody}>
+          <Text style={styles.addressText}>{profile.address.fullAddress}</Text>
+
+          <View style={styles.addressTags}>
+            <View style={styles.tag}>
+              <Ionicons name="home-outline" size={13} color="#475569" />
+              <Text style={styles.tagText}>{profile.address.village}</Text>
+            </View>
+            <View style={styles.tag}>
+              <Ionicons name="map-outline" size={13} color="#475569" />
+              <Text style={styles.tagText}>{profile.address.subDistrict}</Text>
+            </View>
+            <View style={styles.tag}>
+              <Ionicons name="navigate-outline" size={13} color="#475569" />
+              <Text style={styles.tagText}>{profile.address.district}</Text>
+            </View>
           </View>
-          <Text style={styles.cardTitle}>Tentang Mahasiswa</Text>
         </View>
-        <Text style={styles.bioText}>{profile.bio}</Text>
       </View>
     </View>
   );
@@ -90,6 +95,7 @@ export default function IdentityDetailCard({ profile }) {
 const styles = StyleSheet.create({
   container: {
     gap: 16,
+    marginBottom: 20,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -109,26 +115,9 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  cardTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-    gap: 10,
-  },
-  iconBox: {
-    width: 34,
-    height: 34,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#0F172A',
-  },
   cardBody: {
     gap: 8,
+    marginTop: 6,
   },
   addressText: {
     fontSize: 14,
@@ -143,21 +132,24 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   tag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: 8,
   },
   tagText: {
     fontSize: 12,
     color: '#475569',
-    fontWeight: '500',
+    fontWeight: '600',
   },
   timelineContainer: {
     paddingLeft: 4,
-    marginTop: 4,
+    marginTop: 8,
   },
   timelineItem: {
     flexDirection: 'row',
@@ -226,10 +218,4 @@ const styles = StyleSheet.create({
     color: '#94A3B8',
     fontStyle: 'italic',
   },
-  bioText: {
-    fontSize: 13,
-    lineHeight: 20,
-    color: '#334155',
-  },
 });
-
