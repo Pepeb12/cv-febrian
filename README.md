@@ -18,7 +18,7 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 
 ---
 
-## 🎯 Evaluasi Challenge Level
+## 🎯 Evaluasi Challenge Level (Lengkap Level 1 s.d. Level 6)
 
 ### LEVEL 1 — NOVICE (Status: ✅ Selesai)
 - [x] **NIM Mahasiswa**: Ditampilkan jelas dengan badge khusus (`242505024`).
@@ -59,52 +59,56 @@ Aplikasi mobile representasi digital profil mahasiswa yang menggabungkan persona
 - [x] **Materi Utama: P3 dan P5 — Props, State, Input Form, dan Event Handling**.
 
 ### LEVEL 5 — COMPETENT (Status: ✅ Selesai)
-- [x] **Seluruh Persyaratan Level 4**: Dipertahankan secara menyeluruh.
-- [x] **Data Profil Tidak Ditulis Langsung pada Elemen UI (Zero Hardcoded Data)**:
-  - Seluruh informasi profil disimpan terpusat di `data/profileData.js`.
-  - Komponen antarmuka visual murni bersifat presentasional tanpa string nama/NIM statis di dalam komponen.
-- [x] **Data Disimpan dalam File Terpisah**:
-  - File `data/profileData.js` bertindak sebagai *Single Source of Truth* dan mengekspor objek data melalui `export default profileData;`.
-- [x] **Komponen UI Menerima Data Melalui Props**:
-  - `<ProfileHeader data={profileData} />`
-  - `<AboutSection data={profileData} />`
-  - `<ContactForm data={profileData} onMessageSent={...} />`
-  - `<MetricBar metrics={profileData.academicMetrics} />`
-  - `<SkillMatrixCard skills={profileData.technicalSkills} />`
-  - `<IdentityDetailCard data={profileData} />`
-  - `<ContactGridCard contactItems={profileData.contactItems} />`
-- [x] **Struktur Kode Terorganisasi & Mudah Dikembangkan (Separation of Concerns)**:
-  - Memisahkan direktori data (`data/`), tema (`theme/`), komponen presentasional (`components/`), dan root (`App.js`).
-- [x] **Reusabilitas & Bukti Perubahan Data**:
-  - Mengubah data di `profileData.js` secara otomatis memperbarui seluruh UI tanpa perlu mengubah satu baris pun kode komponen.
+- [x] **Pemisahan Mutlak Data & UI (Zero Hardcoded Data)**:
+  - Tidak ada data statis di dalam komponen visual.
+- [x] **Aliran Data Melalui Props**:
+  - `<ProfileHeader data={profileData} />`, `<AboutSection data={profileData} />`, `<ContactForm data={profileData} />`.
 - [x] **Materi Utama: Component, Props, dan Pengorganisasian Kode**.
+
+### LEVEL 6 — PROFICIENT (Status: ✅ Selesai)
+- [x] **Seluruh Persyaratan Level 5**: Dipertahankan secara menyeluruh.
+- [x] **Penyimpanan Data Lokal Format `.json`**:
+  - Data profil disimpan murni dalam berkas terpisah: [`data/profile.json`](file:///d:/UTS%20FEBRIAN/data/profile.json).
+- [x] **Aplikasi Membaca & Menampilkan Data JSON Secara Langsung**:
+  - Diimpor langsung pada file root `App.js`:
+    ```javascript
+    import profileData from './data/profile.json';
+    ```
+- [x] **Struktur Data JSON Valid**:
+  - Sintaks JSON 100% valid dan lolos uji parsing `JSON.parse()`.
+- [x] **Pemetaan Data ke Komponen UI Tanpa Menulis Ulang Seluruh Konten**:
+  - Objek dan array JSON langsung dipetakan ke dalam komponen presentasional melalui Props.
+- [x] **Pemisahan Data dan UI Tetap Terjaga**:
+  - Mengubah isi JSON otomatis mengubah tampilan antarmuka secara instan.
+- [x] **Materi Utama: Pemisahan Data, Struktur JSON, dan Rendering Data**.
 
 ---
 
-## 📁 Struktur Proyek (Clean Architecture Level 5)
+## 📁 Struktur Proyek (Level 6 Architecture)
 
 ```text
 ├── assets/
 │   └── profile.png                 # Foto profil formal Febrian Iradatul Rahman
 ├── components/
-│   ├── Header.js                   # Header institusi Masoem University & Level 5 Badge
-│   ├── ProfileHeader.js            # [Level 5] Profile header: <ProfileHeader data={profileData} />
+│   ├── Header.js                   # Header institusi Masoem University & Level 6 Badge
+│   ├── ProfileHeader.js            # [Level 5/6] Header Profil: <ProfileHeader data={profileData} />
 │   ├── ProfileCard.js              # Kartu identitas presentasional
-│   ├── AboutSection.js             # [Level 5] About & Interests: <AboutSection data={profileData} />
-│   ├── ContactForm.js              # [Level 5] Contact form wrapper: <ContactForm data={profileData} />
-│   ├── ContactFormCard.js          # Formulir kontak dengan validasi & state
-│   ├── InteractiveEndorseBar.js    # Tombol rekomendasi interaktif
+│   ├── AboutSection.js             # [Level 5/6] Tentang & Minat: <AboutSection data={profileData} />
+│   ├── ContactForm.js              # [Level 5/6] Form Kontak: <ContactForm data={profileData} />
+│   ├── ContactFormCard.js          # Logika form kontak, input state, dan validasi
+│   ├── InteractiveEndorseBar.js    # Tombol rekomendasi/endorse
 │   ├── MetricBar.js                # Bar statistik metrik akademik
 │   ├── SectionHeading.js           # Reusable heading hierarkis dengan ikon
-│   ├── SkillMatrixCard.js          # Progress bar keahlian dengan State Filter Tabs
+│   ├── SkillMatrixCard.js          # Progress bar keahlian dengan filter tabs
 │   ├── IdentityDetailCard.js       # Timeline riwayat pendidikan & domisili alamat
 │   ├── ContactGridCard.js          # Grid 2-kolom kontak interaktif
-│   └── Level5CriteriaCard.js       # Checklist evaluasi kriteria Level 5
+│   └── Level6CriteriaCard.js       # Checklist evaluasi kriteria Level 6
 ├── data/
-│   └── profileData.js              # [Level 5] Single source of truth (export default profileData)
+│   ├── profile.json                # [Level 6] Data lokal murni berekstensi .json
+│   └── profileData.js              # Bridge re-exporting profile.json
 ├── theme/
 │   └── index.js                    # Design tokens: COLORS, SPACING, TYPOGRAPHY, SHADOWS
-├── App.js                          # Root component pengatur aliran Props
+├── App.js                          # Root component yang mengimpor profile.json langsung
 ├── app.json                        # Konfigurasi aplikasi Expo
 └── package.json                    # Dependensi Expo & React Native Web
 ```
@@ -134,15 +138,18 @@ Aplikasi mendukung tampilan ganda (**Web & Android**):
 
 ---
 
-## 💡 Panduan Menjelaskan Materi Level 5 (Separation of UI and Data) ke Dosen Penguji
+## 💡 Panduan Menjelaskan Materi Level 6 ke Dosen Penguji
 
-Jika dosen menanyakan implementasi **Separation of UI and Data**:
+Jika dosen menanyakan implementasi **Level 6 (Local JSON Data)**:
 
-1. **Pemisahan Tanggung Jawab (*Separation of Concerns*)**:
-   > *"Sesuai dengan kriteria Level 5, tidak ada satu pun komponen UI yang menuliskan data mahasiswa secara hardcoded di dalam JSX-nya. Semua informasi nama, NIM, prodi, riwayat pendidikan, kontak, dan keahlian dipisahkan secara murni ke dalam berkas `data/profileData.js`."*
+1. **Penyimpanan Data Berformat JSON (`data/profile.json`)**:
+   > *"Pada Level 6 ini, data identitas mahasiswa disimpan dalam format universal JSON (`data/profile.json`). Berkas ini berisi pasangan key-value murni tanpa fungsi ataupun sintaks JavaScript khusus, sehingga data bersifat independen dari bahasa pemrograman (language-agnostic)."*
 
-2. **Aliran Data (*Data Flow*) Melalui Props**:
-   > *"Aliran data dimulai dari `data/profileData.js` yang diekspor menggunakan `export default profileData;`. Berkas root `App.js` mengimpor data tersebut lalu mendistribusikannya ke masing-masing komponen anak melalui properti `data` (misalnya `<ProfileHeader data={profileData} />`, `<AboutSection data={profileData} />`, dan `<ContactForm data={profileData} />`)."*
+2. **Cara Membaca File JSON di Expo / React Native**:
+   > *"Ekosistem Expo dan Metro Bundler mendukung pembacaan berkas JSON secara native. Di dalam `App.js`, saya cukup menuliskan `import profileData from './data/profile.json';`. Bundler Metro secara otomatis mem-parsing teks JSON menjadi JavaScript Object yang siap pakai."*
 
-3. **Kemudahan Pengembangan (*Maintainability & Scalability*)**:
-   > *"Keuntungan utama dari arsitektur ini adalah reusabilitas dan kemudahan pengujian. Jika kita ingin mengganti profil mahasiswa, kita hanya perlu mengubah berkas `profileData.js` tanpa harus menyentuh satu baris pun kode logika antarmuka atau styling komponen."*
+3. **Perbedaan Mendasar Data JSON dengan Komponen UI**:
+   > *"**Data JSON** hanyalah representasi teks statis yang menyimpan informasi terstruktur (hanya mendukung tipe data string, number, boolean, array, object, dan null). Sedangkan **Komponen UI** adalah fungsi React yang menghasilkan elemen visual dinamis (JSX), memiliki siklus hidup (lifecycle), dapat menyimpan state internal, serta mampu merespons interaksi pengguna melalui event handling."*
+
+4. **Pemetaan Data (*Data Mapping*)**:
+   > *"Data yang dimuat dari JSON diteruskan ke komponen-komponen antarmuka melalui props (misalnya `<ProfileHeader data={profileData} />` dan `<AboutSection data={profileData} />`). Komponen kemudian melakukan pemetaan array (seperti `profileData.fieldsOfInterest.map(...)`) untuk menampilkan daftar kartu secara efisien tanpa menuliskan ulang konten secara manual."*

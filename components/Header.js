@@ -12,11 +12,11 @@ export default function Header() {
         </View>
         <View>
           <Text style={styles.universityName}>MASOEM UNIVERSITY</Text>
-          <Text style={styles.appTitle}>Data-Driven Personal CV</Text>
+          <Text style={styles.appTitle}>JSON-Driven Personal CV</Text>
         </View>
       </View>
       <View style={styles.badgeLevel}>
-        <Text style={styles.badgeText}>LEVEL 5</Text>
+        <Text style={styles.badgeText}>LEVEL 6</Text>
       </View>
     </View>
   );
@@ -59,16 +59,16 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   badgeLevel: {
-    backgroundColor: '#F3E8FF',
+    backgroundColor: '#CCFBF1',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#D8B4FE',
+    borderColor: '#99F6E4',
   },
   badgeText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#7E22CE',
+    color: '#0F766E',
   },
 });

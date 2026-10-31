@@ -10,10 +10,10 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-// Import Data Terpisah (Materi Level 5: Separation of UI and Data)
-import profileData from './data/profileData';
+// Import Data Lokal Format JSON (Materi LEVEL 6: Local JSON Data Integration)
+import profileData from './data/profile.json';
 
-// Import Komponen UI Bersih & Reusable (Level 5 Structure)
+// Import Komponen UI Bersih & Reusable (Level 5 & Level 6 Structure)
 import Header from './components/Header';
 import ProfileHeader from './components/ProfileHeader';
 import AboutSection from './components/AboutSection';
@@ -23,7 +23,7 @@ import InteractiveEndorseBar from './components/InteractiveEndorseBar';
 import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
-import Level5CriteriaCard from './components/Level5CriteriaCard';
+import Level6CriteriaCard from './components/Level6CriteriaCard';
 import { COLORS, SPACING } from './theme';
 
 export default function App() {
@@ -35,12 +35,12 @@ export default function App() {
   };
 
   const handleShowValidation = () => {
-    const info = `LEVEL 5 — COMPETENT EVALUATION:\n\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Pemisahan Data & UI: 100% data tersimpan di data/profileData.js\n• Aliran Data: Data dikirimkan ke ProfileHeader, AboutSection, ContactForm, dsb melalui Props 'data'\n• Reusable: Komponen bersifat presentasional murni tanpa dependensi data hardcoded\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
+    const info = `LEVEL 6 — PROFICIENT EVALUATION:\n\n• Sumber Data: data/profile.json (Format JSON Asli)\n• Mahasiswa: ${profileData.nama}\n• NIM: ${profileData.nim}\n• Program Studi: ${profileData.prodi} (Semester ${profileData.semester})\n• Kampus: ${profileData.kampus}\n• Status JSON: Valid & Berhasil diimpor langsung via "import profileData from './data/profile.json'"\n• Pemetaan Data: Dipetakan ke UI secara otomatis via Props tanpa hardcoding\n• Total Pesan Terkirim: ${messagesReceivedCount}`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Verifikasi Capaian Level 5', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Verifikasi Capaian Level 6', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -51,7 +51,7 @@ export default function App() {
 
         {/* Outer Container (Responsive Mobile Simulator Frame di Web & Full Screen di Android) */}
         <View style={styles.appContainer}>
-          {/* Header Institusi & Level 5 Indicator */}
+          {/* Header Institusi & Level 6 Indicator */}
           <Header />
 
           <ScrollView
@@ -59,34 +59,34 @@ export default function App() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* 1. KARTU IDENTITAS UTAMA (Menerima data via Props: <ProfileHeader data={profileData} />) */}
+            {/* 1. KARTU IDENTITAS UTAMA (Menerima data JSON via Props: <ProfileHeader data={profileData} />) */}
             <ProfileHeader data={profileData} />
 
-            {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Menerima data via Props) */}
+            {/* 2. TOMBOL REKOMENDASI INTERAKTIF (Menerima data JSON via Props) */}
             <InteractiveEndorseBar
               studentName={profileData.namaPanggilan}
               initialCount={profileData.initialEndorseCount}
             />
 
-            {/* 3. BAR STATISTIK METRIK AKADEMIK (Menerima data via Props) */}
+            {/* 3. BAR STATISTIK METRIK AKADEMIK (Menerima data JSON via Props) */}
             <MetricBar metrics={profileData.academicMetrics} />
 
-            {/* 4. CHECKLIST EVALUASI LEVEL 5 (Separation of UI and Data Verification) */}
-            <Level5CriteriaCard onShowDetail={handleShowValidation} />
+            {/* 4. CHECKLIST EVALUASI LEVEL 6 (Local JSON Data Verification) */}
+            <Level6CriteriaCard onShowDetail={handleShowValidation} />
 
-            {/* 5. SEKSI TENTANG SAYA & SPESIALISASI MINAT (Menerima data via Props: <AboutSection data={profileData} />) */}
+            {/* 5. SEKSI TENTANG SAYA & SPESIALISASI MINAT (Menerima data JSON via Props: <AboutSection data={profileData} />) */}
             <AboutSection data={profileData} />
 
-            {/* 6. KEAHLIAN TEKNIS DENGAN PROGRESS BAR (Menerima data via Props) */}
+            {/* 6. KEAHLIAN TEKNIS DENGAN PROGRESS BAR (Menerima data JSON via Props) */}
             <SkillMatrixCard skills={profileData.technicalSkills} />
 
-            {/* 7. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT (Menerima data via Props) */}
+            {/* 7. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT (Menerima data JSON via Props) */}
             <IdentityDetailCard data={profileData} />
 
-            {/* 8. GRID KONTAK & KOMUNIKASI (Menerima data via Props) */}
+            {/* 8. GRID KONTAK & KOMUNIKASI (Menerima data JSON via Props) */}
             <ContactGridCard contactItems={profileData.contactItems} />
 
-            {/* 9. FORMULIR KONTAK INTERAKTIF (Menerima data via Props: <ContactForm data={profileData} />) */}
+            {/* 9. FORMULIR KONTAK INTERAKTIF (Menerima data JSON via Props: <ContactForm data={profileData} />) */}
             <ContactForm
               data={profileData}
               onMessageSent={handleMessageSent}
@@ -98,7 +98,7 @@ export default function App() {
                 UTS Pemrograman Mobile • Masoem University
               </Text>
               <Text style={styles.footerSubtext}>
-                Personal CV & Academic Score App — LEVEL 5 (Competent)
+                Personal CV & Academic Score App — LEVEL 6 (Proficient)
               </Text>
               <Text style={styles.copyrightText}>
                 © 2026 {profileData.nama} ({profileData.nim})
