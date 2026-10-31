@@ -16,6 +16,12 @@
   "status": "Mahasiswa Aktif",
   "profesi": "Junior Systems Analyst & Mobile App Developer",
   "professionTitle": "Junior Systems Analyst & Mobile App Developer",
+  "github": "pepeb12",
+  "githubUrl": "https://github.com/pepeb12",
+  "email": "febrianrahman902@gmail.com",
+  "gmail": "febrianrahman902@gmail.com",
+  "kontak": "089512336537",
+  "phone": "089512336537",
   "tagline": "Bridging Business Logic & Modern Mobile Experiences",
   "deskripsi": "Saya adalah mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University dengan dedikasi tinggi dalam menjembatani kebutuhan proses bisnis dengan solusi teknologi perangkat lunak yang inovatif, efisien, dan ramah pengguna.",
   "introduction": {
@@ -274,36 +280,36 @@
   ],
   "hobbies": [
     {
-      "id": "hobby-1",
+      "id": "hobby-guitar",
+      "name": "Bermain Gitar",
+      "icon": "musical-notes",
+      "color": "#065F46",
+      "bg": "#ECFDF5",
+      "desc": "Mengeksplorasi progresi akord, fingerstyle, dan melodi lagu pada instrumen gitar akustik & elektrik."
+    },
+    {
+      "id": "hobby-keyboard",
+      "name": "Bermain Keyboard",
+      "icon": "musical-note",
+      "color": "#065F46",
+      "bg": "#F5F5DC",
+      "desc": "Memainkan tangga nada, harmoni tuts piano keyboard, dan improvisasi musik instrumental modern."
+    },
+    {
+      "id": "hobby-drum",
+      "name": "Bermain Drum",
+      "icon": "disc",
+      "color": "#065F46",
+      "bg": "#ECFDF5",
+      "desc": "Melatih ketepatan ritme, sinkronisasi tempo, dan dinamika ketukan instrumen perkusi drum."
+    },
+    {
+      "id": "hobby-mobile",
       "name": "Mobile App Tinkering",
       "icon": "code-slash",
-      "color": "#2563EB",
-      "bg": "#EFF6FF",
-      "desc": "Mengeksplorasi library baru di Expo dan mencoba implementasi UI modern."
-    },
-    {
-      "id": "hobby-2",
-      "name": "Tech Reading & Gadget",
-      "icon": "newspaper",
-      "color": "#059669",
-      "bg": "#ECFDF5",
-      "desc": "Mengikuti perkembangan teknologi AI, arsitektur software, dan mobile hardware terkini."
-    },
-    {
-      "id": "hobby-3",
-      "name": "Chess & Strategic Games",
-      "icon": "game-controller",
-      "color": "#7C3AED",
-      "bg": "#F5F3FF",
-      "desc": "Melatih kemampuan berpikir analitis, pemecahan masalah bertahap, dan konsentrasi."
-    },
-    {
-      "id": "hobby-4",
-      "name": "Photography & Design",
-      "icon": "camera",
-      "color": "#D97706",
-      "bg": "#FFFBEB",
-      "desc": "Mengabadikan estetika visual perkotaan dan merancang komposisi layout visual."
+      "color": "#065F46",
+      "bg": "#FAF9F3",
+      "desc": "Mengeksplorasi ekosistem React Native, Expo SDK, dan arsitektur UI mobile modern."
     }
   ],
   "coreAttributes": [
@@ -364,19 +370,28 @@
     {
       "type": "email",
       "label": "Email Mahasiswa",
-      "value": "febrian.iradatul@student.masoem.ac.id",
-      "displayValue": "febrian.iradatul@student.masoem.ac.id",
+      "value": "febrianrahman902@gmail.com",
+      "displayValue": "febrianrahman902@gmail.com",
       "icon": "mail-outline",
-      "color": "#2563EB",
-      "bgColor": "#EFF6FF"
+      "color": "#065F46",
+      "bgColor": "#ECFDF5"
     },
     {
       "type": "phone",
-      "label": "Nomor WhatsApp / HP",
-      "value": "+62 821-2425-05024",
-      "displayValue": "+62 821-2425-05024",
+      "label": "Nomor WhatsApp / Kontak",
+      "value": "089512336537",
+      "displayValue": "0895-1233-6537",
       "icon": "call-outline",
-      "color": "#059669",
+      "color": "#065F46",
+      "bgColor": "#ECFDF5"
+    },
+    {
+      "type": "github",
+      "label": "Akun GitHub",
+      "value": "https://github.com/pepeb12",
+      "displayValue": "github.com/pepeb12",
+      "icon": "logo-github",
+      "color": "#065F46",
       "bgColor": "#ECFDF5"
     },
     {
@@ -385,8 +400,8 @@
       "value": "Kp Babakan Stasiun Cicalengka, Kab. Bandung",
       "displayValue": "Cicalengka, Bandung",
       "icon": "location-outline",
-      "color": "#D97706",
-      "bgColor": "#FFFBEB"
+      "color": "#065F46",
+      "bgColor": "#F5F5DC"
     },
     {
       "type": "campus",
@@ -394,8 +409,8 @@
       "value": "Masoem University, Jl. Raya Cipacing No. 22",
       "displayValue": "Masoem Univ, Jabar",
       "icon": "business-outline",
-      "color": "#7C3AED",
-      "bgColor": "#F5F3FF"
+      "color": "#065F46",
+      "bgColor": "#F5F5DC"
     }
   ],
   "initialEndorseCount": 48,

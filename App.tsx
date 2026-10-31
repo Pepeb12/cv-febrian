@@ -9,6 +9,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   useWindowDimensions,
+  Linking,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -606,10 +607,15 @@ export default function App() {
                     <TouchableOpacity
                       style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
                       onPress={() => {
-                        const alertMsg = 'Membuka GitHub: https://github.com/febrian-iradat';
-                        if (Platform.OS === 'web') window.alert(alertMsg);
-                        else Alert.alert('GitHub', alertMsg);
+                        const url = 'https://github.com/pepeb12';
+                        if (Platform.OS === 'web') {
+                          window.open(url, '_blank');
+                        } else {
+                          Linking.openURL(url).catch(() => Alert.alert('GitHub', `Akun GitHub: pepeb12\n${url}`));
+                        }
                       }}
+                      accessibilityRole="link"
+                      accessibilityLabel="Buka GitHub pepeb12"
                     >
                       <MaterialCommunityIcons name="github" size={14} color={theme.textPrimary} />
                       <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>GitHub</Text>
@@ -618,10 +624,15 @@ export default function App() {
                     <TouchableOpacity
                       style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
                       onPress={() => {
-                        const alertMsg = 'Kirim Email ke: febrian.iradat@gmail.com';
-                        if (Platform.OS === 'web') window.alert(alertMsg);
-                        else Alert.alert('Email', alertMsg);
+                        const email = 'febrianrahman902@gmail.com';
+                        if (Platform.OS === 'web') {
+                          window.open(`mailto:${email}`, '_blank');
+                        } else {
+                          Linking.openURL(`mailto:${email}`).catch(() => Alert.alert('Email', `Email: ${email}`));
+                        }
                       }}
+                      accessibilityRole="link"
+                      accessibilityLabel="Kirim email ke febrianrahman902@gmail.com"
                     >
                       <MaterialCommunityIcons name="email-outline" size={14} color={theme.textPrimary} />
                       <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>Email</Text>
@@ -629,9 +640,19 @@ export default function App() {
 
                     <TouchableOpacity
                       style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
-                      onPress={() => handleSelectStage(4)}
+                      onPress={() => {
+                        const phone = '089512336537';
+                        const waUrl = 'https://wa.me/6289512336537';
+                        if (Platform.OS === 'web') {
+                          window.open(waUrl, '_blank');
+                        } else {
+                          Linking.openURL(waUrl).catch(() => Alert.alert('Kontak / WA', `Nomor Kontak: ${phone}`));
+                        }
+                      }}
+                      accessibilityRole="link"
+                      accessibilityLabel="Hubungi kontak WhatsApp 089512336537"
                     >
-                      <MaterialCommunityIcons name="send-outline" size={14} color={theme.textPrimary} />
+                      <MaterialCommunityIcons name="whatsapp" size={14} color={theme.textPrimary} />
                       <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>Kontak</Text>
                     </TouchableOpacity>
                   </View>
