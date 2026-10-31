@@ -4,8 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { SPACING, SHADOWS } from '../theme';
 
 /**
- * Header Component (Level 8: Expert Academic Dashboard & Theme Switcher)
- * Menampilkan nama kampus, judul aplikasi, badge Level 8, dan tombol pengubah tema.
+ * Header Component (Level 10: Industry Production Header with Accessibility & Dark Mode)
+ * Menampilkan nama kampus, judul aplikasi, badge Level 10 Industry, dan tombol pengubah tema dengan a11y.
  */
 export default function Header({ isDarkMode, onToggleTheme, theme }) {
   const currentTheme = theme || {};
@@ -19,6 +19,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
           borderBottomColor: currentTheme.border || '#E2E8F0',
         },
       ]}
+      accessibilityRole="header"
     >
       <View style={styles.headerLeft}>
         <View
@@ -40,7 +41,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
       </View>
 
       <View style={styles.headerRight}>
-        {/* TOMBOL PENGUBAH TEMA (Dark/Light Switcher) */}
+        {/* TOMBOL PENGUBAH TEMA (Dark/Light Switcher) dengan Accessibility */}
         <TouchableOpacity
           style={[
             styles.themeButton,
@@ -51,6 +52,10 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
           ]}
           activeOpacity={0.7}
           onPress={onToggleTheme}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
+          accessibilityHint="Mengubah tema warna aplikasi secara instan"
         >
           <Ionicons
             name={isDarkMode ? 'sunny' : 'moon'}
@@ -59,23 +64,26 @@ export default function Header({ isDarkMode, onToggleTheme, theme }) {
           />
         </TouchableOpacity>
 
-        {/* Badge Level 8 (Expert) */}
+        {/* Badge Level 10 (Industry) */}
         <View
           style={[
             styles.badgeLevel,
             {
-              backgroundColor: isDarkMode ? '#064E3B' : '#DCFCE7',
-              borderColor: isDarkMode ? '#059669' : '#86EFAC',
+              backgroundColor: isDarkMode ? '#134E4A' : '#CCFBF1',
+              borderColor: isDarkMode ? '#0D9488' : '#5EEAD4',
             },
           ]}
+          accessible={true}
+          accessibilityRole="text"
+          accessibilityLabel="Tingkat aplikasi: Level 10 Industry"
         >
           <Text
             style={[
               styles.badgeText,
-              { color: isDarkMode ? '#4ADE80' : '#15803D' },
+              { color: isDarkMode ? '#5EEAD4' : '#0F766E' },
             ]}
           >
-            LEVEL 8
+            LEVEL 10
           </Text>
         </View>
       </View>
