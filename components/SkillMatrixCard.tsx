@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface SkillItem {
   name: string;
@@ -16,10 +16,11 @@ interface SkillMatrixCardProps {
 
 /**
  * SkillMatrixCard Component (Level 7: Dynamic Skills Filter & Progress Bars)
- * Clean, restrained developer competency matrix without excessive neon styling.
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardProps) {
   const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'MOBILE' | 'ANALYSIS' | 'DESIGN' | 'DATA'>('ALL');
+  const isDark = theme.isDark;
 
   const categories: { key: 'ALL' | 'MOBILE' | 'ANALYSIS' | 'DESIGN' | 'DATA'; label: string }[] = [
     { key: 'ALL', label: 'Semua' },
@@ -52,7 +53,7 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
       <SectionHeading
         title="Keahlian Teknis"
         subtitle="Kompetensi Rekayasa Perangkat Lunak & Analisis Sistem"
-        icon="code-tags"
+        icon="code-slash-outline"
         badgeText={`${filteredSkills.length} Bidang`}
         theme={theme}
       />
@@ -67,8 +68,12 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
               style={[
                 styles.filterTab,
                 {
-                  backgroundColor: isActive ? theme.primary : theme.surfaceMuted,
-                  borderColor: isActive ? theme.primary : theme.border,
+                  backgroundColor: isActive
+                    ? isDark
+                      ? '#064E3B'
+                      : '#065F46'
+                    : theme.surfaceMuted,
+                  borderColor: isActive ? '#A7F3D0' : theme.border,
                 },
               ]}
               activeOpacity={0.7}
@@ -132,41 +137,43 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   filterTabsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
     marginBottom: SPACING.md,
   },
   filterTab: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 7,
     borderWidth: 1,
   },
   filterTabText: {
-    fontSize: 11,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
+    fontWeight: '700',
   },
   skillList: {
-    gap: 12,
-    marginTop: 4,
+    gap: 10,
+    marginTop: 2,
   },
   skillItem: {
-    marginBottom: 4,
+    marginBottom: 2,
   },
   skillHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   skillName: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
+    fontWeight: '700',
   },
   levelBadge: {
     flexDirection: 'row',
@@ -174,21 +181,22 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   levelText: {
-    fontSize: 11,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
   },
   percentageText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
   progressTrack: {
-    height: 7,
-    borderRadius: 4,
+    height: 6,
+    borderRadius: 3,
     overflow: 'hidden',
     borderWidth: 0.5,
   },
   progressFill: {
     height: '100%',
-    borderRadius: 4,
+    borderRadius: 3,
   },
 });
-

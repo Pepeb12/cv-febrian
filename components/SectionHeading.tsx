@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SPACING } from '../theme';
+import { COLORS, FONTS, SPACING } from '../theme';
 
 interface SectionHeadingProps {
   title: string;
@@ -12,7 +12,7 @@ interface SectionHeadingProps {
 }
 
 /**
- * SectionHeading Component (Clean Editorial & Authentic Typography)
+ * SectionHeading Component (Clean Editorial Typography with Lato Bold & Lato Regular)
  */
 export default function SectionHeading({
   title,
@@ -31,10 +31,13 @@ export default function SectionHeading({
             <View
               style={[
                 styles.iconWrapper,
-                { backgroundColor: currentTheme.isDark ? '#1E293B' : '#F1F5F9' },
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
               ]}
             >
-              <Ionicons name={icon} size={16} color={currentTheme.primary} />
+              <Ionicons name={icon} size={15} color={currentTheme.primary} />
             </View>
           )}
           <Text style={[styles.mainTitle, { color: currentTheme.textPrimary }]}>
@@ -46,12 +49,12 @@ export default function SectionHeading({
             style={[
               styles.badge,
               {
-                backgroundColor: currentTheme.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                backgroundColor: currentTheme.surfaceMuted,
                 borderColor: currentTheme.border,
               },
             ]}
           >
-            <Text style={[styles.badgeText, { color: currentTheme.textMuted }]}>
+            <Text style={[styles.badgeText, { color: currentTheme.primary }]}>
               {badgeText}
             </Text>
           </View>
@@ -83,16 +86,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconWrapper: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 7,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mainTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    letterSpacing: -0.3,
+    fontFamily: FONTS.heading,
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: -0.2,
   },
   badge: {
     paddingHorizontal: 8,
@@ -101,15 +106,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   badgeText: {
-    fontSize: 10,
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
     fontWeight: '700',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    letterSpacing: 0.3,
   },
   subTitle: {
-    fontSize: 12,
-    lineHeight: 18,
+    fontFamily: FONTS.body,
+    fontSize: 11.5,
+    lineHeight: 16,
     marginTop: 2,
   },
 });
-

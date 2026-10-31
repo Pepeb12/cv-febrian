@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SHADOWS, SPACING } from '../theme';
+import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
 import { StudentProfile, ThemeColors } from '../types';
 
 interface ProfileCardProps {
@@ -13,9 +13,8 @@ interface ProfileCardProps {
 }
 
 /**
- * ProfileCard Component (Inspired by Clean Portfolio Aesthetics, Not AI Slop)
- * Menampilkan foto profil melingkar, tipografi tegas, peran dengan separator titik,
- * dan bio dengan penekanan kata kunci profesional.
+ * ProfileCard Component (Level 1 & Level 2: Student Identity & Authentic Introduction)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function ProfileCard({
   data,
@@ -42,13 +41,13 @@ export default function ProfileCard({
       accessibilityRole="region"
       accessibilityLabel="Hero Profil Mahasiswa"
     >
-      {/* 1. FOTO PROFIL MAHASISWA (Clean Portrait with Status Ring) */}
+      {/* 1. FOTO PROFIL MAHASISWA (Circular Portrait with Emerald/Mint Ring) */}
       <View style={styles.avatarSection}>
         <View
           style={[
             styles.avatarFrame,
             {
-              borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : '#E2E8F0',
+              borderColor: isDark ? currentTheme.primary : currentTheme.primary,
               backgroundColor: currentTheme.surfaceMuted,
             },
           ]}
@@ -66,16 +65,16 @@ export default function ProfileCard({
           style={[
             styles.statusPill,
             {
-              backgroundColor: isDark ? '#064E3B' : '#ECFDF5',
-              borderColor: isDark ? '#059669' : '#A7F3D0',
+              backgroundColor: isDark ? '#0A3F31' : '#ECFDF5',
+              borderColor: isDark ? currentTheme.primary : '#A7F3D0',
             },
           ]}
         >
-          <View style={styles.statusDot} />
+          <View style={[styles.statusDot, { backgroundColor: isDark ? '#A7F3D0' : '#065F46' }]} />
           <Text
             style={[
               styles.statusText,
-              { color: isDark ? '#34D399' : '#059669' },
+              { color: isDark ? '#A7F3D0' : '#065F46' },
             ]}
           >
             MAHASISWA AKTIF • SMT 5
@@ -83,12 +82,12 @@ export default function ProfileCard({
         </View>
       </View>
 
-      {/* 2. NAMA LENGKAP MAHASISWA (Large, Confident, Clean Typography) */}
+      {/* 2. NAMA LENGKAP MAHASISWA (Lato Bold Typography) */}
       <Text style={[styles.nameText, { color: currentTheme.textPrimary }]}>
         {student.nama || student.fullName}
       </Text>
 
-      {/* 3. ROLES DENGAN TITIK SEPARATOR (Inspirasi Elegan Portofolio Profesional) */}
+      {/* 3. ROLES DENGAN TITIK SEPARATOR (Professional Editorial Style) */}
       <View style={styles.rolesRow}>
         <Text style={[styles.roleItem, { color: currentTheme.primary }]}>Systems Analyst</Text>
         <Text style={[styles.roleDot, { color: currentTheme.textMuted }]}>•</Text>
@@ -97,61 +96,63 @@ export default function ProfileCard({
         <Text style={[styles.roleItem, { color: currentTheme.primary }]}>Masoem University</Text>
       </View>
 
-      {/* 4. NARASI PERSONAL BIO (Human, Focused, & Sincere) */}
+      {/* 4. NARASI PERSONAL BIO (Lato Regular with Lato Bold Keywords) */}
       <Text style={[styles.bioText, { color: currentTheme.textSecondary }]}>
         Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
       </Text>
 
-      {/* 5. METADATA IDENTITAS KAMPUS & DOMISILI (Clean Grid) */}
+      {/* 5. METADATA IDENTITAS KAMPUS & DOMISILI (Cream Surface Grid) */}
       <View
         style={[
           styles.metaGrid,
           {
-            backgroundColor: currentTheme.isDark ? '#0F172A' : '#F8FAFC',
+            backgroundColor: currentTheme.surfaceMuted,
             borderColor: currentTheme.border,
           },
         ]}
       >
         <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>NIM MAHASISWA</Text>
+          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>NIM</Text>
           <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
             {student.nim}
           </Text>
         </View>
         <View style={[styles.metaDividerV, { backgroundColor: currentTheme.border }]} />
         <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>PROGRAM STUDI</Text>
+          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>PRODI</Text>
           <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
             {student.prodi || 'Sistem Informasi'}
           </Text>
         </View>
         <View style={[styles.metaDividerV, { backgroundColor: currentTheme.border }]} />
         <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>DOMISILI ASAL</Text>
+          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>DOMISILI</Text>
           <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
             Cicalengka, Bandung
           </Text>
         </View>
       </View>
 
-      {/* 6. CALL TO ACTION BUTTONS (Sleek, Clean, Authentic) */}
+      {/* 6. CALL TO ACTION BUTTONS */}
       <View style={styles.ctaRow}>
         <TouchableOpacity
-          style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.primary }]}
+          style={[styles.primaryCtaBtn, { backgroundColor: isDark ? currentTheme.primary : currentTheme.primary }]}
           onPress={onExploreScore}
           activeOpacity={0.8}
           accessibilityRole="button"
           accessibilityLabel="Lihat Capaian Nilai UTS"
         >
-          <Ionicons name="school" size={16} color="#FFFFFF" />
-          <Text style={styles.primaryCtaText}>Capaian Nilai UTS (90/A)</Text>
+          <Ionicons name="school" size={15} color={isDark ? '#041812' : '#FFFFFF'} />
+          <Text style={[styles.primaryCtaText, { color: isDark ? '#041812' : '#FFFFFF' }]}>
+            Capaian Nilai UTS (90/A)
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.secondaryCtaBtn,
             {
-              backgroundColor: currentTheme.isDark ? '#1E293B' : '#F1F5F9',
+              backgroundColor: currentTheme.surfaceMuted,
               borderColor: currentTheme.border,
             },
           ]}
@@ -160,7 +161,7 @@ export default function ProfileCard({
           accessibilityRole="button"
           accessibilityLabel="Kirim Pesan"
         >
-          <Ionicons name="mail-outline" size={16} color={currentTheme.textPrimary} />
+          <Ionicons name="mail-outline" size={15} color={currentTheme.textPrimary} />
           <Text style={[styles.secondaryCtaText, { color: currentTheme.textPrimary }]}>
             Kirim Pesan
           </Text>
@@ -172,7 +173,7 @@ export default function ProfileCard({
 
 const styles = StyleSheet.create({
   heroContainer: {
-    borderRadius: 20,
+    borderRadius: 18,
     borderWidth: 1,
     padding: SPACING.xl,
     alignItems: 'center',
@@ -184,23 +185,18 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   avatarFrame: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 114,
+    height: 114,
+    borderRadius: 57,
     borderWidth: 3,
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    elevation: 4,
   },
   avatarImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 56,
+    borderRadius: 53,
   },
   statusPill: {
     flexDirection: 'row',
@@ -216,19 +212,20 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#10B981',
   },
   statusText: {
-    fontSize: 10,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 9.5,
+    fontWeight: '700',
     letterSpacing: 0.6,
   },
   nameText: {
-    fontSize: 24,
-    fontWeight: '900',
+    fontFamily: FONTS.heading,
+    fontSize: 22,
+    fontWeight: '700',
     textAlign: 'center',
-    letterSpacing: -0.5,
-    marginBottom: 6,
+    letterSpacing: -0.4,
+    marginBottom: 4,
   },
   rolesRow: {
     flexDirection: 'row',
@@ -239,21 +236,23 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   roleItem: {
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
   },
   roleDot: {
     fontSize: 12,
-    fontWeight: '700',
   },
   bioText: {
-    fontSize: 13,
-    lineHeight: 22,
+    fontFamily: FONTS.body,
+    fontSize: 12.5,
+    lineHeight: 19,
     textAlign: 'center',
-    maxWidth: 620,
     marginBottom: SPACING.lg,
+    paddingHorizontal: 6,
   },
   boldText: {
+    fontFamily: FONTS.heading,
     fontWeight: '700',
   },
   metaGrid: {
@@ -261,63 +260,66 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.sm,
-    borderRadius: 14,
+    borderRadius: 12,
     borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 6,
     marginBottom: SPACING.lg,
   },
   metaCell: {
     flex: 1,
     alignItems: 'center',
   },
-  metaLabel: {
-    fontSize: 9,
-    fontWeight: '700',
-    letterSpacing: 0.6,
-    marginBottom: 2,
-    textTransform: 'uppercase',
-  },
-  metaValue: {
-    fontSize: 12,
-    fontWeight: '800',
-  },
   metaDividerV: {
     width: 1,
-    height: 24,
+    height: 28,
+  },
+  metaLabel: {
+    fontFamily: FONTS.heading,
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    marginBottom: 2,
+  },
+  metaValue: {
+    fontFamily: FONTS.heading,
+    fontSize: 12,
+    fontWeight: '700',
   },
   ctaRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
     gap: 10,
     width: '100%',
   },
   primaryCtaBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 18,
+    paddingHorizontal: 12,
     borderRadius: 10,
-    gap: 8,
+    gap: 6,
   },
   primaryCtaText: {
-    color: '#FFFFFF',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
-    fontSize: 13,
   },
   secondaryCtaBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     borderRadius: 10,
     borderWidth: 1,
-    gap: 8,
+    gap: 6,
   },
   secondaryCtaText: {
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
-    fontSize: 13,
   },
 });

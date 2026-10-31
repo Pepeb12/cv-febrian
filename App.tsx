@@ -13,6 +13,7 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFonts, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 
 // Import Data Lokal Format JSON (Level 6 & Level 8: Local JSON Data Architecture)
 import profileData from './data/profile.json';
@@ -22,8 +23,8 @@ import initialAcademicScoreData from './data/academicScore.json';
 import StorageService from './services/storageService';
 import AcademicService from './services/academicService';
 
-// Import Theme System (Dual-Theme Switcher: Dark/Light Mode)
-import { getTheme, SPACING } from './theme';
+// Import Theme System (Emerald – Cream – White – Mint)
+import { getTheme, SPACING, FONTS } from './theme';
 
 // Import Komponen UI Modular (.tsx)
 import Header from './components/Header';
@@ -40,6 +41,10 @@ import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
 import ContactForm from './components/ContactForm';
 import Level8CriteriaCard from './components/Level8CriteriaCard';
+
+// Import Komponen Evaluasi Bertahap 4 Scroll
+import StageNavigationStepper from './components/StageNavigationStepper';
+import StageSectionDivider from './components/StageSectionDivider';
 
 // Import Komponen Ketahanan & Diagnostik Level 10 (.tsx)
 import ErrorBoundary from './components/ErrorBoundary';
@@ -60,11 +65,22 @@ export default function App() {
   const isDesktop = width >= 992;
   const isTablet = width >= 720 && width < 992;
 
-  const scrollViewRef = useRef<any>(null);
-  const [scoreLayoutY, setScoreLayoutY] = useState(0);
-  const [contactLayoutY, setContactLayoutY] = useState(0);
+  // Load Google Font: Lato (Lato Bold untuk Heading & Lato Biasa untuk Isi)
+  const [fontsLoaded] = useFonts({
+    Lato_400Regular,
+    Lato_700Bold,
+  });
 
-  // 1. State Tema Gelap / Terang dengan Persistensi Lokal (StorageService)
+  const scrollViewRef = useRef<any>(null);
+
+  // Layout Y Positions for 4 Evaluation Stages
+  const [activeStage, setActiveStage] = useState(1);
+  const [stage1Y, setStage1Y] = useState(0);
+  const [stage2Y, setStage2Y] = useState(0);
+  const [stage3Y, setStage3Y] = useState(0);
+  const [stage4Y, setStage4Y] = useState(0);
+
+  // 1. State Tema Gelap / Terang (Emerald – Cream – White – Mint)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = getTheme(isDarkMode);
 
@@ -100,43 +116,52 @@ export default function App() {
   const handleToggleTheme = async () => {
     const nextMode = !isDarkMode;
     setIsDarkMode(nextMode);
-    await StorageService.setThemeMode(nextMode ? 'dark' : 'light');
-    setToast({
-      message: `Beralih ke mode ${nextMode ? 'Gelap (Dark)' : 'Terang (Light)'}`,
-      type: 'info',
-    });
+    try {
+      await StorageService.setThemeMode(nextMode ? 'dark' : 'light');
+      setToast({
+        message: nextMode
+          ? 'Mode Malam (Deep Emerald Night) diaktifkan'
+          : 'Mode Terang (Emerald Cream White) diaktifkan',
+        type: 'info',
+      });
+    } catch (err) {
+      console.warn('Gagal menyimpan tema:', err);
+    }
   };
 
-  // 6. Pengambilan Data Akademik dari AcademicService (API Mock / LMS Simulation)
+  // 6. Pengambilan Data Skor & Simulasi Kehandalan Level 10
   const fetchScores = useCallback(
     async (options: { forceError?: boolean; forceEmpty?: boolean; isPullRefresh?: boolean } = {}) => {
       const { forceError = false, forceEmpty = false, isPullRefresh = false } = options;
+
       if (isPullRefresh) {
         setIsRefreshing(true);
       } else {
         setIsLoadingAcademic(true);
       }
+
       setAcademicError(null);
 
       try {
-        const result = await AcademicService.fetchAcademicScore({
+        const responseData = await AcademicService.fetchAcademicScore({
           forceError,
           forceEmpty,
-          delayMs: isPullRefresh ? 700 : 500,
+          delayMs: 600,
         });
-        setAcademicData(result);
 
         if (forceEmpty) {
           setCurrentState('empty');
+          setAcademicData(responseData);
           setToast({
-            message: 'Simulasi Empty State aktif: Belum ada data nilai semester ini.',
-            type: 'warning',
+            message: 'Simulasi: Data capaian kosong (Empty State aktif)',
+            type: 'info',
           });
         } else {
           setCurrentState('normal');
+          setAcademicData(responseData);
           if (isPullRefresh) {
             setToast({
-              message: 'Sinkronisasi LMS berhasil • Data nilai terupdate',
+              message: 'Data capaian berhasil diperbarui dari sistem akademik',
               type: 'success',
             });
           }
@@ -145,7 +170,7 @@ export default function App() {
         setCurrentState('error');
         setAcademicError(err);
         setToast({
-          message: `Gagal Sinkronisasi: ${err.message}`,
+          message: 'Simulasi Gagal: Gagal terhubung ke Academic Server (HTTP 503)',
           type: 'error',
         });
       } finally {
@@ -156,12 +181,11 @@ export default function App() {
     []
   );
 
-  // 7. Pull-to-Refresh Handler
   const handlePullToRefresh = () => {
     fetchScores({ isPullRefresh: true });
   };
 
-  // 8. Kontrol Simulasi Level 10
+  // Kontrol Simulasi Level 10
   const handleTriggerNormal = () => {
     fetchScores({ forceError: false, forceEmpty: false });
   };
@@ -182,16 +206,30 @@ export default function App() {
     });
   };
 
-  // Scroll Shortcuts
-  const scrollToScoreSection = () => {
-    if (scrollViewRef.current && scoreLayoutY > 0) {
-      scrollViewRef.current.scrollTo({ y: scoreLayoutY - 20, animated: true });
+  // Navigasi 4 Tahap Evaluasi Bertahap
+  const handleSelectStage = (stageIndex: number) => {
+    setActiveStage(stageIndex);
+    let targetY = 0;
+    if (stageIndex === 1) targetY = stage1Y;
+    else if (stageIndex === 2) targetY = stage2Y;
+    else if (stageIndex === 3) targetY = stage3Y;
+    else if (stageIndex === 4) targetY = stage4Y;
+
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: Math.max(targetY - 10, 0), animated: true });
     }
   };
 
-  const scrollToContactSection = () => {
-    if (scrollViewRef.current && contactLayoutY > 0) {
-      scrollViewRef.current.scrollTo({ y: contactLayoutY - 20, animated: true });
+  const handleScroll = (event: any) => {
+    const y = event.nativeEvent.contentOffset.y;
+    if (stage4Y > 0 && y >= stage4Y - 120) {
+      if (activeStage !== 4) setActiveStage(4);
+    } else if (stage3Y > 0 && y >= stage3Y - 120) {
+      if (activeStage !== 3) setActiveStage(3);
+    } else if (stage2Y > 0 && y >= stage2Y - 120) {
+      if (activeStage !== 2) setActiveStage(2);
+    } else {
+      if (activeStage !== 1) setActiveStage(1);
     }
   };
 
@@ -201,7 +239,7 @@ export default function App() {
       .map((p: any) => `• ${p.name || p.label}: ${p.percentage}%`)
       .join('\n');
 
-    const info = `EVALUASI KELENGKAPAN UTS MAHASISWA:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Semua Level 1 s.d. Level 10 Lolos Evaluasi 100%`;
+    const info = `EVALUASI KELENGKAPAN UTS MAHASISWA:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Seluruh Level 1 s.d. Level 10 Lolos Evaluasi 100%`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
@@ -260,84 +298,256 @@ export default function App() {
                 },
               ]}
               showsVerticalScrollIndicator={false}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
               refreshControl={
                 <RefreshControl
                   refreshing={isRefreshing}
                   onRefresh={handlePullToRefresh}
-                  colors={['#0284C7', '#10B981']}
+                  colors={['#065F46', '#A7F3D0']}
                   tintColor={theme.primary}
                 />
               }
             >
-              {/* Responsive Container Wrapper: Maksimal 1280px di Layar Lebar, Full-width di Ponsel */}
+              {/* Responsive Container Wrapper: Maksimal 1200px di Layar Lebar */}
               <View style={styles.responsiveContentWrapper}>
-                {isDesktop ? (
-                  /* ========================================================
-                     DESKTOP WIDESCREEN RESPONSIVE 2-COLUMN DASHBOARD LAYOUT
-                     ======================================================== */
-                  <View style={styles.desktopLayoutRow}>
-                    {/* Left Column (Sidebar: Profile, Quick Actions, Education & Contact Info) */}
-                    <View style={styles.desktopSidebarCol}>
+                {/* 4 STAGE STEPPER NAVIGATOR */}
+                <StageNavigationStepper
+                  activeStage={activeStage}
+                  onSelectStage={handleSelectStage}
+                  theme={theme}
+                />
+
+                {/* ========================================================
+                    TAHAP 1: LEVEL 1 — 3: FONDASI & IDENTITAS MAHASISWA
+                    (SCROLL 1)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    setStage1Y(e.nativeEvent.layout.y);
+                  }}
+                  style={styles.stageBlock}
+                >
+                  <StageSectionDivider
+                    stageNumber={1}
+                    levelsText="LEVEL 1 — 3"
+                    stageTitle="Fondasi & Identitas Mahasiswa"
+                    stageDesc="Identitas dasar, pengantar profil, Flexbox layout & tipografi Lato"
+                    icon="person-circle-outline"
+                    theme={theme}
+                  />
+
+                  {isDesktop ? (
+                    <View style={styles.desktopGrid2Col}>
+                      <View style={styles.desktopColHalf}>
+                        <ProfileHeader data={profileData} theme={theme} />
+                      </View>
+                      <View style={styles.desktopColHalf}>
+                        <MetricBar metrics={profileData.academicMetrics} theme={theme} />
+                        <QuickActionBar
+                          onScrollToScore={() => handleSelectStage(3)}
+                          onOpenTestRunner={() => setShowDiagnosticModal(true)}
+                          onOpenConcepts={() => setShowConceptModal(true)}
+                          onScrollToContact={() => handleSelectStage(4)}
+                          theme={theme}
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={styles.mobileColumn}>
                       <ProfileHeader data={profileData} theme={theme} />
-
-                      <InteractiveEndorseBar
-                        studentName={profileData.namaPanggilan}
-                        initialCount={profileData.initialEndorseCount}
-                        theme={theme}
-                      />
-
+                      <MetricBar metrics={profileData.academicMetrics} theme={theme} />
                       <QuickActionBar
-                        onScrollToScore={scrollToScoreSection}
+                        onScrollToScore={() => handleSelectStage(3)}
                         onOpenTestRunner={() => setShowDiagnosticModal(true)}
                         onOpenConcepts={() => setShowConceptModal(true)}
-                        onScrollToContact={scrollToContactSection}
+                        onScrollToContact={() => handleSelectStage(4)}
                         theme={theme}
                       />
+                    </View>
+                  )}
+                </View>
 
+                {/* ========================================================
+                    TAHAP 2: LEVEL 4 — 6: INTERAKSI, PIPELINE DATA & JSON
+                    (SCROLL 2)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    setStage2Y(e.nativeEvent.layout.y);
+                  }}
+                  style={styles.stageBlock}
+                >
+                  <StageSectionDivider
+                    stageNumber={2}
+                    levelsText="LEVEL 4 — 6"
+                    stageTitle="Interaksi, Props & Data JSON Lokal"
+                    stageDesc="Komponen interaktif, arsitektur pemisahan UI & data murni JSON"
+                    icon="git-network-outline"
+                    theme={theme}
+                  />
+
+                  <InteractiveEndorseBar
+                    studentName={profileData.namaPanggilan}
+                    initialCount={profileData.initialEndorseCount}
+                    theme={theme}
+                  />
+
+                  {isDesktop ? (
+                    <View style={styles.desktopGrid2Col}>
+                      <View style={styles.desktopColHalf}>
+                        <IdentityDetailCard data={profileData} theme={theme} />
+                      </View>
+                      <View style={styles.desktopColHalf}>
+                        <AboutSection data={profileData} theme={theme} />
+                        <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={styles.mobileColumn}>
                       <IdentityDetailCard data={profileData} theme={theme} />
-
+                      <AboutSection data={profileData} theme={theme} />
                       <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
                     </View>
+                  )}
+                </View>
 
-                    {/* Right Column (Main Content Area: Scores, Matrix, Portfolios, Skills, & Forms) */}
-                    <View style={styles.desktopMainCol}>
-                      <MetricBar metrics={profileData.academicMetrics} theme={theme} />
+                {/* ========================================================
+                    TAHAP 3: LEVEL 7 — 8: EKSPLORASI FITUR & MY SCORE
+                    (SCROLL 3)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    setStage3Y(e.nativeEvent.layout.y);
+                  }}
+                  style={styles.stageBlock}
+                >
+                  <StageSectionDivider
+                    stageNumber={3}
+                    levelsText="LEVEL 7 — 8"
+                    stageTitle="Eksplorasi Fitur & Dashboard My Score"
+                    stageDesc="Current Score 90 (A), 19.000 LP, 4 Capaian, Portofolio & Skill Matrix"
+                    icon="school-outline"
+                    theme={theme}
+                  />
 
-                      {/* My Score Academic Dashboard with State Resilience */}
-                      <View
-                        onLayout={(e) => {
-                          setScoreLayoutY(e.nativeEvent.layout.y);
-                        }}
-                      >
-                        {isLoadingAcademic ? (
-                          <LoadingSkeleton theme={theme} />
-                        ) : currentState === 'error' ? (
-                          <ErrorBanner
-                            error={academicError}
-                            onRetry={handleTriggerNormal}
-                            theme={theme}
-                          />
-                        ) : currentState === 'empty' ? (
-                          <EmptyState
-                            icon="chart-line"
-                            title="Belum Ada Capaian Akademik"
-                            message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
-                            actionLabel="Sinkronkan Ulang Data LMS"
-                            onAction={handleTriggerNormal}
-                            theme={theme}
-                          />
-                        ) : (
-                          <MyScoreSection data={academicData} theme={theme} />
-                        )}
+                  {/* DASHBOARD MY SCORE (WAJIB MENONJOL DENGAN PALET EMERALD & MINT) */}
+                  <View>
+                    {isLoadingAcademic ? (
+                      <LoadingSkeleton theme={theme} />
+                    ) : currentState === 'error' ? (
+                      <ErrorBanner
+                        error={academicError}
+                        onRetry={handleTriggerNormal}
+                        theme={theme}
+                      />
+                    ) : currentState === 'empty' ? (
+                      <EmptyState
+                        icon="chart-line"
+                        title="Belum Ada Capaian Akademik"
+                        message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
+                        actionLabel="Sinkronkan Ulang Data LMS"
+                        onAction={handleTriggerNormal}
+                        theme={theme}
+                      />
+                    ) : (
+                      <MyScoreSection data={academicData} theme={theme} />
+                    )}
+                  </View>
+
+                  {isDesktop ? (
+                    <View style={styles.desktopGrid2Col}>
+                      <View style={styles.desktopColHalf}>
+                        <PortfolioGallery
+                          portfolios={profileData.portfolios}
+                          theme={theme}
+                        />
+                      </View>
+                      <View style={styles.desktopColHalf}>
+                        <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+                        <ExperienceTimeline
+                          experiences={profileData.experience}
+                          theme={theme}
+                        />
+                        <HobbySection
+                          hobbies={profileData.hobbies}
+                          theme={theme}
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={styles.mobileColumn}>
+                      <PortfolioGallery
+                        portfolios={profileData.portfolios}
+                        theme={theme}
+                      />
+                      <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+                      <ExperienceTimeline
+                        experiences={profileData.experience}
+                        theme={theme}
+                      />
+                      <HobbySection
+                        hobbies={profileData.hobbies}
+                        theme={theme}
+                      />
+                    </View>
+                  )}
+                </View>
+
+                {/* ========================================================
+                    TAHAP 4: LEVEL 9 — 10: STANDAR INDUSTRI, PENGUJIAN & KONTAK
+                    (SCROLL 4)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    setStage4Y(e.nativeEvent.layout.y);
+                  }}
+                  style={styles.stageBlock}
+                >
+                  <StageSectionDivider
+                    stageNumber={4}
+                    levelsText="LEVEL 9 — 10"
+                    stageTitle="Standar Industri, Pengujian & Kontak"
+                    stageDesc="Matriks evaluasi 1-10, simulasi error & empty state, test suite, dan form kontak"
+                    icon="shield-checkmark-outline"
+                    theme={theme}
+                  />
+
+                  {/* Matriks Evaluasi Lengkap Level 1 s.d. Level 10 */}
+                  <ChallengeLevelMatrix
+                    theme={theme}
+                    onOpenConceptModal={() => setShowConceptModal(true)}
+                  />
+
+                  {isDesktop ? (
+                    <View style={styles.desktopGrid2Col}>
+                      <View style={styles.desktopColHalf}>
+                        {/* Kontrol Demonstrasi Pengujian Dosen */}
+                        <Level10CriteriaCard
+                          currentState={currentState}
+                          onTriggerNormal={handleTriggerNormal}
+                          onTriggerError={handleTriggerError}
+                          onTriggerEmpty={handleTriggerEmpty}
+                          onOpenTestRunner={() => setShowDiagnosticModal(true)}
+                          theme={theme}
+                        />
+
+                        <Level8CriteriaCard
+                          onShowDetail={handleShowValidation}
+                          theme={theme}
+                        />
                       </View>
 
-                      {/* Evaluasi Matriks Level 1 s.d. Level 10 */}
-                      <ChallengeLevelMatrix
-                        theme={theme}
-                        onOpenConceptModal={() => setShowConceptModal(true)}
-                      />
-
-                      {/* Kontrol Demonstrasi Pengujian Dosen */}
+                      <View style={styles.desktopColHalf}>
+                        <ContactForm
+                          data={profileData}
+                          onMessageSent={handleMessageSent}
+                          theme={theme}
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={styles.mobileColumn}>
                       <Level10CriteriaCard
                         currentState={currentState}
                         onTriggerNormal={handleTriggerNormal}
@@ -352,164 +562,19 @@ export default function App() {
                         theme={theme}
                       />
 
-                      <PortfolioGallery
-                        portfolios={profileData.portfolios}
-                        theme={theme}
-                      />
-
-                      <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
-
-                      <ExperienceTimeline
-                        experiences={profileData.experience}
-                        theme={theme}
-                      />
-
-                      <HobbySection
-                        hobbies={profileData.hobbies}
-                        theme={theme}
-                      />
-
-                      <AboutSection data={profileData} theme={theme} />
-
-                      <View
-                        onLayout={(e) => {
-                          setContactLayoutY(e.nativeEvent.layout.y);
-                        }}
-                      >
-                        <ContactForm
-                          data={profileData}
-                          onMessageSent={handleMessageSent}
-                          theme={theme}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                ) : (
-                  /* ========================================================
-                     MOBILE & TABLET RESPONSIVE SINGLE-COLUMN LAYOUT
-                     ======================================================== */
-                  <View style={styles.mobileLayoutCol}>
-                    {/* 1. KARTU IDENTITAS MAHASISWA */}
-                    <ProfileHeader data={profileData} theme={theme} />
-
-                    {/* 2. TOMBOL REKOMENDASI INTERAKTIF */}
-                    <InteractiveEndorseBar
-                      studentName={profileData.namaPanggilan}
-                      initialCount={profileData.initialEndorseCount}
-                      theme={theme}
-                    />
-
-                    {/* 3. QUICK ACTION BAR */}
-                    <QuickActionBar
-                      onScrollToScore={scrollToScoreSection}
-                      onOpenTestRunner={() => setShowDiagnosticModal(true)}
-                      onOpenConcepts={() => setShowConceptModal(true)}
-                      onScrollToContact={scrollToContactSection}
-                      theme={theme}
-                    />
-
-                    {/* 4. BAR STATISTIK METRIK AKADEMIK */}
-                    <MetricBar metrics={profileData.academicMetrics} theme={theme} />
-
-                    {/* 5. DASHBOARD CAPAIAN AKADEMIK (MY SCORE SECTION) */}
-                    <View
-                      onLayout={(e) => {
-                        setScoreLayoutY(e.nativeEvent.layout.y);
-                      }}
-                    >
-                      {isLoadingAcademic ? (
-                        <LoadingSkeleton theme={theme} />
-                      ) : currentState === 'error' ? (
-                        <ErrorBanner
-                          error={academicError}
-                          onRetry={handleTriggerNormal}
-                          theme={theme}
-                        />
-                      ) : currentState === 'empty' ? (
-                        <EmptyState
-                          icon="chart-line"
-                          title="Belum Ada Capaian Akademik"
-                          message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
-                          actionLabel="Sinkronkan Ulang Data LMS"
-                          onAction={handleTriggerNormal}
-                          theme={theme}
-                        />
-                      ) : (
-                        <MyScoreSection data={academicData} theme={theme} />
-                      )}
-                    </View>
-
-                    {/* 6. MATRIKS PENILAIAN CHALLENGE LEVEL (Level 1 s.d. Level 10) */}
-                    <ChallengeLevelMatrix
-                      theme={theme}
-                      onOpenConceptModal={() => setShowConceptModal(true)}
-                    />
-
-                    {/* 7. KONTROL INTERAKTIF LEVEL 10 (INDUSTRY) */}
-                    <Level10CriteriaCard
-                      currentState={currentState}
-                      onTriggerNormal={handleTriggerNormal}
-                      onTriggerError={handleTriggerError}
-                      onTriggerEmpty={handleTriggerEmpty}
-                      onOpenTestRunner={() => setShowDiagnosticModal(true)}
-                      theme={theme}
-                    />
-
-                    {/* 8. CHECKLIST VERIFIKASI LEVEL 8 */}
-                    <Level8CriteriaCard
-                      onShowDetail={handleShowValidation}
-                      theme={theme}
-                    />
-
-                    {/* 9. GALERI PORTOFOLIO PROYEK DENGAN SEARCH & MODAL */}
-                    <PortfolioGallery
-                      portfolios={profileData.portfolios}
-                      theme={theme}
-                    />
-
-                    {/* 10. TIMELINE PENGALAMAN ORGANISASI & RISET */}
-                    <ExperienceTimeline
-                      experiences={profileData.experience}
-                      theme={theme}
-                    />
-
-                    {/* 11. MINAT & HOBI PRIBADI */}
-                    <HobbySection
-                      hobbies={profileData.hobbies}
-                      theme={theme}
-                    />
-
-                    {/* 12. SEKSI TENTANG SAYA */}
-                    <AboutSection data={profileData} theme={theme} />
-
-                    {/* 13. KEAHLIAN TEKNIS */}
-                    <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
-
-                    {/* 14. RIWAYAT PENDIDIKAN & DOMISILI ALAMAT */}
-                    <IdentityDetailCard data={profileData} theme={theme} />
-
-                    {/* 15. GRID KONTAK & KOMUNIKASI */}
-                    <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
-
-                    {/* 16. FORMULIR KONTAK INTERAKTIF */}
-                    <View
-                      onLayout={(e) => {
-                        setContactLayoutY(e.nativeEvent.layout.y);
-                      }}
-                    >
                       <ContactForm
                         data={profileData}
                         onMessageSent={handleMessageSent}
                         theme={theme}
                       />
                     </View>
-                  </View>
-                )}
+                  )}
+                </View>
 
-                {/* FOOTER INFORMASI UTS & PANDUAN SIDANG */}
+                {/* FOOTER INFORMASI UTS & PANDUAN SIDANG DENGAN EMERALD & CREAM */}
                 <View style={[styles.footer, { borderTopColor: theme.border }]}>
-                  {/* Motto Pribadi Mahasiswa (Terinspirasi Kang Solihin) */}
-                  <Text style={[styles.mottoText, { color: theme.textPrimary }]}>
+                  {/* Slogan Mahasiswa: Lato Bold & Warna Emerald */}
+                  <Text style={[styles.mottoText, { color: theme.primary }]}>
                     Analyze • Build • Deliver
                   </Text>
                   <Text style={[styles.mottoSubtext, { color: theme.textMuted }]}>
@@ -521,8 +586,8 @@ export default function App() {
                     style={[
                       styles.conceptDefenseBtn,
                       {
-                        backgroundColor: isDarkMode ? '#1E293B' : '#EFF6FF',
-                        borderColor: theme.primary,
+                        backgroundColor: isDarkMode ? '#063B2C' : '#ECFDF5',
+                        borderColor: isDarkMode ? theme.primary : '#A7F3D0',
                       },
                     ]}
                     onPress={() => setShowConceptModal(true)}
@@ -530,7 +595,7 @@ export default function App() {
                     accessibilityRole="button"
                     accessibilityLabel="Buka Panduan Pembelaan Konsep React Native"
                   >
-                    <MaterialCommunityIcons name="school" size={18} color={theme.primary} />
+                    <MaterialCommunityIcons name="school" size={17} color={theme.primary} />
                     <Text style={[styles.conceptDefenseBtnText, { color: theme.primary }]}>
                       Panduan Penguasaan Konsep (Materi P1 - P10)
                     </Text>
@@ -564,7 +629,7 @@ export default function App() {
 
                     <TouchableOpacity
                       style={[styles.footerLinkChip, { backgroundColor: theme.surfaceMuted, borderColor: theme.border }]}
-                      onPress={scrollToContactSection}
+                      onPress={() => handleSelectStage(4)}
                     >
                       <MaterialCommunityIcons name="send-outline" size={14} color={theme.textPrimary} />
                       <Text style={[styles.footerLinkText, { color: theme.textPrimary }]}>Kontak</Text>
@@ -618,29 +683,28 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scrollContent: {
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     paddingBottom: 40,
   },
   responsiveContentWrapper: {
     width: '100%',
-    maxWidth: 1320,
+    maxWidth: 1200,
     alignSelf: 'center',
   },
+  stageBlock: {
+    marginBottom: SPACING.lg,
+  },
   // Desktop Widescreen 2-Column Grid
-  desktopLayoutRow: {
+  desktopGrid2Col: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: SPACING.xl,
+    gap: SPACING.lg,
   },
-  desktopSidebarCol: {
-    width: 380,
-    maxWidth: 420,
-  },
-  desktopMainCol: {
+  desktopColHalf: {
     flex: 1,
   },
   // Mobile / Tablet Single-Column
-  mobileLayoutCol: {
+  mobileColumn: {
     width: '100%',
     maxWidth: 680,
     alignSelf: 'center',
@@ -650,60 +714,67 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: SPACING.lg,
     borderTopWidth: 1,
-    gap: 8,
+    gap: 7,
     width: '100%',
   },
   mottoText: {
+    fontFamily: FONTS.heading,
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: '700',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
   mottoSubtext: {
-    fontSize: 11.5,
+    fontFamily: FONTS.body,
+    fontSize: 11,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   conceptDefenseBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 12,
+    paddingVertical: 9,
+    paddingHorizontal: 15,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 8,
-    marginBottom: 8,
+    gap: 7,
+    marginBottom: 6,
   },
   conceptDefenseBtnText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
   footerLinksRow: {
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: 8,
+    gap: 8,
+    marginBottom: 6,
   },
   footerLinkChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 7,
     borderWidth: 1,
-    gap: 6,
+    gap: 5,
   },
   footerLinkText: {
-    fontSize: 11,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
+    fontWeight: '700',
   },
   footerText: {
-    fontSize: 12,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
   },
   footerSubtext: {
-    fontSize: 11,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
   },
   copyrightText: {
-    fontSize: 10,
+    fontFamily: FONTS.body,
+    fontSize: 9.5,
   },
 });

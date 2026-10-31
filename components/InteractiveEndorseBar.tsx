@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface InteractiveEndorseBarProps {
   studentName: string;
@@ -10,8 +10,8 @@ interface InteractiveEndorseBarProps {
 }
 
 /**
- * InteractiveEndorseBar Component (Level 7 & 10: Interactive Component)
- * Clean, non-AI-slop social endorsement bar with state management and user feedback.
+ * InteractiveEndorseBar Component (Level 4, 7, 10: Interactive Component)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function InteractiveEndorseBar({
   studentName,
@@ -20,6 +20,7 @@ export default function InteractiveEndorseBar({
 }: InteractiveEndorseBarProps) {
   const [endorseCount, setEndorseCount] = useState(initialCount);
   const [isEndorsed, setIsEndorsed] = useState(false);
+  const isDark = theme.isDark;
 
   const handleToggleEndorse = () => {
     if (isEndorsed) {
@@ -62,8 +63,12 @@ export default function InteractiveEndorseBar({
           style={[
             styles.endorseButton,
             {
-              backgroundColor: isEndorsed ? theme.primary : theme.surfaceMuted,
-              borderColor: isEndorsed ? theme.primary : theme.border,
+              backgroundColor: isEndorsed
+                ? isDark
+                  ? '#0A4A3A'
+                  : '#065F46'
+                : theme.surfaceMuted,
+              borderColor: isEndorsed ? '#A7F3D0' : theme.border,
             },
           ]}
           activeOpacity={0.8}
@@ -73,8 +78,8 @@ export default function InteractiveEndorseBar({
         >
           <MaterialCommunityIcons
             name={isEndorsed ? 'thumb-up' : 'thumb-up-outline'}
-            size={16}
-            color={isEndorsed ? '#FFFFFF' : theme.textPrimary}
+            size={15}
+            color={isEndorsed ? '#A7F3D0' : theme.primary}
           />
           <Text
             style={[
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.md,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   contentRow: {
@@ -108,27 +113,29 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleText: {
+    fontFamily: FONTS.heading,
     fontSize: 13,
     fontWeight: '700',
     marginBottom: 2,
     letterSpacing: -0.2,
   },
   subText: {
+    fontFamily: FONTS.body,
     fontSize: 11,
     lineHeight: 16,
   },
   endorseButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 7,
     paddingHorizontal: 12,
-    borderRadius: 10,
+    borderRadius: 9,
     borderWidth: 1,
     gap: 6,
   },
   endorseButtonText: {
-    fontSize: 12,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
   },
 });
-

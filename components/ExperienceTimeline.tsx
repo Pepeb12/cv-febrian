@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface ExperienceItem {
   id?: string | number;
@@ -21,7 +20,7 @@ interface ExperienceTimelineProps {
 
 /**
  * ExperienceTimeline Component (Level 7: Organizational & Academic Experience)
- * Clean, chronological timeline of leadership and research activities.
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function ExperienceTimeline({ experiences = [], theme }: ExperienceTimelineProps) {
   if (!experiences || experiences.length === 0) return null;
@@ -47,7 +46,7 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
       <View style={styles.timelineContainer}>
         {experiences.map((exp, index) => {
           const isLast = index === experiences.length - 1;
-          const nodeColor = exp.color || theme.primary;
+          const nodeColor = theme.primary;
 
           return (
             <View key={exp.id || index} style={styles.timelineItem}>
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   timelineContainer: {
@@ -112,34 +111,34 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   leftCol: {
-    width: 24,
+    width: 22,
     alignItems: 'center',
   },
   nodeCircle: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
   },
   nodeDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   connectingLine: {
     position: 'absolute',
-    top: 18,
+    top: 16,
     bottom: -16,
-    width: 2,
+    width: 1.5,
     zIndex: 1,
   },
   contentCol: {
     flex: 1,
     paddingLeft: 10,
-    paddingBottom: 6,
+    paddingBottom: 4,
   },
   headerRow: {
     flexDirection: 'row',
@@ -149,22 +148,25 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   roleText: {
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
     marginRight: 6,
   },
   periodText: {
-    fontSize: 11,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
     fontWeight: '500',
   },
   orgText: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 4,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
+    marginBottom: 2,
   },
   descText: {
-    fontSize: 11.5,
-    lineHeight: 18,
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    lineHeight: 16,
   },
 });
-

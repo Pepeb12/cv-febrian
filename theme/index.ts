@@ -1,93 +1,136 @@
 import { Platform } from 'react-native';
 
 /**
- * Design Tokens & Dual-Theme System (Materi Level 7: Theme Switcher Exploration)
- * Mendukung mode Terang (Light Mode) dan mode Gelap (Dark Mode) secara dinamis.
+ * PALET WARNA ELEGAN: Emerald – Cream – White
+ * Kesan: Elegan, tenang, dan berkelas
+ * - Emerald: #065F46
+ * - Cream:   #F5F5DC
+ * - White:   #FFFFFF
+ * - Mint:    #A7F3D0
  */
+
+export const PALETTE = {
+  emerald: '#065F46',
+  emeraldDark: '#044E39',
+  emeraldDeep: '#022C22',
+  cream: '#F5F5DC',
+  creamLight: '#FAF9F3',
+  creamDark: '#E8E8CE',
+  white: '#FFFFFF',
+  mint: '#A7F3D0',
+  mintLight: '#ECFDF5',
+  mintDark: '#047857',
+};
+
+export const FONTS = {
+  heading: 'Lato_700Bold',
+  body: 'Lato_400Regular',
+  bold: 'Lato_700Bold',
+  regular: 'Lato_400Regular',
+};
 
 export const LIGHT_THEME = {
   isDark: false,
-  primary: '#1E40AF',       // Deep Royal Blue
-  primaryLight: '#EFF6FF',
-  primaryHover: '#1D4ED8',
-  primaryBorder: '#BFDBFE',
+  // Brand Signatures
+  primary: '#065F46',         // Emerald #065F46
+  primaryLight: '#ECFDF5',    // Soft Mint-tinted cream
+  primaryHover: '#044E39',
+  primaryBorder: '#A7F3D0',   // Mint #A7F3D0
 
-  accentCyan: '#0284C7',
-  accentEmerald: '#059669',
-  accentEmeraldLight: '#ECFDF5',
+  cream: '#F5F5DC',           // Cream #F5F5DC
+  white: '#FFFFFF',           // White #FFFFFF
+  mint: '#A7F3D0',            // Mint #A7F3D0
+  emerald: '#065F46',
+
+  // Structural Surfaces
+  background: '#FAF9F3',      // Warm Cream-tinted luxury background
+  surface: '#FFFFFF',         // Pure crisp white cards
+  surfaceMuted: '#F5F5DC',    // Warm cream accent surfaces
+  surfaceSubtle: '#F2F0E6',
+  border: '#E3DFC8',          // Soft warm border
+  borderLight: '#ECE9D8',
+
+  // Typography (Dark emerald charcoal for maximum contrast & class)
+  textPrimary: '#06281E',     // Deepest Forest Slate
+  textSecondary: '#204639',   // Refined Emerald Charcoal
+  textMuted: '#517466',       // Muted Sage Slate
+  textLight: '#85A698',       // Light Sage Slate
+
+  // Accents & Badges
+  secondary: '#065F46',
+  accentEmerald: '#065F46',
+  accentCream: '#F5F5DC',
+  accentMint: '#A7F3D0',
+  accentMintLight: '#ECFDF5',
   accentEmeraldBorder: '#A7F3D0',
-  accentViolet: '#7C3AED',
-  accentVioletLight: '#F5F3FF',
-  accentAmber: '#D97706',
-  accentAmberLight: '#FFFBEB',
+  accentCyan: '#059669',
+  accentAmber: '#B45309',
 
-  textPrimary: '#0F172A',   // Slate 900
-  textSecondary: '#334155', // Slate 700
-  textMuted: '#64748B',     // Slate 500
-  textLight: '#94A3B8',     // Slate 400
-
-  background: '#F8FAFC',    // Slate 50
-  surface: '#FFFFFF',       // Pure white
-  surfaceMuted: '#F1F5F9',  // Slate 100
-  border: '#E2E8F0',        // Slate 200
-  borderLight: '#F1F5F9',
-
-  secondary: '#059669',
+  // Feedback Colors
+  success: '#065F46',
+  successLight: '#ECFDF5',
+  successBorder: '#A7F3D0',
+  successText: '#065F46',
   error: '#DC2626',
+  errorLight: '#FEF2F2',
 
-  success: '#16A34A',
-  successLight: '#F0FDF4',
-  successBorder: '#BBF7D0',
-  successText: '#15803D',
-
-  cardHeaderBanner: '#1E40AF',
-  inputBackground: '#F8FAFC',
+  cardHeaderBanner: '#065F46',
+  inputBackground: '#FFFFFF',
 };
 
 export const DARK_THEME = {
   isDark: true,
-  primary: '#3B82F6',       // Brighter Blue for Dark Mode readability
-  primaryLight: '#1E293B',
-  primaryHover: '#60A5FA',
-  primaryBorder: '#334155',
+  // Brand Signatures in Dark Mode
+  primary: '#A7F3D0',         // Mint #A7F3D0 (Glow on deep emerald)
+  primaryLight: '#0A3F31',
+  primaryHover: '#6EE7B7',
+  primaryBorder: '#065F46',
 
-  accentCyan: '#38BDF8',
-  accentEmerald: '#34D399',
-  accentEmeraldLight: '#064E3B',
-  accentEmeraldBorder: '#059669',
-  accentViolet: '#A78BFA',
-  accentVioletLight: '#2E1065',
+  cream: '#F5F5DC',
+  white: '#FFFFFF',
+  mint: '#A7F3D0',
+  emerald: '#065F46',
+
+  // Structural Surfaces
+  background: '#041812',      // Deep Royal Emerald Night
+  surface: '#0A2920',         // Deep Emerald Surface
+  surfaceMuted: '#10392D',    // Muted Emerald Slate
+  surfaceSubtle: '#061F17',
+  border: '#19493B',          // Subtle Emerald Border
+  borderLight: '#11352A',
+
+  // Typography (Classy Warm Cream text)
+  textPrimary: '#F5F5DC',     // Warm Cream #F5F5DC text
+  textSecondary: '#D7EDE2',   // Soft Sage Cream
+  textMuted: '#96BCAE',       // Muted Mint Slate
+  textLight: '#658C7E',
+
+  // Accents & Badges
+  secondary: '#A7F3D0',
+  accentEmerald: '#065F46',
+  accentCream: '#F5F5DC',
+  accentMint: '#A7F3D0',
+  accentMintLight: '#073327',
+  accentEmeraldBorder: '#065F46',
+  accentCyan: '#34D399',
   accentAmber: '#FBBF24',
-  accentAmberLight: '#451A03',
 
-  textPrimary: '#F8FAFC',   // Slate 50
-  textSecondary: '#E2E8F0', // Slate 200
-  textMuted: '#94A3B8',     // Slate 400
-  textLight: '#64748B',     // Slate 500
+  // Feedback Colors
+  success: '#A7F3D0',
+  successLight: '#064E3B',
+  successBorder: '#065F46',
+  successText: '#A7F3D0',
+  error: '#F87171',
+  errorLight: '#450A0A',
 
-  background: '#0B0F19',    // Deep Dark Navy
-  surface: '#151C2C',       // Elevated Card Dark Surface
-  surfaceMuted: '#1E293B',  // Slate 800
-  border: '#283548',        // Dark subtle borders
-  borderLight: '#1F293D',
-
-  secondary: '#10B981',
-  error: '#EF4444',
-
-  success: '#4ADE80',
-  successLight: '#052E16',
-  successBorder: '#166534',
-  successText: '#86EFAC',
-
-  cardHeaderBanner: '#1E3A8A',
-  inputBackground: '#1A2333',
+  cardHeaderBanner: '#065F46',
+  inputBackground: '#09251C',
 };
 
 export type Theme = typeof LIGHT_THEME;
 
 export const getTheme = (isDark = false): Theme => (isDark ? DARK_THEME : LIGHT_THEME);
 
-// Default export untuk backward-compatibility
 export const COLORS = LIGHT_THEME;
 
 export const SPACING = {
@@ -102,35 +145,42 @@ export const SPACING = {
 
 export const TYPOGRAPHY = {
   h1: {
+    fontFamily: FONTS.heading,
     fontSize: 22,
-    fontWeight: '800' as const,
-    letterSpacing: -0.5,
-  },
-  h2: {
-    fontSize: 18,
     fontWeight: '700' as const,
     letterSpacing: -0.3,
   },
+  h2: {
+    fontFamily: FONTS.heading,
+    fontSize: 18,
+    fontWeight: '700' as const,
+    letterSpacing: -0.2,
+  },
   h3: {
+    fontFamily: FONTS.heading,
     fontSize: 15,
     fontWeight: '700' as const,
   },
   body: {
+    fontFamily: FONTS.body,
     fontSize: 13,
     fontWeight: '400' as const,
     lineHeight: 20,
   },
   bodyBold: {
+    fontFamily: FONTS.heading,
     fontSize: 13,
     fontWeight: '700' as const,
     lineHeight: 20,
   },
   caption: {
+    fontFamily: FONTS.body,
     fontSize: 11,
-    fontWeight: '500' as const,
+    fontWeight: '400' as const,
     lineHeight: 16,
   },
   badge: {
+    fontFamily: FONTS.heading,
     fontSize: 11,
     fontWeight: '700' as const,
     letterSpacing: 0.5,
@@ -140,7 +190,7 @@ export const TYPOGRAPHY = {
 export const SHADOWS = {
   sm: Platform.select({
     ios: {
-      shadowColor: '#000',
+      shadowColor: '#06281E',
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.05,
       shadowRadius: 3,
@@ -149,7 +199,7 @@ export const SHADOWS = {
       elevation: 2,
     },
     web: {
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+      boxShadow: '0 1px 3px rgba(6, 40, 30, 0.06)',
     },
     default: {
       elevation: 2,
@@ -157,37 +207,36 @@ export const SHADOWS = {
   }),
   md: Platform.select({
     ios: {
-      shadowColor: '#0F172A',
+      shadowColor: '#06281E',
       shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.08,
+      shadowOpacity: 0.07,
       shadowRadius: 10,
     },
     android: {
-      elevation: 4,
+      elevation: 3,
     },
     web: {
-      boxShadow: '0 4px 14px rgba(15, 23, 42, 0.08)',
+      boxShadow: '0 4px 14px rgba(6, 40, 30, 0.08)',
     },
     default: {
-      elevation: 4,
+      elevation: 3,
     },
   }),
   lg: Platform.select({
     ios: {
-      shadowColor: '#0F172A',
+      shadowColor: '#06281E',
       shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.12,
+      shadowOpacity: 0.1,
       shadowRadius: 20,
     },
     android: {
-      elevation: 6,
+      elevation: 5,
     },
     web: {
-      boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
+      boxShadow: '0 8px 24px rgba(6, 40, 30, 0.12)',
     },
     default: {
-      elevation: 6,
+      elevation: 5,
     },
   }),
 };
-

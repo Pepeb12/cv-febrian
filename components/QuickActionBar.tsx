@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SPACING } from '../theme';
+import { FONTS, SPACING } from '../theme';
 import { ThemeColors } from '../types';
 
 interface QuickActionBarProps {
@@ -12,6 +12,10 @@ interface QuickActionBarProps {
   theme: ThemeColors | any;
 }
 
+/**
+ * QuickActionBar Component
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ */
 export default function QuickActionBar({
   onScrollToScore,
   onOpenTestRunner,
@@ -19,35 +23,33 @@ export default function QuickActionBar({
   onScrollToContact,
   theme,
 }: QuickActionBarProps) {
-  const isDark = theme?.isDark || false;
-
   const actions = [
     {
       id: 'score',
       label: 'Nilai UTS (L8)',
       icon: 'school' as const,
-      color: '#0284C7',
+      color: theme.primary,
       onPress: onScrollToScore,
     },
     {
       id: 'test',
       label: 'Test Suite (L10)',
       icon: 'speedometer' as const,
-      color: '#0D9488',
+      color: theme.primary,
       onPress: onOpenTestRunner,
     },
     {
       id: 'concepts',
-      label: 'Konsep RN (P1-P10)',
+      label: 'Konsep P1-P10',
       icon: 'book-open-page-variant' as const,
-      color: '#8B5CF6',
+      color: theme.primary,
       onPress: onOpenConcepts,
     },
     {
       id: 'contact',
-      label: 'Form Kontak (L4)',
+      label: 'Kontak (L4)',
       icon: 'email-edit-outline' as const,
-      color: '#D97706',
+      color: theme.primary,
       onPress: onScrollToContact,
     },
   ];
@@ -66,7 +68,7 @@ export default function QuickActionBar({
               styles.actionChip,
               {
                 backgroundColor: theme?.surface || '#FFFFFF',
-                borderColor: isDark ? '#334155' : '#E2E8F0',
+                borderColor: theme?.border || '#E3DFC8',
               },
             ]}
             onPress={act.onPress}
@@ -74,10 +76,18 @@ export default function QuickActionBar({
             accessibilityRole="button"
             accessibilityLabel={act.label}
           >
-            <View style={[styles.iconBox, { backgroundColor: `${act.color}15` }]}>
-              <MaterialCommunityIcons name={act.icon} size={15} color={act.color} />
+            <View
+              style={[
+                styles.iconBox,
+                {
+                  backgroundColor: theme.surfaceMuted,
+                  borderColor: theme.borderLight,
+                },
+              ]}
+            >
+              <MaterialCommunityIcons name={act.icon} size={14} color={act.color} />
             </View>
-            <Text style={[styles.chipText, { color: theme?.text || '#1E293B' }]}>
+            <Text style={[styles.chipText, { color: theme?.textPrimary || '#06281E' }]}>
               {act.label}
             </Text>
           </TouchableOpacity>
@@ -95,32 +105,28 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 8,
-    paddingVertical: 4,
+    paddingVertical: 2,
   },
   actionChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
     borderWidth: 1,
-    gap: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    gap: 6,
   },
   iconBox: {
     width: 24,
     height: 24,
-    borderRadius: 12,
+    borderRadius: 6,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   chipText: {
+    fontFamily: FONTS.heading,
     fontSize: 11,
     fontWeight: '700',
   },
 });
-

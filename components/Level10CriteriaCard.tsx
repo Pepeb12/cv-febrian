@@ -43,7 +43,7 @@ export default function Level10CriteriaCard({
         </View>
         <View style={styles.lmsPill}>
           <View style={styles.onlineDot} />
-          <Text style={styles.lmsPillText}>LMS Mock API: ONLINE</Text>
+          <Text style={styles.lmsPillText}>Mock API: ONLINE</Text>
         </View>
       </View>
 

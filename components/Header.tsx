@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SPACING, SHADOWS } from '../theme';
+import { SPACING, SHADOWS, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface HeaderProps {
@@ -12,7 +12,7 @@ interface HeaderProps {
 
 /**
  * Header Component (Level 10: Industry Production Header with Accessibility & Dark Mode)
- * Menampilkan nama kampus, judul aplikasi, badge Level 10 Industry, dan tombol pengubah tema.
+ * Styled with the Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps) {
   const currentTheme = theme || {};
@@ -23,7 +23,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
         styles.headerContainer,
         {
           backgroundColor: currentTheme.surface || '#FFFFFF',
-          borderBottomColor: currentTheme.border || '#E2E8F0',
+          borderBottomColor: currentTheme.border || '#E3DFC8',
         },
       ]}
       accessibilityRole="header"
@@ -32,29 +32,32 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
         <View
           style={[
             styles.iconCircle,
-            { backgroundColor: currentTheme.primaryLight || '#EFF6FF' },
+            {
+              backgroundColor: currentTheme.primaryLight || '#ECFDF5',
+              borderColor: currentTheme.primaryBorder || '#A7F3D0',
+            },
           ]}
         >
-          <Ionicons name="school" size={22} color={currentTheme.primary || '#1E40AF'} />
+          <Ionicons name="school" size={20} color={currentTheme.primary || '#065F46'} />
         </View>
         <View>
-          <Text style={[styles.universityName, { color: currentTheme.primary || '#1E40AF' }]}>
+          <Text style={[styles.universityName, { color: currentTheme.primary || '#065F46' }]}>
             MASOEM UNIVERSITY
           </Text>
-          <Text style={[styles.appTitle, { color: currentTheme.textPrimary || '#0F172A' }]}>
+          <Text style={[styles.appTitle, { color: currentTheme.textPrimary || '#06281E' }]}>
             Personal CV & Academic Score
           </Text>
         </View>
       </View>
 
       <View style={styles.headerRight}>
-        {/* TOMBOL PENGUBAH TEMA (Dark/Light Switcher) dengan Accessibility */}
+        {/* Theme Switcher Button */}
         <TouchableOpacity
           style={[
             styles.themeButton,
             {
-              backgroundColor: currentTheme.surfaceMuted || '#F1F5F9',
-              borderColor: currentTheme.border || '#CBD5E1',
+              backgroundColor: currentTheme.surfaceMuted || '#F5F5DC',
+              borderColor: currentTheme.border || '#E3DFC8',
             },
           ]}
           activeOpacity={0.7}
@@ -62,32 +65,28 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
           accessible={true}
           accessibilityRole="button"
           accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
-          accessibilityHint="Mengubah tema warna aplikasi secara instan"
         >
           <Ionicons
             name={isDarkMode ? 'sunny' : 'moon'}
-            size={18}
-            color={isDarkMode ? '#FBBF24' : '#1E40AF'}
+            size={17}
+            color={isDarkMode ? '#F5F5DC' : '#065F46'}
           />
         </TouchableOpacity>
 
-        {/* Badge Level 10 (Industry) */}
+        {/* Level 10 Badge */}
         <View
           style={[
             styles.badgeLevel,
             {
-              backgroundColor: isDarkMode ? '#134E4A' : '#CCFBF1',
-              borderColor: isDarkMode ? '#0D9488' : '#5EEAD4',
+              backgroundColor: isDarkMode ? '#064E3B' : '#ECFDF5',
+              borderColor: isDarkMode ? '#065F46' : '#A7F3D0',
             },
           ]}
-          accessible={true}
-          accessibilityRole="text"
-          accessibilityLabel="Tingkat aplikasi: Level 10 Industry"
         >
           <Text
             style={[
               styles.badgeText,
-              { color: isDarkMode ? '#5EEAD4' : '#0F766E' },
+              { color: isDarkMode ? '#A7F3D0' : '#065F46' },
             ]}
           >
             LEVEL 10
@@ -114,22 +113,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconCircle: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: SPACING.md,
   },
   universityName: {
-    fontSize: 11,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
+    fontWeight: '700',
     letterSpacing: 1.2,
   },
   appTitle: {
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: -0.3,
+    fontFamily: FONTS.heading,
+    fontSize: 14.5,
+    fontWeight: '700',
+    letterSpacing: -0.2,
   },
   headerRight: {
     flexDirection: 'row',
@@ -137,23 +139,23 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   themeButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
   },
   badgeLevel: {
     paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingVertical: 5,
     borderRadius: 20,
     borderWidth: 1,
   },
   badgeText: {
-    fontSize: 11,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
+    fontWeight: '700',
     letterSpacing: 0.6,
   },
 });
-

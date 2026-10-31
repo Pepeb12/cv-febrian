@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SHADOWS, SPACING } from '../theme';
+import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
 import { AcademicMetric, ThemeColors } from '../types';
 
 interface MetricBarProps {
@@ -10,7 +10,8 @@ interface MetricBarProps {
 }
 
 /**
- * MetricBar Component (Clean Developer Statistics in TSX)
+ * MetricBar Component (Level 3: Layout & Styling Flexbox Statistics)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function MetricBar({ metrics, theme }: MetricBarProps) {
   const currentTheme = theme || COLORS;
@@ -32,7 +33,10 @@ export default function MetricBar({ metrics, theme }: MetricBarProps) {
             <View
               style={[
                 styles.iconCircle,
-                { backgroundColor: currentTheme.isDark ? '#1E293B' : '#F1F5F9' },
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.primaryBorder,
+                },
               ]}
             >
               <Ionicons name={item.icon as any} size={15} color={currentTheme.primary} />
@@ -61,40 +65,44 @@ const styles = StyleSheet.create({
   gridRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 8,
   },
   metricCard: {
     flex: 1,
-    minWidth: 120,
-    borderRadius: 14,
-    padding: SPACING.md,
+    minWidth: 100,
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
     alignItems: 'center',
     borderWidth: 1,
     ...SHADOWS.sm,
   },
   iconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   metricValue: {
-    fontSize: 20,
-    fontWeight: '900',
-    marginBottom: 2,
-    letterSpacing: -0.5,
+    fontFamily: FONTS.heading,
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 1,
+    letterSpacing: -0.3,
   },
   metricLabel: {
-    fontSize: 11,
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
     fontWeight: '700',
     textAlign: 'center',
   },
   metricUnit: {
-    fontSize: 10,
-    marginTop: 2,
+    fontFamily: FONTS.body,
+    fontSize: 9.5,
+    marginTop: 1,
     textAlign: 'center',
   },
 });
-

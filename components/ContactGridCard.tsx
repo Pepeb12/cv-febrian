@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { COLORS, SHADOWS, SPACING } from '../theme';
+import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
 import { ContactItem, ThemeColors } from '../types';
 
 interface ContactGridCardProps {
@@ -11,7 +11,8 @@ interface ContactGridCardProps {
 }
 
 /**
- * ContactGridCard Component (Clean Direct Communication Grid in TSX)
+ * ContactGridCard Component (Direct Communication Grid in TSX)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function ContactGridCard({ contactItems, theme }: ContactGridCardProps) {
   const currentTheme = theme || COLORS;
@@ -61,8 +62,16 @@ export default function ContactGridCard({ contactItems, theme }: ContactGridCard
             accessibilityRole="button"
             accessibilityLabel={`${item.label}: ${item.displayValue}`}
           >
-            <View style={[styles.iconCircle, { backgroundColor: item.color + '18' }]}>
-              <Ionicons name={item.icon as any} size={18} color={item.color} />
+            <View
+              style={[
+                styles.iconCircle,
+                {
+                  backgroundColor: currentTheme.surface,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+            >
+              <Ionicons name={item.icon as any} size={16} color={currentTheme.primary} />
             </View>
             <View style={styles.textContainer}>
               <Text style={[styles.itemLabel, { color: currentTheme.textMuted }]}>
@@ -85,32 +94,33 @@ export default function ContactGridCard({ contactItems, theme }: ContactGridCard
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: SPACING.sm,
-    marginTop: SPACING.xs,
+    gap: 8,
+    marginTop: 2,
   },
   gridItem: {
     flex: 1,
-    minWidth: 140,
-    borderRadius: 12,
-    padding: SPACING.md,
-    borderWidth: 1,
+    minWidth: 130,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.sm,
+    padding: 10,
+    borderRadius: 9,
+    borderWidth: 1,
+    gap: 8,
   },
   iconCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 30,
+    height: 30,
+    borderRadius: 7,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -118,15 +128,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemLabel: {
-    fontSize: 9,
+    fontFamily: FONTS.heading,
+    fontSize: 9.5,
     fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   itemValue: {
+    fontFamily: FONTS.body,
     fontSize: 11,
-    fontWeight: '700',
-    marginTop: 2,
+    marginTop: 1,
   },
 });
-

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface HobbyItem {
   id: string | number;
@@ -19,7 +19,7 @@ interface HobbySectionProps {
 
 /**
  * HobbySection Component (Level 7: Hobby & Personal Interests Exploration)
- * Clean cards representing student's personal interests and creative outlets.
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function HobbySection({ hobbies = [], theme }: HobbySectionProps) {
   if (!hobbies || hobbies.length === 0) return null;
@@ -65,8 +65,8 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
             >
               <Ionicons
                 name={item.icon || 'star-outline'}
-                size={18}
-                color={item.color || theme.primary}
+                size={16}
+                color={theme.primary}
               />
             </View>
             <View style={styles.hobbyContent}>
@@ -89,25 +89,25 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   gridContainer: {
-    gap: 10,
-    marginTop: 4,
+    gap: 8,
+    marginTop: 2,
   },
   hobbyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 9,
     borderWidth: 1,
-    gap: 12,
+    gap: 10,
   },
   iconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
+    width: 32,
+    height: 32,
+    borderRadius: 7,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -116,13 +116,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   hobbyName: {
-    fontSize: 12.5,
+    fontFamily: FONTS.heading,
+    fontSize: 12,
     fontWeight: '700',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   hobbyDesc: {
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    lineHeight: 15,
   },
 });
-

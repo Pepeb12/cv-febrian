@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { COLORS, SHADOWS, SPACING } from '../theme';
+import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
 
 interface IdentityDetailCardProps {
   data?: any;
@@ -11,7 +11,8 @@ interface IdentityDetailCardProps {
 }
 
 /**
- * IdentityDetailCard Component (Level 10: TSX Supported Education & Address)
+ * IdentityDetailCard Component (Level 6: Local JSON Data Showcase)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function IdentityDetailCard({ data, profile, theme }: IdentityDetailCardProps) {
   const student = data || profile;
@@ -29,14 +30,14 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
           styles.card,
           {
             backgroundColor: currentTheme.surface,
-            borderColor: currentTheme.borderLight,
+            borderColor: currentTheme.border,
           },
         ]}
       >
         <SectionHeading
           title="Riwayat Pendidikan"
           subtitle="Education Timeline (2011 — Sekarang)"
-          icon="school"
+          icon="school-outline"
           badgeText="Akademik"
           theme={currentTheme}
         />
@@ -50,8 +51,10 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
                   <View
                     style={[
                       styles.timelineDot,
-                      { backgroundColor: currentTheme.border, borderColor: currentTheme.surface },
-                      isLatest ? { backgroundColor: currentTheme.primary } : null,
+                      {
+                        backgroundColor: isLatest ? currentTheme.primary : currentTheme.surfaceMuted,
+                        borderColor: isLatest ? '#A7F3D0' : currentTheme.border,
+                      },
                     ]}
                   />
                   {index < educationList.length - 1 && (
@@ -63,8 +66,7 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
                     <Text
                       style={[
                         styles.educationSchool,
-                        { color: currentTheme.textPrimary },
-                        isLatest ? { color: currentTheme.primary } : null,
+                        { color: isLatest ? currentTheme.primary : currentTheme.textPrimary },
                       ]}
                     >
                       {edu.school || edu.institution}
@@ -76,134 +78,29 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
                   <Text style={[styles.educationLevel, { color: currentTheme.textSecondary }]}>
                     {edu.level} {edu.major ? `• ${edu.major}` : ''}
                   </Text>
-                  <Text style={[styles.educationStatus, { color: currentTheme.textMuted }]}>
-                    Status: {edu.status}
+                  <Text style={[styles.educationDesc, { color: currentTheme.textMuted }]}>
+                    {edu.description}
                   </Text>
-                  {edu.description && (
-                    <Text style={[styles.educationDesc, { color: currentTheme.textMuted }]}>
-                      {edu.description}
-                    </Text>
-                  )}
                 </View>
               </View>
             );
           })}
         </View>
       </View>
-
-      {/* SECTION: Alamat & Domisili */}
-      {student.address && (
-        <View
-          style={[
-            styles.card,
-            {
-              backgroundColor: currentTheme.surface,
-              borderColor: currentTheme.borderLight,
-            },
-          ]}
-        >
-          <SectionHeading
-            title="Alamat & Domisili"
-            subtitle="Informasi Tempat Tinggal & Wilayah"
-            icon="location"
-            badgeText="Domisili"
-            theme={currentTheme}
-          />
-
-          <View style={styles.cardBody}>
-            <Text style={[styles.addressText, { color: currentTheme.textSecondary }]}>
-              {student.address.fullAddress}
-            </Text>
-
-            <View style={styles.addressTags}>
-              <View
-                style={[
-                  styles.tag,
-                  {
-                    backgroundColor: currentTheme.surfaceMuted,
-                    borderColor: currentTheme.border,
-                  },
-                ]}
-              >
-                <Ionicons name="home-outline" size={13} color={currentTheme.textSecondary} />
-                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                  {student.address.village}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.tag,
-                  {
-                    backgroundColor: currentTheme.surfaceMuted,
-                    borderColor: currentTheme.border,
-                  },
-                ]}
-              >
-                <Ionicons name="map-outline" size={13} color={currentTheme.textSecondary} />
-                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                  {student.address.subDistrict}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.tag,
-                  {
-                    backgroundColor: currentTheme.surfaceMuted,
-                    borderColor: currentTheme.border,
-                  },
-                ]}
-              >
-                <Ionicons name="navigate-outline" size={13} color={currentTheme.textSecondary} />
-                <Text style={[styles.tagText, { color: currentTheme.textSecondary }]}>
-                  {student.address.district}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    gap: SPACING.lg,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
+    width: '100%',
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    ...SHADOWS.md,
-  },
-  cardBody: {
-    gap: SPACING.sm,
-    marginTop: SPACING.xs,
-  },
-  addressText: {
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '500',
-  },
-  addressTags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: SPACING.sm,
-    marginTop: SPACING.xs,
-  },
-  tag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-  },
-  tagText: {
-    fontSize: 12,
-    fontWeight: '600',
+    ...SHADOWS.sm,
   },
   timelineContainer: {
     paddingLeft: 4,
@@ -212,10 +109,10 @@ const styles = StyleSheet.create({
   timelineItem: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
   },
   timelineLeftCol: {
-    width: 24,
+    width: 22,
     alignItems: 'center',
   },
   timelineDot: {
@@ -229,7 +126,7 @@ const styles = StyleSheet.create({
   timelineLine: {
     position: 'absolute',
     top: 15,
-    bottom: -20,
+    bottom: -16,
     width: 2,
     zIndex: 1,
   },
@@ -244,26 +141,25 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   educationSchool: {
-    fontSize: 14,
+    fontFamily: FONTS.heading,
+    fontSize: 13,
     fontWeight: '700',
   },
   educationPeriod: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    fontWeight: '500',
   },
   educationLevel: {
-    fontSize: 13,
-    fontWeight: '500',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
     marginBottom: 2,
   },
-  educationStatus: {
-    fontSize: 11,
-    fontStyle: 'italic',
-  },
   educationDesc: {
+    fontFamily: FONTS.body,
     fontSize: 11,
     lineHeight: 16,
-    marginTop: 4,
+    marginTop: 2,
   },
 });
-

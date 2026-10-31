@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface ContactFormCardProps {
   recipientName?: string;
@@ -20,7 +20,7 @@ interface ContactFormCardProps {
 
 /**
  * ContactFormCard Component (Level 4, Level 5, Level 10: Interactive Contact Form)
- * Clean, accessible contact form with rigorous validation, state management, and clear user feedback.
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function ContactFormCard({
   recipientName = 'Febrian',
@@ -37,6 +37,8 @@ export default function ContactFormCard({
     messageContent: string;
     sentAt: string;
   } | null>(null);
+
+  const isDark = theme.isDark;
 
   const validateForm = () => {
     const newErrors: { name?: string; email?: string; message?: string } = {};
@@ -134,12 +136,12 @@ export default function ContactFormCard({
             styles.successContainer,
             {
               backgroundColor: theme.surfaceMuted,
-              borderColor: theme.secondary,
+              borderColor: theme.primaryBorder,
             },
           ]}
         >
           <View style={styles.successHeader}>
-            <MaterialCommunityIcons name="check-circle" size={28} color={theme.secondary} />
+            <MaterialCommunityIcons name="check-circle" size={24} color={theme.primary} />
             <View style={styles.successHeaderText}>
               <Text style={[styles.successTitle, { color: theme.textPrimary }]}>
                 Pesan Berhasil Diterima
@@ -186,7 +188,7 @@ export default function ContactFormCard({
             accessibilityRole="button"
             accessibilityLabel="Kirim pesan baru"
           >
-            <MaterialCommunityIcons name="refresh" size={16} color={theme.primary} />
+            <MaterialCommunityIcons name="refresh" size={15} color={theme.primary} />
             <Text style={[styles.resetButtonText, { color: theme.primary }]}>
               Kirim Pesan Baru
             </Text>
@@ -265,7 +267,7 @@ export default function ContactFormCard({
                   color: theme.textPrimary,
                 },
               ]}
-              placeholder="Tulis pesan atau tawaran kolaborasi Anda di sini..."
+              placeholder="Tulis pesan atau pertanyaan di sini..."
               placeholderTextColor={theme.textLight}
               value={message}
               multiline={true}
@@ -289,8 +291,10 @@ export default function ContactFormCard({
             accessibilityRole="button"
             accessibilityLabel="Kirim Pesan"
           >
-            <MaterialCommunityIcons name="send" size={16} color="#FFFFFF" />
-            <Text style={styles.submitButtonText}>Kirim Pesan Sekarang</Text>
+            <MaterialCommunityIcons name="send" size={15} color={isDark ? '#041812' : '#FFFFFF'} />
+            <Text style={[styles.submitButtonText, { color: isDark ? '#041812' : '#FFFFFF' }]}>
+              Kirim Pesan Sekarang
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -303,102 +307,110 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   formContainer: {
-    gap: 12,
+    gap: 10,
   },
   inputGroup: {
-    gap: 5,
+    gap: 4,
   },
   inputLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
   textInput: {
-    height: 42,
+    fontFamily: FONTS.body,
+    height: 40,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 12,
   },
   textArea: {
-    minHeight: 80,
+    fontFamily: FONTS.body,
+    minHeight: 76,
     borderWidth: 1,
     borderRadius: 8,
-    padding: 12,
+    padding: 10,
     fontSize: 12,
   },
   errorHelper: {
-    fontSize: 11,
-    marginTop: 2,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
   },
   submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 44,
-    borderRadius: 10,
-    gap: 8,
-    marginTop: 6,
+    height: 42,
+    borderRadius: 9,
+    gap: 6,
+    marginTop: 4,
   },
   submitButtonText: {
-    color: '#FFFFFF',
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
   },
   successContainer: {
-    padding: 16,
-    borderRadius: 12,
+    padding: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 12,
+    gap: 10,
   },
   successHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
   successHeaderText: {
     flex: 1,
   },
   successTitle: {
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
   },
   successSubtitle: {
-    fontSize: 11,
-    marginTop: 2,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
   },
   summaryBox: {
-    padding: 12,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 7,
     borderWidth: 1,
-    gap: 8,
+    gap: 6,
   },
   summaryItem: {
     gap: 2,
   },
   summaryLabel: {
-    fontSize: 10.5,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 10,
+    fontWeight: '700',
   },
   summaryVal: {
-    fontSize: 11.5,
-    lineHeight: 16,
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    lineHeight: 15,
   },
   resetButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: 8,
+    paddingVertical: 8,
+    borderRadius: 7,
     borderWidth: 1,
     gap: 6,
   },
   resetButtonText: {
-    fontSize: 12,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
   },
 });
-

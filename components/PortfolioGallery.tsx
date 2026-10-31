@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface ProjectItem {
   id: string | number;
@@ -33,12 +33,13 @@ interface PortfolioGalleryProps {
 
 /**
  * PortfolioGallery Component (Level 7: Dynamic Content, Search, Filter & Modal Exploration)
- * Clean project showcase with live search, category filtering, and modal inspection.
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
  */
 export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGalleryProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
+  const isDark = theme.isDark;
 
   const categories = [
     { key: 'ALL', label: 'Semua Proyek' },
@@ -74,7 +75,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
       <SectionHeading
         title="Galeri Portofolio Proyek"
         subtitle="Eksplorasi Proyek Nyata & Karya Rekayasa Perangkat Lunak"
-        icon="briefcase-check-outline"
+        icon="briefcase-outline"
         badgeText={`${filteredProjects.length} Proyek`}
         theme={theme}
       />
@@ -89,7 +90,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
           },
         ]}
       >
-        <MaterialCommunityIcons name="magnify" size={18} color={theme.textMuted} />
+        <MaterialCommunityIcons name="magnify" size={17} color={theme.textMuted} />
         <TextInput
           style={[styles.searchInput, { color: theme.textPrimary }]}
           placeholder="Cari proyek (React Native, SIMAK, Figma)..."
@@ -100,7 +101,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <MaterialCommunityIcons name="close-circle" size={16} color={theme.textMuted} />
+            <MaterialCommunityIcons name="close-circle" size={15} color={theme.textMuted} />
           </TouchableOpacity>
         )}
       </View>
@@ -120,8 +121,12 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
               style={[
                 styles.categoryChip,
                 {
-                  backgroundColor: isActive ? theme.primary : theme.surfaceMuted,
-                  borderColor: isActive ? theme.primary : theme.border,
+                  backgroundColor: isActive
+                    ? isDark
+                      ? '#064E3B'
+                      : '#065F46'
+                    : theme.surfaceMuted,
+                  borderColor: isActive ? '#A7F3D0' : theme.border,
                 },
               ]}
               activeOpacity={0.7}
@@ -143,10 +148,10 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
         })}
       </ScrollView>
 
-      {/* 3. Project Cards Grid / List */}
+      {/* 3. Project Cards Grid */}
       {filteredProjects.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <MaterialCommunityIcons name="folder-search-outline" size={36} color={theme.textLight} />
+          <MaterialCommunityIcons name="folder-search-outline" size={32} color={theme.textLight} />
           <Text style={[styles.emptyText, { color: theme.textMuted }]}>
             Tidak ada proyek yang sesuai dengan kriteria "{searchQuery}".
           </Text>
@@ -176,8 +181,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                 >
                   <MaterialCommunityIcons
                     name={proj.icon || 'laptop'}
-                    size={20}
-                    color={proj.accentColor || theme.primary}
+                    size={18}
+                    color={theme.primary}
                   />
                 </View>
                 <View style={styles.projectTitleCol}>
@@ -270,8 +275,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                   >
                     <MaterialCommunityIcons
                       name={activeProject.icon || 'laptop'}
-                      size={24}
-                      color={activeProject.accentColor || theme.primary}
+                      size={22}
+                      color={theme.primary}
                     />
                   </View>
                   <View style={styles.modalTitleCol}>
@@ -288,7 +293,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                     accessibilityRole="button"
                     accessibilityLabel="Tutup dialog"
                   >
-                    <MaterialCommunityIcons name="close" size={18} color={theme.textPrimary} />
+                    <MaterialCommunityIcons name="close" size={16} color={theme.textPrimary} />
                   </TouchableOpacity>
                 </View>
 
@@ -309,8 +314,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                     <View key={fIdx} style={styles.featureItem}>
                       <MaterialCommunityIcons
                         name="check-circle-outline"
-                        size={16}
-                        color={theme.secondary}
+                        size={15}
+                        color={theme.primary}
                       />
                       <Text style={[styles.featureText, { color: theme.textSecondary }]}>
                         {feat}
@@ -350,7 +355,9 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                   accessibilityRole="button"
                   accessibilityLabel="Tutup rincian proyek"
                 >
-                  <Text style={styles.modalCloseButtonText}>Tutup Rincian</Text>
+                  <Text style={[styles.modalCloseButtonText, { color: isDark ? '#041812' : '#FFFFFF' }]}>
+                    Tutup Rincian
+                  </Text>
                 </TouchableOpacity>
               </ScrollView>
             )}
@@ -366,69 +373,72 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: SPACING.lg,
     borderWidth: 1,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     ...SHADOWS.sm,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    borderRadius: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
     borderWidth: 1,
-    height: 40,
+    height: 38,
     gap: 8,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   searchInput: {
+    fontFamily: FONTS.body,
     flex: 1,
-    fontSize: 12,
+    fontSize: 11.5,
     paddingVertical: 0,
   },
   filterScroll: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
   },
   filterContainer: {
-    gap: 8,
+    gap: 6,
     flexDirection: 'row',
   },
   categoryChip: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 7,
     borderWidth: 1,
   },
   categoryChipText: {
-    fontSize: 11,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 10.5,
+    fontWeight: '700',
   },
   emptyContainer: {
-    padding: SPACING.xl,
+    padding: SPACING.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: 6,
   },
   emptyText: {
-    fontSize: 12,
+    fontFamily: FONTS.body,
+    fontSize: 11.5,
     textAlign: 'center',
   },
   projectsList: {
-    gap: 12,
+    gap: 10,
   },
   projectCard: {
-    padding: 14,
-    borderRadius: 12,
+    padding: 12,
+    borderRadius: 10,
     borderWidth: 1,
   },
   projectTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 8,
+    gap: 8,
+    marginBottom: 6,
   },
   projectIconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
+    width: 34,
+    height: 34,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -437,45 +447,50 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   projectTitle: {
-    fontSize: 13.5,
+    fontFamily: FONTS.heading,
+    fontSize: 13,
     fontWeight: '700',
   },
   projectMeta: {
-    fontSize: 11,
-    marginTop: 2,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
   },
   projectDesc: {
-    fontSize: 11.5,
-    lineHeight: 17,
-    marginBottom: 10,
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    lineHeight: 16,
+    marginBottom: 8,
   },
   techChipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
-    marginBottom: 10,
+    gap: 5,
+    marginBottom: 8,
   },
   techChip: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
+    paddingVertical: 3,
+    paddingHorizontal: 7,
+    borderRadius: 5,
     borderWidth: 1,
   },
   techChipText: {
-    fontSize: 10.5,
+    fontFamily: FONTS.body,
+    fontSize: 10,
     fontWeight: '500',
   },
   detailButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    borderRadius: 8,
+    paddingVertical: 7,
+    borderRadius: 7,
     borderWidth: 1,
     gap: 6,
   },
   detailButtonText: {
-    fontSize: 11.5,
+    fontFamily: FONTS.heading,
+    fontSize: 11,
     fontWeight: '700',
   },
   modalBackdrop: {
@@ -483,30 +498,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 16,
   },
   modalCard: {
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 520,
     maxHeight: '85%',
-    borderRadius: 16,
-    padding: 20,
+    borderRadius: 14,
+    padding: 18,
     borderWidth: 1,
     ...SHADOWS.lg,
   },
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 16,
-    paddingBottom: 12,
+    gap: 10,
+    marginBottom: 12,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(150, 150, 150, 0.2)',
   },
   modalIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 10,
+    width: 38,
+    height: 38,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -515,54 +530,58 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalTitle: {
-    fontSize: 15,
-    fontWeight: '800',
+    fontFamily: FONTS.heading,
+    fontSize: 14,
+    fontWeight: '700',
   },
   modalCategory: {
-    fontSize: 11,
-    marginTop: 2,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
   },
   modalCloseIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalSectionLabel: {
-    fontSize: 12,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
     fontWeight: '700',
-    marginTop: 12,
-    marginBottom: 6,
+    marginTop: 10,
+    marginBottom: 4,
   },
   modalDescText: {
-    fontSize: 12,
-    lineHeight: 18,
+    fontFamily: FONTS.body,
+    fontSize: 11.5,
+    lineHeight: 17,
   },
   modalFeaturesList: {
-    gap: 6,
-    marginBottom: 8,
+    gap: 5,
+    marginBottom: 6,
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 8,
+    gap: 6,
   },
   featureText: {
-    fontSize: 11.5,
+    fontFamily: FONTS.body,
+    fontSize: 11,
     flex: 1,
-    lineHeight: 17,
+    lineHeight: 16,
   },
   modalCloseButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
+    marginTop: 16,
+    paddingVertical: 9,
+    borderRadius: 8,
     alignItems: 'center',
   },
   modalCloseButtonText: {
-    color: '#FFFFFF',
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 12,
     fontWeight: '700',
   },
 });
-
