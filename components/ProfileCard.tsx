@@ -13,7 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SPACING, FONTS } from '../theme';
+import { COLORS, SPACING } from '../theme';
 import { StudentProfile, ThemeColors } from '../types';
 
 interface ProfileCardProps {
@@ -414,16 +414,16 @@ export default function ProfileCard({
 
 const styles = StyleSheet.create({
   heroContainer: {
-    borderRadius: 16,
-    borderWidth: 1, // Soft hairline 1px
-    padding: SPACING.cardPadding, // 24px standardized card padding
-    marginBottom: SPACING.gap, // 20px gap
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: SPACING.cardPadding,
+    marginBottom: SPACING.gap,
     width: '100%',
   },
   twoColumnWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: SPACING.gap, // 20px standardized gap
+    gap: SPACING.gap,
     width: '100%',
   },
   twoColumnWrapperMobile: {
@@ -444,9 +444,9 @@ const styles = StyleSheet.create({
   },
   avatarFrame: {
     width: '100%',
-    aspectRatio: 1, // Rasio 1:1 sempurna
-    borderRadius: 20, // Rounded-xl
-    borderWidth: 1,
+    aspectRatio: 1,
+    borderRadius: 20,
+    borderWidth: 2,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
@@ -454,6 +454,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
+        transition: 'transform 0.2s ease' as any,
       },
     }),
   },
@@ -461,10 +462,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     right: 8,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -476,9 +477,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: 12,
-    borderWidth: 0, // Tanpa border
     gap: 6,
     marginTop: 10,
   },
@@ -488,42 +488,42 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   statusText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: 'Lato_700Bold',
     fontSize: 10.5,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 0.7,
   },
   // KOLOM KANAN: 70%
   rightColumn: {
-    flex: 1, // Mengisi 70% sisa lebar container
+    flex: 1,
     alignItems: 'flex-start',
   },
   rightColumnMobile: {
     width: '100%',
     alignItems: 'center',
   },
-  // H1 HEADING KONTRAST
+  // H1 HEADING
   nameText: {
-    fontFamily: FONTS.black,
+    fontFamily: 'Inter_900Black',
     fontSize: 32,
     fontWeight: '900',
-    letterSpacing: -0.8,
+    letterSpacing: -1,
     lineHeight: 38,
     marginBottom: 4,
   },
   roleText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: 'Inter_500Medium',
     fontSize: 15,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-    marginBottom: SPACING.md, // 16px
+    fontWeight: '500',
+    letterSpacing: 0.1,
+    marginBottom: SPACING.md,
   },
   socialPillsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: SPACING.sm, // 8px (Scale 8px)
-    marginBottom: SPACING.md, // 16px
+    gap: SPACING.sm,
+    marginBottom: SPACING.md,
   },
   socialPillsRowMobile: {
     justifyContent: 'center',
@@ -538,42 +538,40 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   socialPillText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: 'Lato_700Bold',
     fontSize: 12.5,
-    fontWeight: '600',
-  },
-  // DESKRIPSI SINGKAT DENGAN LINE-HEIGHT NYAMAN (1.71x - LEADING RELAXED)
-  bioText: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    lineHeight: 24, // Minimal 1.6x (24 / 14 = 1.71x -> leading-relaxed)
-    marginBottom: SPACING.md, // 16px
-  },
-  boldText: {
-    fontFamily: FONTS.bold,
     fontWeight: '700',
   },
-  // DERETAN BADGE KECIL ELEGAN (bg-gray-100, teks kecil, TANPA BORDER)
+  bioText: {
+    fontFamily: 'Lato_400Regular',
+    fontSize: 14.5,
+    lineHeight: 24,
+    marginBottom: SPACING.md,
+  },
+  boldText: {
+    fontFamily: 'Lato_700Bold',
+    fontWeight: '700',
+  },
   badgeFlexRow: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: SPACING.sm, // 8px
-    marginBottom: SPACING.lg, // 24px
+    gap: SPACING.sm,
+    marginBottom: SPACING.lg,
   },
   badgeFlexRowMobile: {
     justifyContent: 'center',
   },
   subtleBadge: {
     paddingHorizontal: 10,
-    paddingVertical: 4.5,
-    borderRadius: 6,
-    borderWidth: 0, // Tanpa border
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 0,
   },
   subtleBadgeText: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: 'Lato_700Bold',
     fontSize: 11.5,
-    fontWeight: '600',
+    fontWeight: '700',
     letterSpacing: 0.2,
   },
   ctaRow: {
@@ -589,36 +587,38 @@ const styles = StyleSheet.create({
   },
   primaryCtaBtn: {
     flex: 1,
-    minHeight: 44,
+    minHeight: 46,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 13,
+    paddingHorizontal: 18,
     borderRadius: 12,
     gap: 8,
   },
   primaryCtaText: {
-    fontFamily: FONTS.bold,
-    fontSize: 13,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 13.5,
     fontWeight: '700',
+    letterSpacing: -0.1,
   },
   secondaryCtaBtn: {
     flex: 1,
-    minHeight: 44,
+    minHeight: 46,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 13,
+    paddingHorizontal: 18,
     borderRadius: 12,
     borderWidth: 1,
     gap: 8,
   },
   secondaryCtaText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 13,
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 13.5,
     fontWeight: '600',
+    letterSpacing: -0.1,
   },
   // ZOOM LIGHTBOX MODAL STYLES
   zoomBackdrop: {
@@ -688,13 +688,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   zoomName: {
-    fontFamily: FONTS.bold,
+    fontFamily: 'Inter_700Bold',
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',
   },
   zoomSubtitle: {
-    fontFamily: FONTS.regular,
+    fontFamily: 'Lato_400Regular',
     fontSize: 12,
     textAlign: 'center',
   },
@@ -709,8 +709,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   zoomBadgeText: {
-    fontFamily: FONTS.medium,
+    fontFamily: 'Lato_700Bold',
     fontSize: 11,
-    fontWeight: '500',
+    fontWeight: '700',
   },
 });

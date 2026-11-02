@@ -23,6 +23,11 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import {
+  Lato_400Regular,
+  Lato_700Bold,
+  Lato_900Black,
+} from '@expo-google-fonts/lato';
 
 // Import Data Lokal Format JSON (Local JSON Data Architecture)
 import profileData from './data/profile.json';
@@ -71,6 +76,9 @@ export default function App() {
     Inter_700Bold,
     Inter_800ExtraBold,
     Inter_900Black,
+    Lato_400Regular,
+    Lato_700Bold,
+    Lato_900Black,
   });
 
   const scrollViewRef = useRef<any>(null);
@@ -725,30 +733,30 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scrollContent: {
-    paddingVertical: SPACING.xl, // 32px
-    paddingBottom: SPACING.huge, // 64px
+    paddingVertical: SPACING.xl,    // 32px
+    paddingBottom: SPACING.huge,    // 72px
   },
   responsiveContentWrapper: {
     width: '100%',
-    maxWidth: 1200, // Standardized 1200px container width
+    maxWidth: 1100,                 // Tighter max-width for better readability
     marginHorizontal: 'auto',
     alignSelf: 'center',
-    gap: SPACING.gap, // 20px standardized inter-element gap
+    gap: SPACING.gap,               // 24px standard gap
   },
   tabContentBlock: {
     width: '100%',
-    gap: SPACING.gap, // 20px standardized gap
+    gap: SPACING.gap,
   },
   // Desktop Widescreen 2-Column Grid
   desktopGrid2Col: {
     flexDirection: 'row',
-    alignItems: 'stretch', // Equal/matching vertical heights
-    gap: SPACING.gap, // 20px standardized gap
+    alignItems: 'stretch',
+    gap: SPACING.gap,
     width: '100%',
   },
   desktopColHalf: {
     flex: 1,
-    gap: SPACING.gap, // 20px gap
+    gap: SPACING.gap,
     display: 'flex',
   },
   // Mobile / Tablet Single-Column
@@ -756,63 +764,64 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 720,
     alignSelf: 'center',
-    gap: SPACING.gap, // 20px gap
+    gap: SPACING.gap,
   },
-  // Home Cards Grid
+  // Home Cards Grid — 2-col on desktop, 1-col on mobile
   homeCardsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: SPACING.gap,
-    marginTop: 4,
+    marginTop: 8,
   },
   homeFeatureCard: {
     flex: 1,
     minWidth: 280,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.lg, // 24px
-    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding,   // 28px generous padding
+    borderRadius: SPACING.cardRadius,
     borderWidth: 1,
-    gap: 14,
+    gap: 16,
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'transform 0.15s ease' as any,
+        transition: 'all 0.2s ease' as any,
       },
     }),
   },
   homeFeatureIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+    width: 48,
+    height: 48,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
   homeFeatureContent: {
     flex: 1,
-    gap: 3,
+    gap: 5,
   },
   homeFeatureTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: 14.5,
     fontWeight: '700',
+    letterSpacing: -0.2,
   },
   homeFeatureDesc: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
+    fontFamily: FONTS.body,
+    fontSize: 12.5,
+    lineHeight: 19,
   },
   // Mini Simulator Bar in My Score
   simulatorBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: SPACING.cardRadius,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 14,
     borderWidth: 1,
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 12,
   },
   simulatorLeft: {
     flexDirection: 'row',
@@ -820,9 +829,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   simulatorTitle: {
-    fontFamily: FONTS.bold,
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 12.5,
-    fontWeight: '700',
+    fontWeight: '600',
+    letterSpacing: -0.1,
   },
   simulatorActions: {
     flexDirection: 'row',
@@ -832,33 +842,33 @@ const styles = StyleSheet.create({
   },
   miniSimBtn: {
     paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     borderRadius: 8,
     borderWidth: 1,
   },
   miniSimBtnText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 11.5,
-    fontWeight: '600',
+    fontFamily: 'Lato_700Bold',
+    fontSize: 12,
+    fontWeight: '700',
   },
   footer: {
     marginTop: SPACING.xl,
     alignItems: 'center',
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.xl,
     borderTopWidth: 1,
-    gap: 8,
+    gap: 10,
     width: '100%',
   },
   mottoText: {
-    fontFamily: FONTS.heading,
-    fontSize: 16,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 13,
     fontWeight: '700',
-    letterSpacing: 1.5,
+    letterSpacing: 2.5,
     textTransform: 'uppercase',
   },
   mottoSubtext: {
     fontFamily: FONTS.body,
-    fontSize: 11,
+    fontSize: 12,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -867,29 +877,29 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 10,
-    marginVertical: 4,
+    gap: 12,
+    marginVertical: 6,
   },
   footerNavBtn: {
-    paddingVertical: 4,
-    paddingHorizontal: 6,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
   },
   footerNavText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 12,
+    fontSize: 12.5,
     fontWeight: '600',
   },
   footerText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
-    fontWeight: '700',
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 12,
+    fontWeight: '600',
   },
   footerSubtext: {
     fontFamily: FONTS.body,
-    fontSize: 10.5,
+    fontSize: 11,
   },
   copyrightText: {
     fontFamily: FONTS.body,
-    fontSize: 9.5,
+    fontSize: 10,
   },
 });

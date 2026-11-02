@@ -1,130 +1,142 @@
 import { Platform } from 'react-native';
 
 /**
- * RETRO OLIVE & BEIGE DESIGN SYSTEM & DESIGN TOKENS
+ * MODERN PROFESSIONAL DESIGN SYSTEM — "Clean Slate & Indigo"
  *
- * Palet Warna Terang (Light Mode - Retro Olive & Beige):
- * - Background Utama: #EAE4D3 (Warm Beige)
- * - Background Card & Navbar: #F4F1E8 (Light Cream Surface)
- * - Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
- * - Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
- * - Teks Utama & Heading: #363C2E (Deep Dark Olive)
- * - Teks Sekunder: #5A604E
+ * ┌─────────────────────────────────────────────────────────────────┐
+ * │ LIGHT MODE — "White & Indigo Professional"                      │
+ * │  Background : #F8FAFC (Near-White Slate)                        │
+ * │  Surface    : #FFFFFF (Pure White Card)                         │
+ * │  Primary    : #4F46E5 (Indigo 600)                              │
+ * │  Text       : #0F172A (Slate 900)                               │
+ * │  Secondary  : #64748B (Slate 500)                               │
+ * │  Border     : #E2E8F0 (Slate 200)                               │
+ * ├─────────────────────────────────────────────────────────────────┤
+ * │ DARK MODE — "Deep Midnight Navy"                                 │
+ * │  Background : #0B0F1A (Near-Black Navy)                         │
+ * │  Surface    : #141928 (Deep Navy Card)                          │
+ * │  Primary    : #818CF8 (Indigo 400 — glows on dark)              │
+ * │  Text       : #F1F5F9 (Slate 100)                               │
+ * │  Secondary  : #94A3B8 (Slate 400)                               │
+ * │  Border     : #1E293B (Slate 800)                               │
+ * └─────────────────────────────────────────────────────────────────┘
  *
- * Palet Warna Malam (Dark Mode):
- * - Background Utama: #20251D (Dark Forest)
- * - Background Card & Navbar: #30372A (Deep Olive)
- * - Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
- * - Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
- * - Teks Sekunder: #A8A48E
+ * Font Pairing:
+ *  - Headings  : Inter Black / ExtraBold (crisp, modern)
+ *  - Body      : Lato Regular / Lato Bold (warm, readable)
  */
 
 export const FONTS = {
-  regular: 'Inter_400Regular',
-  medium: 'Inter_500Medium',
-  semiBold: 'Inter_600SemiBold',
-  bold: 'Inter_700Bold',
-  extraBold: 'Inter_800ExtraBold',
-  black: 'Inter_900Black',
+  // Body — Lato (warm & readable)
+  regular: 'Lato_400Regular',
+  medium: 'Lato_400Regular',   // Lato has no 500; use 400 for medium feel
+  semiBold: 'Lato_700Bold',
+  bold: 'Lato_700Bold',
+  extraBold: 'Lato_900Black',
+  black: 'Lato_900Black',
 
-  // Semantics
+  // Headings — Inter (crisp geometric)
   heading: 'Inter_900Black',
   subheading: 'Inter_700Bold',
   title: 'Inter_600SemiBold',
-  body: 'Inter_400Regular',
-  caption: 'Inter_400Regular',
+  body: 'Lato_400Regular',
+  caption: 'Lato_400Regular',
 };
 
+// ──────────────────────────────────────────────
+// LIGHT MODE: Clean White & Indigo Professional
+// ──────────────────────────────────────────────
 export const LIGHT_THEME = {
   isDark: false,
-  // Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
-  primary: '#62684D',
-  primaryLight: 'rgba(98, 104, 77, 0.12)',
-  primaryHover: '#52573F',
-  primaryBorder: '#939675',
 
-  // Background Utama: #EAE4D3 (Warm Beige)
-  background: '#EAE4D3',
-  // Background Card & Navbar: #F4F1E8 (Light Cream Surface)
-  surface: '#F4F1E8',
-  surfaceMuted: '#E5DFCE',
-  surfaceSubtle: '#ECE7D8',
+  // Primary accent — Indigo 600
+  primary: '#4F46E5',
+  primaryLight: 'rgba(79, 70, 229, 0.08)',
+  primaryHover: '#4338CA',
+  primaryBorder: '#A5B4FC',
 
-  // Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
-  border: '#939675',
-  borderLight: 'rgba(147, 150, 117, 0.45)',
+  // Backgrounds
+  background: '#F1F5F9',      // Slate 100 — very light blue-grey
+  surface: '#FFFFFF',          // Pure white cards
+  surfaceMuted: '#F8FAFC',     // Slate 50
+  surfaceSubtle: '#EEF2FF',    // Indigo 50 — light accent tint
 
-  // Teks Utama & Heading: #363C2E (Deep Dark Olive)
-  textPrimary: '#363C2E',
-  // Teks Sekunder: #5A604E
-  textSecondary: '#5A604E',
-  textMuted: '#707762',
-  textLight: '#8C927E',
-  textInverted: '#F4F1E8',
+  // Borders
+  border: '#E2E8F0',           // Slate 200
+  borderLight: 'rgba(226, 232, 240, 0.7)',
 
-  // Secondary & Accents
-  secondary: '#939675',
-  accentOlive: '#62684D',
-  accentSage: '#939675',
-  accentBeige: '#EAE4D3',
-  accentAmber: '#9C6F32',
+  // Text
+  textPrimary: '#0F172A',      // Slate 900 — near-black, not pure black
+  textSecondary: '#475569',    // Slate 600
+  textMuted: '#64748B',        // Slate 500
+  textLight: '#94A3B8',        // Slate 400
+  textInverted: '#FFFFFF',
 
-  // Feedback Colors harmonized with Retro Olive
-  success: '#4A6B41',
-  successLight: '#E8F0E4',
-  successBorder: '#8CAE82',
-  successText: '#2D4825',
-  error: '#A83B3B',
-  errorLight: '#FBEBEB',
+  // Accents
+  secondary: '#64748B',
+  accentOlive: '#4F46E5',
+  accentSage: '#6366F1',
+  accentBeige: '#EEF2FF',
+  accentAmber: '#D97706',      // Amber for scores/grades
 
-  cardHeaderBanner: '#F4F1E8',
-  inputBackground: '#EAE4D3',
+  // Feedback
+  success: '#059669',          // Emerald 600
+  successLight: '#ECFDF5',
+  successBorder: '#6EE7B7',
+  successText: '#065F46',
+  error: '#DC2626',            // Red 600
+  errorLight: '#FEF2F2',
+
+  cardHeaderBanner: '#FFFFFF',
+  inputBackground: '#F8FAFC',
 };
 
+// ──────────────────────────────────────────────
+// DARK MODE: Deep Midnight Navy & Indigo Glow
+// ──────────────────────────────────────────────
 export const DARK_THEME = {
   isDark: true,
-  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
-  primary: '#D8D2B8',
-  primaryLight: 'rgba(216, 210, 184, 0.15)',
-  primaryHover: '#ECE7D3',
-  primaryBorder: '#62694F',
 
-  // Background Utama: #20251D (Dark Forest)
-  background: '#20251D',
-  // Background Card & Navbar: #30372A (Deep Olive)
-  surface: '#30372A',
-  surfaceMuted: '#272D22',
-  surfaceSubtle: '#1C2119',
+  // Primary accent — Indigo 400 (glows on dark bg)
+  primary: '#818CF8',
+  primaryLight: 'rgba(129, 140, 248, 0.15)',
+  primaryHover: '#A5B4FC',
+  primaryBorder: '#4F46E5',
 
-  // Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
-  border: '#62694F',
-  borderLight: 'rgba(98, 105, 79, 0.45)',
+  // Backgrounds — deep navy layers
+  background: '#0B0F1A',       // Near-black navy
+  surface: '#141928',          // Deep navy card
+  surfaceMuted: '#1E2336',     // Slightly lighter navy
+  surfaceSubtle: '#0F1629',    // Darkest tint
 
-  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
-  textPrimary: '#D8D2B8',
-  // Teks Sekunder: #A8A48E
-  textSecondary: '#A8A48E',
-  textMuted: '#8D8973',
-  textLight: '#736F5C',
-  textInverted: '#20251D',
+  // Borders — subtle navy-blue
+  border: '#1E293B',           // Slate 800
+  borderLight: 'rgba(30, 41, 59, 0.8)',
 
-  // Secondary & Accents
-  secondary: '#62694F',
-  accentOlive: '#8C9472',
-  accentSage: '#62694F',
-  accentBeige: '#D8D2B8',
-  accentAmber: '#C99A52',
+  // Text — cool blue-white tones
+  textPrimary: '#F1F5F9',      // Slate 100
+  textSecondary: '#94A3B8',    // Slate 400
+  textMuted: '#64748B',        // Slate 500
+  textLight: '#475569',        // Slate 600
+  textInverted: '#0B0F1A',
 
-  // Feedback Colors harmonized
-  success: '#6B945A',
-  successLight: '#1E2C1A',
-  successBorder: '#4E733F',
-  successText: '#BDE3AE',
-  error: '#D95858',
-  errorLight: '#381B1B',
+  // Accents
+  secondary: '#334155',
+  accentOlive: '#818CF8',
+  accentSage: '#6366F1',
+  accentBeige: '#1E2336',
+  accentAmber: '#FBBF24',      // Amber glow for scores
 
-  cardHeaderBanner: '#30372A',
-  inputBackground: '#20251D',
+  // Feedback
+  success: '#34D399',          // Emerald 400
+  successLight: '#064E3B',
+  successBorder: '#059669',
+  successText: '#A7F3D0',
+  error: '#F87171',            // Red 400
+  errorLight: '#450A0A',
+
+  cardHeaderBanner: '#141928',
+  inputBackground: '#0B0F1A',
 };
 
 export type Theme = typeof LIGHT_THEME;
@@ -133,73 +145,88 @@ export const getTheme = (isDark = false): Theme => (isDark ? DARK_THEME : LIGHT_
 
 export const COLORS = LIGHT_THEME;
 
-// Spacing & Layout Standard (Container maxWidth 1200px, gap 20px, card padding 24px, card radius 16px)
+// ──────────────────────────────────────────────
+// SPACING — 8px Scale System
+// ──────────────────────────────────────────────
 export const SPACING = {
-  xs: 4,       // 4px
-  sm: 8,       // 8px
-  md: 16,      // 16px
-  gap: 20,     // 20px (Standard inter-element gap)
-  lg: 24,      // 24px (Standard card padding)
-  xl: 32,      // 32px (mb-8)
-  xxl: 40,     // 40px
-  xxxl: 48,    // 48px
-  huge: 64,    // 64px
-  cardPadding: 24,
+  xs: 4,
+  sm: 8,
+  md: 16,
+  gap: 24,        // 24px standard inter-element gap (↑ from 20px for more breathing room)
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+  xxxl: 56,
+  huge: 72,
+  cardPadding: 28,   // Slightly more generous padding on cards
   cardRadius: 16,
 };
 
-// Hierarki Heading Kontras (H1, H2, H3, Body)
+// ──────────────────────────────────────────────
+// TYPOGRAPHY — Inter (headings) + Lato (body)
+// ──────────────────────────────────────────────
 export const TYPOGRAPHY = {
   h1: {
-    fontFamily: FONTS.black,
-    fontSize: 34,
+    fontFamily: 'Inter_900Black',
+    fontSize: 36,
     fontWeight: '900' as const,
-    letterSpacing: -1,
-    lineHeight: 40,
+    letterSpacing: -1.2,
+    lineHeight: 44,
   },
   h2: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 22,
+    fontFamily: 'Inter_800ExtraBold',
+    fontSize: 24,
     fontWeight: '800' as const,
-    letterSpacing: -0.5,
-    lineHeight: 28,
+    letterSpacing: -0.6,
+    lineHeight: 32,
   },
   h3: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 16,
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 17,
     fontWeight: '600' as const,
-    letterSpacing: -0.2,
-    lineHeight: 22,
+    letterSpacing: -0.3,
+    lineHeight: 24,
   },
   body: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
+    fontFamily: 'Lato_400Regular',
+    fontSize: 15,
     fontWeight: '400' as const,
-    lineHeight: 22,
+    lineHeight: 24,
   },
   bodyBold: {
-    fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontFamily: 'Lato_700Bold',
+    fontSize: 15,
     fontWeight: '700' as const,
-    lineHeight: 22,
+    lineHeight: 24,
   },
   caption: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
+    fontFamily: 'Lato_400Regular',
+    fontSize: 13,
     fontWeight: '400' as const,
-    lineHeight: 18,
+    lineHeight: 20,
   },
   badge: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: 'Lato_700Bold',
     fontSize: 11,
-    fontWeight: '600' as const,
-    letterSpacing: 0.5,
+    fontWeight: '700' as const,
+    letterSpacing: 0.6,
   },
 };
 
-// Minimalist Flat Shadow System
+// ──────────────────────────────────────────────
+// SHADOWS — Subtle depth cues
+// ──────────────────────────────────────────────
 export const SHADOWS = {
-  sm: {},
-  md: {},
-  lg: {},
+  sm: Platform.select({
+    web: { boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)' },
+    default: { elevation: 1 },
+  }),
+  md: Platform.select({
+    web: { boxShadow: '0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04)' },
+    default: { elevation: 3 },
+  }),
+  lg: Platform.select({
+    web: { boxShadow: '0 10px 15px rgba(0,0,0,0.07), 0 4px 6px rgba(0,0,0,0.05)' },
+    default: { elevation: 6 },
+  }),
 };

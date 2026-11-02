@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme, SPACING, FONTS } from '../theme';
+import { Theme, SPACING } from '../theme';
 
 export type TabKey = 'home' | 'about' | 'skills' | 'portfolio' | 'score' | 'contact';
 
@@ -21,12 +21,12 @@ export interface TabItem {
 }
 
 export const TABS: TabItem[] = [
-  { key: 'home', label: 'Home', icon: 'home-outline', activeIcon: 'home' },
-  { key: 'about', label: 'About', icon: 'person-outline', activeIcon: 'person' },
-  { key: 'skills', label: 'Skills', icon: 'code-slash-outline', activeIcon: 'code-slash' },
+  { key: 'home',      label: 'Home',      icon: 'home-outline',     activeIcon: 'home' },
+  { key: 'about',     label: 'About',     icon: 'person-outline',   activeIcon: 'person' },
+  { key: 'skills',    label: 'Skills',    icon: 'code-slash-outline', activeIcon: 'code-slash' },
   { key: 'portfolio', label: 'Portfolio', icon: 'briefcase-outline', activeIcon: 'briefcase' },
-  { key: 'score', label: 'My Score', icon: 'school-outline', activeIcon: 'school' },
-  { key: 'contact', label: 'Contact', icon: 'mail-outline', activeIcon: 'mail' },
+  { key: 'score',     label: 'My Score',  icon: 'school-outline',   activeIcon: 'school' },
+  { key: 'contact',   label: 'Contact',   icon: 'mail-outline',     activeIcon: 'mail' },
 ];
 
 interface NavigationTabBarProps {
@@ -36,9 +36,9 @@ interface NavigationTabBarProps {
 }
 
 /**
- * NavigationTabBar Component
- * Clean multi-screen tab navigation for Personal CV & Academic Score App.
- * Styled with Retro Olive & Beige design tokens.
+ * NavigationTabBar — Modern Clean Design
+ * Indigo pill for active, ghost for inactive.
+ * Sticky on web with glassmorphism blur.
  */
 export default function NavigationTabBar({
   activeTab,
@@ -75,14 +75,15 @@ export default function NavigationTabBar({
               key={tab.key}
               style={[
                 styles.tabItem,
-                isActive && {
-                  backgroundColor: theme.primary,
-                  borderColor: theme.primaryBorder,
-                },
-                !isActive && {
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
-                },
+                isActive
+                  ? {
+                      backgroundColor: theme.primary,
+                      borderColor: theme.primary,
+                    }
+                  : {
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                    },
               ]}
               onPress={() => onTabChange(tab.key)}
               activeOpacity={0.75}
@@ -92,15 +93,20 @@ export default function NavigationTabBar({
             >
               <Ionicons
                 name={isActive ? tab.activeIcon : tab.icon}
-                size={16}
-                color={isActive ? theme.textInverted : theme.textSecondary}
+                size={15}
+                color={
+                  isActive
+                    ? '#FFFFFF'
+                    : theme.textSecondary
+                }
               />
               <Text
                 style={[
                   styles.tabLabel,
                   {
-                    color: isActive ? theme.textInverted : theme.textPrimary,
-                    fontFamily: isActive ? FONTS.bold : FONTS.medium,
+                    color: isActive ? '#FFFFFF' : theme.textSecondary,
+                    fontFamily: isActive ? 'Inter_700Bold' : 'Inter_500Medium',
+                    fontWeight: isActive ? '700' : '500',
                   },
                 ]}
               >
@@ -116,27 +122,27 @@ export default function NavigationTabBar({
 
 const styles = StyleSheet.create({
   navContainer: {
-    borderRadius: SPACING.cardRadius, // 16px
+    borderRadius: 14,
     borderWidth: 1,
-    padding: 6,
-    marginBottom: SPACING.gap, // 20px standardized gap
+    padding: 5,
+    marginBottom: SPACING.gap,
     width: '100%',
     ...Platform.select({
       web: {
         position: 'sticky' as any,
-        top: 10,
+        top: 69,          // below the sticky header (~69px)
         zIndex: 50,
-        backdropFilter: 'blur(10px)' as any,
+        backdropFilter: 'blur(12px)' as any,
       },
       default: {
-        elevation: 3,
+        elevation: 2,
       },
     }),
   },
   scrollContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 4,
     paddingHorizontal: 2,
   },
   scrollContainerDesktop: {
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 9,
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 1,
     gap: 7,
@@ -156,12 +162,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'all 0.2s ease-in-out' as any,
+        transition: 'all 0.18s ease' as any,
       },
     }),
   },
   tabLabel: {
     fontSize: 13,
-    letterSpacing: 0.1,
+    letterSpacing: -0.1,
   },
 });
