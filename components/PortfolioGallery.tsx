@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Modal,
   ScrollView,
+  Platform,
+  useWindowDimensions,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
@@ -32,9 +34,12 @@ interface PortfolioGalleryProps {
 }
 
 /**
- * PortfolioGallery Component (Minimalist Tech: Flat, Scale 8px, Inter)
+ * PortfolioGallery Component (Minimalist Tech: CSS Grid 2 Kolom Desktop, 1 Kolom Mobile, Gap 24px)
  */
 export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGalleryProps) {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
@@ -160,88 +165,100 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
           </Text>
         </View>
       ) : (
-        <View style={styles.projectsList}>
+        <View
+          style={[
+            styles.projectsGrid,
+            isDesktop ? styles.projectsGridDesktop : styles.projectsGridMobile,
+          ]}
+        >
           {filteredProjects.map((proj) => (
             <View
               key={proj.id}
               style={[
-                styles.projectCard,
-                {
-                  backgroundColor: theme.surfaceMuted,
-                  borderColor: theme.borderLight,
-                },
+                styles.projectCardWrapper,
+                isDesktop && styles.projectCardWrapperDesktop,
               ]}
             >
-              <View style={styles.projectTopRow}>
-                <View
-                  style={[
-                    styles.projectIconCircle,
-                    {
-                      backgroundColor: theme.surface,
-                      borderColor: theme.borderLight,
-                    },
-                  ]}
-                >
-                  <MaterialCommunityIcons
-                    name={proj.icon || 'laptop'}
-                    size={18}
-                    color={theme.textPrimary}
-                  />
-                </View>
-                <View style={styles.projectTitleCol}>
-                  {/* H3 HEADING */}
-                  <Text style={[styles.projectTitle, { color: theme.textPrimary }]}>
-                    {proj.title}
-                  </Text>
-                  <Text style={[styles.projectMeta, { color: theme.textMuted }]}>
-                    {proj.category} • {proj.year} • {proj.role}
-                  </Text>
-                </View>
-              </View>
-
-              <Text style={[styles.projectDesc, { color: theme.textSecondary }]}>
-                {proj.shortDesc}
-              </Text>
-
-              {/* Tech Stack Chips */}
-              <View style={styles.techChipsRow}>
-                {proj.technologies.map((tech, idx) => (
+              <View
+                style={[
+                  styles.projectCard,
+                  {
+                    backgroundColor: theme.surfaceMuted,
+                    borderColor: theme.borderLight,
+                  },
+                ]}
+              >
+                <View style={styles.projectTopRow}>
                   <View
-                    key={idx}
                     style={[
-                      styles.techChip,
+                      styles.projectIconCircle,
                       {
                         backgroundColor: theme.surface,
                         borderColor: theme.borderLight,
                       },
                     ]}
                   >
-                    <Text style={[styles.techChipText, { color: theme.textSecondary }]}>
-                      {tech}
+                    <MaterialCommunityIcons
+                      name={proj.icon || 'laptop'}
+                      size={18}
+                      color={theme.textPrimary}
+                    />
+                  </View>
+                  <View style={styles.projectTitleCol}>
+                    {/* H3 HEADING */}
+                    <Text style={[styles.projectTitle, { color: theme.textPrimary }]}>
+                      {proj.title}
+                    </Text>
+                    <Text style={[styles.projectMeta, { color: theme.textMuted }]}>
+                      {proj.category} • {proj.year} • {proj.role}
                     </Text>
                   </View>
-                ))}
-              </View>
+                </View>
 
-              {/* View Details CTA */}
-              <TouchableOpacity
-                style={[
-                  styles.detailButton,
-                  {
-                    backgroundColor: theme.surface,
-                    borderColor: theme.borderLight,
-                  },
-                ]}
-                activeOpacity={0.8}
-                onPress={() => setActiveProject(proj)}
-                accessibilityRole="button"
-                accessibilityLabel={`Lihat detail ${proj.title}`}
-              >
-                <MaterialCommunityIcons name="arrow-right" size={14} color={theme.textPrimary} />
-                <Text style={[styles.detailButtonText, { color: theme.textPrimary }]}>
-                  Lihat Detail & Fitur Proyek
+                <Text style={[styles.projectDesc, { color: theme.textSecondary }]}>
+                  {proj.shortDesc}
                 </Text>
-              </TouchableOpacity>
+
+                {/* Tech Stack Chips */}
+                <View style={styles.techChipsRow}>
+                  {proj.technologies.map((tech, idx) => (
+                    <View
+                      key={idx}
+                      style={[
+                        styles.techChip,
+                        {
+                          backgroundColor: theme.surface,
+                          borderColor: theme.borderLight,
+                        },
+                      ]}
+                    >
+                      <Text style={[styles.techChipText, { color: theme.textSecondary }]}>
+                        {tech}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                {/* View Details CTA */}
+                <TouchableOpacity
+                  style={[
+                    styles.detailButton,
+                    {
+                      backgroundColor: theme.surface,
+                      borderColor: theme.borderLight,
+                    },
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setActiveProject(proj)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Lihat detail ${proj.title}`}
+                >
+                  <MaterialCommunityIcons name="arrow-right" size={14} color={theme.textPrimary} />
+                  <Text style={[styles.detailButtonText, { color: theme.textPrimary }]}>
+                    Lihat Detail & Fitur Proyek
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ))}
         </View>
@@ -424,13 +441,53 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
   },
-  projectsList: {
-    gap: SPACING.md, // 16px
+  projectsGrid: {
+    gap: 24, // Minimal 24px (md:gap-6)
+    width: '100%',
+    ...Platform.select({
+      web: {
+        display: 'grid' as any,
+      },
+    }),
+  },
+  projectsGridDesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    ...Platform.select({
+      web: {
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' as any, // 2 Kolom Desktop (md:grid-cols-2)
+        gap: 24,
+      },
+    }),
+  },
+  projectsGridMobile: {
+    flexDirection: 'column',
+    ...Platform.select({
+      web: {
+        gridTemplateColumns: '1fr' as any, // 1 Kolom Mobile (grid-cols-1)
+        gap: 24,
+      },
+    }),
+  },
+  projectCardWrapper: {
+    width: '100%',
+  },
+  projectCardWrapperDesktop: {
+    ...Platform.select({
+      web: {
+        width: 'auto' as any,
+      },
+      default: {
+        width: '48%' as any,
+      },
+    }),
   },
   projectCard: {
-    padding: SPACING.md, // 16px
-    borderRadius: 10,
+    padding: SPACING.lg, // 24px (Lega & proporsional)
+    borderRadius: 12,
     borderWidth: 1,
+    height: '100%',
+    justifyContent: 'space-between',
   },
   projectTopRow: {
     flexDirection: 'row',

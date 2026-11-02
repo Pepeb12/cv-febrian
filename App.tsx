@@ -456,32 +456,31 @@ export default function App() {
                     )}
                   </View>
 
+                  {/* GALERI PORTOFOLIO PROYEK (CSS Grid: 2 Kolom Desktop, 1 Kolom Mobile, Gap 24px) */}
+                  <PortfolioGallery
+                    portfolios={profileData.portfolios}
+                    theme={theme}
+                  />
+
+                  {/* KEAHLIAN TEKNIS (Chips/Tags Flex-Wrap), PENGALAMAN & HOBI */}
                   {isDesktop ? (
                     <View style={styles.desktopGrid2Col}>
                       <View style={styles.desktopColHalf}>
-                        <PortfolioGallery
-                          portfolios={profileData.portfolios}
+                        <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+                        <HobbySection
+                          hobbies={profileData.hobbies}
                           theme={theme}
                         />
                       </View>
                       <View style={styles.desktopColHalf}>
-                        <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
                         <ExperienceTimeline
                           experiences={profileData.experience}
-                          theme={theme}
-                        />
-                        <HobbySection
-                          hobbies={profileData.hobbies}
                           theme={theme}
                         />
                       </View>
                     </View>
                   ) : (
                     <View style={styles.mobileColumn}>
-                      <PortfolioGallery
-                        portfolios={profileData.portfolios}
-                        theme={theme}
-                      />
                       <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
                       <ExperienceTimeline
                         experiences={profileData.experience}
