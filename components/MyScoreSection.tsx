@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { SPACING, FONTS } from '../theme';
@@ -25,6 +25,14 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
 
   const currentTheme = theme || {};
   const isDark = currentTheme.isDark;
+  const [isAnimated, setIsAnimated] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAnimated(true);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View
@@ -291,7 +299,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                     style={[
                       styles.progressBarFill,
                       {
-                        width: `${Math.min(Math.max(pct, 0), 100)}%`,
+                        width: isAnimated ? `${Math.min(Math.max(pct, 0), 100)}%` : '0%',
                         backgroundColor: currentTheme.progressFill || currentTheme.primary,
                       },
                     ]}
@@ -589,5 +597,10 @@ const styles = StyleSheet.create({
   progressBarFill: {
     height: '100%',
     borderRadius: 3,
+    ...Platform.select({
+      web: {
+        transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' as any,
+      },
+    }),
   },
 });

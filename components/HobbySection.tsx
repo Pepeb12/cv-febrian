@@ -15,18 +15,30 @@ interface HobbyItem {
 interface HobbySectionProps {
   hobbies?: HobbyItem[];
   theme: Theme;
+  columns?: 2 | 4;
 }
 
 /**
  * HobbySection Component (Minat & Hobi)
- * Menyusun 4 item hobi menjadi Grid 4 Kolom di Desktop, 2x2 di Tablet, 1 kolom di HP.
+ * Menyusun 4 item hobi menjadi Grid 4 Kolom di Desktop, 2x2 di Tablet / Side-column, 1 kolom di HP.
  */
-export default function HobbySection({ hobbies = [], theme }: HobbySectionProps) {
+export default function HobbySection({ hobbies = [], theme, columns = 2 }: HobbySectionProps) {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
 
   if (!hobbies || hobbies.length === 0) return null;
+
+  const itemWidth =
+    columns === 4
+      ? isDesktop
+        ? '23.5%'
+        : isTablet
+        ? '48.5%'
+        : '100%'
+      : isDesktop || isTablet
+      ? '48.5%'
+      : '100%';
 
   return (
     <View
@@ -36,6 +48,7 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
           backgroundColor: theme.surface,
           borderColor: theme.border,
           width: '100%',
+          height: '100%',
         },
       ]}
     >
@@ -56,7 +69,7 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
               {
                 backgroundColor: theme.surfaceMuted,
                 borderColor: theme.borderLight,
-                width: isDesktop ? '23.5%' : isTablet ? '48.5%' : '100%',
+                width: itemWidth,
               },
             ]}
           >

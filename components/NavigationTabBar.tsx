@@ -67,22 +67,20 @@ export default function NavigationTabBar({
     >
       <View style={styles.innerWrapper}>
         {/* BRAND [Personal CV + Febrian Iradatul Rahman] - Tanpa Logo Koding */}
-        {!isMobile && (
-          <TouchableOpacity
-            style={styles.brandGroup}
-            onPress={() => onTabChange('home')}
-            activeOpacity={0.8}
-            accessibilityRole="button"
-            accessibilityLabel="Personal CV Febrian Iradatul Rahman"
-          >
-            <Text style={[styles.brandTitle, { color: theme.textPrimary }]}>
-              Personal CV
-            </Text>
-            <Text style={[styles.brandSubtitle, { color: theme.textSecondary }]}>
-              Febrian Iradatul Rahman
-            </Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.brandGroup}
+          onPress={() => onTabChange('home')}
+          activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel="Personal CV Febrian Iradatul Rahman"
+        >
+          <Text style={[styles.brandTitle, { color: theme.textPrimary }]}>
+            Personal CV
+          </Text>
+          <Text style={[styles.brandSubtitle, { color: theme.textSecondary }]}>
+            Febrian Iradatul Rahman
+          </Text>
+        </TouchableOpacity>
 
         {/* 6 MENU NAVIGASI TAB */}
         <ScrollView

@@ -36,17 +36,22 @@ import { getTheme, SPACING, FONTS } from './theme';
 // Import Komponen UI Modular (.tsx)
 import ProfileHeader from './components/ProfileHeader';
 import NavigationTabBar, { TabKey } from './components/NavigationTabBar';
+import FloatingRightDock from './components/FloatingRightDock';
+import KineticScriptBanner from './components/KineticScriptBanner';
 import MetricBar from './components/MetricBar';
 import MyScoreSection from './components/MyScoreSection';
+import ScoreAchievementImageCard from './components/ScoreAchievementImageCard';
 import InteractiveEndorseBar from './components/InteractiveEndorseBar';
 import PortfolioGallery from './components/PortfolioGallery';
 import ExperienceTimeline from './components/ExperienceTimeline';
+import SkillsCreativeImageCard from './components/SkillsCreativeImageCard';
 import HobbySection from './components/HobbySection';
-import { AboutIntroCard, SpecializationCard } from './components/AboutSection';
+import { AboutIntroCard, SpecializationCard, AboutEditorialImageCard } from './components/AboutSection';
 import SkillMatrixCard from './components/SkillMatrixCard';
 import IdentityDetailCard from './components/IdentityDetailCard';
 import ContactGridCard from './components/ContactGridCard';
 import ContactForm from './components/ContactForm';
+import { SECTION_IMAGES } from './data/sectionImages';
 
 // Import Komponen Ketahanan & Feedback (.tsx)
 import ErrorBoundary from './components/ErrorBoundary';
@@ -73,8 +78,11 @@ export default function App() {
 
   const scrollViewRef = useRef<any>(null);
 
-  // 1. State Tab Navigasi Multi-Screen (Home, About, Skills, Portfolio, My Score, Contact)
+  // 1. State Single-Page Scroll, Section Positions & ScrollSpy
+  const [scrollY, setScrollY] = useState(0);
   const [activeTab, setActiveTab] = useState<TabKey>('home');
+  const [activeSection, setActiveSection] = useState<TabKey>('home');
+  const sectionPositions = useRef<Record<string, number>>({});
 
   // 2. State Tema Gelap / Terang (Retro Mustard & Brown)
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -200,11 +208,39 @@ export default function App() {
     });
   };
 
-  // Handler Navigasi Tab
-  const handleTabChange = (tab: TabKey) => {
-    setActiveTab(tab);
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  // Handler Navigasi Smooth Scroll ke Section
+  const handleNavigateToSection = (tabKey: TabKey) => {
+    setActiveTab(tabKey);
+    setActiveSection(tabKey);
+    const targetY = sectionPositions.current[tabKey] ?? 0;
+    scrollViewRef.current?.scrollTo({
+      y: Math.max(0, targetY - 10),
+      animated: true,
+    });
+  };
+
+  const handleTabChange = handleNavigateToSection;
+
+  // Handler ScrollSpy & Tracking scrollY
+  const handleScroll = (event: any) => {
+    const y = event.nativeEvent.contentOffset.y;
+    setScrollY(y);
+
+    const keys: TabKey[] = ['home', 'about', 'skills', 'portfolio', 'score', 'contact'];
+    let currentKey: TabKey = 'home';
+
+    for (let i = keys.length - 1; i >= 0; i--) {
+      const key = keys[i];
+      const pos = sectionPositions.current[key];
+      if (pos !== undefined && y >= pos - 180) {
+        currentKey = key;
+        break;
+      }
+    }
+
+    if (currentKey !== activeSection) {
+      setActiveSection(currentKey);
+      setActiveTab(currentKey);
     }
   };
 
@@ -239,10 +275,27 @@ export default function App() {
             />
           ) : null}
 
-          {/* NAVBAR UTAMA (SATU BARIS PENUH SEBAGAI SATU-SATUNYA HEADER TOP BAR) */}
-          <NavigationTabBar
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
+          {/* 1. TOP NAVBAR PINTASAN DI PUNCAK HALAMAN (scrollY <= 120) */}
+          <View
+            style={[
+              styles.topNavWrapper,
+              scrollY > 120 && styles.topNavHidden,
+            ]}
+          >
+            <NavigationTabBar
+              activeTab={activeSection}
+              onTabChange={handleNavigateToSection}
+              theme={theme}
+              isDarkMode={isDarkMode}
+              onToggleTheme={handleToggleTheme}
+            />
+          </View>
+
+          {/* 2. FLOATING RIGHT DOCK VERTICAL (scrollY > 120) */}
+          <FloatingRightDock
+            activeSection={activeSection}
+            onNavigate={handleNavigateToSection}
+            isVisible={scrollY > 120}
             theme={theme}
             isDarkMode={isDarkMode}
             onToggleTheme={handleToggleTheme}
@@ -255,6 +308,8 @@ export default function App() {
               style={styles.scrollView}
               contentContainerStyle={styles.scrollContent}
               showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+              onScroll={handleScroll}
               refreshControl={
                 <RefreshControl
                   refreshing={isRefreshing}
@@ -272,204 +327,283 @@ export default function App() {
                 ]}
               >
                 {/* ========================================================
-                    SCREEN 1: HOME (Bento: Hero 65% + KPI Grid 2x2 & Dukung 35%)
+                    SECTION 1: HOME (Hero Profile 65% + KPI Grid 2x2 & Dukung 35%)
                     ======================================================== */}
-                {activeTab === 'home' && (
-                  <View style={styles.tabContentBlock}>
-                    {/* BARIS 1: HERO PROFILE (65% KIRI) + GRID 2x2 KPI & DUKUNGAN (35% KANAN) */}
-                    <View style={[styles.bentoRow, isDesktop ? styles.bentoRowDesktop : styles.bentoRowMobile]}>
-                      {/* Kolom Kiri 65%: Hero Profile */}
-                      <View style={[styles.bentoLeft, isDesktop && styles.bentoLeftDesktop]}>
-                        <ProfileHeader
-                          data={profileData}
-                          theme={theme}
-                          onExploreScore={() => handleTabChange('score')}
-                          onContactClick={() => handleTabChange('contact')}
-                        />
-                      </View>
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['home'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Crafting Digital Solutions — Systems Analysis & Mobile Engineering"
+                    sectionTag="01 • HOME PROFILE"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['home'] || 0}
+                    direction="left"
+                    theme={theme}
+                  />
 
-                      {/* Kolom Kanan 35%: Grid 2x2 KPI & Dukungan (Tinggi Sejajar) */}
-                      <View style={[styles.bentoRight, isDesktop && styles.bentoRightDesktop]}>
-                        {/* KPI Grid 2x2 Berborder */}
-                        <View style={styles.kpiGrid}>
-                          {(profileData.academicMetrics || []).map((item: any, index: number) => (
-                            <View
-                              key={index}
-                              style={[
-                                styles.kpiCard,
-                                {
-                                  backgroundColor: theme.surface,
-                                  borderColor: theme.border,
-                                },
-                              ]}
-                            >
-                              <View
-                                style={[
-                                  styles.kpiIconBox,
-                                  {
-                                    backgroundColor: theme.surfaceMuted,
-                                    borderColor: theme.borderLight,
-                                  },
-                                ]}
-                              >
-                                <Ionicons name={item.icon as any} size={16} color={theme.primary} />
-                              </View>
-                              <Text style={[styles.kpiValue, { color: theme.textPrimary }]}>
-                                {item.value}
-                              </Text>
-                              <Text style={[styles.kpiLabel, { color: theme.textSecondary }]}>
-                                {item.label}
-                              </Text>
-                              {item.unit ? (
-                                <Text style={[styles.kpiUnit, { color: theme.textMuted }]}>
-                                  {item.unit}
-                                </Text>
-                              ) : null}
-                            </View>
-                          ))}
-                        </View>
-
-                        {/* Card Rekomendasi Profil Mahasiswa (Dukung) tepat di bawah Grid 2x2 */}
-                        <InteractiveEndorseBar
-                          studentName={profileData.namaPanggilan}
-                          initialCount={profileData.initialEndorseCount}
-                          theme={theme}
-                        />
-                      </View>
+                  {/* BARIS 1: HERO PROFILE (65% KIRI) + GRID 2x2 KPI & DUKUNGAN (35% KANAN) */}
+                  <View style={[styles.bentoRow, isDesktop ? styles.bentoRowDesktop : styles.bentoRowMobile]}>
+                    {/* Kolom Kiri 65%: Hero Profile */}
+                    <View style={[styles.bentoLeft, isDesktop && styles.bentoLeftDesktop]}>
+                      <ProfileHeader
+                        data={profileData}
+                        theme={theme}
+                        onExploreScore={() => handleNavigateToSection('score')}
+                        onContactClick={() => handleNavigateToSection('contact')}
+                      />
                     </View>
 
-                    {/* BARIS 2: 4 CARD NAVIGASI CEPAT (GRID 4 KOLOM - FIX TEXT OVERFLOW) */}
-                    <View style={styles.homeCardsGrid}>
-                      {[
-                        {
-                          tab: 'about' as TabKey,
-                          icon: 'person-outline',
-                          title: 'Tentang Saya & Riwayat Pendidikan',
-                          desc: 'Profil lengkap, visi karier, spesialisasi, dan riwayat jenjang pendidikan Masoem University.',
-                        },
-                        {
-                          tab: 'skills' as TabKey,
-                          icon: 'code-slash-outline',
-                          title: 'Keahlian Teknis & Hobi',
-                          desc: 'Kompetensi React Native, UI/UX, arsitektur database, dan hobi bermusik (gitar, keyboard, drum).',
-                        },
-                        {
-                          tab: 'portfolio' as TabKey,
-                          icon: 'briefcase-outline',
-                          title: 'Galeri Portofolio Proyek',
-                          desc: 'Eksplorasi karya rekayasa sistem informasi: SIMAK Mobile, inventaris lab, dan UI/UX modern.',
-                        },
-                        {
-                          tab: 'score' as TabKey,
-                          icon: 'school-outline',
-                          title: 'Dashboard Evaluasi My Score (90/A)',
-                          desc: 'Evaluasi capaian akademik UTS Pemrograman Mobile 2, 19.000 LP, dan progress belajar.',
-                        },
-                      ].map((card) => (
-                        <TouchableOpacity
-                          key={card.tab}
-                          style={[
-                            styles.homeFeatureCard,
-                            {
-                              backgroundColor: theme.surface,
-                              borderColor: theme.border,
-                              width: isDesktop ? '23.8%' : isTablet ? '48.5%' : '100%',
-                            },
-                          ]}
-                          onPress={() => handleTabChange(card.tab)}
-                          activeOpacity={0.7}
-                          accessibilityRole="button"
-                          accessibilityLabel={`Buka menu ${card.title}`}
-                        >
-                          {/* Baris Atas: Ikon kiri atas & Panah kanan atas */}
-                          <View style={styles.homeFeatureTop}>
+                    {/* Kolom Kanan 35%: Grid 2x2 KPI & Dukungan (Tinggi Sejajar) */}
+                    <View style={[styles.bentoRight, isDesktop && styles.bentoRightDesktop]}>
+                      {/* KPI Grid 2x2 Berborder */}
+                      <View style={styles.kpiGrid}>
+                        {(profileData.academicMetrics || []).map((item: any, index: number) => (
+                          <View
+                            key={index}
+                            style={[
+                              styles.kpiCard,
+                              {
+                                backgroundColor: theme.surface,
+                                borderColor: theme.border,
+                              },
+                            ]}
+                          >
                             <View
                               style={[
-                                styles.homeFeatureIconBox,
+                                styles.kpiIconBox,
                                 {
                                   backgroundColor: theme.surfaceMuted,
                                   borderColor: theme.borderLight,
                                 },
                               ]}
                             >
-                              <Ionicons name={card.icon as any} size={18} color={theme.primary} />
+                              <Ionicons name={item.icon as any} size={16} color={theme.primary} />
                             </View>
-                            <Ionicons name="chevron-forward" size={16} color={theme.textMuted} />
-                          </View>
-                          {/* Baris Bawah: Judul & Deskripsi 100% width tanpa overflow */}
-                          <View style={styles.homeFeatureBottom}>
-                            <Text
-                              style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}
-                              numberOfLines={2}
-                            >
-                              {card.title}
+                            <Text style={[styles.kpiValue, { color: theme.textPrimary }]}>
+                              {item.value}
                             </Text>
-                            <Text
-                              style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}
-                            >
-                              {card.desc}
+                            <Text style={[styles.kpiLabel, { color: theme.textSecondary }]}>
+                              {item.label}
                             </Text>
+                            {item.unit ? (
+                              <Text style={[styles.kpiUnit, { color: theme.textMuted }]}>
+                                {item.unit}
+                              </Text>
+                            ) : null}
                           </View>
-                        </TouchableOpacity>
-                      ))}
+                        ))}
+                      </View>
+
+                      {/* Card Rekomendasi Profil Mahasiswa (Dukung) tepat di bawah Grid 2x2 */}
+                      <InteractiveEndorseBar
+                        studentName={profileData.namaPanggilan}
+                        initialCount={profileData.initialEndorseCount}
+                        theme={theme}
+                      />
                     </View>
                   </View>
-                )}
+
+                  {/* BARIS 2: 4 CARD NAVIGASI CEPAT (GRID 4 KOLOM) */}
+                  <View style={styles.homeCardsGrid}>
+                    {[
+                      {
+                        tab: 'about' as TabKey,
+                        icon: 'person-outline',
+                        title: 'Tentang Saya & Riwayat Pendidikan',
+                        desc: 'Profil lengkap, visi karier, spesialisasi, dan riwayat jenjang pendidikan Masoem University.',
+                      },
+                      {
+                        tab: 'skills' as TabKey,
+                        icon: 'code-slash-outline',
+                        title: 'Keahlian Teknis & Hobi',
+                        desc: 'Kompetensi React Native, UI/UX, arsitektur database, dan hobi bermusik (gitar, keyboard, drum).',
+                      },
+                      {
+                        tab: 'portfolio' as TabKey,
+                        icon: 'briefcase-outline',
+                        title: 'Galeri Portofolio Proyek',
+                        desc: 'Eksplorasi karya rekayasa sistem informasi: SIMAK Mobile, inventaris lab, dan UI/UX modern.',
+                      },
+                      {
+                        tab: 'score' as TabKey,
+                        icon: 'school-outline',
+                        title: 'Dashboard Evaluasi My Score (90/A)',
+                        desc: 'Evaluasi capaian akademik UTS Pemrograman Mobile 2, 19.000 LP, dan progress belajar.',
+                      },
+                    ].map((card) => (
+                      <TouchableOpacity
+                        key={card.tab}
+                        style={[
+                          styles.homeFeatureCard,
+                          {
+                            backgroundColor: theme.surface,
+                            borderColor: theme.border,
+                            width: isDesktop ? '23.8%' : isTablet ? '48.5%' : '100%',
+                          },
+                        ]}
+                        onPress={() => handleNavigateToSection(card.tab)}
+                        activeOpacity={0.7}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Buka menu ${card.title}`}
+                      >
+                        {/* Baris Atas: Ikon kiri atas & Panah kanan atas */}
+                        <View style={styles.homeFeatureTop}>
+                          <View
+                            style={[
+                              styles.homeFeatureIconBox,
+                              {
+                                backgroundColor: theme.surfaceMuted,
+                                borderColor: theme.borderLight,
+                              },
+                            ]}
+                          >
+                            <Ionicons name={card.icon as any} size={18} color={theme.primary} />
+                          </View>
+                          <Ionicons name="chevron-forward" size={16} color={theme.textMuted} />
+                        </View>
+                        {/* Baris Bawah: Judul & Deskripsi 100% width tanpa overflow */}
+                        <View style={styles.homeFeatureBottom}>
+                          <Text
+                            style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}
+                            numberOfLines={2}
+                          >
+                            {card.title}
+                          </Text>
+                          <Text
+                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}
+                          >
+                            {card.desc}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
 
                 {/* ========================================================
-                    SCREEN 2: ABOUT (Tentang Saya & Riwayat Pendidikan Sejajar)
+                    SECTION 2: ABOUT (Tentang Saya, Showcase Gambar 2 & Pendidikan)
                     ======================================================== */}
-                {activeTab === 'about' && (
-                  <View style={styles.tabContentBlock}>
-                    {/* Baris 1: Tentang Saya (50% Kiri) & Riwayat Pendidikan (50% Kanan) - Tinggi Sama Rata */}
-                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <AboutIntroCard data={profileData} theme={theme} />
-                      </View>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <IdentityDetailCard data={profileData} theme={theme} />
-                      </View>
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['about'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Tentang Saya — Mengubah Tantangan Proses Bisnis Menjadi Aplikasi Nyata"
+                    sectionTag="02 • ABOUT & EDUCATION"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['about'] || 0}
+                    direction="right"
+                    theme={theme}
+                  />
+
+                  {/* Baris 1: Grid 3 Kolom Sejajar di Desktop (Kiri: Tentang Saya 36%, Tengah: Showcase Gambar 2 28%, Kanan: Riwayat Pendidikan 36%) */}
+                  <View style={isDesktop ? styles.desktopGrid3Col : styles.mobileColumn}>
+                    <View style={isDesktop ? styles.desktopCol3About : styles.mobileFullWidth}>
+                      <AboutIntroCard data={profileData} theme={theme} />
+                    </View>
+                    <View style={isDesktop ? styles.desktopCol3Center : styles.mobileFullWidth}>
+                      <AboutEditorialImageCard theme={theme} />
+                    </View>
+                    <View style={isDesktop ? styles.desktopCol3About : styles.mobileFullWidth}>
+                      <IdentityDetailCard data={profileData} theme={theme} />
+                    </View>
+                  </View>
+
+                  {/* Baris 2: Bidang Minat & Spesialisasi (100% Lebar Penuh - Grid 2x2 di dalam) */}
+                  <SpecializationCard data={profileData} theme={theme} />
+                </View>
+
+                {/* ========================================================
+                    SECTION 3: SKILLS (Keahlian & Pengalaman, Gambar 3 & Hobi)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['skills'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Keahlian & Harmoni — Clean Architecture, Interactive UI & Musical Rhythm"
+                    sectionTag="03 • SKILLS & CREATIVITY"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['skills'] || 0}
+                    direction="left"
+                    theme={theme}
+                  />
+
+                  {/* Baris 1: Keahlian Teknis (50% Kiri) & Pengalaman Organisasi (50% Kanan) */}
+                  <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
+                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                      <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+                    </View>
+                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                      <ExperienceTimeline experiences={profileData.experience} theme={theme} />
+                    </View>
+                  </View>
+
+                  {/* Baris 2: Gambar 3 (Creative Workspace 35%) & Minat & Hobi (65% Lebar dengan Grid 2x2) */}
+                  <View style={isDesktop ? styles.desktopGridSkillsRow2 : styles.mobileColumn}>
+                    <View style={isDesktop ? styles.desktopColSkillsImg : styles.mobileFullWidth}>
+                      <SkillsCreativeImageCard theme={theme} />
+                    </View>
+                    <View style={isDesktop ? styles.desktopColHobbies : styles.mobileFullWidth}>
+                      <HobbySection hobbies={profileData.hobbies} theme={theme} columns={2} />
+                    </View>
+                  </View>
+                </View>
+
+                {/* ========================================================
+                    SECTION 4: PORTFOLIO (Galeri Karya Proyek, Gambar 4 Spotlight & Live Filter)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['portfolio'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Galeri Karya — Engineered with Precision, Logic & Aesthetic"
+                    sectionTag="04 • FEATURED PORTFOLIO"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['portfolio'] || 0}
+                    direction="right"
+                    theme={theme}
+                  />
+
+                  <PortfolioGallery portfolios={profileData.portfolios} theme={theme} />
+                </View>
+
+                {/* ========================================================
+                    SECTION 5: MY SCORE (Gambar 5 Showcase 30% + Capaian Akademik 70%)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['score'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Capaian Akademik — Dedication, Discipline & Excellence"
+                    sectionTag="05 • ACADEMIC EXCELLENCE"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['score'] || 0}
+                    direction="left"
+                    theme={theme}
+                  />
+
+                  <View style={isDesktop ? styles.desktopGridScoreRow : styles.mobileColumn}>
+                    {/* Kolom Kiri 30%: Gambar 5 Score Achievement Showcase Card */}
+                    <View style={isDesktop ? styles.desktopColScoreImg : styles.mobileFullWidth}>
+                      <ScoreAchievementImageCard theme={theme} />
                     </View>
 
-                    {/* Baris 2: Bidang Minat & Spesialisasi (100% Lebar Penuh - Grid 2x2 di dalam) */}
-                    <SpecializationCard data={profileData} theme={theme} />
-                  </View>
-                )}
-
-                {/* ========================================================
-                    SCREEN 3: SKILLS (Keahlian & Pengalaman Sejajar, Hobi Penuh)
-                    ======================================================== */}
-                {activeTab === 'skills' && (
-                  <View style={styles.tabContentBlock}>
-                    {/* Baris 1: Keahlian Teknis (50% Kiri) & Pengalaman Organisasi (50% Kanan) */}
-                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
-                      </View>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <ExperienceTimeline experiences={profileData.experience} theme={theme} />
-                      </View>
-                    </View>
-
-                    {/* Baris 2: Minat & Hobi (100% Lebar Penuh - Grid 4 Kolom di Desktop / 2x2 di Tablet) */}
-                    <HobbySection hobbies={profileData.hobbies} theme={theme} />
-                  </View>
-                )}
-
-                {/* ========================================================
-                    SCREEN 4: PORTFOLIO (Galeri Karya Proyek & Live Filter)
-                    ======================================================== */}
-                {activeTab === 'portfolio' && (
-                  <View style={styles.tabContentBlock}>
-                    <PortfolioGallery portfolios={profileData.portfolios} theme={theme} />
-                  </View>
-                )}
-
-                {/* ========================================================
-                    SCREEN 5: MY SCORE (Dashboard Akademik + Mini State Bar)
-                    ======================================================== */}
-                {activeTab === 'score' && (
-                  <View style={styles.tabContentBlock}>
+                    {/* Kolom Kanan 70%: Simulator Bar + Capaian Akademik My Score */}
+                    <View style={isDesktop ? styles.desktopColScoreMain : styles.mobileFullWidth}>
                     {/* Toolbar Simulasi Resiliensi State Data */}
                     <View
                       style={[
@@ -629,28 +763,41 @@ export default function App() {
                     ) : (
                       <MyScoreSection data={academicData} theme={theme} />
                     )}
-                  </View>
-                )}
-
-                {/* ========================================================
-                    SCREEN 6: CONTACT (Kanal Komunikasi & Form Pesan)
-                    ======================================================== */}
-                {activeTab === 'contact' && (
-                  <View style={styles.tabContentBlock}>
-                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
-                      </View>
-                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                        <ContactForm
-                          data={profileData}
-                          onMessageSent={handleMessageSent}
-                          theme={theme}
-                        />
-                      </View>
                     </View>
                   </View>
-                )}
+                </View>
+
+                {/* ========================================================
+                    SECTION 6: CONTACT (Kanal Komunikasi & Form Pesan)
+                    ======================================================== */}
+                <View
+                  onLayout={(e) => {
+                    sectionPositions.current['contact'] = e.nativeEvent.layout.y;
+                  }}
+                  style={styles.sectionContainer}
+                >
+                  <KineticScriptBanner
+                    scriptText="Mari Berkolaborasi — Let's Build Impactful Technology Together"
+                    sectionTag="06 • GET IN TOUCH"
+                    scrollY={scrollY}
+                    sectionTop={sectionPositions.current['contact'] || 0}
+                    direction="right"
+                    theme={theme}
+                  />
+
+                  <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
+                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                      <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
+                    </View>
+                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                      <ContactForm
+                        data={profileData}
+                        onMessageSent={handleMessageSent}
+                        theme={theme}
+                      />
+                    </View>
+                  </View>
+                </View>
 
                 {/* FOOTER INSTITUSI (RINGKAS & RAPI TANPA DUPLIKASI MENU) */}
                 <View
@@ -688,6 +835,63 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     width: '100%',
+  },
+  topNavWrapper: {
+    width: '100%',
+    zIndex: 100,
+    ...Platform.select({
+      web: {
+        transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease' as any,
+      },
+    }),
+  },
+  topNavHidden: {
+    transform: [{ translateY: -100 }],
+    opacity: 0,
+    pointerEvents: 'none' as any,
+  },
+  sectionContainer: {
+    width: '100%',
+    gap: 16,
+    paddingTop: 10,
+    paddingBottom: 24,
+  },
+  desktopGrid3Col: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 20,
+    width: '100%',
+  },
+  desktopCol3About: {
+    flex: 3.6,
+  },
+  desktopCol3Center: {
+    flex: 2.8,
+  },
+  desktopGridSkillsRow2: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 20,
+    width: '100%',
+  },
+  desktopColSkillsImg: {
+    flex: 3.5,
+  },
+  desktopColHobbies: {
+    flex: 6.5,
+  },
+  desktopGridScoreRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 20,
+    width: '100%',
+  },
+  desktopColScoreImg: {
+    flex: 3,
+  },
+  desktopColScoreMain: {
+    flex: 7,
+    gap: 16,
   },
   scrollView: {
     flex: 1,

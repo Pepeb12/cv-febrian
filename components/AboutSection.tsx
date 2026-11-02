@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, useWindowDimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SPACING, FONTS } from '../theme';
+import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface AboutComponentProps {
   data?: any;
@@ -203,12 +204,72 @@ export function SpecializationCard({ data, profile, theme }: AboutComponentProps
 }
 
 /**
+ * Card Editorial Showcase Foto (GAMBAR_2_ABOUT)
+ * Ditampilkan di Tengah Antara Tentang Saya & Riwayat Pendidikan (Grid 3 Kolom di Desktop)
+ */
+export function AboutEditorialImageCard({ theme }: { theme?: any }) {
+  const currentTheme = theme || COLORS;
+  const config = SECTION_IMAGES.GAMBAR_2_ABOUT;
+
+  return (
+    <View
+      style={[
+        styles.polaroidCard,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
+        },
+      ]}
+      accessibilityRole="region"
+      accessibilityLabel={config.alt}
+    >
+      <View style={styles.polaroidImageWrapper}>
+        <Image
+          source={config.source}
+          style={styles.polaroidImage}
+          resizeMode="cover"
+          accessibilityLabel={config.alt}
+        />
+        {/* Floating Tag */}
+        <View
+          style={[
+            styles.polaroidBadge,
+            {
+              backgroundColor: currentTheme.primary,
+            },
+          ]}
+        >
+          <Ionicons name="sparkles" size={11} color={currentTheme.textInverted || '#FFFDF7'} />
+          <Text style={[styles.polaroidBadgeText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
+            {config.badge}
+          </Text>
+        </View>
+      </View>
+
+      {/* Polaroid Caption Footer */}
+      <View style={styles.polaroidCaptionCol}>
+        <Text style={[styles.polaroidTitle, { color: currentTheme.textPrimary }]}>
+          {config.title}
+        </Text>
+        <Text style={[styles.polaroidSubtitle, { color: currentTheme.textSecondary }]}>
+          {config.subtitle}
+        </Text>
+        <Text style={[styles.polaroidDesc, { color: currentTheme.textMuted }]}>
+          {config.description}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+/**
  * AboutSection Default Export (Menyatukan Intro & Spesialisasi jika dipanggil langsung)
  */
 export default function AboutSection({ data, profile, theme }: AboutComponentProps) {
   return (
     <View style={styles.container}>
       <AboutIntroCard data={data} profile={profile} theme={theme} />
+      <AboutEditorialImageCard theme={theme} />
       <SpecializationCard data={data} profile={profile} theme={theme} />
     </View>
   );
@@ -347,5 +408,67 @@ const styles = StyleSheet.create({
   tagPillText: {
     fontFamily: FONTS.medium,
     fontSize: 10.5,
+  },
+  // VINTAGE EDITORIAL POLAROID (GAMBAR_2_ABOUT)
+  polaroidCard: {
+    borderRadius: SPACING.cardRadius,
+    borderWidth: 1,
+    padding: 14,
+    gap: 12,
+    flex: 1,
+    width: '100%',
+    ...Platform.select({
+      web: {
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease' as any,
+      },
+    }),
+  },
+  polaroidImageWrapper: {
+    width: '100%',
+    height: 240,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#000000',
+  },
+  polaroidImage: {
+    width: '100%',
+    height: '100%',
+  },
+  polaroidBadge: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  polaroidBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 10.5,
+    fontWeight: '700',
+  },
+  polaroidCaptionCol: {
+    gap: 4,
+    paddingHorizontal: 4,
+  },
+  polaroidTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+  polaroidSubtitle: {
+    fontFamily: FONTS.medium,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  polaroidDesc: {
+    fontFamily: FONTS.regular,
+    fontSize: 11.5,
+    lineHeight: 16,
   },
 });

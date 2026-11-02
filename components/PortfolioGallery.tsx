@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
+import FeaturedProjectSpotlightBanner from './FeaturedProjectSpotlightBanner';
 import { Theme, SPACING, FONTS } from '../theme';
 
 interface ProjectItem {
@@ -111,6 +112,12 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
         icon="briefcase-outline"
         badgeText={`${filteredProjects.length} Proyek`}
         theme={theme}
+      />
+
+      {/* FEATURED PROJECT SPOTLIGHT BANNER (GAMBAR_4_PORTFOLIO) */}
+      <FeaturedProjectSpotlightBanner
+        theme={theme}
+        onExploreProject={() => portfolios.length > 0 && setActiveProject(portfolios[0])}
       />
 
       {/* TOP CONTROLS: SEARCH BAR (KIRI) & FILTER CHIPS (KANAN) - SEJAJAR 1 BARIS DI DESKTOP */}

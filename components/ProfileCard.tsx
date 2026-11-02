@@ -15,6 +15,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, FONTS } from '../theme';
 import { StudentProfile, ThemeColors } from '../types';
+import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface ProfileCardProps {
   data?: StudentProfile | any;
@@ -108,11 +109,24 @@ export default function ProfileCard({
             accessibilityHint="Membuka foto profil ukuran penuh di tengah layar"
           >
             <Image
-              source={require('../assets/profile.png')}
+              source={SECTION_IMAGES.GAMBAR_1_HOME.source}
               style={styles.avatarImage}
               resizeMode="cover"
               accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
             />
+            {/* Floating NIM Badge Overlay */}
+            <View
+              style={[
+                styles.floatingNimBadge,
+                {
+                  backgroundColor: currentTheme.primary,
+                },
+              ]}
+            >
+              <Text style={[styles.floatingNimText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
+                NIM: {student.nim || '242505024'}
+              </Text>
+            </View>
             {/* Indikator Tombol Zoom di Sudut Foto */}
             <View style={styles.zoomHintBadge}>
               <Ionicons name="expand-outline" size={13} color="#FFFFFF" />
@@ -460,7 +474,10 @@ const styles = StyleSheet.create({
   avatarFrame: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: 18,
+    borderTopLeftRadius: 48,
+    borderTopRightRadius: 48,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
     borderWidth: 2,
     overflow: 'hidden',
     alignItems: 'center',
@@ -469,8 +486,24 @@ const styles = StyleSheet.create({
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
+        transition: 'transform 0.25s ease, box-shadow 0.25s ease' as any,
+        boxShadow: '0 8px 24px rgba(181, 137, 61, 0.2)' as any,
       },
     }),
+  },
+  floatingNimBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  floatingNimText: {
+    fontFamily: FONTS.bold,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   zoomHintBadge: {
     position: 'absolute',

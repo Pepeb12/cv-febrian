@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SPACING, FONTS } from '../theme';
 import { ContactItem, ThemeColors } from '../types';
+import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface ContactGridCardProps {
   contactItems?: ContactItem[];
@@ -54,6 +55,37 @@ export default function ContactGridCard({ contactItems = [], theme }: ContactGri
       />
 
       <View style={styles.contentWrapper}>
+        {/* VISUAL COLLABORATION BANNER (GAMBAR_6_CONTACT) */}
+        <View style={[styles.collabBannerFrame, { borderColor: currentTheme.borderLight }]}>
+          <Image
+            source={SECTION_IMAGES.GAMBAR_6_CONTACT.source}
+            style={styles.collabBannerImage}
+            resizeMode="cover"
+            accessibilityLabel={SECTION_IMAGES.GAMBAR_6_CONTACT.alt}
+          />
+          <View
+            style={[
+              styles.collabBannerOverlay,
+              {
+                backgroundColor: currentTheme.isDark
+                  ? 'rgba(34, 27, 20, 0.78)'
+                  : 'rgba(250, 245, 232, 0.86)',
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+          >
+            <View style={styles.collabBadgeRow}>
+              <View style={[styles.collabDot, { backgroundColor: currentTheme.primary }]} />
+              <Text style={[styles.collabBadgeTitle, { color: currentTheme.textPrimary }]}>
+                {SECTION_IMAGES.GAMBAR_6_CONTACT.title}
+              </Text>
+            </View>
+            <Text style={[styles.collabBadgeSub, { color: currentTheme.textSecondary }]}>
+              {SECTION_IMAGES.GAMBAR_6_CONTACT.subtitle}
+            </Text>
+          </View>
+        </View>
+
         {/* 1. EMAIL MAHASISWA — 1 BARIS PENUH (100% WIDTH, UTUH TANPA TERPOTONG) */}
         {emailItem && (
           <TouchableOpacity
@@ -261,5 +293,55 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 11.5,
     lineHeight: 17,
+  },
+  // COLLABORATION BANNER (GAMBAR_6_CONTACT)
+  collabBannerFrame: {
+    width: '100%',
+    height: 140,
+    borderRadius: 12,
+    borderWidth: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#000000',
+    marginBottom: 4,
+  },
+  collabBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  collabBannerOverlay: {
+    position: 'absolute',
+    bottom: 8,
+    left: 8,
+    right: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 2,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(8px)' as any,
+      },
+    }),
+  },
+  collabBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  collabDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  collabBadgeTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 11.5,
+    fontWeight: '700',
+  },
+  collabBadgeSub: {
+    fontFamily: FONTS.medium,
+    fontSize: 10.5,
   },
 });
