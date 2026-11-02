@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 0,
     flex: 1,
+    width: '100%',
   },
   timelineContainer: {
     paddingLeft: 2,

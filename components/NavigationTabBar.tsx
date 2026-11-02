@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme, SPACING } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 export type TabKey = 'home' | 'about' | 'skills' | 'portfolio' | 'score' | 'contact';
 
@@ -21,32 +21,36 @@ export interface TabItem {
 }
 
 export const TABS: TabItem[] = [
-  { key: 'home',      label: 'Home',      icon: 'home-outline',     activeIcon: 'home' },
-  { key: 'about',     label: 'About',     icon: 'person-outline',   activeIcon: 'person' },
+  { key: 'home',      label: 'Home',      icon: 'home-outline',      activeIcon: 'home' },
+  { key: 'about',     label: 'About',     icon: 'person-outline',    activeIcon: 'person' },
   { key: 'skills',    label: 'Skills',    icon: 'code-slash-outline', activeIcon: 'code-slash' },
   { key: 'portfolio', label: 'Portfolio', icon: 'briefcase-outline', activeIcon: 'briefcase' },
-  { key: 'score',     label: 'My Score',  icon: 'school-outline',   activeIcon: 'school' },
-  { key: 'contact',   label: 'Contact',   icon: 'mail-outline',     activeIcon: 'mail' },
+  { key: 'score',     label: 'My Score',  icon: 'school-outline',    activeIcon: 'school' },
+  { key: 'contact',   label: 'Contact',   icon: 'mail-outline',      activeIcon: 'mail' },
 ];
 
 interface NavigationTabBarProps {
   activeTab: TabKey;
   onTabChange: (tab: TabKey) => void;
   theme: Theme;
+  isDarkMode?: boolean;
+  onToggleTheme?: () => void;
 }
 
 /**
- * NavigationTabBar — Modern Clean Design
- * Indigo pill for active, ghost for inactive.
- * Sticky on web with glassmorphism blur.
+ * NavigationTabBar — Satu Baris Penuh (Single Sticky Top Header Bar)
+ * Menyatukan Brand, 6 Menu Navigasi, dan Toggle Mode Malam/Siang.
  */
 export default function NavigationTabBar({
   activeTab,
   onTabChange,
   theme,
+  isDarkMode = false,
+  onToggleTheme,
 }: NavigationTabBarProps) {
   const { width } = useWindowDimensions();
-  const isMobile = width < 720;
+  const isDesktop = width >= 1024;
+  const isMobile = width < 768;
 
   return (
     <View
@@ -54,120 +58,210 @@ export default function NavigationTabBar({
         styles.navContainer,
         {
           backgroundColor: theme.surface,
-          borderColor: theme.border,
+          borderBottomColor: theme.border,
+          paddingHorizontal: isDesktop ? 24 : 16,
         },
       ]}
-      accessibilityRole="tablist"
+      accessibilityRole="navigation"
       accessibilityLabel="Navigasi Menu Utama"
     >
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={[
-          styles.scrollContainer,
-          !isMobile && styles.scrollContainerDesktop,
-        ]}
-      >
-        {TABS.map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <TouchableOpacity
-              key={tab.key}
-              style={[
-                styles.tabItem,
-                isActive
-                  ? {
-                      backgroundColor: theme.primary,
-                      borderColor: theme.primary,
-                    }
-                  : {
-                      backgroundColor: 'transparent',
-                      borderColor: 'transparent',
+      <View style={styles.innerWrapper}>
+        {/* BRAND [</> Personal CV] - Tampak di Desktop & Tablet */}
+        {!isMobile && (
+          <TouchableOpacity
+            style={styles.brandGroup}
+            onPress={() => onTabChange('home')}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Personal CV Beranda"
+          >
+            <View style={[styles.brandIcon, { backgroundColor: theme.primary }]}>
+              <Ionicons name="code-slash" size={14} color={theme.textInverted} />
+            </View>
+            <Text style={[styles.brandTitle, { color: theme.textPrimary }]}>
+              Personal CV
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {/* 6 MENU NAVIGASI TAB */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={[
+            styles.scrollContainer,
+            !isMobile && styles.scrollContainerDesktop,
+          ]}
+        >
+          {TABS.map((tab) => {
+            const isActive = activeTab === tab.key;
+            return (
+              <TouchableOpacity
+                key={tab.key}
+                style={[
+                  styles.tabItem,
+                  isActive
+                    ? {
+                        backgroundColor: theme.primary,
+                        borderColor: theme.primary,
+                      }
+                    : {
+                        backgroundColor: 'transparent',
+                        borderColor: 'transparent',
+                      },
+                ]}
+                onPress={() => onTabChange(tab.key)}
+                activeOpacity={0.75}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: isActive }}
+                accessibilityLabel={`Menu ${tab.label}`}
+              >
+                <Ionicons
+                  name={isActive ? tab.activeIcon : tab.icon}
+                  size={15}
+                  color={isActive ? theme.textInverted : theme.textSecondary}
+                />
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    {
+                      color: isActive ? theme.textInverted : theme.textPrimary,
+                      fontFamily: isActive ? FONTS.bold : FONTS.medium,
+                      fontWeight: isActive ? '700' : '500',
                     },
+                  ]}
+                >
+                  {tab.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+
+        {/* DIVIDER & TOMBOL TOGGLE TEMA [🌙 / ☀️] */}
+        {onToggleTheme && (
+          <View style={styles.rightGroup}>
+            <View style={[styles.divider, { backgroundColor: theme.border }]} />
+            <TouchableOpacity
+              style={[
+                styles.themeBtn,
+                {
+                  backgroundColor: theme.surfaceMuted,
+                  borderColor: theme.border,
+                },
               ]}
-              onPress={() => onTabChange(tab.key)}
-              activeOpacity={0.75}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: isActive }}
-              accessibilityLabel={`Menu ${tab.label}`}
+              onPress={onToggleTheme}
+              activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
             >
               <Ionicons
-                name={isActive ? tab.activeIcon : tab.icon}
-                size={15}
-                color={
-                  isActive
-                    ? '#FFFFFF'
-                    : theme.textSecondary
-                }
+                name={isDarkMode ? 'sunny' : 'moon'}
+                size={16}
+                color={isDarkMode ? '#F59E0B' : theme.primary}
               />
-              <Text
-                style={[
-                  styles.tabLabel,
-                  {
-                    color: isActive ? '#FFFFFF' : theme.textSecondary,
-                    fontFamily: isActive ? 'Inter_700Bold' : 'Inter_500Medium',
-                    fontWeight: isActive ? '700' : '500',
-                  },
-                ]}
-              >
-                {tab.label}
-              </Text>
             </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+          </View>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   navContainer: {
-    borderRadius: 14,
-    borderWidth: 1,
-    padding: 5,
-    marginBottom: SPACING.gap,
     width: '100%',
+    borderBottomWidth: 1,
+    paddingVertical: 10,
     ...Platform.select({
       web: {
         position: 'sticky' as any,
-        top: 69,          // below the sticky header (~69px)
-        zIndex: 50,
-        backdropFilter: 'blur(12px)' as any,
+        top: 0,
+        zIndex: 100,
+        backdropFilter: 'blur(16px)' as any,
       },
       default: {
-        elevation: 2,
+        elevation: 4,
       },
     }),
+  },
+  innerWrapper: {
+    width: '100%',
+    maxWidth: 1360,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  brandGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginRight: 6,
+  },
+  brandIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  brandTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: -0.3,
   },
   scrollContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: 2,
   },
   scrollContainerDesktop: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   tabItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 9,
-    paddingHorizontal: 16,
+    paddingVertical: 7,
+    paddingHorizontal: 13,
     borderRadius: 10,
     borderWidth: 1,
-    gap: 7,
-    minHeight: 40,
+    gap: 6,
+    minHeight: 36,
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'all 0.18s ease' as any,
+        transition: 'all 0.15s ease' as any,
       },
     }),
   },
   tabLabel: {
     fontSize: 13,
     letterSpacing: -0.1,
+  },
+  rightGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  divider: {
+    width: 1,
+    height: 20,
+    opacity: 0.6,
+  },
+  themeBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 9,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      web: { cursor: 'pointer' as any },
+    }),
   },
 });

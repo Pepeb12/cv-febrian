@@ -13,7 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SPACING } from '../theme';
+import { COLORS, SPACING, FONTS } from '../theme';
 import { StudentProfile, ThemeColors } from '../types';
 
 interface ProfileCardProps {
@@ -25,11 +25,9 @@ interface ProfileCardProps {
 }
 
 /**
- * ProfileCard Component (Minimalist Tech Two-Column Header)
- * - Kolom Kiri (30%): Foto Profil rasio 1:1 (rounded-xl)
- * - Kolom Kanan (70%): Nama (H1), Role (Systems Analysis - Mobile Developer), Tombol Kontak
- * - Teks Deskripsi 'Tentang Saya' dengan line-height minimal 1.6 (leading-relaxed)
- * - Deretan badge 'Level' dan 'IPK' flex-row kecil elegan (bg-gray-100, teks kecil, tanpa border)
+ * ProfileCard Component (Hero Profile Card - 65% Bento Column)
+ * - Kolom Kiri: Foto Profil rasio 1:1 (rounded-xl) dengan zoom modal
+ * - Kolom Kanan: Nama (H1), Badge NIM (242505024), Role, Tombol Kontak, Deskripsi, Badges & CTA
  */
 export default function ProfileCard({
   data,
@@ -39,7 +37,7 @@ export default function ProfileCard({
   onContactClick,
 }: ProfileCardProps) {
   const { width } = useWindowDimensions();
-  const isMobile = width < 680;
+  const isMobile = width < 768;
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
   const student = data || profile;
@@ -90,7 +88,7 @@ export default function ProfileCard({
       accessibilityLabel="Header Profil Mahasiswa"
     >
       {/* ========================================================
-          FLEXBOX DUA KOLOM: 30% KIRI (FOTO) & 70% KANAN (INFO)
+          FLEXBOX DUA KOLOM: FOTO DI KIRI & INFORMASI DI KANAN
           ======================================================== */}
       <View style={[styles.twoColumnWrapper, isMobile && styles.twoColumnWrapperMobile]}>
         {/* KOLOM KIRI (30%): FOTO PROFIL ROUNDED-XL DENGAN RASIO 1:1 */}
@@ -100,7 +98,7 @@ export default function ProfileCard({
               styles.avatarFrame,
               {
                 backgroundColor: currentTheme.surfaceMuted,
-                borderColor: currentTheme.borderLight,
+                borderColor: currentTheme.border,
               },
             ]}
             activeOpacity={0.85}
@@ -121,12 +119,13 @@ export default function ProfileCard({
             </View>
           </TouchableOpacity>
 
-          {/* Status Badge Ringkas */}
+          {/* Status Badge Mahasiswa Aktif */}
           <View
             style={[
               styles.statusPill,
               {
                 backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
               },
             ]}
           >
@@ -137,22 +136,38 @@ export default function ProfileCard({
           </View>
         </View>
 
-        {/* KOLOM KANAN (70%): NAMA, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
+        {/* KOLOM KANAN (70%): NAMA, NIM, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
         <View style={[styles.rightColumn, isMobile && styles.rightColumnMobile]}>
-          {/* 1. H1 NAMA MAHASISWA (High Contrast Inter 900 Black) */}
-          <Text
-            style={[
-              styles.nameText,
-              {
-                color: currentTheme.textPrimary,
-                textAlign: isMobile ? 'center' : 'left',
-              },
-            ]}
-          >
-            {student.nama || student.fullName}
-          </Text>
+          {/* 1. H1 NAMA MAHASISWA & BADGE NIM WAJIB UTS */}
+          <View style={[styles.nameNimContainer, isMobile && styles.nameNimContainerMobile]}>
+            <Text
+              style={[
+                styles.nameText,
+                {
+                  color: currentTheme.textPrimary,
+                  textAlign: isMobile ? 'center' : 'left',
+                },
+              ]}
+            >
+              {student.nama || student.fullName}
+            </Text>
+            <View
+              style={[
+                styles.nimBadge,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+            >
+              <Ionicons name="id-card-outline" size={13} color={currentTheme.primary} />
+              <Text style={[styles.nimBadgeText, { color: currentTheme.textPrimary }]}>
+                NIM: {student.nim || '242505024'}
+              </Text>
+            </View>
+          </View>
 
-          {/* 2. ROLE: Systems Analysis - Mobile Developer */}
+          {/* 2. ROLE & BIDANG KEAHLIAN */}
           <Text
             style={[
               styles.roleText,
@@ -162,10 +177,10 @@ export default function ProfileCard({
               },
             ]}
           >
-            Systems Analysis - Mobile Developer
+            Systems Analysis &amp; Mobile Developer
           </Text>
 
-          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak - Retro Olive & Beige Theme) */}
+          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak) */}
           <View style={[styles.socialPillsRow, isMobile && styles.socialPillsRowMobile]}>
             <TouchableOpacity
               style={[
@@ -225,7 +240,7 @@ export default function ProfileCard({
             </TouchableOpacity>
           </View>
 
-          {/* 4. DESKRIPSI SINGKAT 'TENTANG SAYA' (Line-Height Nyaman: 24px / 1.71x - Leading Relaxed) */}
+          {/* 4. DESKRIPSI SINGKAT 'TENTANG SAYA' (Leading Relaxed) */}
           <Text
             style={[
               styles.bioText,
@@ -238,7 +253,7 @@ export default function ProfileCard({
             Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
           </Text>
 
-          {/* 5. DERETAN BADGE CAPAIAN AKADEMIK & STATUS MAHASISWA */}
+          {/* 5. DERETAN BADGE CAPAIAN AKADEMIK & STATUS */}
           <View style={[styles.badgeFlexRow, isMobile && styles.badgeFlexRowMobile]}>
             <View
               style={[
@@ -285,7 +300,7 @@ export default function ProfileCard({
             </View>
           </View>
 
-          {/* 6. CALL TO ACTION BUTTONS (Proporsional & Seragam) */}
+          {/* 6. CALL TO ACTION BUTTONS */}
           <View style={[styles.ctaRow, isMobile && styles.ctaRowMobile]}>
             <TouchableOpacity
               style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.primary }]}
@@ -414,27 +429,27 @@ export default function ProfileCard({
 
 const styles = StyleSheet.create({
   heroContainer: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
-    padding: SPACING.cardPadding,
-    marginBottom: SPACING.gap,
     width: '100%',
+    flex: 1,
   },
   twoColumnWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: SPACING.gap,
     width: '100%',
+    flex: 1,
   },
   twoColumnWrapperMobile: {
     flexDirection: 'column',
     alignItems: 'center',
-    gap: SPACING.lg,
+    gap: SPACING.md,
   },
-  // KOLOM KIRI: 30%
+  // KOLOM KIRI: FOTO PROFIL
   leftColumn: {
     width: '30%',
-    maxWidth: 240,
+    maxWidth: 220,
     alignItems: 'center',
   },
   leftColumnMobile: {
@@ -445,7 +460,7 @@ const styles = StyleSheet.create({
   avatarFrame: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: 20,
+    borderRadius: 18,
     borderWidth: 2,
     overflow: 'hidden',
     alignItems: 'center',
@@ -454,7 +469,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'transform 0.2s ease' as any,
       },
     }),
   },
@@ -462,10 +476,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     right: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -479,51 +493,76 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 12,
+    borderWidth: 1,
     gap: 6,
     marginTop: 10,
   },
   statusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
   },
   statusText: {
-    fontFamily: 'Lato_700Bold',
+    fontFamily: FONTS.semiBold,
     fontSize: 10.5,
-    fontWeight: '700',
-    letterSpacing: 0.7,
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
-  // KOLOM KANAN: 70%
+  // KOLOM KANAN: INFORMASI PROFIL
   rightColumn: {
     flex: 1,
     alignItems: 'flex-start',
+    justifyContent: 'space-between',
   },
   rightColumnMobile: {
     width: '100%',
     alignItems: 'center',
   },
-  // H1 HEADING
-  nameText: {
-    fontFamily: 'Inter_900Black',
-    fontSize: 32,
-    fontWeight: '900',
-    letterSpacing: -1,
-    lineHeight: 38,
+  nameNimContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 10,
     marginBottom: 4,
   },
+  nameNimContainerMobile: {
+    justifyContent: 'center',
+  },
+  nameText: {
+    fontFamily: FONTS.black,
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: -0.6,
+    lineHeight: 34,
+  },
+  nimBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  nimBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
   roleText: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 15,
-    fontWeight: '500',
+    fontFamily: FONTS.semiBold,
+    fontSize: 14.5,
+    fontWeight: '600',
     letterSpacing: 0.1,
-    marginBottom: SPACING.md,
+    marginBottom: 12,
   },
   socialPillsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: SPACING.sm,
-    marginBottom: SPACING.md,
+    gap: 8,
+    marginBottom: 12,
   },
   socialPillsRowMobile: {
     justifyContent: 'center',
@@ -531,94 +570,92 @@ const styles = StyleSheet.create({
   socialPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    paddingHorizontal: 13,
-    paddingVertical: 7,
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
   },
   socialPillText: {
-    fontFamily: 'Lato_700Bold',
-    fontSize: 12.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
+    fontWeight: '600',
   },
   bioText: {
-    fontFamily: 'Lato_400Regular',
-    fontSize: 14.5,
-    lineHeight: 24,
-    marginBottom: SPACING.md,
+    fontFamily: FONTS.regular,
+    fontSize: 13.5,
+    lineHeight: 22,
+    marginBottom: 14,
   },
   boldText: {
-    fontFamily: 'Lato_700Bold',
+    fontFamily: FONTS.bold,
     fontWeight: '700',
   },
   badgeFlexRow: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: SPACING.sm,
-    marginBottom: SPACING.lg,
+    gap: 8,
+    marginBottom: 16,
   },
   badgeFlexRowMobile: {
     justifyContent: 'center',
   },
   subtleBadge: {
     paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
     borderWidth: 0,
   },
   subtleBadgeText: {
-    fontFamily: 'Lato_700Bold',
-    fontSize: 11.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
     letterSpacing: 0.2,
   },
   ctaRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
     width: '100%',
-    marginTop: 4,
+    marginTop: 'auto',
   },
   ctaRowMobile: {
     flexDirection: 'column',
     width: '100%',
-    gap: 10,
+    gap: 8,
   },
   primaryCtaBtn: {
     flex: 1,
-    minHeight: 46,
+    minHeight: 42,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 13,
-    paddingHorizontal: 18,
-    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
     gap: 8,
   },
   primaryCtaText: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: 13.5,
+    fontFamily: FONTS.bold,
+    fontSize: 12.5,
     fontWeight: '700',
-    letterSpacing: -0.1,
   },
   secondaryCtaBtn: {
     flex: 1,
-    minHeight: 46,
+    minHeight: 42,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 13,
-    paddingHorizontal: 18,
-    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
     borderWidth: 1,
     gap: 8,
   },
   secondaryCtaText: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 13.5,
+    fontFamily: FONTS.semiBold,
+    fontSize: 12.5,
     fontWeight: '600',
-    letterSpacing: -0.1,
   },
   // ZOOM LIGHTBOX MODAL STYLES
   zoomBackdrop: {
@@ -688,13 +725,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   zoomName: {
-    fontFamily: 'Inter_700Bold',
+    fontFamily: FONTS.bold,
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',
   },
   zoomSubtitle: {
-    fontFamily: 'Lato_400Regular',
+    fontFamily: FONTS.regular,
     fontSize: 12,
     textAlign: 'center',
   },
@@ -709,8 +746,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   zoomBadgeText: {
-    fontFamily: 'Lato_700Bold',
+    fontFamily: FONTS.medium,
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '500',
   },
 });

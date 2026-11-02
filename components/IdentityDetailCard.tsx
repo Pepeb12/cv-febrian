@@ -10,7 +10,7 @@ interface IdentityDetailCardProps {
 }
 
 /**
- * IdentityDetailCard Component (Minimalist Tech: Flat, Scale 8px, Inter)
+ * IdentityDetailCard Component (Riwayat Pendidikan - Education Timeline)
  */
 export default function IdentityDetailCard({ data, profile, theme }: IdentityDetailCardProps) {
   const student = data || profile;
@@ -94,20 +94,24 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 0,
     width: '100%',
+    flex: 1,
   },
   card: {
-    borderRadius: SPACING.cardRadius, // 16px standardized card radius
-    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderRadius: SPACING.cardRadius,
+    padding: SPACING.cardPadding,
     borderWidth: 1,
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   timelineContainer: {
     paddingLeft: 4,
     marginTop: SPACING.sm,
+    flex: 1,
   },
   timelineItem: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.lg, // 24px
+    marginBottom: SPACING.lg,
   },
   timelineLeftCol: {
     width: 22,
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
   },
   timelineContent: {
     flex: 1,
-    paddingLeft: SPACING.md, // 16px
+    paddingLeft: SPACING.md,
   },
   timelineHeader: {
     flexDirection: 'row',
@@ -140,24 +144,23 @@ const styles = StyleSheet.create({
   },
   educationSchool: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: 14.5,
     fontWeight: '700',
   },
   educationPeriod: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
-    fontWeight: '500',
+    fontFamily: FONTS.semiBold,
+    fontSize: 11.5,
+    fontWeight: '600',
   },
   educationLevel: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: FONTS.medium,
+    fontSize: 12.5,
+    fontWeight: '500',
     marginBottom: 2,
   },
   educationDesc: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    marginTop: 2,
+    fontSize: 11.5,
+    lineHeight: 17,
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SPACING } from '../theme';
+import { SPACING, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface HeaderProps {
@@ -11,70 +11,68 @@ interface HeaderProps {
 }
 
 /**
- * Header — Modern Professional (Clean Slate & Indigo)
- * White/Navy surface | Inter heading | Lato subtitle
+ * Header Component (Minimalist Tech: Container Max-Width 1024px, Inter Font, Dark Slate)
  */
 export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps) {
-  const t = theme || {};
+  const currentTheme = theme || {};
 
   return (
     <View
       style={[
         styles.headerContainer,
         {
-          backgroundColor: t.surface || '#FFFFFF',
-          borderBottomColor: t.border || '#E2E8F0',
+          backgroundColor: currentTheme.surface || '#FFFFFF',
+          borderBottomColor: currentTheme.border || '#E2E8F0',
         },
       ]}
       accessibilityRole="header"
     >
       <View style={styles.innerWrapper}>
-        {/* LEFT: Logo + Title */}
         <View style={styles.headerLeft}>
           <View
             style={[
-              styles.logoBox,
+              styles.iconCircle,
               {
-                backgroundColor: t.primary,
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
               },
             ]}
           >
-            <Ionicons name="code-slash" size={18} color="#FFFFFF" />
+            <Ionicons name="terminal-outline" size={18} color={currentTheme.textPrimary} />
           </View>
-          <View style={styles.titleGroup}>
-            <Text style={[styles.universityName, { color: t.textMuted }]}>
+          <View>
+            <Text style={[styles.universityName, { color: currentTheme.textMuted }]}>
               MASOEM UNIVERSITY
             </Text>
-            <Text style={[styles.appTitle, { color: t.textPrimary }]}>
-              Personal CV &amp; Academic Score
+            <Text style={[styles.appTitle, { color: currentTheme.textPrimary }]}>
+              Personal CV & Academic Score
             </Text>
           </View>
         </View>
 
-        {/* RIGHT: Theme Toggle */}
-        <TouchableOpacity
-          style={[
-            styles.themeButton,
-            {
-              backgroundColor: isDarkMode ? t.surfaceMuted : t.surfaceSubtle,
-              borderColor: t.border,
-            },
-          ]}
-          activeOpacity={0.7}
-          onPress={onToggleTheme}
-          accessible
-          accessibilityRole="button"
-          accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
-        >
-          <Ionicons
-            name={isDarkMode ? 'sunny' : 'moon'}
-            size={16}
-            color={isDarkMode ? '#FBBF24' : t.primary}
-          />
-          <Text style={[styles.themeLabel, { color: t.textSecondary }]}>
-            {isDarkMode ? 'Light' : 'Dark'}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          {/* Theme Switcher Button */}
+          <TouchableOpacity
+            style={[
+              styles.themeButton,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={onToggleTheme}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
+          >
+            <Ionicons
+              name={isDarkMode ? 'sunny-outline' : 'moon-outline'}
+              size={16}
+              color={currentTheme.textPrimary}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -83,21 +81,13 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
 const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1, // Hairline separator
     paddingHorizontal: SPACING.lg,
-    paddingVertical: 14,
-    ...Platform.select({
-      web: {
-        position: 'sticky' as any,
-        top: 0,
-        zIndex: 100,
-        backdropFilter: 'blur(12px)' as any,
-      },
-    }),
+    paddingVertical: SPACING.md, // 16px (scale 8px)
   },
   innerWrapper: {
     width: '100%',
-    maxWidth: 1100,
+    maxWidth: 1200, // Standardized 1200px container
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -106,48 +96,51 @@ const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
-    flex: 1,
+    gap: SPACING.md,
   },
-  logoBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+  iconCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  titleGroup: {
-    gap: 1,
-  },
   universityName: {
-    fontFamily: 'Lato_700Bold',
-    fontSize: 10,
-    fontWeight: '700',
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
+    fontFamily: FONTS.semiBold,
+    fontSize: 10.5,
+    fontWeight: '600',
+    letterSpacing: 1.2,
   },
   appTitle: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: 15.5,
+    fontFamily: FONTS.bold,
+    fontSize: 15,
     fontWeight: '700',
-    letterSpacing: -0.4,
+    letterSpacing: -0.3,
   },
-  themeButton: {
+  headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-    borderRadius: 10,
-    borderWidth: 1,
-    ...Platform.select({
-      web: { cursor: 'pointer' as any },
-    }),
+    gap: SPACING.sm,
   },
-  themeLabel: {
-    fontFamily: 'Lato_700Bold',
-    fontSize: 12.5,
+  themeButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  badgeLevel: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  badgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 11,
     fontWeight: '700',
-    letterSpacing: 0.3,
+    letterSpacing: 0.6,
   },
 });

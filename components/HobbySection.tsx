@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { Theme, SPACING, FONTS } from '../theme';
@@ -18,9 +18,14 @@ interface HobbySectionProps {
 }
 
 /**
- * HobbySection Component (Minimalist Tech: Flat, Scale 8px, Inter)
+ * HobbySection Component (Minat & Hobi)
+ * Menyusun 4 item hobi menjadi Grid 4 Kolom di Desktop, 2x2 di Tablet, 1 kolom di HP.
  */
 export default function HobbySection({ hobbies = [], theme }: HobbySectionProps) {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 1024;
+  const isTablet = width >= 768 && width < 1024;
+
   if (!hobbies || hobbies.length === 0) return null;
 
   return (
@@ -30,6 +35,7 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
         {
           backgroundColor: theme.surface,
           borderColor: theme.border,
+          width: '100%',
         },
       ]}
     >
@@ -50,6 +56,7 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
               {
                 backgroundColor: theme.surfaceMuted,
                 borderColor: theme.borderLight,
+                width: isDesktop ? '23.5%' : isTablet ? '48.5%' : '100%',
               },
             ]}
           >
@@ -64,8 +71,8 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
             >
               <Ionicons
                 name={item.icon || 'star-outline'}
-                size={16}
-                color={theme.textPrimary}
+                size={20}
+                color={theme.primary}
               />
             </View>
             <View style={styles.hobbyContent}>
@@ -85,39 +92,43 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: SPACING.cardRadius, // 16px
-    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderRadius: SPACING.cardRadius,
+    padding: SPACING.cardPadding,
     borderWidth: 1,
     marginBottom: 0,
+    width: '100%',
   },
   gridContainer: {
-    gap: SPACING.md, // 16px (scale 8px)
-    marginTop: 2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    marginTop: 8,
+    justifyContent: 'space-between',
   },
   hobbyCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: SPACING.md, // 16px
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
-    gap: SPACING.md,
+    padding: 16,
+    gap: 12,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   iconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   hobbyContent: {
-    flex: 1,
+    gap: 4,
+    width: '100%',
   },
   hobbyName: {
     fontFamily: FONTS.bold,
-    fontSize: 13,
+    fontSize: 13.5,
     fontWeight: '700',
-    marginBottom: 2,
   },
   hobbyDesc: {
     fontFamily: FONTS.regular,

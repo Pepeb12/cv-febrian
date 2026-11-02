@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 0,
     width: '100%',
+    flex: 1,
   },
   filterTabsRow: {
     flexDirection: 'row',
