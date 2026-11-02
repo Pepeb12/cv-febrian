@@ -1,130 +1,111 @@
 import { Platform } from 'react-native';
 
 /**
- * PALET WARNA ELEGAN: Emerald – Cream – White
- * Kesan: Elegan, tenang, dan berkelas
- * - Emerald: #065F46
- * - Cream:   #F5F5DC
- * - White:   #FFFFFF
- * - Mint:    #A7F3D0
+ * MINIMALIST TECH DESIGN SYSTEM & DESIGN TOKENS
+ * - Font Utama: 'Inter' (Inter_400Regular s.d. Inter_900Black)
+ * - Teks Utama: Dark Slate (#0F172A)
+ * - Teks Sekunder: Slate Gray (#475569 / #64748B)
+ * - Spacing Scale: 8px (sm: 8, md: 16, lg: 24, xl: 32 [mb-8], xxxl: 48 [py-12])
+ * - Card Styling: Flat, tanpa border keras, zero drop shadow
+ * - Kontras Hierarki: H1 (34px/900), H2 (22px/800), H3 (16px/600), Body (14px/400)
  */
 
-export const PALETTE = {
-  emerald: '#065F46',
-  emeraldDark: '#044E39',
-  emeraldDeep: '#022C22',
-  cream: '#F5F5DC',
-  creamLight: '#FAF9F3',
-  creamDark: '#E8E8CE',
-  white: '#FFFFFF',
-  mint: '#A7F3D0',
-  mintLight: '#ECFDF5',
-  mintDark: '#047857',
-};
-
 export const FONTS = {
-  heading: 'Lato_700Bold',
-  body: 'Lato_400Regular',
-  bold: 'Lato_700Bold',
-  regular: 'Lato_400Regular',
+  regular: 'Inter_400Regular',
+  medium: 'Inter_500Medium',
+  semiBold: 'Inter_600SemiBold',
+  bold: 'Inter_700Bold',
+  extraBold: 'Inter_800ExtraBold',
+  black: 'Inter_900Black',
+
+  // Semantics
+  heading: 'Inter_900Black',
+  subheading: 'Inter_700Bold',
+  title: 'Inter_600SemiBold',
+  body: 'Inter_400Regular',
+  caption: 'Inter_400Regular',
 };
 
 export const LIGHT_THEME = {
   isDark: false,
-  // Brand Signatures
-  primary: '#065F46',         // Emerald #065F46
-  primaryLight: '#ECFDF5',    // Soft Mint-tinted cream
-  primaryHover: '#044E39',
-  primaryBorder: '#A7F3D0',   // Mint #A7F3D0
+  // Tech Minimalist Primary Accent (Deep Tech Slate / Emerald)
+  primary: '#0F172A',         // Slate 900
+  primaryLight: '#F1F5F9',    // Slate 100
+  primaryHover: '#1E293B',
+  primaryBorder: '#E2E8F0',   // Subtle soft divider
 
-  cream: '#F5F5DC',           // Cream #F5F5DC
-  white: '#FFFFFF',           // White #FFFFFF
-  mint: '#A7F3D0',            // Mint #A7F3D0
-  emerald: '#065F46',
+  // Structural Surfaces (Minimalist Tech)
+  background: '#F8FAFC',      // Slate 50 clean backdrop
+  surface: '#FFFFFF',         // Pure flat white card
+  surfaceMuted: '#F1F5F9',    // Slate 100
+  surfaceSubtle: '#F8FAFC',
+  border: '#E2E8F0',          // Soft 1px hairline separator (no harsh borders)
+  borderLight: '#F1F5F9',
 
-  // Structural Surfaces
-  background: '#FAF9F3',      // Warm Cream-tinted luxury background
-  surface: '#FFFFFF',         // Pure crisp white cards
-  surfaceMuted: '#F5F5DC',    // Warm cream accent surfaces
-  surfaceSubtle: '#F2F0E6',
-  border: '#E3DFC8',          // Soft warm border
-  borderLight: '#ECE9D8',
+  // Typography (Dark Slate & Muted Gray/Slate)
+  textPrimary: '#0F172A',     // Dark Slate (bukan pure black)
+  textSecondary: '#475569',   // Slate 600 (gray/slate lebih muda)
+  textMuted: '#64748B',       // Slate 500
+  textLight: '#94A3B8',       // Slate 400
 
-  // Typography (Dark emerald charcoal for maximum contrast & class)
-  textPrimary: '#06281E',     // Deepest Forest Slate
-  textSecondary: '#204639',   // Refined Emerald Charcoal
-  textMuted: '#517466',       // Muted Sage Slate
-  textLight: '#85A698',       // Light Sage Slate
-
-  // Accents & Badges
-  secondary: '#065F46',
-  accentEmerald: '#065F46',
-  accentCream: '#F5F5DC',
-  accentMint: '#A7F3D0',
-  accentMintLight: '#ECFDF5',
-  accentEmeraldBorder: '#A7F3D0',
-  accentCyan: '#059669',
-  accentAmber: '#B45309',
+  // Secondary & Badges
+  secondary: '#0F172A',
+  accentEmerald: '#059669',
+  accentMint: '#10B981',
+  accentCyan: '#0284C7',
+  accentAmber: '#D97706',
 
   // Feedback Colors
-  success: '#065F46',
-  successLight: '#ECFDF5',
-  successBorder: '#A7F3D0',
+  success: '#059669',
+  successLight: '#F0FDF4',
+  successBorder: '#BBF7D0',
   successText: '#065F46',
   error: '#DC2626',
   errorLight: '#FEF2F2',
 
-  cardHeaderBanner: '#065F46',
-  inputBackground: '#FFFFFF',
+  cardHeaderBanner: '#0F172A',
+  inputBackground: '#F8FAFC',
 };
 
 export const DARK_THEME = {
   isDark: true,
-  // Brand Signatures in Dark Mode
-  primary: '#A7F3D0',         // Mint #A7F3D0 (Glow on deep emerald)
-  primaryLight: '#0A3F31',
-  primaryHover: '#6EE7B7',
-  primaryBorder: '#065F46',
+  // Tech Minimalist Dark Accent
+  primary: '#F8FAFC',         // Slate 50
+  primaryLight: '#1E293B',    // Slate 800
+  primaryHover: '#E2E8F0',
+  primaryBorder: '#334155',
 
-  cream: '#F5F5DC',
-  white: '#FFFFFF',
-  mint: '#A7F3D0',
-  emerald: '#065F46',
+  // Structural Surfaces (Deep Minimalist Tech Dark)
+  background: '#090D16',      // Deepest Tech Slate
+  surface: '#0F172A',         // Slate 900
+  surfaceMuted: '#1E293B',    // Slate 800
+  surfaceSubtle: '#090D16',
+  border: '#1E293B',          // Slate 800 subtle hairline
+  borderLight: '#141E33',
 
-  // Structural Surfaces
-  background: '#041812',      // Deep Royal Emerald Night
-  surface: '#0A2920',         // Deep Emerald Surface
-  surfaceMuted: '#10392D',    // Muted Emerald Slate
-  surfaceSubtle: '#061F17',
-  border: '#19493B',          // Subtle Emerald Border
-  borderLight: '#11352A',
+  // Typography (Light Slate & Muted Gray)
+  textPrimary: '#F8FAFC',     // Slate 50
+  textSecondary: '#CBD5E1',   // Slate 300
+  textMuted: '#94A3B8',       // Slate 400
+  textLight: '#64748B',       // Slate 500
 
-  // Typography (Classy Warm Cream text)
-  textPrimary: '#F5F5DC',     // Warm Cream #F5F5DC text
-  textSecondary: '#D7EDE2',   // Soft Sage Cream
-  textMuted: '#96BCAE',       // Muted Mint Slate
-  textLight: '#658C7E',
-
-  // Accents & Badges
-  secondary: '#A7F3D0',
-  accentEmerald: '#065F46',
-  accentCream: '#F5F5DC',
-  accentMint: '#A7F3D0',
-  accentMintLight: '#073327',
-  accentEmeraldBorder: '#065F46',
-  accentCyan: '#34D399',
+  // Secondary & Badges
+  secondary: '#38BDF8',
+  accentEmerald: '#10B981',
+  accentMint: '#34D399',
+  accentCyan: '#38BDF8',
   accentAmber: '#FBBF24',
 
   // Feedback Colors
-  success: '#A7F3D0',
+  success: '#10B981',
   successLight: '#064E3B',
   successBorder: '#065F46',
-  successText: '#A7F3D0',
-  error: '#F87171',
+  successText: '#34D399',
+  error: '#EF4444',
   errorLight: '#450A0A',
 
-  cardHeaderBanner: '#065F46',
-  inputBackground: '#09251C',
+  cardHeaderBanner: '#0F172A',
+  inputBackground: '#111827',
 };
 
 export type Theme = typeof LIGHT_THEME;
@@ -133,110 +114,70 @@ export const getTheme = (isDark = false): Theme => (isDark ? DARK_THEME : LIGHT_
 
 export const COLORS = LIGHT_THEME;
 
+// Scale 8px Spacing (misal mb-8 = 32px, py-12 = 48px)
 export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
-  xxl: 24,
-  xxxl: 32,
+  xs: 4,      // 0.5x
+  sm: 8,      // 1x (8px)
+  md: 16,     // 2x (16px)
+  lg: 24,     // 3x (24px)
+  xl: 32,     // 4x (32px = mb-8)
+  xxl: 40,    // 5x (40px)
+  xxxl: 48,   // 6x (48px = py-12)
+  huge: 64,   // 8x (64px)
 };
 
+// Hierarki Heading Kontras (H1, H2, H3, Body)
 export const TYPOGRAPHY = {
   h1: {
-    fontFamily: FONTS.heading,
-    fontSize: 22,
-    fontWeight: '700' as const,
-    letterSpacing: -0.3,
+    fontFamily: FONTS.black,
+    fontSize: 34,
+    fontWeight: '900' as const,
+    letterSpacing: -1,
+    lineHeight: 40,
   },
   h2: {
-    fontFamily: FONTS.heading,
-    fontSize: 18,
-    fontWeight: '700' as const,
-    letterSpacing: -0.2,
+    fontFamily: FONTS.extraBold,
+    fontSize: 22,
+    fontWeight: '800' as const,
+    letterSpacing: -0.5,
+    lineHeight: 28,
   },
   h3: {
-    fontFamily: FONTS.heading,
-    fontSize: 15,
-    fontWeight: '700' as const,
+    fontFamily: FONTS.semiBold,
+    fontSize: 16,
+    fontWeight: '600' as const,
+    letterSpacing: -0.2,
+    lineHeight: 22,
   },
   body: {
-    fontFamily: FONTS.body,
-    fontSize: 13,
+    fontFamily: FONTS.regular,
+    fontSize: 14,
     fontWeight: '400' as const,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   bodyBold: {
-    fontFamily: FONTS.heading,
-    fontSize: 13,
+    fontFamily: FONTS.bold,
+    fontSize: 14,
     fontWeight: '700' as const,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   caption: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
     fontWeight: '400' as const,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   badge: {
-    fontFamily: FONTS.heading,
+    fontFamily: FONTS.semiBold,
     fontSize: 11,
-    fontWeight: '700' as const,
+    fontWeight: '600' as const,
     letterSpacing: 0.5,
   },
 };
 
+// Zero/minimal shadow: Dilarang menambahkan gradient warna atau efek bayangan (drop shadow) berlebihan
 export const SHADOWS = {
-  sm: Platform.select({
-    ios: {
-      shadowColor: '#06281E',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.05,
-      shadowRadius: 3,
-    },
-    android: {
-      elevation: 2,
-    },
-    web: {
-      boxShadow: '0 1px 3px rgba(6, 40, 30, 0.06)',
-    },
-    default: {
-      elevation: 2,
-    },
-  }),
-  md: Platform.select({
-    ios: {
-      shadowColor: '#06281E',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.07,
-      shadowRadius: 10,
-    },
-    android: {
-      elevation: 3,
-    },
-    web: {
-      boxShadow: '0 4px 14px rgba(6, 40, 30, 0.08)',
-    },
-    default: {
-      elevation: 3,
-    },
-  }),
-  lg: Platform.select({
-    ios: {
-      shadowColor: '#06281E',
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.1,
-      shadowRadius: 20,
-    },
-    android: {
-      elevation: 5,
-    },
-    web: {
-      boxShadow: '0 8px 24px rgba(6, 40, 30, 0.12)',
-    },
-    default: {
-      elevation: 5,
-    },
-  }),
+  sm: {},
+  md: {},
+  lg: {},
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SPACING } from '../theme';
+import { SPACING, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface ChallengeLevelMatrixProps {
@@ -245,7 +245,6 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
               {
                 backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
                 borderColor: isDark ? '#334155' : '#E2E8F0',
-                borderLeftColor: active.color,
               },
             ]}
           >
@@ -303,21 +302,16 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
 
 const styles = StyleSheet.create({
   container: {
-    padding: SPACING.lg,
-    borderRadius: 18,
-    borderWidth: 1.5,
-    marginVertical: SPACING.md,
-    ...Platform.select({
-      web: {
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
-      },
-    }),
+    padding: SPACING.xl, // 32px (Scale 8px generous padding)
+    borderRadius: 16,
+    borderWidth: 1, // Soft hairline, no harsh border, no shadow
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: SPACING.md,
     flexWrap: 'wrap',
     gap: 10,
   },
@@ -336,23 +330,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainTitle: {
-    fontSize: 15,
+    fontFamily: FONTS.extraBold,
+    fontSize: 16,
     fontWeight: '800',
   },
   mainSubtitle: {
-    fontSize: 11,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
     marginTop: 2,
   },
   defenseBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0284C7',
+    backgroundColor: '#0F172A',
     paddingHorizontal: 12,
     paddingVertical: 7,
-    borderRadius: 10,
+    borderRadius: 8,
     gap: 6,
   },
   defenseBtnText: {
+    fontFamily: FONTS.bold,
     color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 11,
@@ -361,7 +358,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 14,
+    marginBottom: SPACING.md,
   },
   levelPill: {
     paddingHorizontal: 11,
@@ -373,14 +370,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   levelPillText: {
+    fontFamily: FONTS.bold,
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '700',
   },
   detailCard: {
-    padding: 14,
+    padding: SPACING.md,
     borderRadius: 12,
     borderWidth: 1,
-    borderLeftWidth: 4,
     gap: 10,
   },
   detailHeader: {
@@ -390,13 +387,15 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   detailTitle: {
+    fontFamily: FONTS.bold,
     fontSize: 13,
-    fontWeight: '800',
+    fontWeight: '700',
     letterSpacing: 0.5,
   },
   detailSubtitle: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontFamily: FONTS.extraBold,
+    fontSize: 15,
+    fontWeight: '800',
     marginTop: 2,
   },
   statusBadge: {
@@ -408,14 +407,16 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statusText: {
+    fontFamily: FONTS.bold,
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '700',
   },
   checklist: {
     gap: 6,
     marginTop: 4,
   },
   sectionLabel: {
+    fontFamily: FONTS.bold,
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -426,8 +427,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   reqText: {
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
     flex: 1,
   },
   metaFooter: {
@@ -440,10 +442,12 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   metaLabel: {
-    fontSize: 9,
+    fontFamily: FONTS.bold,
+    fontSize: 9.5,
     fontWeight: '700',
   },
   metaVal: {
+    fontFamily: FONTS.semiBold,
     fontSize: 11,
     fontWeight: '600',
   },

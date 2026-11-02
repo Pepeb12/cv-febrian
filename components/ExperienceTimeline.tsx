@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 interface ExperienceItem {
   id?: string | number;
@@ -19,8 +19,7 @@ interface ExperienceTimelineProps {
 }
 
 /**
- * ExperienceTimeline Component (Level 7: Organizational & Academic Experience)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * ExperienceTimeline Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function ExperienceTimeline({ experiences = [], theme }: ExperienceTimelineProps) {
   if (!experiences || experiences.length === 0) return null;
@@ -46,7 +45,6 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
       <View style={styles.timelineContainer}>
         {experiences.map((exp, index) => {
           const isLast = index === experiences.length - 1;
-          const nodeColor = theme.primary;
 
           return (
             <View key={exp.id || index} style={styles.timelineItem}>
@@ -57,11 +55,11 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
                     styles.nodeCircle,
                     {
                       backgroundColor: theme.surfaceMuted,
-                      borderColor: nodeColor,
+                      borderColor: theme.textPrimary,
                     },
                   ]}
                 >
-                  <View style={[styles.nodeDot, { backgroundColor: nodeColor }]} />
+                  <View style={[styles.nodeDot, { backgroundColor: theme.textPrimary }]} />
                 </View>
                 {!isLast && (
                   <View style={[styles.connectingLine, { backgroundColor: theme.border }]} />
@@ -71,6 +69,7 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
               {/* Sisi Kanan: Konten Pengalaman */}
               <View style={styles.contentCol}>
                 <View style={styles.headerRow}>
+                  {/* H3 HEADING */}
                   <Text style={[styles.roleText, { color: theme.textPrimary }]}>
                     {exp.role}
                   </Text>
@@ -78,10 +77,10 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
                     {exp.period}
                   </Text>
                 </View>
-                <Text style={[styles.orgText, { color: nodeColor }]}>
+                <Text style={[styles.orgText, { color: theme.textSecondary }]}>
                   {exp.organization}
                 </Text>
-                <Text style={[styles.descText, { color: theme.textSecondary }]}>
+                <Text style={[styles.descText, { color: theme.textMuted }]}>
                   {exp.description}
                 </Text>
               </View>
@@ -96,10 +95,9 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
 const styles = StyleSheet.create({
   card: {
     borderRadius: 14,
-    padding: SPACING.lg,
+    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
     borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   timelineContainer: {
     paddingLeft: 2,
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
   timelineItem: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg, // 24px
   },
   leftCol: {
     width: 22,
@@ -131,14 +129,14 @@ const styles = StyleSheet.create({
   connectingLine: {
     position: 'absolute',
     top: 16,
-    bottom: -16,
+    bottom: -24,
     width: 1.5,
     zIndex: 1,
   },
   contentCol: {
     flex: 1,
-    paddingLeft: 10,
-    paddingBottom: 4,
+    paddingLeft: SPACING.md, // 16px
+    paddingBottom: SPACING.xs,
   },
   headerRow: {
     flexDirection: 'row',
@@ -148,25 +146,24 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   roleText: {
-    fontFamily: FONTS.heading,
-    fontSize: 12.5,
+    fontFamily: FONTS.bold,
+    fontSize: 13.5,
     fontWeight: '700',
     marginRight: 6,
   },
   periodText: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
-    fontWeight: '500',
+    fontFamily: FONTS.regular,
+    fontSize: 11.5,
   },
   orgText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
-    fontWeight: '700',
-    marginBottom: 2,
+    fontFamily: FONTS.semiBold,
+    fontSize: 12.5,
+    fontWeight: '600',
+    marginBottom: 4,
   },
   descText: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
   },
 });

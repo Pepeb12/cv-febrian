@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SPACING } from '../theme';
+import { SPACING, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface Level10CriteriaCardProps {
@@ -206,21 +206,16 @@ export default function Level10CriteriaCard({
 
 const styles = StyleSheet.create({
   card: {
-    padding: SPACING.lg,
-    borderRadius: 18,
-    borderWidth: 1.5,
-    marginVertical: SPACING.md,
-    ...Platform.select({
-      web: {
-        boxShadow: '0 4px 16px rgba(13, 148, 136, 0.1)',
-      },
-    }),
+    padding: SPACING.xl, // 32px (Scale 8px: generous padding)
+    borderRadius: 16,
+    borderWidth: 1, // Soft hairline, no harsh border
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: SPACING.md,
     flexWrap: 'wrap',
     gap: 8,
   },
@@ -234,8 +229,9 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   badgeText: {
+    fontFamily: FONTS.bold,
     color: '#0F766E',
-    fontWeight: '800',
+    fontWeight: '700',
     fontSize: 11,
     letterSpacing: 0.5,
   },
@@ -255,22 +251,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#10B981',
   },
   lmsPillText: {
+    fontFamily: FONTS.semiBold,
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#059669',
   },
   title: {
-    fontSize: 17,
+    fontFamily: FONTS.extraBold,
+    fontSize: 18,
     fontWeight: '800',
     marginBottom: 6,
   },
   description: {
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 14,
+    fontFamily: FONTS.regular,
+    fontSize: 13,
+    lineHeight: 20,
+    marginBottom: 16,
   },
   checklistContainer: {
-    padding: 12,
+    padding: SPACING.md,
     borderRadius: 12,
     borderWidth: 1,
     gap: 8,

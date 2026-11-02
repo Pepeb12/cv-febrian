@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { COLORS, SHADOWS, SPACING } from '../theme';
+import { COLORS, SPACING, FONTS } from '../theme';
 
 interface AboutSectionProps {
   data?: any;
@@ -189,27 +189,28 @@ export default function AboutSection({ data, profile, theme }: AboutSectionProps
 
 const styles = StyleSheet.create({
   container: {
-    gap: SPACING.lg,
-    marginBottom: SPACING.lg,
+    gap: SPACING.xl, // 32px (Scale 8px: mb-8)
+    marginBottom: SPACING.xl,
   },
   card: {
     borderRadius: 16,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    ...SHADOWS.md,
+    padding: SPACING.xl, // 32px (Generous padding)
+    borderWidth: 1, // Soft hairline, no harsh border, no shadow
   },
   introContent: {
-    gap: SPACING.sm,
-    marginTop: SPACING.xs,
+    gap: SPACING.md,
+    marginTop: SPACING.sm,
   },
   headlineText: {
-    fontSize: 16,
+    fontFamily: FONTS.extraBold,
+    fontSize: 18,
     fontWeight: '800',
+    lineHeight: 24,
   },
   paragraphText: {
-    fontSize: 13,
-    lineHeight: 21,
-    textAlign: 'justify',
+    fontFamily: FONTS.regular,
+    fontSize: 14,
+    lineHeight: 22,
   },
   quoteBox: {
     flexDirection: 'row',
@@ -218,19 +219,20 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     gap: SPACING.sm,
     marginTop: SPACING.xs,
-    borderLeftWidth: 3,
+    borderWidth: 1,
   },
   quoteText: {
-    fontSize: 12,
+    fontFamily: FONTS.medium,
+    fontSize: 13,
     fontStyle: 'italic',
     flex: 1,
-    fontWeight: '600',
+    lineHeight: 18,
   },
   attributesContainer: {
-    marginTop: SPACING.md,
-    paddingTop: SPACING.md,
+    marginTop: SPACING.lg,
+    paddingTop: SPACING.lg,
     borderTopWidth: 1,
-    gap: SPACING.sm,
+    gap: SPACING.md,
   },
   attributeItem: {
     flexDirection: 'row',
@@ -247,22 +249,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   attrLabel: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 13,
+    fontWeight: '600',
   },
   attrDesc: {
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
   },
   interestsList: {
     gap: SPACING.md,
-    marginTop: SPACING.xs,
+    marginTop: SPACING.sm,
   },
   interestCard: {
     borderRadius: 12,
     padding: SPACING.md,
     borderWidth: 1,
-    borderLeftWidth: 4,
   },
   interestTopRow: {
     flexDirection: 'row',
@@ -281,14 +284,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   interestTitle: {
+    fontFamily: FONTS.semiBold,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   interestCategory: {
+    fontFamily: FONTS.medium,
     fontSize: 11,
     fontWeight: '500',
   },
   interestDescription: {
+    fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
     marginBottom: SPACING.sm,
@@ -305,8 +311,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   tagPillText: {
+    fontFamily: FONTS.medium,
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });
 

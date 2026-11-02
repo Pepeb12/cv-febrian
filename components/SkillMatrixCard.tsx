@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 interface SkillItem {
   name: string;
@@ -15,8 +15,7 @@ interface SkillMatrixCardProps {
 }
 
 /**
- * SkillMatrixCard Component (Level 7: Dynamic Skills Filter & Progress Bars)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * SkillMatrixCard Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardProps) {
   const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'MOBILE' | 'ANALYSIS' | 'DESIGN' | 'DATA'>('ALL');
@@ -70,10 +69,14 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
                 {
                   backgroundColor: isActive
                     ? isDark
-                      ? '#064E3B'
-                      : '#065F46'
+                      ? '#1E293B'
+                      : '#0F172A'
                     : theme.surfaceMuted,
-                  borderColor: isActive ? '#A7F3D0' : theme.border,
+                  borderColor: isActive
+                    ? isDark
+                      ? '#334155'
+                      : '#0F172A'
+                    : theme.borderLight,
                 },
               ]}
               activeOpacity={0.7}
@@ -107,7 +110,7 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
                 <Text style={[styles.levelText, { color: theme.textMuted }]}>
                   {skill.level}
                 </Text>
-                <Text style={[styles.percentageText, { color: theme.primary }]}>
+                <Text style={[styles.percentageText, { color: theme.textPrimary }]}>
                   {skill.percentage}%
                 </Text>
               </View>
@@ -120,7 +123,7 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
                   styles.progressFill,
                   {
                     width: `${skill.percentage}%`,
-                    backgroundColor: theme.primary,
+                    backgroundColor: theme.textPrimary,
                   },
                 ]}
               />
@@ -135,31 +138,29 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
 const styles = StyleSheet.create({
   card: {
     borderRadius: 14,
-    padding: SPACING.lg,
+    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
     borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   filterTabsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
-    marginBottom: SPACING.md,
+    gap: SPACING.sm, // 8px
+    marginBottom: SPACING.lg, // 24px
   },
   filterTab: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 7,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 6,
     borderWidth: 1,
   },
   filterTabText: {
-    fontFamily: FONTS.heading,
-    fontSize: 10.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
   },
   skillList: {
-    gap: 10,
-    marginTop: 2,
+    gap: SPACING.md, // 16px
   },
   skillItem: {
     marginBottom: 2,
@@ -168,32 +169,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   skillName: {
-    fontFamily: FONTS.heading,
-    fontSize: 12.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 13,
+    fontWeight: '600',
   },
   levelBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: SPACING.xs,
   },
   levelText: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
+    fontFamily: FONTS.regular,
+    fontSize: 11,
   },
   percentageText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
+    fontFamily: FONTS.bold,
+    fontSize: 12,
     fontWeight: '700',
   },
   progressTrack: {
     height: 6,
     borderRadius: 3,
     overflow: 'hidden',
-    borderWidth: 0.5,
+    borderWidth: 1,
   },
   progressFill: {
     height: '100%',

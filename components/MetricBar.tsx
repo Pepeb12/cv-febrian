@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
+import { COLORS, SPACING, FONTS } from '../theme';
 import { AcademicMetric, ThemeColors } from '../types';
 
 interface MetricBarProps {
@@ -10,8 +10,7 @@ interface MetricBarProps {
 }
 
 /**
- * MetricBar Component (Level 3: Layout & Styling Flexbox Statistics)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * MetricBar Component (Minimalist Tech: Flat Cards, Scale 8px, Inter Typography)
  */
 export default function MetricBar({ metrics, theme }: MetricBarProps) {
   const currentTheme = theme || COLORS;
@@ -35,11 +34,11 @@ export default function MetricBar({ metrics, theme }: MetricBarProps) {
                 styles.iconCircle,
                 {
                   backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.primaryBorder,
+                  borderColor: currentTheme.borderLight,
                 },
               ]}
             >
-              <Ionicons name={item.icon as any} size={15} color={currentTheme.primary} />
+              <Ionicons name={item.icon as any} size={15} color={currentTheme.textPrimary} />
             </View>
             <Text style={[styles.metricValue, { color: currentTheme.textPrimary }]}>
               {item.value}
@@ -59,50 +58,49 @@ export default function MetricBar({ metrics, theme }: MetricBarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.xl, // 32px (mb-8)
     width: '100%',
   },
   gridRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: SPACING.md, // 16px (scale 8px)
   },
   metricCard: {
     flex: 1,
-    minWidth: 100,
+    minWidth: 110,
     borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 8,
+    paddingVertical: SPACING.md, // 16px
+    paddingHorizontal: SPACING.sm, // 8px
     alignItems: 'center',
     borderWidth: 1,
-    ...SHADOWS.sm,
   },
   iconCircle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   metricValue: {
-    fontFamily: FONTS.heading,
-    fontSize: 18,
+    fontFamily: FONTS.bold,
+    fontSize: 20,
     fontWeight: '700',
-    marginBottom: 1,
-    letterSpacing: -0.3,
+    marginBottom: 2,
+    letterSpacing: -0.5,
   },
   metricLabel: {
-    fontFamily: FONTS.heading,
-    fontSize: 10.5,
-    fontWeight: '700',
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+    fontWeight: '500',
     textAlign: 'center',
   },
   metricUnit: {
-    fontFamily: FONTS.body,
-    fontSize: 9.5,
-    marginTop: 1,
+    fontFamily: FONTS.regular,
+    fontSize: 10,
+    marginTop: 2,
     textAlign: 'center',
   },
 });

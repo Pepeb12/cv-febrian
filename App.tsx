@@ -14,7 +14,15 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFonts, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 // Import Data Lokal Format JSON (Level 6 & Level 8: Local JSON Data Architecture)
 import profileData from './data/profile.json';
@@ -24,7 +32,7 @@ import initialAcademicScoreData from './data/academicScore.json';
 import StorageService from './services/storageService';
 import AcademicService from './services/academicService';
 
-// Import Theme System (Emerald – Cream – White – Mint)
+// Import Theme System (Minimalist Tech & Emerald – Cream – White – Mint)
 import { getTheme, SPACING, FONTS } from './theme';
 
 // Import Komponen UI Modular (.tsx)
@@ -66,10 +74,14 @@ export default function App() {
   const isDesktop = width >= 992;
   const isTablet = width >= 720 && width < 992;
 
-  // Load Google Font: Lato (Lato Bold untuk Heading & Lato Biasa untuk Isi)
+  // Load Google Font: Inter (Minimalist Tech Architecture)
   const [fontsLoaded] = useFonts({
-    Lato_400Regular,
-    Lato_700Bold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
   });
 
   const scrollViewRef = useRef<any>(null);
@@ -704,16 +716,17 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scrollContent: {
-    paddingVertical: SPACING.md,
-    paddingBottom: 40,
+    paddingVertical: SPACING.xxxl, // 48px (py-12 on 8px scale)
+    paddingBottom: SPACING.huge, // 64px
   },
   responsiveContentWrapper: {
     width: '100%',
-    maxWidth: 1200,
+    maxWidth: 1024, // Minimalist Tech Container max-width: 1024px
+    marginHorizontal: 'auto',
     alignSelf: 'center',
   },
   stageBlock: {
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.xl, // 32px (mb-8 on 8px scale)
   },
   // Desktop Widescreen 2-Column Grid
   desktopGrid2Col: {

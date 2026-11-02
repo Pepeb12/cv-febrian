@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { COLORS, SHADOWS, SPACING, FONTS } from '../theme';
+import { COLORS, SPACING, FONTS } from '../theme';
 
 interface IdentityDetailCardProps {
   data?: any;
@@ -11,8 +10,7 @@ interface IdentityDetailCardProps {
 }
 
 /**
- * IdentityDetailCard Component (Level 6: Local JSON Data Showcase)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * IdentityDetailCard Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function IdentityDetailCard({ data, profile, theme }: IdentityDetailCardProps) {
   const student = data || profile;
@@ -52,21 +50,22 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
                     style={[
                       styles.timelineDot,
                       {
-                        backgroundColor: isLatest ? currentTheme.primary : currentTheme.surfaceMuted,
-                        borderColor: isLatest ? '#A7F3D0' : currentTheme.border,
+                        backgroundColor: isLatest ? currentTheme.textPrimary : currentTheme.surfaceMuted,
+                        borderColor: isLatest ? currentTheme.textPrimary : currentTheme.borderLight,
                       },
                     ]}
                   />
                   {index < educationList.length - 1 && (
-                    <View style={[styles.timelineLine, { backgroundColor: currentTheme.border }]} />
+                    <View style={[styles.timelineLine, { backgroundColor: currentTheme.borderLight }]} />
                   )}
                 </View>
                 <View style={styles.timelineContent}>
                   <View style={styles.timelineHeader}>
+                    {/* H3 HEADING */}
                     <Text
                       style={[
                         styles.educationSchool,
-                        { color: isLatest ? currentTheme.primary : currentTheme.textPrimary },
+                        { color: currentTheme.textPrimary },
                       ]}
                     >
                       {edu.school || edu.institution}
@@ -93,14 +92,13 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.xl, // 32px (mb-8)
     width: '100%',
   },
   card: {
     borderRadius: 14,
-    padding: SPACING.lg,
+    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
     borderWidth: 1,
-    ...SHADOWS.sm,
   },
   timelineContainer: {
     paddingLeft: 4,
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
   timelineItem: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg, // 24px
   },
   timelineLeftCol: {
     width: 22,
@@ -126,13 +124,13 @@ const styles = StyleSheet.create({
   timelineLine: {
     position: 'absolute',
     top: 15,
-    bottom: -16,
-    width: 2,
+    bottom: -24,
+    width: 1.5,
     zIndex: 1,
   },
   timelineContent: {
     flex: 1,
-    paddingLeft: 10,
+    paddingLeft: SPACING.md, // 16px
   },
   timelineHeader: {
     flexDirection: 'row',
@@ -141,25 +139,25 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   educationSchool: {
-    fontFamily: FONTS.heading,
-    fontSize: 13,
+    fontFamily: FONTS.bold,
+    fontSize: 14,
     fontWeight: '700',
   },
   educationPeriod: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
     fontWeight: '500',
   },
   educationLevel: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
+    fontWeight: '600',
     marginBottom: 2,
   },
   educationDesc: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
     marginTop: 2,
   },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 interface HobbyItem {
   id: string | number;
@@ -18,8 +18,7 @@ interface HobbySectionProps {
 }
 
 /**
- * HobbySection Component (Level 7: Hobby & Personal Interests Exploration)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * HobbySection Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function HobbySection({ hobbies = [], theme }: HobbySectionProps) {
   if (!hobbies || hobbies.length === 0) return null;
@@ -59,14 +58,14 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
                 styles.iconBox,
                 {
                   backgroundColor: theme.surface,
-                  borderColor: theme.border,
+                  borderColor: theme.borderLight,
                 },
               ]}
             >
               <Ionicons
                 name={item.icon || 'star-outline'}
                 size={16}
-                color={theme.primary}
+                color={theme.textPrimary}
               />
             </View>
             <View style={styles.hobbyContent}>
@@ -87,27 +86,26 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
 const styles = StyleSheet.create({
   card: {
     borderRadius: 14,
-    padding: SPACING.lg,
+    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
     borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   gridContainer: {
-    gap: 8,
+    gap: SPACING.md, // 16px (scale 8px)
     marginTop: 2,
   },
   hobbyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 9,
+    padding: SPACING.md, // 16px
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 10,
+    gap: SPACING.md,
   },
   iconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 7,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -116,14 +114,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   hobbyName: {
-    fontFamily: FONTS.heading,
-    fontSize: 12,
+    fontFamily: FONTS.bold,
+    fontSize: 13,
     fontWeight: '700',
-    marginBottom: 1,
+    marginBottom: 2,
   },
   hobbyDesc: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
-    lineHeight: 15,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
   },
 });

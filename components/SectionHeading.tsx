@@ -12,7 +12,7 @@ interface SectionHeadingProps {
 }
 
 /**
- * SectionHeading Component (Clean Editorial Typography with Lato Bold & Lato Regular)
+ * SectionHeading Component (Minimalist Tech Design: H2 Contrast Hierarchy with Inter)
  */
 export default function SectionHeading({
   title,
@@ -37,9 +37,10 @@ export default function SectionHeading({
                 },
               ]}
             >
-              <Ionicons name={icon} size={15} color={currentTheme.primary} />
+              <Ionicons name={icon} size={16} color={currentTheme.textPrimary} />
             </View>
           )}
+          {/* H2 HEADING: High Contrast 22px / 800 ExtraBold */}
           <Text style={[styles.mainTitle, { color: currentTheme.textPrimary }]}>
             {title}
           </Text>
@@ -50,11 +51,11 @@ export default function SectionHeading({
               styles.badge,
               {
                 backgroundColor: currentTheme.surfaceMuted,
-                borderColor: currentTheme.border,
+                borderColor: currentTheme.borderLight,
               },
             ]}
           >
-            <Text style={[styles.badgeText, { color: currentTheme.primary }]}>
+            <Text style={[styles.badgeText, { color: currentTheme.textSecondary }]}>
               {badgeText}
             </Text>
           </View>
@@ -71,50 +72,51 @@ export default function SectionHeading({
 
 const styles = StyleSheet.create({
   headingContainer: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg, // 24px (scale 8px)
   },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   titleWithIcon: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.sm,
     flex: 1,
   },
   iconWrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 7,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mainTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 15,
-    fontWeight: '700',
-    letterSpacing: -0.2,
+    fontFamily: FONTS.extraBold,
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+    lineHeight: 28,
   },
   badge: {
-    paddingHorizontal: 8,
+    paddingHorizontal: SPACING.sm,
     paddingVertical: 3,
     borderRadius: 6,
     borderWidth: 1,
   },
   badgeText: {
-    fontFamily: FONTS.heading,
-    fontSize: 10.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
     letterSpacing: 0.3,
   },
   subTitle: {
-    fontFamily: FONTS.body,
-    fontSize: 11.5,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 13.5,
+    lineHeight: 20,
     marginTop: 2,
   },
 });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 interface InteractiveEndorseBarProps {
   studentName: string;
@@ -10,8 +10,7 @@ interface InteractiveEndorseBarProps {
 }
 
 /**
- * InteractiveEndorseBar Component (Level 4, 7, 10: Interactive Component)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * InteractiveEndorseBar Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function InteractiveEndorseBar({
   studentName,
@@ -51,8 +50,9 @@ export default function InteractiveEndorseBar({
     >
       <View style={styles.contentRow}>
         <View style={styles.textCol}>
+          {/* H3 HEADING */}
           <Text style={[styles.titleText, { color: theme.textPrimary }]}>
-            Rekomendasikan Profil
+            Rekomendasikan Profil Mahasiswa
           </Text>
           <Text style={[styles.subText, { color: theme.textSecondary }]}>
             Dukung kompetensi Sistem Informasi & Mobile Development {studentName}
@@ -65,10 +65,14 @@ export default function InteractiveEndorseBar({
             {
               backgroundColor: isEndorsed
                 ? isDark
-                  ? '#0A4A3A'
-                  : '#065F46'
+                  ? '#1E293B'
+                  : '#0F172A'
                 : theme.surfaceMuted,
-              borderColor: isEndorsed ? '#A7F3D0' : theme.border,
+              borderColor: isEndorsed
+                ? isDark
+                  ? '#334155'
+                  : '#0F172A'
+                : theme.borderLight,
             },
           ]}
           activeOpacity={0.8}
@@ -79,7 +83,7 @@ export default function InteractiveEndorseBar({
           <MaterialCommunityIcons
             name={isEndorsed ? 'thumb-up' : 'thumb-up-outline'}
             size={15}
-            color={isEndorsed ? '#A7F3D0' : theme.primary}
+            color={isEndorsed ? '#FFFFFF' : theme.textPrimary}
           />
           <Text
             style={[
@@ -97,45 +101,44 @@ export default function InteractiveEndorseBar({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
-    padding: SPACING.md,
+    borderRadius: 12,
+    padding: SPACING.lg, // 24px (scale 8px)
     borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   contentRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: SPACING.md,
+    gap: SPACING.lg,
   },
   textCol: {
     flex: 1,
   },
   titleText: {
-    fontFamily: FONTS.heading,
-    fontSize: 13,
+    fontFamily: FONTS.bold,
+    fontSize: 14,
     fontWeight: '700',
     marginBottom: 2,
     letterSpacing: -0.2,
   },
   subText: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
   },
   endorseButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 9,
+    paddingVertical: SPACING.sm, // 8px
+    paddingHorizontal: SPACING.md, // 16px
+    borderRadius: 8,
     borderWidth: 1,
-    gap: 6,
+    gap: SPACING.xs,
   },
   endorseButtonText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
+    fontFamily: FONTS.bold,
+    fontSize: 12,
     fontWeight: '700',
   },
 });

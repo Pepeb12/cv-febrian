@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SPACING, SHADOWS } from '../theme';
+import { SPACING, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface Level8CriteriaCardProps {
@@ -87,10 +87,9 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
 const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    marginBottom: SPACING.lg,
-    ...SHADOWS.md,
+    padding: SPACING.xl, // 32px (Generous 8px scale)
+    borderWidth: 1, // Soft hairline, no harsh border, no shadow
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   cardHeader: {
     flexDirection: 'row',
@@ -108,28 +107,32 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   badgeExpertText: {
+    fontFamily: FONTS.bold,
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#92400E',
     letterSpacing: 0.5,
   },
   statusText: {
+    fontFamily: FONTS.bold,
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: '700',
   },
   title: {
-    fontSize: 15,
+    fontFamily: FONTS.extraBold,
+    fontSize: 16,
     fontWeight: '800',
-    marginTop: 4,
+    marginTop: 6,
     marginBottom: 4,
   },
   description: {
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
     marginBottom: SPACING.md,
   },
   checklist: {
-    gap: 6,
+    gap: 8,
     marginBottom: SPACING.md,
   },
   checkItem: {
@@ -138,23 +141,25 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   checkText: {
-    fontSize: 11,
-    lineHeight: 16,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
     flex: 1,
   },
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1E40AF',
+    backgroundColor: '#0F172A',
     paddingVertical: 10,
     borderRadius: 10,
     gap: 6,
   },
   actionButtonText: {
+    fontFamily: FONTS.bold,
     color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '700',
   },
 });
 

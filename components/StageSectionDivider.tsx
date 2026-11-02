@@ -13,9 +13,7 @@ interface StageSectionDividerProps {
 }
 
 /**
- * StageSectionDivider Component
- * Marks each of the 4 sequential evaluation stages as the user scrolls.
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * StageSectionDivider Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function StageSectionDivider({
   stageNumber,
@@ -32,8 +30,8 @@ export default function StageSectionDivider({
       style={[
         styles.dividerCard,
         {
-          backgroundColor: isDark ? '#063025' : '#ECFDF5',
-          borderColor: isDark ? '#065F46' : '#A7F3D0',
+          backgroundColor: theme.surfaceMuted,
+          borderColor: theme.borderLight,
         },
       ]}
     >
@@ -42,7 +40,7 @@ export default function StageSectionDivider({
           style={[
             styles.stageBadge,
             {
-              backgroundColor: isDark ? '#0A4A3A' : '#065F46',
+              backgroundColor: isDark ? '#1E293B' : '#0F172A',
             },
           ]}
         >
@@ -51,8 +49,8 @@ export default function StageSectionDivider({
 
         <View style={styles.titleCol}>
           <View style={styles.topTitleRow}>
-            <Ionicons name={icon} size={15} color={isDark ? '#A7F3D0' : '#065F46'} />
-            <Text style={[styles.levelsText, { color: isDark ? '#A7F3D0' : '#065F46' }]}>
+            <Ionicons name={icon} size={15} color={theme.textPrimary} />
+            <Text style={[styles.levelsText, { color: theme.textPrimary }]}>
               {levelsText}
             </Text>
             <Text style={[styles.dotSep, { color: theme.textMuted }]}>•</Text>
@@ -71,27 +69,27 @@ export default function StageSectionDivider({
 
 const styles = StyleSheet.create({
   dividerCard: {
-    borderRadius: 12,
+    borderRadius: 10,
     borderWidth: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginVertical: SPACING.md,
+    paddingVertical: SPACING.md, // 16px
+    paddingHorizontal: SPACING.lg, // 24px
+    marginVertical: SPACING.xl, // 32px (mb-8)
   },
   contentRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: SPACING.md, // 16px
   },
   stageBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   stageBadgeText: {
-    fontFamily: FONTS.heading,
-    fontSize: 9.5,
+    fontFamily: FONTS.bold,
+    fontSize: 10,
     fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.8,
@@ -103,25 +101,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 5,
+    gap: SPACING.xs,
   },
   levelsText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  dotSep: {
-    fontSize: 10,
-  },
-  mainTitle: {
-    fontFamily: FONTS.heading,
+    fontFamily: FONTS.bold,
     fontSize: 12,
     fontWeight: '700',
   },
+  dotSep: {
+    fontSize: 11,
+  },
+  mainTitle: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 13,
+    fontWeight: '600',
+  },
   descText: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
-    marginTop: 1,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 2,
   },
 });
-

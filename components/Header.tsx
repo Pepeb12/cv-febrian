@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SPACING, SHADOWS, FONTS } from '../theme';
+import { SPACING, FONTS } from '../theme';
 import { ThemeColors } from '../types';
 
 interface HeaderProps {
@@ -11,8 +11,7 @@ interface HeaderProps {
 }
 
 /**
- * Header Component (Level 10: Industry Production Header with Accessibility & Dark Mode)
- * Styled with the Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * Header Component (Minimalist Tech: Container Max-Width 1024px, Inter Font, Dark Slate)
  */
 export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps) {
   const currentTheme = theme || {};
@@ -23,74 +22,76 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
         styles.headerContainer,
         {
           backgroundColor: currentTheme.surface || '#FFFFFF',
-          borderBottomColor: currentTheme.border || '#E3DFC8',
+          borderBottomColor: currentTheme.border || '#E2E8F0',
         },
       ]}
       accessibilityRole="header"
     >
-      <View style={styles.headerLeft}>
-        <View
-          style={[
-            styles.iconCircle,
-            {
-              backgroundColor: currentTheme.primaryLight || '#ECFDF5',
-              borderColor: currentTheme.primaryBorder || '#A7F3D0',
-            },
-          ]}
-        >
-          <Ionicons name="school" size={20} color={currentTheme.primary || '#065F46'} />
-        </View>
-        <View>
-          <Text style={[styles.universityName, { color: currentTheme.primary || '#065F46' }]}>
-            MASOEM UNIVERSITY
-          </Text>
-          <Text style={[styles.appTitle, { color: currentTheme.textPrimary || '#06281E' }]}>
-            Personal CV & Academic Score
-          </Text>
-        </View>
-      </View>
-
-      <View style={styles.headerRight}>
-        {/* Theme Switcher Button */}
-        <TouchableOpacity
-          style={[
-            styles.themeButton,
-            {
-              backgroundColor: currentTheme.surfaceMuted || '#F5F5DC',
-              borderColor: currentTheme.border || '#E3DFC8',
-            },
-          ]}
-          activeOpacity={0.7}
-          onPress={onToggleTheme}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
-        >
-          <Ionicons
-            name={isDarkMode ? 'sunny' : 'moon'}
-            size={17}
-            color={isDarkMode ? '#F5F5DC' : '#065F46'}
-          />
-        </TouchableOpacity>
-
-        {/* Level 10 Badge */}
-        <View
-          style={[
-            styles.badgeLevel,
-            {
-              backgroundColor: isDarkMode ? '#064E3B' : '#ECFDF5',
-              borderColor: isDarkMode ? '#065F46' : '#A7F3D0',
-            },
-          ]}
-        >
-          <Text
+      <View style={styles.innerWrapper}>
+        <View style={styles.headerLeft}>
+          <View
             style={[
-              styles.badgeText,
-              { color: isDarkMode ? '#A7F3D0' : '#065F46' },
+              styles.iconCircle,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
             ]}
           >
-            LEVEL 10
-          </Text>
+            <Ionicons name="terminal-outline" size={18} color={currentTheme.textPrimary} />
+          </View>
+          <View>
+            <Text style={[styles.universityName, { color: currentTheme.textMuted }]}>
+              MASOEM UNIVERSITY
+            </Text>
+            <Text style={[styles.appTitle, { color: currentTheme.textPrimary }]}>
+              Personal CV & Academic Score
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.headerRight}>
+          {/* Theme Switcher Button */}
+          <TouchableOpacity
+            style={[
+              styles.themeButton,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={onToggleTheme}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
+          >
+            <Ionicons
+              name={isDarkMode ? 'sunny-outline' : 'moon-outline'}
+              size={16}
+              color={currentTheme.textPrimary}
+            />
+          </TouchableOpacity>
+
+          {/* Level 10 Badge (Minimalist Pill) */}
+          <View
+            style={[
+              styles.badgeLevel,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.badgeText,
+                { color: currentTheme.textSecondary },
+              ]}
+            >
+              LEVEL 10
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -100,38 +101,42 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
 const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
+    borderBottomWidth: 1, // Hairline separator
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md, // 16px (scale 8px)
+  },
+  innerWrapper: {
+    width: '100%',
+    maxWidth: 1024,
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md,
-    borderBottomWidth: 1,
-    ...SHADOWS.sm,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: SPACING.md,
   },
   iconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: SPACING.md,
   },
   universityName: {
-    fontFamily: FONTS.heading,
+    fontFamily: FONTS.semiBold,
     fontSize: 10.5,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 1.2,
   },
   appTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 14.5,
+    fontFamily: FONTS.bold,
+    fontSize: 15,
     fontWeight: '700',
-    letterSpacing: -0.2,
+    letterSpacing: -0.3,
   },
   headerRight: {
     flexDirection: 'row',
@@ -141,20 +146,20 @@ const styles = StyleSheet.create({
   themeButton: {
     width: 36,
     height: 36,
-    borderRadius: 18,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
   },
   badgeLevel: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
     borderWidth: 1,
   },
   badgeText: {
-    fontFamily: FONTS.heading,
-    fontSize: 10.5,
+    fontFamily: FONTS.bold,
+    fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.6,
   },

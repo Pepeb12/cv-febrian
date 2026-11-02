@@ -94,11 +94,10 @@ export default function ContactGridCard({ contactItems, theme }: ContactGridCard
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    borderRadius: 16,
+    padding: SPACING.xl, // 32px (Generous 8px scale)
+    borderWidth: 1, // Soft hairline, no harsh border
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   gridContainer: {
     flexDirection: 'row',

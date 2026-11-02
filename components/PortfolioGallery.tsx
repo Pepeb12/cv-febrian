@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
+import { Theme, SPACING, FONTS } from '../theme';
 
 interface ProjectItem {
   id: string | number;
@@ -32,8 +32,7 @@ interface PortfolioGalleryProps {
 }
 
 /**
- * PortfolioGallery Component (Level 7: Dynamic Content, Search, Filter & Modal Exploration)
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * PortfolioGallery Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGalleryProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -86,7 +85,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
           styles.searchBox,
           {
             backgroundColor: theme.surfaceMuted,
-            borderColor: theme.border,
+            borderColor: theme.borderLight,
           },
         ]}
       >
@@ -123,10 +122,14 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                 {
                   backgroundColor: isActive
                     ? isDark
-                      ? '#064E3B'
-                      : '#065F46'
+                      ? '#1E293B'
+                      : '#0F172A'
                     : theme.surfaceMuted,
-                  borderColor: isActive ? '#A7F3D0' : theme.border,
+                  borderColor: isActive
+                    ? isDark
+                      ? '#334155'
+                      : '#0F172A'
+                    : theme.borderLight,
                 },
               ]}
               activeOpacity={0.7}
@@ -148,7 +151,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
         })}
       </ScrollView>
 
-      {/* 3. Project Cards Grid */}
+      {/* 3. Project Cards List */}
       {filteredProjects.length === 0 ? (
         <View style={styles.emptyContainer}>
           <MaterialCommunityIcons name="folder-search-outline" size={32} color={theme.textLight} />
@@ -175,17 +178,18 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                     styles.projectIconCircle,
                     {
                       backgroundColor: theme.surface,
-                      borderColor: theme.border,
+                      borderColor: theme.borderLight,
                     },
                   ]}
                 >
                   <MaterialCommunityIcons
                     name={proj.icon || 'laptop'}
                     size={18}
-                    color={theme.primary}
+                    color={theme.textPrimary}
                   />
                 </View>
                 <View style={styles.projectTitleCol}>
+                  {/* H3 HEADING */}
                   <Text style={[styles.projectTitle, { color: theme.textPrimary }]}>
                     {proj.title}
                   </Text>
@@ -208,7 +212,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                       styles.techChip,
                       {
                         backgroundColor: theme.surface,
-                        borderColor: theme.border,
+                        borderColor: theme.borderLight,
                       },
                     ]}
                   >
@@ -225,7 +229,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                   styles.detailButton,
                   {
                     backgroundColor: theme.surface,
-                    borderColor: theme.border,
+                    borderColor: theme.borderLight,
                   },
                 ]}
                 activeOpacity={0.8}
@@ -233,8 +237,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                 accessibilityRole="button"
                 accessibilityLabel={`Lihat detail ${proj.title}`}
               >
-                <MaterialCommunityIcons name="eye-outline" size={14} color={theme.primary} />
-                <Text style={[styles.detailButtonText, { color: theme.primary }]}>
+                <MaterialCommunityIcons name="arrow-right" size={14} color={theme.textPrimary} />
+                <Text style={[styles.detailButtonText, { color: theme.textPrimary }]}>
                   Lihat Detail & Fitur Proyek
                 </Text>
               </TouchableOpacity>
@@ -269,14 +273,14 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                       styles.modalIconBox,
                       {
                         backgroundColor: theme.surfaceMuted,
-                        borderColor: theme.border,
+                        borderColor: theme.borderLight,
                       },
                     ]}
                   >
                     <MaterialCommunityIcons
                       name={activeProject.icon || 'laptop'}
                       size={22}
-                      color={theme.primary}
+                      color={theme.textPrimary}
                     />
                   </View>
                   <View style={styles.modalTitleCol}>
@@ -315,7 +319,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                       <MaterialCommunityIcons
                         name="check-circle-outline"
                         size={15}
-                        color={theme.primary}
+                        color={theme.textPrimary}
                       />
                       <Text style={[styles.featureText, { color: theme.textSecondary }]}>
                         {feat}
@@ -336,7 +340,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                         styles.techChip,
                         {
                           backgroundColor: theme.surfaceMuted,
-                          borderColor: theme.border,
+                          borderColor: theme.borderLight,
                         },
                       ]}
                     >
@@ -349,13 +353,13 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
 
                 {/* Tombol Tutup */}
                 <TouchableOpacity
-                  style={[styles.modalCloseButton, { backgroundColor: theme.primary }]}
+                  style={[styles.modalCloseButton, { backgroundColor: theme.textPrimary }]}
                   activeOpacity={0.8}
                   onPress={() => setActiveProject(null)}
                   accessibilityRole="button"
                   accessibilityLabel="Tutup rincian proyek"
                 >
-                  <Text style={[styles.modalCloseButtonText, { color: isDark ? '#041812' : '#FFFFFF' }]}>
+                  <Text style={[styles.modalCloseButtonText, { color: isDark ? '#090D16' : '#FFFFFF' }]}>
                     Tutup Rincian
                   </Text>
                 </TouchableOpacity>
@@ -371,73 +375,72 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
 const styles = StyleSheet.create({
   card: {
     borderRadius: 14,
-    padding: SPACING.lg,
+    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
     borderWidth: 1,
-    marginBottom: SPACING.md,
-    ...SHADOWS.sm,
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: SPACING.md, // 16px
     borderRadius: 8,
     borderWidth: 1,
-    height: 38,
-    gap: 8,
-    marginBottom: 8,
+    height: 40,
+    gap: SPACING.sm,
+    marginBottom: SPACING.sm,
   },
   searchInput: {
-    fontFamily: FONTS.body,
+    fontFamily: FONTS.regular,
     flex: 1,
-    fontSize: 11.5,
+    fontSize: 13,
     paddingVertical: 0,
   },
   filterScroll: {
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.md, // 16px
   },
   filterContainer: {
-    gap: 6,
+    gap: SPACING.sm, // 8px
     flexDirection: 'row',
   },
   categoryChip: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 7,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 6,
     borderWidth: 1,
   },
   categoryChipText: {
-    fontFamily: FONTS.heading,
-    fontSize: 10.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
   },
   emptyContainer: {
-    padding: SPACING.lg,
+    padding: SPACING.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: SPACING.sm,
   },
   emptyText: {
-    fontFamily: FONTS.body,
-    fontSize: 11.5,
+    fontFamily: FONTS.regular,
+    fontSize: 13,
     textAlign: 'center',
   },
   projectsList: {
-    gap: 10,
+    gap: SPACING.md, // 16px
   },
   projectCard: {
-    padding: 12,
+    padding: SPACING.md, // 16px
     borderRadius: 10,
     borderWidth: 1,
   },
   projectTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 6,
+    gap: SPACING.sm,
+    marginBottom: SPACING.xs,
   },
   projectIconCircle: {
-    width: 34,
-    height: 34,
+    width: 36,
+    height: 36,
     borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
@@ -447,76 +450,74 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   projectTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 13,
+    fontFamily: FONTS.bold,
+    fontSize: 14,
     fontWeight: '700',
   },
   projectMeta: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
+    fontFamily: FONTS.regular,
+    fontSize: 11,
     marginTop: 1,
   },
   projectDesc: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
-    lineHeight: 16,
-    marginBottom: 8,
+    fontFamily: FONTS.regular,
+    fontSize: 12.5,
+    lineHeight: 18,
+    marginBottom: SPACING.sm,
   },
   techChipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 5,
-    marginBottom: 8,
+    gap: SPACING.xs,
+    marginBottom: SPACING.sm,
   },
   techChip: {
     paddingVertical: 3,
-    paddingHorizontal: 7,
-    borderRadius: 5,
+    paddingHorizontal: 8,
+    borderRadius: 4,
     borderWidth: 1,
   },
   techChipText: {
-    fontFamily: FONTS.body,
-    fontSize: 10,
-    fontWeight: '500',
+    fontFamily: FONTS.regular,
+    fontSize: 11,
   },
   detailButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 7,
-    borderRadius: 7,
+    paddingVertical: 8,
+    borderRadius: 6,
     borderWidth: 1,
-    gap: 6,
+    gap: SPACING.xs,
   },
   detailButtonText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11,
+    fontFamily: FONTS.bold,
+    fontSize: 11.5,
     fontWeight: '700',
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: SPACING.lg,
   },
   modalCard: {
     width: '100%',
     maxWidth: 520,
     maxHeight: '85%',
     borderRadius: 14,
-    padding: 18,
+    padding: SPACING.lg, // 24px
     borderWidth: 1,
-    ...SHADOWS.lg,
   },
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 12,
-    paddingBottom: 10,
+    gap: SPACING.sm,
+    marginBottom: SPACING.md,
+    paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(150, 150, 150, 0.2)',
+    borderBottomColor: 'rgba(150, 150, 150, 0.15)',
   },
   modalIconBox: {
     width: 38,
@@ -530,14 +531,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 14,
+    fontFamily: FONTS.bold,
+    fontSize: 15,
     fontWeight: '700',
   },
   modalCategory: {
-    fontFamily: FONTS.body,
-    fontSize: 10.5,
-    marginTop: 1,
+    fontFamily: FONTS.regular,
+    fontSize: 11,
+    marginTop: 2,
   },
   modalCloseIcon: {
     width: 28,
@@ -547,20 +548,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalSectionLabel: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
+    fontFamily: FONTS.bold,
+    fontSize: 12,
     fontWeight: '700',
-    marginTop: 10,
-    marginBottom: 4,
+    marginTop: SPACING.md,
+    marginBottom: SPACING.xs,
   },
   modalDescText: {
-    fontFamily: FONTS.body,
-    fontSize: 11.5,
-    lineHeight: 17,
+    fontFamily: FONTS.regular,
+    fontSize: 13,
+    lineHeight: 19,
   },
   modalFeaturesList: {
-    gap: 5,
-    marginBottom: 6,
+    gap: 6,
+    marginBottom: SPACING.xs,
   },
   featureItem: {
     flexDirection: 'row',
@@ -568,20 +569,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   featureText: {
-    fontFamily: FONTS.body,
-    fontSize: 11,
+    fontFamily: FONTS.regular,
+    fontSize: 12,
     flex: 1,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   modalCloseButton: {
-    marginTop: 16,
-    paddingVertical: 9,
+    marginTop: SPACING.lg,
+    paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
   },
   modalCloseButtonText: {
-    fontFamily: FONTS.heading,
-    fontSize: 12,
+    fontFamily: FONTS.bold,
+    fontSize: 13,
     fontWeight: '700',
   },
 });

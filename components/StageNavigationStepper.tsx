@@ -41,9 +41,7 @@ const STAGES = [
 ];
 
 /**
- * StageNavigationStepper Component
- * Allows intuitive navigation across the 4 core progression stages (Level 1 to 10).
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * StageNavigationStepper Component (Minimalist Tech: Flat, Scale 8px, Inter)
  */
 export default function StageNavigationStepper({
   activeStage,
@@ -64,7 +62,7 @@ export default function StageNavigationStepper({
     >
       <View style={styles.headerRow}>
         <View style={styles.headerLeft}>
-          <Ionicons name="layers-outline" size={15} color={theme.primary} />
+          <Ionicons name="layers-outline" size={15} color={theme.textPrimary} />
           <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
             ALUR EVALUASI UTS (LEVEL 1 S.D. LEVEL 10)
           </Text>
@@ -89,10 +87,14 @@ export default function StageNavigationStepper({
                 {
                   backgroundColor: isActive
                     ? isDark
-                      ? '#064E3B'
-                      : '#065F46'
+                      ? '#1E293B'
+                      : '#0F172A'
                     : theme.surfaceMuted,
-                  borderColor: isActive ? '#A7F3D0' : theme.border,
+                  borderColor: isActive
+                    ? isDark
+                      ? '#334155'
+                      : '#0F172A'
+                    : theme.borderLight,
                 },
               ]}
               activeOpacity={0.8}
@@ -106,17 +108,17 @@ export default function StageNavigationStepper({
                   {
                     backgroundColor: isActive
                       ? isDark
-                        ? '#0A2920'
-                        : '#044E39'
+                        ? '#0F172A'
+                        : '#1E293B'
                       : theme.surface,
-                    borderColor: isActive ? '#A7F3D0' : theme.borderLight,
+                    borderColor: isActive ? 'transparent' : theme.borderLight,
                   },
                 ]}
               >
                 <Ionicons
                   name={s.icon as any}
                   size={14}
-                  color={isActive ? '#A7F3D0' : theme.primary}
+                  color={isActive ? '#FFFFFF' : theme.textPrimary}
                 />
               </View>
 
@@ -135,18 +137,18 @@ export default function StageNavigationStepper({
                       styles.stageLevelPill,
                       {
                         backgroundColor: isActive
-                          ? 'rgba(167, 243, 208, 0.25)'
+                          ? 'rgba(255, 255, 255, 0.15)'
                           : isDark
-                          ? '#06281E'
+                          ? '#090D16'
                           : '#FFFFFF',
-                        borderColor: isActive ? '#A7F3D0' : theme.border,
+                        borderColor: isActive ? 'transparent' : theme.borderLight,
                       },
                     ]}
                   >
                     <Text
                       style={[
                         styles.stageLevelText,
-                        { color: isActive ? '#A7F3D0' : theme.primary },
+                        { color: isActive ? '#FFFFFF' : theme.textSecondary },
                       ]}
                     >
                       {s.levels}
@@ -157,7 +159,7 @@ export default function StageNavigationStepper({
                 <Text
                   style={[
                     styles.stageSubtitle,
-                    { color: isActive ? '#D3EAE0' : theme.textMuted },
+                    { color: isActive ? '#94A3B8' : theme.textMuted },
                   ]}
                   numberOfLines={1}
                 >
@@ -174,51 +176,50 @@ export default function StageNavigationStepper({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 14,
+    borderRadius: 12,
     borderWidth: 1,
-    padding: 10,
-    marginBottom: SPACING.md,
+    padding: SPACING.md, // 16px (scale 8px)
+    marginBottom: SPACING.xl, // 32px (mb-8)
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
-    paddingHorizontal: 4,
+    marginBottom: SPACING.sm, // 8px
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: SPACING.sm,
   },
   headerTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 10,
+    fontFamily: FONTS.bold,
+    fontSize: 11,
     fontWeight: '700',
-    letterSpacing: 0.6,
+    letterSpacing: 0.8,
   },
   scrollHint: {
-    fontFamily: FONTS.body,
-    fontSize: 10,
+    fontFamily: FONTS.regular,
+    fontSize: 11,
   },
   stagesRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: SPACING.sm, // 8px
   },
   stageButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    borderRadius: 10,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    borderRadius: 8,
     borderWidth: 1,
-    gap: 8,
+    gap: SPACING.sm,
     minWidth: 160,
   },
   iconWrap: {
     width: 28,
     height: 28,
-    borderRadius: 7,
+    borderRadius: 6,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -229,28 +230,27 @@ const styles = StyleSheet.create({
   stageTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: SPACING.xs,
   },
   stageTitle: {
-    fontFamily: FONTS.heading,
-    fontSize: 11.5,
+    fontFamily: FONTS.bold,
+    fontSize: 12,
     fontWeight: '700',
   },
   stageLevelPill: {
-    paddingHorizontal: 5,
+    paddingHorizontal: 6,
     paddingVertical: 1,
     borderRadius: 4,
-    borderWidth: 0.5,
+    borderWidth: 1,
   },
   stageLevelText: {
-    fontFamily: FONTS.heading,
-    fontSize: 8.5,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 9,
+    fontWeight: '600',
   },
   stageSubtitle: {
-    fontFamily: FONTS.body,
-    fontSize: 10,
-    marginTop: 1,
+    fontFamily: FONTS.regular,
+    fontSize: 10.5,
+    marginTop: 2,
   },
 });
-

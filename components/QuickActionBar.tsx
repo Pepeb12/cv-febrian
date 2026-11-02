@@ -13,8 +13,7 @@ interface QuickActionBarProps {
 }
 
 /**
- * QuickActionBar Component
- * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ * QuickActionBar Component (Minimalist Tech: Flat Chips, Scale 8px, Inter)
  */
 export default function QuickActionBar({
   onScrollToScore,
@@ -27,29 +26,25 @@ export default function QuickActionBar({
     {
       id: 'score',
       label: 'Nilai UTS (L8)',
-      icon: 'school' as const,
-      color: theme.primary,
+      icon: 'school-outline' as const,
       onPress: onScrollToScore,
     },
     {
       id: 'test',
       label: 'Test Suite (L10)',
       icon: 'speedometer' as const,
-      color: theme.primary,
       onPress: onOpenTestRunner,
     },
     {
       id: 'concepts',
       label: 'Konsep P1-P10',
-      icon: 'book-open-page-variant' as const,
-      color: theme.primary,
+      icon: 'book-open-page-variant-outline' as const,
       onPress: onOpenConcepts,
     },
     {
       id: 'contact',
       label: 'Kontak (L4)',
       icon: 'email-edit-outline' as const,
-      color: theme.primary,
       onPress: onScrollToContact,
     },
   ];
@@ -68,7 +63,7 @@ export default function QuickActionBar({
               styles.actionChip,
               {
                 backgroundColor: theme?.surface || '#FFFFFF',
-                borderColor: theme?.border || '#E3DFC8',
+                borderColor: theme?.border || '#E2E8F0',
               },
             ]}
             onPress={act.onPress}
@@ -85,9 +80,9 @@ export default function QuickActionBar({
                 },
               ]}
             >
-              <MaterialCommunityIcons name={act.icon} size={14} color={act.color} />
+              <MaterialCommunityIcons name={act.icon} size={15} color={theme?.textPrimary || '#0F172A'} />
             </View>
-            <Text style={[styles.chipText, { color: theme?.textPrimary || '#06281E' }]}>
+            <Text style={[styles.chipText, { color: theme?.textPrimary || '#0F172A' }]}>
               {act.label}
             </Text>
           </TouchableOpacity>
@@ -99,34 +94,34 @@ export default function QuickActionBar({
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginVertical: SPACING.xs,
+    marginVertical: SPACING.md, // 16px
     width: '100%',
   },
   container: {
     flexDirection: 'row',
-    gap: 8,
-    paddingVertical: 2,
+    gap: SPACING.sm, // 8px
+    paddingVertical: SPACING.xs,
   },
   actionChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingVertical: SPACING.sm, // 8px
+    paddingHorizontal: SPACING.md, // 16px
     borderRadius: 8,
     borderWidth: 1,
-    gap: 6,
+    gap: SPACING.sm,
   },
   iconBox: {
-    width: 24,
-    height: 24,
+    width: 26,
+    height: 26,
     borderRadius: 6,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   chipText: {
-    fontFamily: FONTS.heading,
-    fontSize: 11,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
