@@ -238,19 +238,8 @@ export default function ProfileCard({
             Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
           </Text>
 
-          {/* 5. DERETAN BADGE 'LEVEL' & 'IPK' KECIL ELEGAN (Subtle Surface, teks kecil, TANPA BORDER) */}
+          {/* 5. DERETAN BADGE CAPAIAN AKADEMIK & STATUS MAHASISWA */}
           <View style={[styles.badgeFlexRow, isMobile && styles.badgeFlexRowMobile]}>
-            <View
-              style={[
-                styles.subtleBadge,
-                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
-              ]}
-            >
-              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
-                Industry Ready
-              </Text>
-            </View>
-
             <View
               style={[
                 styles.subtleBadge,

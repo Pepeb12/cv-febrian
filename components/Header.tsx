@@ -72,26 +72,6 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
               color={currentTheme.textPrimary}
             />
           </TouchableOpacity>
-
-          {/* Level 10 Badge (Minimalist Pill) */}
-          <View
-            style={[
-              styles.badgeLevel,
-              {
-                backgroundColor: currentTheme.surfaceMuted,
-                borderColor: currentTheme.borderLight,
-              },
-            ]}
-          >
-            <Text
-              style={[
-                styles.badgeText,
-                { color: currentTheme.textSecondary },
-              ]}
-            >
-              CV & MY SCORE
-            </Text>
-          </View>
         </View>
       </View>
     </View>
