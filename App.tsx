@@ -350,35 +350,23 @@ export default function App() {
                     theme={theme}
                   />
 
-                  {isDesktop ? (
-                    <View style={styles.desktopGrid2Col}>
-                      <View style={styles.desktopColHalf}>
-                        <ProfileHeader data={profileData} theme={theme} />
-                      </View>
-                      <View style={styles.desktopColHalf}>
-                        <MetricBar metrics={profileData.academicMetrics} theme={theme} />
-                        <QuickActionBar
-                          onScrollToScore={() => handleSelectStage(3)}
-                          onOpenTestRunner={() => setShowDiagnosticModal(true)}
-                          onOpenConcepts={() => setShowConceptModal(true)}
-                          onScrollToContact={() => handleSelectStage(4)}
-                          theme={theme}
-                        />
-                      </View>
-                    </View>
-                  ) : (
-                    <View style={styles.mobileColumn}>
-                      <ProfileHeader data={profileData} theme={theme} />
-                      <MetricBar metrics={profileData.academicMetrics} theme={theme} />
-                      <QuickActionBar
-                        onScrollToScore={() => handleSelectStage(3)}
-                        onOpenTestRunner={() => setShowDiagnosticModal(true)}
-                        onOpenConcepts={() => setShowConceptModal(true)}
-                        onScrollToContact={() => handleSelectStage(4)}
-                        theme={theme}
-                      />
-                    </View>
-                  )}
+                  {/* Header Profil Dua Kolom 30% : 70% di Bagian Paling Atas */}
+                  <ProfileHeader
+                    data={profileData}
+                    theme={theme}
+                    onExploreScore={() => handleSelectStage(3)}
+                    onContactClick={() => handleSelectStage(4)}
+                  />
+
+                  {/* Metrik Akademik & Navigasi Aksi Cepat */}
+                  <MetricBar metrics={profileData.academicMetrics} theme={theme} />
+                  <QuickActionBar
+                    onScrollToScore={() => handleSelectStage(3)}
+                    onOpenTestRunner={() => setShowDiagnosticModal(true)}
+                    onOpenConcepts={() => setShowConceptModal(true)}
+                    onScrollToContact={() => handleSelectStage(4)}
+                    theme={theme}
+                  />
                 </View>
 
                 {/* ========================================================

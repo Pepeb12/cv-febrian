@@ -1,5 +1,15 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  Platform,
+  Alert,
+  useWindowDimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, FONTS } from '../theme';
 import { StudentProfile, ThemeColors } from '../types';
@@ -13,9 +23,11 @@ interface ProfileCardProps {
 }
 
 /**
- * ProfileCard Component (Minimalist Tech: H1 Contrast, Inter Fonts, Dark Slate Typography)
- * - Border keras dihapus, mengutamakan padding lega (scale 8px).
- * - Tanpa drop shadow atau gradient berlebihan.
+ * ProfileCard Component (Minimalist Tech Two-Column Header)
+ * - Kolom Kiri (30%): Foto Profil rasio 1:1 (rounded-xl)
+ * - Kolom Kanan (70%): Nama (H1), Role (Systems Analysis - Mobile Developer), Tombol Kontak
+ * - Teks Deskripsi 'Tentang Saya' dengan line-height minimal 1.6 (leading-relaxed)
+ * - Deretan badge 'Level' dan 'IPK' flex-row kecil elegan (bg-gray-100, teks kecil, tanpa border)
  */
 export default function ProfileCard({
   data,
@@ -24,6 +36,9 @@ export default function ProfileCard({
   onExploreScore,
   onContactClick,
 }: ProfileCardProps) {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 680;
+
   const student = data || profile;
   const currentTheme = theme || COLORS;
   const isDark = currentTheme.isDark;
@@ -65,196 +80,245 @@ export default function ProfileCard({
         {
           backgroundColor: currentTheme.surface,
           borderColor: currentTheme.border,
+          padding: isMobile ? SPACING.lg : SPACING.xl,
         },
       ]}
       accessibilityRole="region"
-      accessibilityLabel="Hero Profil Mahasiswa"
+      accessibilityLabel="Header Profil Mahasiswa"
     >
-      {/* 1. FOTO PROFIL MAHASISWA (Clean Minimalist Avatar) */}
-      <View style={styles.avatarSection}>
-        <View
-          style={[
-            styles.avatarFrame,
-            {
-              backgroundColor: currentTheme.surfaceMuted,
-              borderColor: currentTheme.borderLight,
-            },
-          ]}
-        >
-          <Image
-            source={require('../assets/profile.png')}
-            style={styles.avatarImage}
-            resizeMode="cover"
-            accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
-          />
-        </View>
-
-        {/* Status Pill: Minimalist Badge */}
-        <View
-          style={[
-            styles.statusPill,
-            {
-              backgroundColor: currentTheme.surfaceMuted,
-              borderColor: currentTheme.borderLight,
-            },
-          ]}
-        >
-          <View style={[styles.statusDot, { backgroundColor: isDark ? '#34D399' : '#059669' }]} />
-          <Text
+      {/* ========================================================
+          FLEXBOX DUA KOLOM: 30% KIRI (FOTO) & 70% KANAN (INFO)
+          ======================================================== */}
+      <View style={[styles.twoColumnWrapper, isMobile && styles.twoColumnWrapperMobile]}>
+        {/* KOLOM KIRI (30%): FOTO PROFIL ROUNDED-XL DENGAN RASIO 1:1 */}
+        <View style={[styles.leftColumn, isMobile && styles.leftColumnMobile]}>
+          <View
             style={[
-              styles.statusText,
-              { color: currentTheme.textSecondary },
+              styles.avatarFrame,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+              },
             ]}
           >
-            MAHASISWA AKTIF • SMT 5
-          </Text>
+            <Image
+              source={require('../assets/profile.png')}
+              style={styles.avatarImage}
+              resizeMode="cover"
+              accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
+            />
+          </View>
+
+          {/* Status Badge Ringkas */}
+          <View
+            style={[
+              styles.statusPill,
+              {
+                backgroundColor: isDark ? '#1E293B' : '#F3F4F6', // bg-gray-100
+              },
+            ]}
+          >
+            <View style={[styles.statusDot, { backgroundColor: isDark ? '#34D399' : '#059669' }]} />
+            <Text style={[styles.statusText, { color: currentTheme.textSecondary }]}>
+              AKTIF • SMT 5
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* 2. H1 HEADING: NAMA MAHASISWA (High Contrast 34px / 900 Black Inter) */}
-      <Text style={[styles.nameText, { color: currentTheme.textPrimary }]}>
-        {student.nama || student.fullName}
-      </Text>
-
-      {/* 3. ROLES (Minimalist Dot Separated) */}
-      <View style={styles.rolesRow}>
-        <Text style={[styles.roleItem, { color: currentTheme.textSecondary }]}>Systems Analyst</Text>
-        <Text style={[styles.roleDot, { color: currentTheme.textMuted }]}>•</Text>
-        <Text style={[styles.roleItem, { color: currentTheme.textSecondary }]}>Mobile Developer</Text>
-        <Text style={[styles.roleDot, { color: currentTheme.textMuted }]}>•</Text>
-        <Text style={[styles.roleItem, { color: currentTheme.textSecondary }]}>Masoem University</Text>
-      </View>
-
-      {/* 3.1. SOCIAL CONTACT PILLS (GitHub, Email, Kontak - Identik dengan Referensi Foto User) */}
-      <View style={styles.socialPillsRow}>
-        <TouchableOpacity
-          style={[
-            styles.socialPill,
-            {
-              backgroundColor: isDark ? '#142721' : '#F5F5DC', // Elegan Cream
-              borderColor: isDark ? '#065F46' : '#E6E4CB',
-            },
-          ]}
-          onPress={handleOpenGitHub}
-          activeOpacity={0.7}
-          accessibilityRole="link"
-          accessibilityLabel="Buka GitHub pepeb12"
-        >
-          <Ionicons name="logo-github" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
-          <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
-            GitHub
+        {/* KOLOM KANAN (70%): NAMA, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
+        <View style={[styles.rightColumn, isMobile && styles.rightColumnMobile]}>
+          {/* 1. H1 NAMA MAHASISWA (High Contrast Inter 900 Black) */}
+          <Text
+            style={[
+              styles.nameText,
+              {
+                color: currentTheme.textPrimary,
+                textAlign: isMobile ? 'center' : 'left',
+              },
+            ]}
+          >
+            {student.nama || student.fullName}
           </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.socialPill,
-            {
-              backgroundColor: isDark ? '#142721' : '#F5F5DC', // Elegan Cream
-              borderColor: isDark ? '#065F46' : '#E6E4CB',
-            },
-          ]}
-          onPress={handleOpenEmail}
-          activeOpacity={0.7}
-          accessibilityRole="link"
-          accessibilityLabel="Kirim email ke febrianrahman902@gmail.com"
-        >
-          <Ionicons name="mail-outline" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
-          <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
-            Email
+          {/* 2. ROLE: Systems Analysis - Mobile Developer */}
+          <Text
+            style={[
+              styles.roleText,
+              {
+                color: currentTheme.textSecondary,
+                textAlign: isMobile ? 'center' : 'left',
+              },
+            ]}
+          >
+            Systems Analysis - Mobile Developer
           </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.socialPill,
-            {
-              backgroundColor: isDark ? '#142721' : '#F5F5DC', // Elegan Cream
-              borderColor: isDark ? '#065F46' : '#E6E4CB',
-            },
-          ]}
-          onPress={handleOpenContact}
-          activeOpacity={0.7}
-          accessibilityRole="link"
-          accessibilityLabel="Hubungi kontak WhatsApp 089512336537"
-        >
-          <Ionicons name="send-outline" size={14} color={isDark ? '#A7F3D0' : '#064E3B'} />
-          <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
-            Kontak
+          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak - Sesuai Referensi Gambar) */}
+          <View style={[styles.socialPillsRow, isMobile && styles.socialPillsRowMobile]}>
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
+                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                },
+              ]}
+              onPress={handleOpenGitHub}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Buka GitHub pepeb12"
+            >
+              <Ionicons name="logo-github" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
+              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+                GitHub
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
+                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                },
+              ]}
+              onPress={handleOpenEmail}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Kirim email ke febrianrahman902@gmail.com"
+            >
+              <Ionicons name="mail-outline" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
+              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+                Email
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
+                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                },
+              ]}
+              onPress={handleOpenContact}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Hubungi kontak WhatsApp 089512336537"
+            >
+              <Ionicons name="send-outline" size={14} color={isDark ? '#A7F3D0' : '#064E3B'} />
+              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+                Kontak
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* 4. DESKRIPSI SINGKAT 'TENTANG SAYA' (Line-Height Nyaman: 24px / 1.71x - Leading Relaxed) */}
+          <Text
+            style={[
+              styles.bioText,
+              {
+                color: currentTheme.textSecondary,
+                textAlign: isMobile ? 'center' : 'left',
+              },
+            ]}
+          >
+            Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
           </Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* 4. NARASI PERSONAL BIO (14px Inter Regular, Dark Slate & Gray) */}
-      <Text style={[styles.bioText, { color: currentTheme.textSecondary }]}>
-        Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
-      </Text>
+          {/* 5. DERETAN BADGE 'LEVEL' & 'IPK' KECIL ELEGAN (bg-gray-100, teks kecil, TANPA BORDER) */}
+          <View style={[styles.badgeFlexRow, isMobile && styles.badgeFlexRowMobile]}>
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+                Level 10 (Industry Ready)
+              </Text>
+            </View>
 
-      {/* 5. METADATA IDENTITAS KAMPUS & DOMISILI (Flat Surface, No Harsh Border) */}
-      <View
-        style={[
-          styles.metaGrid,
-          {
-            backgroundColor: currentTheme.surfaceMuted,
-            borderColor: currentTheme.borderLight,
-          },
-        ]}
-      >
-        <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>NIM</Text>
-          <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
-            {student.nim}
-          </Text>
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+                IPK: 3.84
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+                Nilai: 90 (Grade A)
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+                19.000 LP
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+                Masoem Univ • SMT 5
+              </Text>
+            </View>
+          </View>
+
+          {/* 6. CALL TO ACTION BUTTONS (Flat Tech Minimalist) */}
+          <View style={[styles.ctaRow, isMobile && styles.ctaRowMobile]}>
+            <TouchableOpacity
+              style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.textPrimary }]}
+              onPress={onExploreScore}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Lihat Capaian Nilai UTS"
+            >
+              <Ionicons name="school-outline" size={16} color={isDark ? '#090D16' : '#FFFFFF'} />
+              <Text style={[styles.primaryCtaText, { color: isDark ? '#090D16' : '#FFFFFF' }]}>
+                Capaian Nilai UTS (90/A)
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.secondaryCtaBtn,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+              onPress={onContactClick}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Kirim Pesan"
+            >
+              <Ionicons name="mail-outline" size={16} color={currentTheme.textPrimary} />
+              <Text style={[styles.secondaryCtaText, { color: currentTheme.textPrimary }]}>
+                Kirim Pesan
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={[styles.metaDividerV, { backgroundColor: currentTheme.border }]} />
-        <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>PRODI</Text>
-          <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
-            {student.prodi || 'Sistem Informasi'}
-          </Text>
-        </View>
-        <View style={[styles.metaDividerV, { backgroundColor: currentTheme.border }]} />
-        <View style={styles.metaCell}>
-          <Text style={[styles.metaLabel, { color: currentTheme.textMuted }]}>DOMISILI</Text>
-          <Text style={[styles.metaValue, { color: currentTheme.textPrimary }]}>
-            Cicalengka, Bandung
-          </Text>
-        </View>
-      </View>
-
-      {/* 6. CALL TO ACTION BUTTONS (Flat Tech Minimalist) */}
-      <View style={styles.ctaRow}>
-        <TouchableOpacity
-          style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.textPrimary }]}
-          onPress={onExploreScore}
-          activeOpacity={0.8}
-          accessibilityRole="button"
-          accessibilityLabel="Lihat Capaian Nilai UTS"
-        >
-          <Ionicons name="school-outline" size={16} color={isDark ? '#090D16' : '#FFFFFF'} />
-          <Text style={[styles.primaryCtaText, { color: isDark ? '#090D16' : '#FFFFFF' }]}>
-            Capaian Nilai UTS (90/A)
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.secondaryCtaBtn,
-            {
-              backgroundColor: currentTheme.surfaceMuted,
-              borderColor: currentTheme.borderLight,
-            },
-          ]}
-          onPress={onContactClick}
-          activeOpacity={0.8}
-          accessibilityRole="button"
-          accessibilityLabel="Kirim Pesan"
-        >
-          <Ionicons name="mail-outline" size={16} color={currentTheme.textPrimary} />
-          <Text style={[styles.secondaryCtaText, { color: currentTheme.textPrimary }]}>
-            Kirim Pesan
-          </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -264,37 +328,53 @@ const styles = StyleSheet.create({
   heroContainer: {
     borderRadius: 16,
     borderWidth: 1, // Soft hairline 1px
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8/py-12)
-    alignItems: 'center',
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: SPACING.xl, // 32px (Scale 8px mb-8)
+    width: '100%',
   },
-  avatarSection: {
+  twoColumnWrapper: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: SPACING.xl, // 32px pemisah antar elemen yang lega
+    width: '100%',
+  },
+  twoColumnWrapperMobile: {
+    flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: SPACING.lg,
+    gap: SPACING.lg,
+  },
+  // KOLOM KIRI: 30%
+  leftColumn: {
+    width: '30%',
+    maxWidth: 240,
+    alignItems: 'center',
+  },
+  leftColumnMobile: {
+    width: '100%',
+    maxWidth: 180,
+    alignItems: 'center',
   },
   avatarFrame: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: '100%',
+    aspectRatio: 1, // Rasio 1:1 sempurna
+    borderRadius: 20, // Rounded-xl
     borderWidth: 1,
-    padding: 2,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatarImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 58,
   },
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 20,
-    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 0, // Tanpa border
     gap: 6,
-    marginTop: -12,
+    marginTop: 10,
   },
   statusDot: {
     width: 6,
@@ -303,104 +383,100 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 10,
+    fontSize: 10.5,
     fontWeight: '600',
     letterSpacing: 0.5,
+  },
+  // KOLOM KANAN: 70%
+  rightColumn: {
+    flex: 1, // Mengisi 70% sisa lebar container
+    alignItems: 'flex-start',
+  },
+  rightColumnMobile: {
+    width: '100%',
+    alignItems: 'center',
   },
   // H1 HEADING KONTRAST
   nameText: {
     fontFamily: FONTS.black,
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: '900',
-    textAlign: 'center',
-    letterSpacing: -1,
-    lineHeight: 40,
-    marginBottom: SPACING.sm,
+    letterSpacing: -0.8,
+    lineHeight: 38,
+    marginBottom: 4,
   },
-  rolesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: SPACING.md,
+  roleText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 15,
+    fontWeight: '600',
+    letterSpacing: 0.2,
+    marginBottom: SPACING.md, // 16px
   },
   socialPillsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     flexWrap: 'wrap',
     gap: SPACING.sm, // 8px (Scale 8px)
-    marginBottom: SPACING.lg, // 24px
+    marginBottom: SPACING.md, // 16px
+  },
+  socialPillsRowMobile: {
+    justifyContent: 'center',
   },
   socialPill: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 7,
-    paddingHorizontal: 14,
+    paddingHorizontal: 13,
     paddingVertical: 7,
     borderRadius: 8,
     borderWidth: 1,
   },
   socialPillText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 13,
+    fontSize: 12.5,
     fontWeight: '600',
   },
-  roleItem: {
-    fontFamily: FONTS.medium,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  roleDot: {
-    fontSize: 12,
-  },
+  // DESKRIPSI SINGKAT DENGAN LINE-HEIGHT NYAMAN (1.71x - LEADING RELAXED)
   bioText: {
     fontFamily: FONTS.regular,
     fontSize: 14,
-    lineHeight: 22,
-    textAlign: 'center',
-    marginBottom: SPACING.xl,
-    paddingHorizontal: SPACING.sm,
+    lineHeight: 24, // Minimal 1.6x (24 / 14 = 1.71x -> leading-relaxed)
+    marginBottom: SPACING.md, // 16px
   },
   boldText: {
     fontFamily: FONTS.bold,
     fontWeight: '700',
   },
-  metaGrid: {
+  // DERETAN BADGE KECIL ELEGAN (bg-gray-100, teks kecil, TANPA BORDER)
+  badgeFlexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.md,
-    marginBottom: SPACING.xl,
+    flexWrap: 'wrap',
+    gap: SPACING.sm, // 8px
+    marginBottom: SPACING.lg, // 24px
   },
-  metaCell: {
-    flex: 1,
-    alignItems: 'center',
+  badgeFlexRowMobile: {
+    justifyContent: 'center',
   },
-  metaDividerV: {
-    width: 1,
-    height: 28,
+  subtleBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4.5,
+    borderRadius: 6,
+    borderWidth: 0, // Tanpa border
   },
-  metaLabel: {
+  subtleBadgeText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 10,
+    fontSize: 11.5,
     fontWeight: '600',
-    letterSpacing: 0.6,
-    marginBottom: 2,
-  },
-  metaValue: {
-    fontFamily: FONTS.bold,
-    fontSize: 13,
-    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   ctaRow: {
     flexDirection: 'row',
     gap: SPACING.md,
+    width: '100%',
+  },
+  ctaRowMobile: {
+    flexDirection: 'column',
     width: '100%',
   },
   primaryCtaBtn: {
@@ -408,9 +484,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 11,
     paddingHorizontal: 16,
-    borderRadius: 10,
+    borderRadius: 8,
     gap: 8,
   },
   primaryCtaText: {
@@ -423,9 +499,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 11,
     paddingHorizontal: 16,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
     gap: 8,
   },

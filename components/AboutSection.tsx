@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   paragraphText: {
     fontFamily: FONTS.regular,
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: 24, // Minimal 1.6x (leading-relaxed)
   },
   quoteBox: {
     flexDirection: 'row',
