@@ -75,14 +75,14 @@ export default function QuickActionBar({
               style={[
                 styles.iconBox,
                 {
-                  backgroundColor: theme?.surfaceMuted || '#E5DFCE',
-                  borderColor: theme?.borderLight || '#939675',
+                  backgroundColor: theme?.surfaceMuted || '#EAE0C8',
+                  borderColor: theme?.borderLight || '#D5C7AA',
                 },
               ]}
             >
-              <MaterialCommunityIcons name={act.icon} size={15} color={theme?.textPrimary || '#363C2E'} />
+              <MaterialCommunityIcons name={act.icon} size={15} color={theme?.primary || '#B5893D'} />
             </View>
-            <Text style={[styles.chipText, { color: theme?.textPrimary || '#363C2E' }]}>
+            <Text style={[styles.chipText, { color: theme?.textPrimary || '#3E3227' }]}>
               {act.label}
             </Text>
           </TouchableOpacity>

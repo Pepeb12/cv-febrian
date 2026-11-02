@@ -55,11 +55,11 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
                     styles.nodeCircle,
                     {
                       backgroundColor: theme.surfaceMuted,
-                      borderColor: theme.textPrimary,
+                      borderColor: theme.primaryBorder,
                     },
                   ]}
                 >
-                  <View style={[styles.nodeDot, { backgroundColor: theme.textPrimary }]} />
+                  <View style={[styles.nodeDot, { backgroundColor: theme.primary }]} />
                 </View>
                 {!isLast && (
                   <View style={[styles.connectingLine, { backgroundColor: theme.border }]} />

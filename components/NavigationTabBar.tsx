@@ -125,7 +125,7 @@ export default function NavigationTabBar({
                   style={[
                     styles.tabLabel,
                     {
-                      color: isActive ? theme.textInverted : theme.textPrimary,
+                      color: isActive ? theme.textInverted : theme.textSecondary,
                       fontFamily: isActive ? FONTS.bold : FONTS.medium,
                       fontWeight: isActive ? '700' : '500',
                     },

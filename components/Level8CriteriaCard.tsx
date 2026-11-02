@@ -71,7 +71,7 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
 
       {/* Tombol Interaktif */}
       <TouchableOpacity
-        style={[styles.actionButton, { backgroundColor: currentTheme.primary || '#62684D' }]}
+        style={[styles.actionButton, { backgroundColor: currentTheme.primary || '#B5893D' }]}
         activeOpacity={0.8}
         onPress={onShowDetail}
         accessibilityRole="button"

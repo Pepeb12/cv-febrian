@@ -58,7 +58,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
       >
         <View style={styles.courseHeaderRow}>
           <View style={[styles.courseIconBox, { backgroundColor: currentTheme.surface, borderColor: currentTheme.borderLight }]}>
-            <Ionicons name="book-outline" size={16} color={currentTheme.textPrimary} />
+            <Ionicons name="book-outline" size={16} color={currentTheme.primary} />
           </View>
           <View style={styles.courseTitleCol}>
             <Text style={[styles.courseName, { color: currentTheme.textPrimary }]}>
@@ -134,17 +134,17 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
             <View
               style={[
                 styles.gradeBadge,
-                { backgroundColor: currentTheme.textPrimary },
+                { backgroundColor: currentTheme.primary },
               ]}
             >
-              <Text style={[styles.gradeBadgeText, { color: isDark ? '#090D16' : '#FFFFFF' }]}>
+              <Text style={[styles.gradeBadgeText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
                 GRADE {currentScore.grade || 'A'}
               </Text>
             </View>
           </View>
 
           <View style={styles.scoreNumberRow}>
-            <Text style={[styles.bigScoreNumber, { color: currentTheme.textPrimary }]}>
+            <Text style={[styles.bigScoreNumber, { color: currentTheme.primary }]}>
               {currentScore.score ?? 90}
             </Text>
             <Text style={[styles.scoreOutOf, { color: currentTheme.textMuted }]}>/ 100</Text>
@@ -156,7 +156,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
               { backgroundColor: currentTheme.surface, borderColor: currentTheme.borderLight },
             ]}
           >
-            <Ionicons name="sparkles-outline" size={12} color={currentTheme.textPrimary} />
+            <Ionicons name="sparkles-outline" size={12} color={currentTheme.primary} />
             <Text style={[styles.statusPillText, { color: currentTheme.textSecondary }]}>
               {currentScore.status || 'Sangat Memuaskan'}
             </Text>
@@ -184,11 +184,11 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                 LEARNING POINTS
               </Text>
             </View>
-            <Ionicons name="trophy-outline" size={16} color={currentTheme.textPrimary} />
+            <Ionicons name="trophy-outline" size={16} color={currentTheme.primary} />
           </View>
 
           <View style={styles.lpNumberRow}>
-            <Text style={[styles.bigLpNumber, { color: currentTheme.textPrimary }]}>
+            <Text style={[styles.bigLpNumber, { color: currentTheme.primary }]}>
               {Number(learningPoints.total ?? 19000).toLocaleString('id-ID')}
             </Text>
             <Text style={[styles.lpUnit, { color: currentTheme.textMuted }]}>
@@ -202,7 +202,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
               { backgroundColor: currentTheme.surface, borderColor: currentTheme.borderLight },
             ]}
           >
-            <Ionicons name="ribbon-outline" size={12} color={currentTheme.textPrimary} />
+            <Ionicons name="ribbon-outline" size={12} color={currentTheme.primary} />
             <Text style={[styles.rankPillText, { color: currentTheme.textSecondary }]}>
               {learningPoints.rank || 'Top Tier Scholar'}
             </Text>
@@ -250,7 +250,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                         },
                       ]}
                     >
-                      <Ionicons name="checkmark-circle-outline" size={15} color={currentTheme.textPrimary} />
+                      <Ionicons name="checkmark-circle-outline" size={15} color={currentTheme.primary} />
                     </View>
                     <View>
                       <Text style={[styles.progressName, { color: currentTheme.textPrimary }]}>
@@ -271,7 +271,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                       },
                     ]}
                   >
-                    <Text style={[styles.percentageText, { color: currentTheme.textPrimary }]}>
+                    <Text style={[styles.percentageText, { color: currentTheme.primary }]}>
                       {pct}%
                     </Text>
                   </View>
@@ -282,7 +282,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                   style={[
                     styles.progressBarTrack,
                     {
-                      backgroundColor: currentTheme.surface,
+                      backgroundColor: currentTheme.progressTrack || (isDark ? '#3D3024' : '#E2D6BC'),
                       borderColor: currentTheme.borderLight,
                     },
                   ]}
@@ -292,7 +292,7 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
                       styles.progressBarFill,
                       {
                         width: `${Math.min(Math.max(pct, 0), 100)}%`,
-                        backgroundColor: currentTheme.textPrimary,
+                        backgroundColor: currentTheme.progressFill || currentTheme.primary,
                       },
                     ]}
                   />

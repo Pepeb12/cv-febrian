@@ -30,7 +30,7 @@ import initialAcademicScoreData from './data/academicScore.json';
 import StorageService from './services/storageService';
 import AcademicService from './services/academicService';
 
-// Import Theme System (Retro Olive & Beige)
+// Import Theme System (Retro Mustard & Brown)
 import { getTheme, SPACING, FONTS } from './theme';
 
 // Import Komponen UI Modular (.tsx)
@@ -76,7 +76,7 @@ export default function App() {
   // 1. State Tab Navigasi Multi-Screen (Home, About, Skills, Portfolio, My Score, Contact)
   const [activeTab, setActiveTab] = useState<TabKey>('home');
 
-  // 2. State Tema Gelap / Terang (Retro Olive & Beige)
+  // 2. State Tema Gelap / Terang (Retro Mustard & Brown)
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = getTheme(isDarkMode);
 
@@ -114,8 +114,8 @@ export default function App() {
       await StorageService.setThemeMode(nextMode ? 'dark' : 'light');
       setToast({
         message: nextMode
-          ? 'Mode Malam (Dark Forest Olive) diaktifkan'
-          : 'Mode Terang (Retro Olive & Beige) diaktifkan',
+          ? 'Mode Malam (Retro Mustard & Brown) diaktifkan'
+          : 'Mode Terang (Retro Mustard & Warm Cream) diaktifkan',
         type: 'info',
       });
     } catch (err) {
@@ -552,8 +552,8 @@ export default function App() {
                           style={[
                             styles.miniSimBtn,
                             currentState === 'empty' && {
-                              backgroundColor: '#9C6F32',
-                              borderColor: '#9C6F32',
+                              backgroundColor: theme.primary,
+                              borderColor: theme.primary,
                             },
                             currentState !== 'empty' && {
                               backgroundColor: theme.surfaceMuted,
@@ -569,7 +569,7 @@ export default function App() {
                             style={[
                               styles.miniSimBtnText,
                               {
-                                color: currentState === 'empty' ? '#FFFFFF' : theme.textPrimary,
+                                color: currentState === 'empty' ? theme.textInverted : theme.textPrimary,
                               },
                             ]}
                           >

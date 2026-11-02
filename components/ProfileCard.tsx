@@ -319,8 +319,8 @@ export default function ProfileCard({
               style={[
                 styles.secondaryCtaBtn,
                 {
-                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
-                  borderColor: currentTheme.border,
+                  backgroundColor: currentTheme.surfaceSecondary || currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderStrong || currentTheme.primaryBorder,
                 },
               ]}
               onPress={onContactClick}

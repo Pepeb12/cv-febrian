@@ -19,16 +19,16 @@ export default function LoadingSkeleton({
       style={[
         styles.container,
         {
-          backgroundColor: theme?.surface || '#FFFFFF',
-          borderColor: theme?.border || '#E2E8F0',
+          backgroundColor: theme?.surface || '#FAF5E8',
+          borderColor: theme?.border || '#D5C7AA',
         },
       ]}
       accessibilityRole="progressbar"
       accessibilityLabel={message}
     >
-      <ActivityIndicator size="large" color={theme?.primary || '#62684D'} />
-      <Text style={[styles.message, { color: theme?.textPrimary || '#363C2E' }]}>{message}</Text>
-      <Text style={[styles.submessage, { color: theme?.textMuted || '#707762' }]}>
+      <ActivityIndicator size="large" color={theme?.primary || '#B5893D'} />
+      <Text style={[styles.message, { color: theme?.textPrimary || '#3E3227' }]}>{message}</Text>
+      <Text style={[styles.submessage, { color: theme?.textMuted || '#856A4F' }]}>
         Simulasi network latency REST API (600ms)
       </Text>
 
@@ -37,19 +37,19 @@ export default function LoadingSkeleton({
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '85%' },
+            { backgroundColor: theme?.surfaceMuted || '#EAE0C8', width: '85%' },
           ]}
         />
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '60%' },
+            { backgroundColor: theme?.surfaceMuted || '#EAE0C8', width: '60%' },
           ]}
         />
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '75%' },
+            { backgroundColor: theme?.surfaceMuted || '#EAE0C8', width: '75%' },
           ]}
         />
       </View>

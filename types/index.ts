@@ -6,28 +6,44 @@
 export interface ThemeColors {
   primary: string;
   primaryLight: string;
-  primaryDark: string;
+  primaryDark?: string;
+  primaryHover?: string;
   primaryBorder: string;
+  onPrimary?: string;
   background: string;
   surface: string;
+  surfaceSecondary?: string;
   surfaceMuted: string;
   surfaceSubtle: string;
-  text: string;
+  text?: string;
   textPrimary: string;
   textSecondary: string;
   textMuted: string;
   textLight: string;
+  textInverted?: string;
   border: string;
   borderLight: string;
+  borderStrong?: string;
   success: string;
   successLight: string;
-  warning: string;
+  successBorder?: string;
+  successText?: string;
+  warning?: string;
   error: string;
+  errorLight?: string;
   isDark: boolean;
-  accentCyan: string;
-  accentIndigo: string;
-  accentAmber: string;
+  accentMustard?: string;
+  accentBronze?: string;
+  accentCream?: string;
+  accentMocha?: string;
+  accentCyan?: string;
+  accentIndigo?: string;
+  accentAmber?: string;
   cardHeaderBanner?: string;
+  inputBackground?: string;
+  inputBorder?: string;
+  progressTrack?: string;
+  progressFill?: string;
 }
 
 export interface EducationItem {

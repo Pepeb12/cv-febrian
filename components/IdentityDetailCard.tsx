@@ -50,8 +50,8 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
                     style={[
                       styles.timelineDot,
                       {
-                        backgroundColor: isLatest ? currentTheme.textPrimary : currentTheme.surfaceMuted,
-                        borderColor: isLatest ? currentTheme.textPrimary : currentTheme.borderLight,
+                        backgroundColor: isLatest ? currentTheme.primary : currentTheme.surfaceMuted,
+                        borderColor: isLatest ? currentTheme.primary : currentTheme.primaryBorder,
                       },
                     ]}
                   />

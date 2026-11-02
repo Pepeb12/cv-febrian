@@ -58,7 +58,7 @@ function getValidProjectIcon(proj: ProjectItem): keyof typeof Ionicons.glyphMap 
 /**
  * PortfolioGallery Component (Galeri Portofolio Proyek)
  * - Search bar dan filter kategori sejajar 1 baris di Desktop
- * - Tombol filter aktif menggunakan warna aksen tema (#62684D / #D8D2B8)
+ * - Tombol filter aktif menggunakan warna aksen tema (#B5893D)
  * - Ikon valid tanpa '?'
  * - Grid 2x2 kartu proyek dengan tinggi sejajar rata
  */
@@ -120,8 +120,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
           style={[
             styles.searchBox,
             {
-              backgroundColor: theme.surfaceMuted,
-              borderColor: theme.border,
+              backgroundColor: theme.inputBackground || theme.surfaceMuted,
+              borderColor: theme.inputBorder || theme.border,
               flex: isDesktop ? 1 : undefined,
               width: isDesktop ? undefined : '100%',
             },
@@ -275,8 +275,8 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
                     style={[
                       styles.detailButton,
                       {
-                        backgroundColor: theme.surface,
-                        borderColor: theme.border,
+                        backgroundColor: theme.surfaceSecondary || theme.surfaceMuted,
+                        borderColor: theme.borderStrong || theme.primaryBorder,
                       },
                     ]}
                     activeOpacity={0.8}

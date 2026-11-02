@@ -37,7 +37,7 @@ export default function SectionHeading({
                 },
               ]}
             >
-              <Ionicons name={icon} size={16} color={currentTheme.textPrimary} />
+              <Ionicons name={icon} size={16} color={currentTheme.primary} />
             </View>
           )}
           {/* H2 HEADING: High Contrast 22px / 800 ExtraBold */}

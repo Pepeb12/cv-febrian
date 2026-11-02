@@ -187,7 +187,7 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
 
         {onOpenConceptModal ? (
           <TouchableOpacity
-            style={[styles.defenseBtn, { backgroundColor: theme?.primary || '#62684D' }]}
+            style={[styles.defenseBtn, { backgroundColor: theme?.primary || '#B5893D' }]}
             onPress={onOpenConceptModal}
             activeOpacity={0.8}
             accessibilityRole="button"

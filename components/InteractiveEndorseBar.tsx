@@ -65,10 +65,10 @@ export default function InteractiveEndorseBar({
             {
               backgroundColor: isEndorsed
                 ? theme.primary
-                : theme.surfaceMuted,
+                : (theme.surfaceSecondary || theme.surfaceMuted),
               borderColor: isEndorsed
-                ? theme.primaryBorder
-                : theme.borderLight,
+                ? theme.primary
+                : (theme.borderStrong || theme.primaryBorder),
             },
           ]}
           activeOpacity={0.8}

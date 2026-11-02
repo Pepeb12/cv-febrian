@@ -58,52 +58,52 @@ export default function Level10CriteriaCard({
       <View
         style={[
           styles.checklistContainer,
-          { backgroundColor: theme?.surfaceMuted || '#E5DFCE', borderColor: theme?.borderLight || '#939675' },
+          { backgroundColor: theme?.surfaceMuted || '#EAE0C8', borderColor: theme?.borderLight || '#D5C7AA' },
         ]}
       >
-        <Text style={[styles.checklistHeading, { color: theme?.textPrimary || '#363C2E' }]}>
+        <Text style={[styles.checklistHeading, { color: theme?.textPrimary || '#3E3227' }]}>
           Pencapaian Kriteria Industri (100% Terpenuhi):
         </Text>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Service Layer & API LMS:</Text> Simulasi asinkron, retry, dan network latency
           </Text>
         </View>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Resilience States:</Text> Loading skeleton, Error banner, & Empty state
           </Text>
         </View>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Error Boundary:</Text> Perlindungan runtime crash pada root UI aplikasi
           </Text>
         </View>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Local Storage:</Text> Persistensi AsyncStorage untuk preferensi & draft
           </Text>
         </View>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Accessibility (a11y):</Text> ARIA roles, label pembaca layar, min 48dp target
           </Text>
         </View>
         <View style={styles.itemRow}>
-          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
-          <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
+          <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4E7D42'} />
+          <Text style={[styles.itemText, { color: theme?.textSecondary || '#634B35' }]}>
             <Text style={styles.bold}>Pull-to-Refresh:</Text> RefreshControl interaktif untuk sinkronisasi ulang
           </Text>
         </View>
       </View>
 
       {/* Simulator Control Buttons for Presentation */}
-      <Text style={[styles.controlHeading, { color: theme?.textPrimary || '#363C2E' }]}>
+      <Text style={[styles.controlHeading, { color: theme?.textPrimary || '#3E3227' }]}>
         Panel Demonstrasi Dosen & Pengujian:
       </Text>
       <View style={styles.buttonGrid}>
@@ -112,8 +112,8 @@ export default function Level10CriteriaCard({
           style={[
             styles.simBtn,
             {
-              backgroundColor: currentState === 'normal' ? (theme?.primary || '#62684D') : (theme?.surfaceMuted || '#E5DFCE'),
-              borderColor: currentState === 'normal' ? (theme?.primary || '#62684D') : (theme?.borderLight || '#939675'),
+              backgroundColor: currentState === 'normal' ? (theme?.primary || '#B5893D') : (theme?.surfaceMuted || '#EAE0C8'),
+              borderColor: currentState === 'normal' ? (theme?.primary || '#B5893D') : (theme?.borderLight || '#D5C7AA'),
               borderWidth: 1,
             },
           ]}
@@ -125,12 +125,12 @@ export default function Level10CriteriaCard({
           <MaterialCommunityIcons
             name="check"
             size={16}
-            color={currentState === 'normal' ? (theme?.textInverted || '#FFFFFF') : (theme?.textSecondary || '#5A604E')}
+            color={currentState === 'normal' ? (theme?.textInverted || '#FFFDF7') : (theme?.textSecondary || '#634B35')}
           />
           <Text
             style={[
               styles.simBtnText,
-              { color: currentState === 'normal' ? (theme?.textInverted || '#FFFFFF') : (theme?.textPrimary || '#363C2E') },
+              { color: currentState === 'normal' ? (theme?.textInverted || '#FFFDF7') : (theme?.textPrimary || '#3E3227') },
             ]}
           >
             Normal State
@@ -142,8 +142,8 @@ export default function Level10CriteriaCard({
           style={[
             styles.simBtn,
             {
-              backgroundColor: currentState === 'error' ? '#A83B3B' : (theme?.surfaceMuted || '#E5DFCE'),
-              borderColor: currentState === 'error' ? '#A83B3B' : (theme?.borderLight || '#939675'),
+              backgroundColor: currentState === 'error' ? '#B33A3A' : (theme?.surfaceMuted || '#EAE0C8'),
+              borderColor: currentState === 'error' ? '#B33A3A' : (theme?.borderLight || '#D5C7AA'),
               borderWidth: 1,
             },
           ]}
@@ -155,12 +155,12 @@ export default function Level10CriteriaCard({
           <MaterialCommunityIcons
             name="alert-circle-outline"
             size={16}
-            color={currentState === 'error' ? '#FFFFFF' : '#A83B3B'}
+            color={currentState === 'error' ? '#FFFFFF' : '#B33A3A'}
           />
           <Text
             style={[
               styles.simBtnText,
-              { color: currentState === 'error' ? '#FFFFFF' : (theme?.textPrimary || '#363C2E') },
+              { color: currentState === 'error' ? '#FFFFFF' : (theme?.textPrimary || '#3E3227') },
             ]}
           >
             Simulasi Error (503)
@@ -172,8 +172,8 @@ export default function Level10CriteriaCard({
           style={[
             styles.simBtn,
             {
-              backgroundColor: currentState === 'empty' ? '#9C6F32' : (theme?.surfaceMuted || '#E5DFCE'),
-              borderColor: currentState === 'empty' ? '#9C6F32' : (theme?.borderLight || '#939675'),
+              backgroundColor: currentState === 'empty' ? '#B5893D' : (theme?.surfaceMuted || '#EAE0C8'),
+              borderColor: currentState === 'empty' ? '#B5893D' : (theme?.borderLight || '#D5C7AA'),
               borderWidth: 1,
             },
           ]}
@@ -185,12 +185,12 @@ export default function Level10CriteriaCard({
           <MaterialCommunityIcons
             name="file-outline"
             size={16}
-            color={currentState === 'empty' ? '#FFFFFF' : '#9C6F32'}
+            color={currentState === 'empty' ? (theme?.textInverted || '#FFFDF7') : '#B5893D'}
           />
           <Text
             style={[
               styles.simBtnText,
-              { color: currentState === 'empty' ? '#FFFFFF' : (theme?.textPrimary || '#363C2E') },
+              { color: currentState === 'empty' ? (theme?.textInverted || '#FFFDF7') : (theme?.textPrimary || '#3E3227') },
             ]}
           >
             Simulasi Empty State
@@ -199,14 +199,14 @@ export default function Level10CriteriaCard({
 
         {/* Automated Test Runner Button */}
         <TouchableOpacity
-          style={[styles.testRunnerBtn, { backgroundColor: theme?.primary || '#62684D' }]}
+          style={[styles.testRunnerBtn, { backgroundColor: theme?.primary || '#B5893D' }]}
           onPress={onOpenTestRunner}
           activeOpacity={0.8}
           accessibilityRole="button"
           accessibilityLabel="Buka Test Runner Otomatis Live"
         >
-          <MaterialCommunityIcons name="speedometer" size={16} color={theme?.textInverted || '#FFFFFF'} />
-          <Text style={[styles.testRunnerBtnText, { color: theme?.textInverted || '#FFFFFF' }]}>Buka Automated Test Suite</Text>
+          <MaterialCommunityIcons name="speedometer" size={16} color={theme?.textInverted || '#FFFDF7'} />
+          <Text style={[styles.testRunnerBtnText, { color: theme?.textInverted || '#FFFDF7' }]}>Buka Automated Test Suite</Text>
         </TouchableOpacity>
       </View>
     </View>

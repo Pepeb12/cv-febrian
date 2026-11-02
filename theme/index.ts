@@ -1,22 +1,40 @@
 import { Platform } from 'react-native';
 
 /**
- * RETRO OLIVE & BEIGE DESIGN SYSTEM & DESIGN TOKENS
+ * RETRO MUSTARD & BROWN DESIGN SYSTEM & DESIGN TOKENS
+ * ("Klasik, unik, dan penuh karakter")
  *
- * Palet Warna Terang (Light Mode - Retro Olive & Beige):
- * - Background Utama: #EAE4D3 (Warm Beige)
- * - Background Card & Navbar: #F4F1E8 (Light Cream Surface)
- * - Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
- * - Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
- * - Teks Utama & Heading: #363C2E (Deep Dark Olive)
- * - Teks Sekunder: #5A604E
+ * Palet Inti (4 Swatch Utama):
+ * 1. Retro Mustard Gold  : #B5893D (Aksen Utama, Tombol Primer, Tab Aktif, Progress Bar, Highlight)
+ * 2. Warm Bronze Brown   : #9A7243 (Aksen Sekunder, Border Aktif, Ikon, Badge Highlight)
+ * 3. Deep Espresso Brown : #3E3227 (Teks Utama Mode Terang / Permukaan Gelap Mode Malam)
+ * 4. Rich Cocoa Mocha    : #634B35 (Teks Sekunder, Border Elemen, Sub-elemen Kontras)
  *
- * Palet Warna Malam (Dark Mode - Dark Forest Olive):
- * - Background Utama: #20251D (Dark Forest)
- * - Background Card & Navbar: #30372A (Deep Olive)
- * - Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
- * - Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
- * - Teks Sekunder: #A8A48E
+ * Palet Warna Terang (Light Mode — Retro Mustard & Warm Cream):
+ * - Background Utama: #F2EAD7 (Warm Vintage Cream)
+ * - Background Card & Navbar: #FAF5E8 (Soft Ivory Surface)
+ * - Sub-Card, Kotak Ikon & Badge: #EAE0C8 (Warm Sand Beige)
+ * - Border Card & Divider: #D5C7AA (Soft Tan Border)
+ * - Border Aktif / Sekunder: #9A7243 (Warm Bronze Brown)
+ * - Aksen Utama & Tombol Primer: #B5893D (Retro Mustard Gold)
+ * - Teks Utama & Heading: #3E3227 (Deep Espresso Brown)
+ * - Teks Sekunder: #634B35 (Rich Cocoa Mocha)
+ * - Teks Muted: #856A4F (Muted Mocha)
+ * - Teks Inverted: #FFFDF7 (Warm White)
+ * - Input Background: #F4EDE0 (Border #C9B99B)
+ *
+ * Palet Warna Malam (Dark Mode — Deep Espresso, Mocha & Mustard Gold):
+ * - Background Utama: #221B14 (Deep Roast Espresso)
+ * - Background Card & Navbar: #30261C (Dark Umber Coffee)
+ * - Sub-Card, Kotak Ikon & Badge: #3D3024 (Warm Dark Mocha)
+ * - Border Card & Divider: #574432 (Muted Cocoa Border)
+ * - Border Aktif / Sekunder: #8C673A (Warm Bronze)
+ * - Aksen Utama & Tombol Primer: #B5893D (Retro Mustard Gold, #C49746 untuk glow & progress fill)
+ * - Teks Utama & Heading: #F2EAD7 (Warm Vintage Cream)
+ * - Teks Sekunder: #C7B89E (Warm Sand Tan)
+ * - Teks Muted: #9E8C72 (Muted Bronze Tan)
+ * - Teks Inverted: #1E1710 (Deep Espresso Gelap)
+ * - Input Background: #282017 (Border #574432)
  */
 
 export const FONTS = {
@@ -38,94 +56,112 @@ export const FONTS = {
 
 export const LIGHT_THEME = {
   isDark: false,
-  // Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
-  primary: '#62684D',
-  primaryLight: 'rgba(98, 104, 77, 0.12)',
-  primaryHover: '#52573F',
-  primaryBorder: '#939675',
+  // Aksen Utama, Tombol Primer, Tab Aktif: #B5893D (Retro Mustard Gold)
+  primary: '#B5893D',
+  primaryLight: 'rgba(181, 137, 61, 0.14)',
+  primaryHover: '#A67C34',
+  primaryBorder: '#9A7243',
+  onPrimary: '#FFFDF7',
 
-  // Background Utama: #EAE4D3 (Warm Beige)
-  background: '#EAE4D3',
-  // Background Card & Navbar: #F4F1E8 (Light Cream Surface)
-  surface: '#F4F1E8',
-  surfaceMuted: '#E5DFCE',
-  surfaceSubtle: '#ECE7D8',
+  // Background Utama Halaman: #F2EAD7 (Warm Vintage Cream)
+  background: '#F2EAD7',
+  // Background Card & Navbar: #FAF5E8 (Soft Ivory Surface)
+  surface: '#FAF5E8',
+  surfaceSecondary: '#EAE0C8',
+  surfaceMuted: '#EAE0C8',
+  surfaceSubtle: '#F4EDE0',
 
-  // Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
-  border: '#939675',
-  borderLight: 'rgba(147, 150, 117, 0.45)',
+  // Border Card & Garis Pemisah: #D5C7AA (Soft Tan Border)
+  border: '#D5C7AA',
+  borderLight: '#E2D6BC',
+  borderStrong: '#9A7243',
 
-  // Teks Utama & Heading: #363C2E (Deep Dark Olive)
-  textPrimary: '#363C2E',
-  // Teks Sekunder: #5A604E
-  textSecondary: '#5A604E',
-  textMuted: '#707762',
-  textLight: '#8C927E',
-  textInverted: '#F4F1E8',
+  // Teks Judul & Heading: #3E3227 (Deep Espresso Brown)
+  textPrimary: '#3E3227',
+  // Teks Deskripsi & Paragraf: #634B35 (Rich Cocoa Mocha)
+  textSecondary: '#634B35',
+  // Teks Keterangan & Placeholder: #856A4F (Muted Mocha)
+  textMuted: '#856A4F',
+  textLight: '#9E8C72',
+  textInverted: '#FFFDF7',
 
   // Secondary & Accents
-  secondary: '#939675',
-  accentOlive: '#62684D',
-  accentSage: '#939675',
-  accentBeige: '#EAE4D3',
-  accentAmber: '#9C6F32',
+  secondary: '#9A7243',
+  accentMustard: '#B5893D',
+  accentBronze: '#9A7243',
+  accentCream: '#F2EAD7',
+  accentMocha: '#634B35',
 
-  // Feedback Colors harmonized with Retro Olive
-  success: '#4A6B41',
-  successLight: '#E8F0E4',
-  successBorder: '#8CAE82',
-  successText: '#2D4825',
-  error: '#A83B3B',
-  errorLight: '#FBEBEB',
+  // Progress Bar & Indikator
+  progressTrack: '#E2D6BC',
+  progressFill: '#B5893D',
 
-  cardHeaderBanner: '#F4F1E8',
-  inputBackground: '#EAE4D3',
+  // Feedback Colors harmonized with Warm Palette
+  success: '#4E7D42',
+  successLight: '#EDF4EB',
+  successBorder: '#97BC8E',
+  successText: '#2F5027',
+  error: '#B33A3A',
+  errorLight: '#FBECEC',
+
+  cardHeaderBanner: '#FAF5E8',
+  inputBackground: '#F4EDE0',
+  inputBorder: '#C9B99B',
 };
 
 export const DARK_THEME = {
   isDark: true,
-  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
-  primary: '#D8D2B8',
-  primaryLight: 'rgba(216, 210, 184, 0.15)',
-  primaryHover: '#ECE7D3',
-  primaryBorder: '#62694F',
+  // Aksen Utama, Tombol Primer, Tab Aktif: #B5893D (Retro Mustard Gold)
+  primary: '#B5893D',
+  primaryLight: 'rgba(181, 137, 61, 0.22)',
+  primaryHover: '#C49746',
+  primaryBorder: '#8C673A',
+  onPrimary: '#1E1710',
 
-  // Background Utama: #20251D (Dark Forest)
-  background: '#20251D',
-  // Background Card & Navbar: #30372A (Deep Olive)
-  surface: '#30372A',
-  surfaceMuted: '#272D22',
-  surfaceSubtle: '#1C2119',
+  // Background Utama Halaman: #221B14 (Deep Roast Espresso)
+  background: '#221B14',
+  // Background Card & Navbar: #30261C (Dark Umber Coffee)
+  surface: '#30261C',
+  surfaceSecondary: '#3D3024',
+  surfaceMuted: '#3D3024',
+  surfaceSubtle: '#282017',
 
-  // Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
-  border: '#62694F',
-  borderLight: 'rgba(98, 105, 79, 0.45)',
+  // Border Card & Garis Pemisah: #574432 (Muted Cocoa Border)
+  border: '#574432',
+  borderLight: 'rgba(87, 68, 50, 0.6)',
+  borderStrong: '#8C673A',
 
-  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
-  textPrimary: '#D8D2B8',
-  // Teks Sekunder: #A8A48E
-  textSecondary: '#A8A48E',
-  textMuted: '#8D8973',
-  textLight: '#736F5C',
-  textInverted: '#20251D',
+  // Teks Judul & Heading: #F2EAD7 (Warm Vintage Cream)
+  textPrimary: '#F2EAD7',
+  // Teks Deskripsi & Paragraf: #C7B89E (Warm Sand Tan)
+  textSecondary: '#C7B89E',
+  // Teks Keterangan & Placeholder: #9E8C72 (Muted Bronze Tan)
+  textMuted: '#9E8C72',
+  textLight: '#856A4F',
+  textInverted: '#1E1710',
 
   // Secondary & Accents
-  secondary: '#62694F',
-  accentOlive: '#8C9472',
-  accentSage: '#62694F',
-  accentBeige: '#D8D2B8',
-  accentAmber: '#C99A52',
+  secondary: '#8C673A',
+  accentMustard: '#B5893D',
+  accentBronze: '#8C673A',
+  accentCream: '#F2EAD7',
+  accentMocha: '#C7B89E',
+
+  // Progress Bar & Indikator
+  progressTrack: '#3D3024',
+  progressFill: '#C49746',
 
   // Feedback Colors harmonized
-  success: '#6B945A',
-  successLight: '#1E2C1A',
-  successBorder: '#4E733F',
-  successText: '#BDE3AE',
+  success: '#6B9B5C',
+  successLight: '#22321D',
+  successBorder: '#48693E',
+  successText: '#C4E8B7',
   error: '#D95858',
   errorLight: '#381B1B',
 
-  cardHeaderBanner: '#30372A',
-  inputBackground: '#20251D',
+  cardHeaderBanner: '#30261C',
+  inputBackground: '#282017',
+  inputBorder: '#574432',
 };
 
 export type Theme = typeof LIGHT_THEME;

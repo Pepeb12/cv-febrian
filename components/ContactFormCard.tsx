@@ -206,8 +206,8 @@ export default function ContactFormCard({
               style={[
                 styles.textInput,
                 {
-                  backgroundColor: theme.surfaceMuted,
-                  borderColor: errors.name ? theme.error : theme.border,
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.name ? theme.error : (theme.inputBorder || theme.border),
                   color: theme.textPrimary,
                 },
               ]}
@@ -233,8 +233,8 @@ export default function ContactFormCard({
               style={[
                 styles.textInput,
                 {
-                  backgroundColor: theme.surfaceMuted,
-                  borderColor: errors.email ? theme.error : theme.border,
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.email ? theme.error : (theme.inputBorder || theme.border),
                   color: theme.textPrimary,
                 },
               ]}
@@ -262,8 +262,8 @@ export default function ContactFormCard({
               style={[
                 styles.textArea,
                 {
-                  backgroundColor: theme.surfaceMuted,
-                  borderColor: errors.message ? theme.error : theme.border,
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.message ? theme.error : (theme.inputBorder || theme.border),
                   color: theme.textPrimary,
                 },
               ]}

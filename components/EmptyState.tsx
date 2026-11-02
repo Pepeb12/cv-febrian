@@ -28,28 +28,28 @@ export default function EmptyState({
       style={[
         styles.container,
         {
-          backgroundColor: theme?.surface || '#FFFFFF',
-          borderColor: theme?.border || '#E2E8F0',
+          backgroundColor: theme?.surface || '#FAF5E8',
+          borderColor: theme?.border || '#D5C7AA',
         },
       ]}
       accessibilityRole="region"
       accessibilityLabel={title}
     >
-      <View style={[styles.iconContainer, { backgroundColor: theme?.surfaceMuted || '#E5DFCE' }]}>
-        <MaterialCommunityIcons name={icon} size={36} color={theme?.primary || '#62684D'} />
+      <View style={[styles.iconContainer, { backgroundColor: theme?.surfaceMuted || '#EAE0C8' }]}>
+        <MaterialCommunityIcons name={icon} size={36} color={theme?.primary || '#B5893D'} />
       </View>
-      <Text style={[styles.title, { color: theme?.textPrimary || '#363C2E' }]}>{title}</Text>
-      <Text style={[styles.message, { color: theme?.textSecondary || '#5A604E' }]}>{message}</Text>
+      <Text style={[styles.title, { color: theme?.textPrimary || '#3E3227' }]}>{title}</Text>
+      <Text style={[styles.message, { color: theme?.textSecondary || '#634B35' }]}>{message}</Text>
 
       {actionLabel && onAction ? (
         <TouchableOpacity
-          style={[styles.actionBtn, { backgroundColor: theme?.primary || '#62684D' }]}
+          style={[styles.actionBtn, { backgroundColor: theme?.primary || '#B5893D' }]}
           onPress={onAction}
           activeOpacity={0.8}
           accessibilityRole="button"
           accessibilityLabel={actionLabel}
         >
-          <Text style={[styles.actionBtnText, { color: theme?.textInverted || '#FFFFFF' }]}>{actionLabel}</Text>
+          <Text style={[styles.actionBtnText, { color: theme?.textInverted || '#FFFDF7' }]}>{actionLabel}</Text>
         </TouchableOpacity>
       ) : null}
     </View>
