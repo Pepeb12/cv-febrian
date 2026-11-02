@@ -252,12 +252,12 @@ export default function App() {
       .map((p: any) => `• ${p.name || p.label}: ${p.percentage}%`)
       .join('\n');
 
-    const info = `EVALUASI KELENGKAPAN UTS MAHASISWA:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Seluruh Level 1 s.d. Level 10 Lolos Evaluasi 100%`;
+    const info = `EVALUASI KELENGKAPAN UTS MAHASISWA:\n\n• Mahasiswa: ${studentIdentity?.name || 'Febrian'} (${studentIdentity?.nim || '242505024'})\n• Mata Kuliah: ${studentIdentity?.course || 'Pemrograman Mobile 2'}\n• Dosen: ${studentIdentity?.lecturer || 'Iin, M.Kom'}\n• Current Score: ${currentScore?.score} (Grade ${currentScore?.grade})\n• Learning Points: ${learningPoints?.total?.toLocaleString('id-ID')} LP\n• Capaian Belajar:\n${progressSummary || 'Data kosong'}\n• Status: Seluruh Kriteria Akademik & Portofolio Terpenuhi 100%`;
 
     if (Platform.OS === 'web') {
       window.alert(info);
     } else {
-      Alert.alert('Evaluasi Capaian UTS (Level 1 s.d. Level 10)', info, [{ text: 'OK', style: 'default' }]);
+      Alert.alert('Evaluasi Capaian Akademik & Portofolio', info, [{ text: 'OK', style: 'default' }]);
     }
   };
 
@@ -343,9 +343,8 @@ export default function App() {
                 >
                   <StageSectionDivider
                     stageNumber={1}
-                    levelsText="LEVEL 1 — 3"
                     stageTitle="Fondasi & Identitas Mahasiswa"
-                    stageDesc="Identitas dasar, pengantar profil, Flexbox layout & tipografi Lato"
+                    stageDesc="Identitas dasar, pengantar profil, Flexbox layout & tipografi Inter"
                     icon="person-circle-outline"
                     theme={theme}
                   />
@@ -381,9 +380,8 @@ export default function App() {
                 >
                   <StageSectionDivider
                     stageNumber={2}
-                    levelsText="LEVEL 4 — 6"
-                    stageTitle="Interaksi, Props & Data JSON Lokal"
-                    stageDesc="Komponen interaktif, arsitektur pemisahan UI & data murni JSON"
+                    stageTitle="Pendidikan, Minat & Kontak"
+                    stageDesc="Riwayat pendidikan formal, spesialisasi, dan kanal komunikasi profesional"
                     icon="git-network-outline"
                     theme={theme}
                   />
@@ -425,9 +423,8 @@ export default function App() {
                 >
                   <StageSectionDivider
                     stageNumber={3}
-                    levelsText="LEVEL 7 — 8"
-                    stageTitle="Eksplorasi Fitur & Dashboard My Score"
-                    stageDesc="Current Score 90 (A), 19.000 LP, 4 Capaian, Portofolio & Skill Matrix"
+                    stageTitle="Dashboard My Score & Portofolio"
+                    stageDesc="Current Score 90 (Grade A), 19.000 LP, Galeri Portofolio & Keahlian Teknis"
                     icon="school-outline"
                     theme={theme}
                   />
@@ -506,9 +503,8 @@ export default function App() {
                 >
                   <StageSectionDivider
                     stageNumber={4}
-                    levelsText="LEVEL 9 — 10"
-                    stageTitle="Standar Industri, Pengujian & Kontak"
-                    stageDesc="Matriks evaluasi 1-10, simulasi error & empty state, test suite, dan form kontak"
+                    stageTitle="Arsitektur Aplikasi & Hubungi Mahasiswa"
+                    stageDesc="Standar arsitektur industri, simulasi API, test suite, dan formulir kontak"
                     icon="shield-checkmark-outline"
                     theme={theme}
                   />
@@ -663,7 +659,7 @@ export default function App() {
                     Dosen Pengampu: Iin, M.Kom • Semester Ganjil 2026/2027
                   </Text>
                   <Text style={[styles.copyrightText, { color: theme.textLight }]}>
-                    © 2026 {profileData.nama} ({profileData.nim}) — LEVEL 10 PRODUCTION READY
+                    © 2026 {profileData.nama} ({profileData.nim}) — PRODUCTION READY
                   </Text>
                 </View>
               </View>

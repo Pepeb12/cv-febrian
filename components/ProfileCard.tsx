@@ -247,7 +247,7 @@ export default function ProfileCard({
               ]}
             >
               <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
-                Level 10 (Industry Ready)
+                Industry Ready
               </Text>
             </View>
 

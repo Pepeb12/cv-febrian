@@ -194,7 +194,7 @@
       ],
       "features": [
         "Dokumentasi Software Requirements Specification (SRS)",
-        "Pemodelan DFD Level 0 s.d. Level 2",
+        "Pemodelan DFD & Diagram Alir Data",
         "Perancangan 12 tabel relasional ternormalisasi (3NF)",
         "Prototyping interaktif antarmuka portal mahasiswa"
       ]
@@ -472,7 +472,7 @@
       {
         "id": "prog-challenge",
         "name": "Challenge",
-        "label": "Challenge UTS (Level 1-8)",
+        "label": "Challenge Projek UTS",
         "percentage": 100,
         "icon": "flame-outline",
         "color": "#D97706",

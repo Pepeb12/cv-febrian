@@ -89,7 +89,7 @@ export default function Header({ isDarkMode, onToggleTheme, theme }: HeaderProps
                 { color: currentTheme.textSecondary },
               ]}
             >
-              LEVEL 10
+              CV & MY SCORE
             </Text>
           </View>
         </View>

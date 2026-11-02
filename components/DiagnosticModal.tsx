@@ -62,7 +62,7 @@ export default function DiagnosticModal({ visible, onClose, theme }: DiagnosticM
                   Test Suite & Diagnostik
                 </Text>
                 <Text style={[styles.subtitle, { color: theme?.textMuted || '#94A3B8' }]}>
-                  LEVEL 10 — Industry Production Testing
+                  Industry Production Testing
                 </Text>
               </View>
             </View>

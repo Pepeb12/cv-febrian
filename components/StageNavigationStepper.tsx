@@ -13,29 +13,25 @@ const STAGES = [
   {
     index: 1,
     title: 'Tahap 1',
-    levels: 'Level 1 - 3',
-    label: 'Identitas & Layout',
+    label: 'Identitas & Profil',
     icon: 'person-outline',
   },
   {
     index: 2,
     title: 'Tahap 2',
-    levels: 'Level 4 - 6',
-    label: 'Interaksi & Data JSON',
+    label: 'Pendidikan & Kontak',
     icon: 'git-network-outline',
   },
   {
     index: 3,
     title: 'Tahap 3',
-    levels: 'Level 7 - 8',
-    label: 'Eksplorasi & My Score',
+    label: 'My Score & Portofolio',
     icon: 'school-outline',
   },
   {
     index: 4,
     title: 'Tahap 4',
-    levels: 'Level 9 - 10',
-    label: 'Industri & Pengujian',
+    label: 'Pengujian & Pesan',
     icon: 'shield-checkmark-outline',
   },
 ];
@@ -64,11 +60,11 @@ export default function StageNavigationStepper({
         <View style={styles.headerLeft}>
           <Ionicons name="layers-outline" size={15} color={theme.textPrimary} />
           <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
-            ALUR EVALUASI UTS (LEVEL 1 S.D. LEVEL 10)
+            ALUR CV & CAPAIAN AKADEMIK
           </Text>
         </View>
         <Text style={[styles.scrollHint, { color: theme.textMuted }]}>
-          4 Tahap Evaluasi Bertahap
+          4 Tahap Informasi
         </Text>
       </View>
 
@@ -96,7 +92,7 @@ export default function StageNavigationStepper({
               activeOpacity={0.8}
               onPress={() => onSelectStage(s.index)}
               accessibilityRole="button"
-              accessibilityLabel={`Navigasi ke ${s.title}: ${s.levels}`}
+              accessibilityLabel={`Navigasi ke ${s.title}: ${s.label}`}
             >
               <View
                 style={[
@@ -117,36 +113,14 @@ export default function StageNavigationStepper({
               </View>
 
               <View style={styles.stageTextCol}>
-                <View style={styles.stageTitleRow}>
-                  <Text
-                    style={[
-                      styles.stageTitle,
-                      { color: isActive ? theme.textInverted : theme.textPrimary },
-                    ]}
-                  >
-                    {s.title}
-                  </Text>
-                  <View
-                    style={[
-                      styles.stageLevelPill,
-                      {
-                        backgroundColor: isActive
-                          ? 'rgba(0, 0, 0, 0.15)'
-                          : theme.surface,
-                        borderColor: isActive ? 'transparent' : theme.borderLight,
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.stageLevelText,
-                        { color: isActive ? theme.textInverted : theme.textSecondary },
-                      ]}
-                    >
-                      {s.levels}
-                    </Text>
-                  </View>
-                </View>
+                <Text
+                  style={[
+                    styles.stageTitle,
+                    { color: isActive ? theme.textInverted : theme.textPrimary },
+                  ]}
+                >
+                  {s.title}
+                </Text>
 
                 <Text
                   style={[

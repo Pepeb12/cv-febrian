@@ -22,12 +22,12 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
         },
       ]}
       accessibilityRole="region"
-      accessibilityLabel="Evaluasi Kriteria Level 8 Expert"
+      accessibilityLabel="Evaluasi Capaian Akademik"
     >
       <View style={styles.cardHeader}>
         <View style={styles.badgeExpert}>
           <Ionicons name="ribbon" size={14} color="#B45309" />
-          <Text style={styles.badgeExpertText}>LEVEL 8 — EXPERT EVALUATION</Text>
+          <Text style={styles.badgeExpertText}>CAPAIAN AKADEMIK UTS</Text>
         </View>
         <Text style={[styles.statusText, { color: currentTheme.success }]}>
           ✓ 100% Terpenuhi
@@ -75,10 +75,10 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
         activeOpacity={0.8}
         onPress={onShowDetail}
         accessibilityRole="button"
-        accessibilityLabel="Verifikasi Status Capaian Level 8"
+        accessibilityLabel="Verifikasi Status Capaian Akademik"
       >
         <Ionicons name="checkmark-done" size={16} color={currentTheme.textInverted || '#FFFFFF'} />
-        <Text style={[styles.actionButtonText, { color: currentTheme.textInverted || '#FFFFFF' }]}>Verifikasi Status Capaian Level 8</Text>
+        <Text style={[styles.actionButtonText, { color: currentTheme.textInverted || '#FFFFFF' }]}>Verifikasi Status Capaian Akademik</Text>
       </TouchableOpacity>
     </View>
   );

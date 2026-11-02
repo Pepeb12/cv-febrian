@@ -5,7 +5,7 @@ import { FONTS, SPACING, Theme } from '../theme';
 
 interface StageSectionDividerProps {
   stageNumber: number;
-  levelsText: string;
+  levelsText?: string;
   stageTitle: string;
   stageDesc: string;
   icon: any;
@@ -17,7 +17,6 @@ interface StageSectionDividerProps {
  */
 export default function StageSectionDivider({
   stageNumber,
-  levelsText,
   stageTitle,
   stageDesc,
   icon,
@@ -50,10 +49,6 @@ export default function StageSectionDivider({
         <View style={styles.titleCol}>
           <View style={styles.topTitleRow}>
             <Ionicons name={icon} size={15} color={theme.textPrimary} />
-            <Text style={[styles.levelsText, { color: theme.textPrimary }]}>
-              {levelsText}
-            </Text>
-            <Text style={[styles.dotSep, { color: theme.textMuted }]}>•</Text>
             <Text style={[styles.mainTitle, { color: theme.textPrimary }]}>
               {stageTitle}
             </Text>

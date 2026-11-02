@@ -25,25 +25,25 @@ export default function QuickActionBar({
   const actions = [
     {
       id: 'score',
-      label: 'Nilai UTS (L8)',
+      label: 'Nilai UTS',
       icon: 'school-outline' as const,
       onPress: onScrollToScore,
     },
     {
       id: 'test',
-      label: 'Test Suite (L10)',
+      label: 'Test Suite',
       icon: 'speedometer' as const,
       onPress: onOpenTestRunner,
     },
     {
       id: 'concepts',
-      label: 'Konsep P1-P10',
+      label: 'Konsep Materi',
       icon: 'book-open-page-variant-outline' as const,
       onPress: onOpenConcepts,
     },
     {
       id: 'contact',
-      label: 'Kontak (L4)',
+      label: 'Kirim Pesan',
       icon: 'email-edit-outline' as const,
       onPress: onScrollToContact,
     },

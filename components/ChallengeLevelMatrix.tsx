@@ -12,9 +12,9 @@ interface ChallengeLevelMatrixProps {
 const CHALLENGE_LEVELS = [
   {
     level: 1,
-    title: 'LEVEL 1 — NOVICE',
-    subtitle: 'Identitas Mahasiswa',
-    badge: '100% Lolos',
+    title: 'MODUL 1 — IDENTITAS MAHASISWA',
+    subtitle: 'Identitas Mahasiswa & Profil Dasar',
+    badge: '100% Selesai',
     color: '#0284C7',
     reqs: [
       'Menampilkan NIM (242505024)',
@@ -27,12 +27,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 2,
-    title: 'LEVEL 2 — BEGINNER',
+    title: 'MODUL 2 — PROFIL & PENGANTAR',
     subtitle: 'Personal Introduction & Heading',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#059669',
     reqs: [
-      'Seluruh persyaratan Level 1',
+      'Persyaratan identitas dan data',
       'Menampilkan profesi / bidang minat',
       'Deskripsi singkat tentang diri sendiri',
       'Menampilkan judul / heading yang sesuai',
@@ -42,12 +42,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 3,
-    title: 'LEVEL 3 — ELEMENTARY',
+    title: 'MODUL 3 — LAYOUT & STYLING FLEXBOX',
     subtitle: 'Layout & Styling Flexbox',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#7C3AED',
     reqs: [
-      'Seluruh persyaratan Level 2',
+      'Persyaratan profil dan pengantar',
       'Layout terstruktur dengan Flexbox',
       'Design tokens warna, jarak, & tipografi terpusat',
       'Tidak ada teks yang terpotong pada layar ponsel',
@@ -57,12 +57,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 4,
-    title: 'LEVEL 4 — INTERMEDIATE',
+    title: 'MODUL 4 — PROPS & STATE INTERAKTIF',
     subtitle: 'Interactive CV, Props, & State',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#D97706',
     reqs: [
-      'Seluruh persyaratan Level 3',
+      'Persyaratan layout dan token desain',
       'Props untuk kirim data ke komponen anak',
       'State useState untuk form input & endorsement',
       'Formulir kontak (nama, email, pesan) dengan validasi',
@@ -72,12 +72,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 5,
-    title: 'LEVEL 5 — COMPETENT',
+    title: 'MODUL 5 — PEMISAHAN UI & DATA',
     subtitle: 'Separation of UI and Data',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#DB2777',
     reqs: [
-      'Seluruh persyaratan Level 4',
+      'Persyaratan formulir dan props',
       'Data profil tidak ditulis langsung pada UI (zero hardcode)',
       'Data disimpan dalam berkas terpisah',
       'Komponen UI menerima data melalui Props pipeline',
@@ -87,12 +87,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 6,
-    title: 'LEVEL 6 — PROFICIENT',
+    title: 'MODUL 6 — ARSITEKTUR DATA JSON',
     subtitle: 'Local JSON Data Architecture',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#2563EB',
     reqs: [
-      'Seluruh persyaratan Level 5',
+      'Persyaratan pemisahan data',
       'Data profil disimpan murni dalam profile.json',
       'Impor JSON lokal secara native oleh aplikasi',
       'Struktur JSON 100% valid dan lolos parsing schema',
@@ -102,12 +102,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 7,
-    title: 'LEVEL 7 — ADVANCED',
+    title: 'MODUL 7 — EKSPLORASI MY SCORE',
     subtitle: 'Dynamic Content & React Native Exploration',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#4F46E5',
     reqs: [
-      'Seluruh persyaratan Level 6',
+      'Persyaratan arsitektur JSON lokal',
       'Galeri portofolio dengan live search & category filter',
       'Komponen native <Modal /> untuk detail proyek',
       'Dual-theme switcher (Dark Mode & Light Mode)',
@@ -118,12 +118,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 8,
-    title: 'LEVEL 8 — EXPERT',
+    title: 'MODUL 8 — INTEGRASI CAPAIAN AKADEMIK',
     subtitle: 'My Score & Academic Dashboard',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#0D9488',
     reqs: [
-      'Seluruh persyaratan Level 7',
+      'Persyaratan eksplorasi skor',
       'Data nilai terpisah di data/academicScore.json',
       'Identitas akademik (Febrian, NIM 242505024, MK, Dosen)',
       'Current Score: Nilai 90, Grade A (Tampil Jelas & Menonjol)',
@@ -135,12 +135,12 @@ const CHALLENGE_LEVELS = [
   },
   {
     level: 10,
-    title: 'LEVEL 10 — INDUSTRY',
+    title: 'MODUL 10 — STANDAR INDUSTRI & PENGUJIAN',
     subtitle: 'Production-Oriented Mobile Application',
-    badge: '100% Lolos',
+    badge: '100% Selesai',
     color: '#059669',
     reqs: [
-      'Seluruh persyaratan Level 8',
+      'Persyaratan integrasi akademik',
       'Service layer (academicService.js & storageService.js)',
       'Penanganan kondisi Error 503, Empty State, & Loading Skeleton',
       'ErrorBoundary class component untuk proteksi app crash',
@@ -167,7 +167,7 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
         },
       ]}
       accessibilityRole="region"
-      accessibilityLabel="Matriks Pencapaian Challenge Level"
+      accessibilityLabel="Matriks Rekayasa & Fitur Aplikasi"
     >
       {/* Header Matriks */}
       <View style={styles.headerRow}>
@@ -177,10 +177,10 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
           </View>
           <View>
             <Text style={[styles.mainTitle, { color: theme?.text || '#1E293B' }]}>
-              Matriks Penilaian Challenge Level
+              Matriks Kompetensi & Rekayasa Aplikasi
             </Text>
             <Text style={[styles.mainSubtitle, { color: theme?.textMuted || '#94A3B8' }]}>
-              Seluruh Tantangan Level 1 s.d. Level 10 Terpenuhi 100%
+              Seluruh Standar Pengembangan & Arsitektur Terpenuhi 100%
             </Text>
           </View>
         </View>
@@ -199,7 +199,7 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
         ) : null}
       </View>
 
-      {/* Grid Level Selector Pills */}
+      {/* Grid Selector Pills */}
       <View style={styles.pillsRow}>
         {CHALLENGE_LEVELS.map((item) => {
           const isActive = expandedLevel === item.level;
@@ -220,7 +220,7 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
               onPress={() => setExpandedLevel(item.level)}
               activeOpacity={0.7}
               accessibilityRole="button"
-              accessibilityLabel={`Pilih Level ${item.level}`}
+              accessibilityLabel={`Pilih Modul ${item.level}`}
             >
               <Text
                 style={[
@@ -228,7 +228,7 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
                   { color: isActive ? '#FFFFFF' : theme?.textSecondary || '#64748B' },
                 ]}
               >
-                L{item.level}
+                M{item.level}
               </Text>
             </TouchableOpacity>
           );

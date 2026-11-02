@@ -33,13 +33,13 @@ export default function Level10CriteriaCard({
         },
       ]}
       accessibilityRole="region"
-      accessibilityLabel="Level 10 Industry Showcase"
+      accessibilityLabel="Arsitektur Aplikasi & Industri"
     >
       {/* Header Badge */}
       <View style={styles.topRow}>
         <View style={styles.badge}>
           <MaterialCommunityIcons name="shield-check-outline" size={14} color="#0D9488" />
-          <Text style={styles.badgeText}>LEVEL 10 — INDUSTRY READY</Text>
+          <Text style={styles.badgeText}>ARSITEKTUR INDUSTRI</Text>
         </View>
         <View style={styles.lmsPill}>
           <View style={styles.onlineDot} />
@@ -79,7 +79,7 @@ export default function Level10CriteriaCard({
         <View style={styles.itemRow}>
           <MaterialCommunityIcons name="check-circle" size={16} color={theme?.success || '#4A6B41'} />
           <Text style={[styles.itemText, { color: theme?.textSecondary || '#5A604E' }]}>
-            <Text style={styles.bold}>Error Boundary:</Text> Perlindungan runtime crash pada level root UI
+            <Text style={styles.bold}>Error Boundary:</Text> Perlindungan runtime crash pada root UI aplikasi
           </Text>
         </View>
         <View style={styles.itemRow}>
