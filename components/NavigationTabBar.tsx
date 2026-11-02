@@ -66,20 +66,20 @@ export default function NavigationTabBar({
       accessibilityLabel="Navigasi Menu Utama"
     >
       <View style={styles.innerWrapper}>
-        {/* BRAND [</> Personal CV] - Tampak di Desktop & Tablet */}
+        {/* BRAND [Personal CV + Febrian Iradatul Rahman] - Tanpa Logo Koding */}
         {!isMobile && (
           <TouchableOpacity
             style={styles.brandGroup}
             onPress={() => onTabChange('home')}
             activeOpacity={0.8}
             accessibilityRole="button"
-            accessibilityLabel="Personal CV Beranda"
+            accessibilityLabel="Personal CV Febrian Iradatul Rahman"
           >
-            <View style={[styles.brandIcon, { backgroundColor: theme.primary }]}>
-              <Ionicons name="code-slash" size={14} color={theme.textInverted} />
-            </View>
             <Text style={[styles.brandTitle, { color: theme.textPrimary }]}>
               Personal CV
+            </Text>
+            <Text style={[styles.brandSubtitle, { color: theme.textSecondary }]}>
+              Febrian Iradatul Rahman
             </Text>
           </TouchableOpacity>
         )}
@@ -195,23 +195,23 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   brandGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginRight: 6,
-  },
-  brandIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 7,
-    alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 10,
+    gap: 1,
   },
   brandTitle: {
     fontFamily: FONTS.bold,
     fontSize: 14,
     fontWeight: '700',
     letterSpacing: -0.3,
+    lineHeight: 18,
+  },
+  brandSubtitle: {
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+    fontWeight: '500',
+    letterSpacing: 0.1,
+    lineHeight: 14,
   },
   scrollContainer: {
     flexDirection: 'row',
