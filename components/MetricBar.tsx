@@ -58,7 +58,7 @@ export default function MetricBar({ metrics, theme }: MetricBarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: SPACING.gap, // 20px standardized gap
     width: '100%',
   },
   gridRow: {

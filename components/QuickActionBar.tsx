@@ -75,14 +75,14 @@ export default function QuickActionBar({
               style={[
                 styles.iconBox,
                 {
-                  backgroundColor: theme.surfaceMuted,
-                  borderColor: theme.borderLight,
+                  backgroundColor: theme?.surfaceMuted || '#E5DFCE',
+                  borderColor: theme?.borderLight || '#939675',
                 },
               ]}
             >
-              <MaterialCommunityIcons name={act.icon} size={15} color={theme?.textPrimary || '#0F172A'} />
+              <MaterialCommunityIcons name={act.icon} size={15} color={theme?.textPrimary || '#363C2E'} />
             </View>
-            <Text style={[styles.chipText, { color: theme?.textPrimary || '#0F172A' }]}>
+            <Text style={[styles.chipText, { color: theme?.textPrimary || '#363C2E' }]}>
               {act.label}
             </Text>
           </TouchableOpacity>
@@ -94,7 +94,7 @@ export default function QuickActionBar({
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginVertical: SPACING.md, // 16px
+    marginBottom: SPACING.gap, // 20px standardized gap
     width: '100%',
   },
   container: {

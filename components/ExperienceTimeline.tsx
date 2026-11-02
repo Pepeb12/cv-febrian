@@ -94,10 +94,11 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
+    flex: 1,
   },
   timelineContainer: {
     paddingLeft: 2,

@@ -71,14 +71,14 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
 
       {/* Tombol Interaktif */}
       <TouchableOpacity
-        style={styles.actionButton}
+        style={[styles.actionButton, { backgroundColor: currentTheme.primary || '#62684D' }]}
         activeOpacity={0.8}
         onPress={onShowDetail}
         accessibilityRole="button"
         accessibilityLabel="Verifikasi Status Capaian Level 8"
       >
-        <Ionicons name="checkmark-done" size={16} color="#FFFFFF" />
-        <Text style={styles.actionButtonText}>Verifikasi Status Capaian Level 8</Text>
+        <Ionicons name="checkmark-done" size={16} color={currentTheme.textInverted || '#FFFFFF'} />
+        <Text style={[styles.actionButtonText, { color: currentTheme.textInverted || '#FFFFFF' }]}>Verifikasi Status Capaian Level 8</Text>
       </TouchableOpacity>
     </View>
   );
@@ -86,10 +86,11 @@ export default function Level8CriteriaCard({ onShowDetail, theme }: Level8Criter
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
-    padding: SPACING.xl, // 32px (Generous 8px scale)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1, // Soft hairline, no harsh border, no shadow
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
+    width: '100%',
   },
   cardHeader: {
     flexDirection: 'row',

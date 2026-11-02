@@ -85,10 +85,10 @@ export default function HobbySection({ hobbies = [], theme }: HobbySectionProps)
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
   },
   gridContainer: {
     gap: SPACING.md, // 16px (scale 8px)

@@ -64,14 +64,10 @@ export default function InteractiveEndorseBar({
             styles.endorseButton,
             {
               backgroundColor: isEndorsed
-                ? isDark
-                  ? '#1E293B'
-                  : '#0F172A'
+                ? theme.primary
                 : theme.surfaceMuted,
               borderColor: isEndorsed
-                ? isDark
-                  ? '#334155'
-                  : '#0F172A'
+                ? theme.primaryBorder
                 : theme.borderLight,
             },
           ]}
@@ -83,12 +79,12 @@ export default function InteractiveEndorseBar({
           <MaterialCommunityIcons
             name={isEndorsed ? 'thumb-up' : 'thumb-up-outline'}
             size={15}
-            color={isEndorsed ? '#FFFFFF' : theme.textPrimary}
+            color={isEndorsed ? theme.textInverted : theme.textPrimary}
           />
           <Text
             style={[
               styles.endorseButtonText,
-              { color: isEndorsed ? '#FFFFFF' : theme.textPrimary },
+              { color: isEndorsed ? theme.textInverted : theme.textPrimary },
             ]}
           >
             {isEndorsed ? 'Didukung' : 'Dukung'} ({endorseCount})
@@ -101,10 +97,11 @@ export default function InteractiveEndorseBar({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 12,
-    padding: SPACING.lg, // 24px (scale 8px)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
+    width: '100%',
   },
   contentRow: {
     flexDirection: 'row',

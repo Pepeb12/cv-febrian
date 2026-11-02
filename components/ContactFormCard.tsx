@@ -291,8 +291,8 @@ export default function ContactFormCard({
             accessibilityRole="button"
             accessibilityLabel="Kirim Pesan"
           >
-            <MaterialCommunityIcons name="send" size={15} color={isDark ? '#041812' : '#FFFFFF'} />
-            <Text style={[styles.submitButtonText, { color: isDark ? '#041812' : '#FFFFFF' }]}>
+            <MaterialCommunityIcons name="send" size={15} color={theme.textInverted} />
+            <Text style={[styles.submitButtonText, { color: theme.textInverted }]}>
               Kirim Pesan Sekarang
             </Text>
           </TouchableOpacity>
@@ -304,10 +304,11 @@ export default function ContactFormCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
-    padding: SPACING.xl, // 32px (Generous padding on 8px scale)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1, // Soft hairline, no harsh border
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
+    flex: 1,
   },
   formContainer: {
     gap: 10,

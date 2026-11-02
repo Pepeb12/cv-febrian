@@ -187,14 +187,14 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
 
         {onOpenConceptModal ? (
           <TouchableOpacity
-            style={styles.defenseBtn}
+            style={[styles.defenseBtn, { backgroundColor: theme?.primary || '#62684D' }]}
             onPress={onOpenConceptModal}
             activeOpacity={0.8}
             accessibilityRole="button"
             accessibilityLabel="Buka Panduan Konsep React Native"
           >
-            <MaterialCommunityIcons name="school" size={14} color="#FFFFFF" />
-            <Text style={styles.defenseBtnText}>Panduan Konsep</Text>
+            <MaterialCommunityIcons name="school" size={14} color={theme?.textInverted || '#FFFFFF'} />
+            <Text style={[styles.defenseBtnText, { color: theme?.textInverted || '#FFFFFF' }]}>Panduan Konsep</Text>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -302,10 +302,11 @@ export default function ChallengeLevelMatrix({ theme, onOpenConceptModal }: Chal
 
 const styles = StyleSheet.create({
   container: {
-    padding: SPACING.xl, // 32px (Scale 8px generous padding)
-    borderRadius: 16,
+    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderRadius: SPACING.cardRadius, // 16px
     borderWidth: 1, // Soft hairline, no harsh border, no shadow
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: SPACING.gap, // 20px standardized gap
+    width: '100%',
   },
   headerRow: {
     flexDirection: 'row',

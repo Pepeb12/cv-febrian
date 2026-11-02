@@ -64,3 +64,4 @@ $croppedBmp.Dispose()
 $src.Dispose()
 
 Write-Host "Successfully cropped and saved profile avatar to $destPath"
+

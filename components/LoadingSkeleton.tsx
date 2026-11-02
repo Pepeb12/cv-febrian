@@ -26,9 +26,9 @@ export default function LoadingSkeleton({
       accessibilityRole="progressbar"
       accessibilityLabel={message}
     >
-      <ActivityIndicator size="large" color="#0284C7" />
-      <Text style={[styles.message, { color: theme?.text || '#1E293B' }]}>{message}</Text>
-      <Text style={[styles.submessage, { color: theme?.textMuted || '#94A3B8' }]}>
+      <ActivityIndicator size="large" color={theme?.primary || '#62684D'} />
+      <Text style={[styles.message, { color: theme?.textPrimary || '#363C2E' }]}>{message}</Text>
+      <Text style={[styles.submessage, { color: theme?.textMuted || '#707762' }]}>
         Simulasi network latency REST API (600ms)
       </Text>
 
@@ -37,19 +37,19 @@ export default function LoadingSkeleton({
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: isDark ? '#334155' : '#E2E8F0', width: '85%' },
+            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '85%' },
           ]}
         />
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: isDark ? '#334155' : '#E2E8F0', width: '60%' },
+            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '60%' },
           ]}
         />
         <View
           style={[
             styles.shimmerBar,
-            { backgroundColor: isDark ? '#334155' : '#E2E8F0', width: '75%' },
+            { backgroundColor: theme?.surfaceMuted || '#E5DFCE', width: '75%' },
           ]}
         />
       </View>

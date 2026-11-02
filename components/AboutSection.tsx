@@ -189,12 +189,13 @@ export default function AboutSection({ data, profile, theme }: AboutSectionProps
 
 const styles = StyleSheet.create({
   container: {
-    gap: SPACING.xl, // 32px (Scale 8px: mb-8)
-    marginBottom: SPACING.xl,
+    gap: SPACING.gap, // 20px standardized gap
+    marginBottom: 0,
+    width: '100%',
   },
   card: {
-    borderRadius: 16,
-    padding: SPACING.xl, // 32px (Generous padding)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1, // Soft hairline, no harsh border, no shadow
   },
   introContent: {

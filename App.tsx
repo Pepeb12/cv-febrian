@@ -133,8 +133,8 @@ export default function App() {
       await StorageService.setThemeMode(nextMode ? 'dark' : 'light');
       setToast({
         message: nextMode
-          ? 'Mode Malam (Deep Emerald Night) diaktifkan'
-          : 'Mode Terang (Emerald Cream White) diaktifkan',
+          ? 'Mode Malam (Retro Olive & Beige) diaktifkan'
+          : 'Mode Terang (Retro Olive & Beige) diaktifkan',
         type: 'info',
       });
     } catch (err) {
@@ -317,7 +317,7 @@ export default function App() {
                 <RefreshControl
                   refreshing={isRefreshing}
                   onRefresh={handlePullToRefresh}
-                  colors={['#065F46', '#A7F3D0']}
+                  colors={[theme.primary, theme.secondary]}
                   tintColor={theme.primary}
                 />
               }
@@ -398,17 +398,17 @@ export default function App() {
                     <View style={styles.desktopGrid2Col}>
                       <View style={styles.desktopColHalf}>
                         <IdentityDetailCard data={profileData} theme={theme} />
+                        <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
                       </View>
                       <View style={styles.desktopColHalf}>
                         <AboutSection data={profileData} theme={theme} />
-                        <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
                       </View>
                     </View>
                   ) : (
                     <View style={styles.mobileColumn}>
                       <IdentityDetailCard data={profileData} theme={theme} />
-                      <AboutSection data={profileData} theme={theme} />
                       <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
+                      <AboutSection data={profileData} theme={theme} />
                     </View>
                   )}
                 </View>
@@ -708,27 +708,33 @@ const styles = StyleSheet.create({
   },
   responsiveContentWrapper: {
     width: '100%',
-    maxWidth: 1024, // Minimalist Tech Container max-width: 1024px
+    maxWidth: 1200, // Standardized 1200px container width
     marginHorizontal: 'auto',
     alignSelf: 'center',
+    gap: SPACING.gap, // 20px standardized inter-element gap
   },
   stageBlock: {
-    marginBottom: SPACING.xl, // 32px (mb-8 on 8px scale)
+    marginBottom: SPACING.gap, // 20px standardized gap
+    gap: SPACING.gap, // 20px standardized gap
   },
   // Desktop Widescreen 2-Column Grid
   desktopGrid2Col: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: SPACING.lg,
+    alignItems: 'stretch', // Equal/matching vertical heights
+    gap: SPACING.gap, // 20px standardized gap
+    width: '100%',
   },
   desktopColHalf: {
     flex: 1,
+    gap: SPACING.gap, // 20px gap
+    display: 'flex',
   },
   // Mobile / Tablet Single-Column
   mobileColumn: {
     width: '100%',
-    maxWidth: 680,
+    maxWidth: 720,
     alignSelf: 'center',
+    gap: SPACING.gap, // 20px gap
   },
   footer: {
     marginTop: SPACING.xl,

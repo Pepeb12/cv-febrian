@@ -86,14 +86,10 @@ export default function StageNavigationStepper({
                 styles.stageButton,
                 {
                   backgroundColor: isActive
-                    ? isDark
-                      ? '#1E293B'
-                      : '#0F172A'
+                    ? theme.primary
                     : theme.surfaceMuted,
                   borderColor: isActive
-                    ? isDark
-                      ? '#334155'
-                      : '#0F172A'
+                    ? theme.primaryBorder
                     : theme.borderLight,
                 },
               ]}
@@ -107,9 +103,7 @@ export default function StageNavigationStepper({
                   styles.iconWrap,
                   {
                     backgroundColor: isActive
-                      ? isDark
-                        ? '#0F172A'
-                        : '#1E293B'
+                      ? (isDark ? theme.surfaceMuted : theme.primaryHover)
                       : theme.surface,
                     borderColor: isActive ? 'transparent' : theme.borderLight,
                   },
@@ -118,7 +112,7 @@ export default function StageNavigationStepper({
                 <Ionicons
                   name={s.icon as any}
                   size={14}
-                  color={isActive ? '#FFFFFF' : theme.textPrimary}
+                  color={isActive ? theme.textInverted : theme.textPrimary}
                 />
               </View>
 
@@ -127,7 +121,7 @@ export default function StageNavigationStepper({
                   <Text
                     style={[
                       styles.stageTitle,
-                      { color: isActive ? '#FFFFFF' : theme.textPrimary },
+                      { color: isActive ? theme.textInverted : theme.textPrimary },
                     ]}
                   >
                     {s.title}
@@ -137,10 +131,8 @@ export default function StageNavigationStepper({
                       styles.stageLevelPill,
                       {
                         backgroundColor: isActive
-                          ? 'rgba(255, 255, 255, 0.15)'
-                          : isDark
-                          ? '#090D16'
-                          : '#FFFFFF',
+                          ? 'rgba(0, 0, 0, 0.15)'
+                          : theme.surface,
                         borderColor: isActive ? 'transparent' : theme.borderLight,
                       },
                     ]}
@@ -148,7 +140,7 @@ export default function StageNavigationStepper({
                     <Text
                       style={[
                         styles.stageLevelText,
-                        { color: isActive ? '#FFFFFF' : theme.textSecondary },
+                        { color: isActive ? theme.textInverted : theme.textSecondary },
                       ]}
                     >
                       {s.levels}
@@ -159,7 +151,7 @@ export default function StageNavigationStepper({
                 <Text
                   style={[
                     styles.stageSubtitle,
-                    { color: isActive ? '#94A3B8' : theme.textMuted },
+                    { color: isActive ? theme.textInverted : theme.textMuted },
                   ]}
                   numberOfLines={1}
                 >
@@ -176,10 +168,10 @@ export default function StageNavigationStepper({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 12,
+    borderRadius: SPACING.cardRadius, // 16px
     borderWidth: 1,
-    padding: SPACING.md, // 16px (scale 8px)
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    padding: SPACING.cardPadding, // 24px standardized card padding
+    marginBottom: SPACING.gap, // 20px standardized gap
   },
   headerRow: {
     flexDirection: 'row',

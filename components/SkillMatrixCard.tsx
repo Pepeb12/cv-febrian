@@ -103,14 +103,10 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
                 styles.filterTab,
                 {
                   backgroundColor: isActive
-                    ? isDark
-                      ? '#1E293B'
-                      : '#0F172A'
+                    ? theme.primary
                     : theme.surfaceMuted,
                   borderColor: isActive
-                    ? isDark
-                      ? '#334155'
-                      : '#0F172A'
+                    ? theme.primaryBorder
                     : theme.borderLight,
                 },
               ]}
@@ -122,7 +118,7 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
               <Text
                 style={[
                   styles.filterTabText,
-                  { color: isActive ? '#FFFFFF' : theme.textSecondary },
+                  { color: isActive ? theme.textInverted : theme.textSecondary },
                   isActive && { fontWeight: '700' },
                 ]}
               >
@@ -141,8 +137,8 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
             style={[
               styles.skillChip,
               {
-                backgroundColor: isDark ? '#1E293B' : '#F1F5F9', // bg-slate-100
-                borderColor: isDark ? '#334155' : '#E2E8F0',
+                backgroundColor: isDark ? theme.surfaceMuted : theme.surfaceSubtle,
+                borderColor: theme.border,
               },
             ]}
           >
@@ -167,7 +163,7 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
               style={[
                 styles.skillChipText,
                 {
-                  color: isDark ? '#F1F5F9' : '#0F172A',
+                  color: theme.textPrimary,
                 },
               ]}
             >
@@ -182,10 +178,10 @@ export default function SkillMatrixCard({ skills = [], theme }: SkillMatrixCardP
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8/12)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
     width: '100%',
   },
   filterTabsRow: {

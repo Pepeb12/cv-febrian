@@ -80,7 +80,7 @@ export default function ProfileCard({
         {
           backgroundColor: currentTheme.surface,
           borderColor: currentTheme.border,
-          padding: isMobile ? SPACING.lg : SPACING.xl,
+          padding: isMobile ? SPACING.md : SPACING.cardPadding,
         },
       ]}
       accessibilityRole="region"
@@ -114,11 +114,11 @@ export default function ProfileCard({
             style={[
               styles.statusPill,
               {
-                backgroundColor: isDark ? '#1E293B' : '#F3F4F6', // bg-gray-100
+                backgroundColor: currentTheme.surfaceMuted,
               },
             ]}
           >
-            <View style={[styles.statusDot, { backgroundColor: isDark ? '#34D399' : '#059669' }]} />
+            <View style={[styles.statusDot, { backgroundColor: currentTheme.success }]} />
             <Text style={[styles.statusText, { color: currentTheme.textSecondary }]}>
               AKTIF • SMT 5
             </Text>
@@ -153,14 +153,14 @@ export default function ProfileCard({
             Systems Analysis - Mobile Developer
           </Text>
 
-          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak - Sesuai Referensi Gambar) */}
+          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak - Retro Olive & Beige Theme) */}
           <View style={[styles.socialPillsRow, isMobile && styles.socialPillsRowMobile]}>
             <TouchableOpacity
               style={[
                 styles.socialPill,
                 {
-                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
-                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
                 },
               ]}
               onPress={handleOpenGitHub}
@@ -168,8 +168,8 @@ export default function ProfileCard({
               accessibilityRole="link"
               accessibilityLabel="Buka GitHub pepeb12"
             >
-              <Ionicons name="logo-github" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
-              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+              <Ionicons name="logo-github" size={15} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
                 GitHub
               </Text>
             </TouchableOpacity>
@@ -178,8 +178,8 @@ export default function ProfileCard({
               style={[
                 styles.socialPill,
                 {
-                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
-                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
                 },
               ]}
               onPress={handleOpenEmail}
@@ -187,8 +187,8 @@ export default function ProfileCard({
               accessibilityRole="link"
               accessibilityLabel="Kirim email ke febrianrahman902@gmail.com"
             >
-              <Ionicons name="mail-outline" size={15} color={isDark ? '#A7F3D0' : '#064E3B'} />
-              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+              <Ionicons name="mail-outline" size={15} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
                 Email
               </Text>
             </TouchableOpacity>
@@ -197,8 +197,8 @@ export default function ProfileCard({
               style={[
                 styles.socialPill,
                 {
-                  backgroundColor: isDark ? '#142721' : '#F5F5DC', // Warm Cream
-                  borderColor: isDark ? '#065F46' : '#E6E4CB',
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
                 },
               ]}
               onPress={handleOpenContact}
@@ -206,8 +206,8 @@ export default function ProfileCard({
               accessibilityRole="link"
               accessibilityLabel="Hubungi kontak WhatsApp 089512336537"
             >
-              <Ionicons name="send-outline" size={14} color={isDark ? '#A7F3D0' : '#064E3B'} />
-              <Text style={[styles.socialPillText, { color: isDark ? '#A7F3D0' : '#064E3B' }]}>
+              <Ionicons name="send-outline" size={14} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
                 Kontak
               </Text>
             </TouchableOpacity>
@@ -226,15 +226,15 @@ export default function ProfileCard({
             Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
           </Text>
 
-          {/* 5. DERETAN BADGE 'LEVEL' & 'IPK' KECIL ELEGAN (bg-gray-100, teks kecil, TANPA BORDER) */}
+          {/* 5. DERETAN BADGE 'LEVEL' & 'IPK' KECIL ELEGAN (Subtle Surface, teks kecil, TANPA BORDER) */}
           <View style={[styles.badgeFlexRow, isMobile && styles.badgeFlexRowMobile]}>
             <View
               style={[
                 styles.subtleBadge,
-                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
               ]}
             >
-              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
                 Level 10 (Industry Ready)
               </Text>
             </View>
@@ -242,10 +242,10 @@ export default function ProfileCard({
             <View
               style={[
                 styles.subtleBadge,
-                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
               ]}
             >
-              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
                 IPK: 3.84
               </Text>
             </View>
@@ -253,10 +253,10 @@ export default function ProfileCard({
             <View
               style={[
                 styles.subtleBadge,
-                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
               ]}
             >
-              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
                 Nilai: 90 (Grade A)
               </Text>
             </View>
@@ -264,10 +264,10 @@ export default function ProfileCard({
             <View
               style={[
                 styles.subtleBadge,
-                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
               ]}
             >
-              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
                 19.000 LP
               </Text>
             </View>
@@ -275,26 +275,26 @@ export default function ProfileCard({
             <View
               style={[
                 styles.subtleBadge,
-                { backgroundColor: isDark ? '#1E293B' : '#F3F4F6' }, // bg-gray-100
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
               ]}
             >
-              <Text style={[styles.subtleBadgeText, { color: isDark ? '#CBD5E1' : '#475569' }]}>
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
                 Masoem Univ • SMT 5
               </Text>
             </View>
           </View>
 
-          {/* 6. CALL TO ACTION BUTTONS (Flat Tech Minimalist) */}
+          {/* 6. CALL TO ACTION BUTTONS (Proporsional & Seragam) */}
           <View style={[styles.ctaRow, isMobile && styles.ctaRowMobile]}>
             <TouchableOpacity
-              style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.textPrimary }]}
+              style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.primary }]}
               onPress={onExploreScore}
               activeOpacity={0.8}
               accessibilityRole="button"
               accessibilityLabel="Lihat Capaian Nilai UTS"
             >
-              <Ionicons name="school-outline" size={16} color={isDark ? '#090D16' : '#FFFFFF'} />
-              <Text style={[styles.primaryCtaText, { color: isDark ? '#090D16' : '#FFFFFF' }]}>
+              <Ionicons name="school-outline" size={16} color={currentTheme.textInverted} />
+              <Text style={[styles.primaryCtaText, { color: currentTheme.textInverted }]}>
                 Capaian Nilai UTS (90/A)
               </Text>
             </TouchableOpacity>
@@ -303,8 +303,8 @@ export default function ProfileCard({
               style={[
                 styles.secondaryCtaBtn,
                 {
-                  backgroundColor: currentTheme.surfaceMuted,
-                  borderColor: currentTheme.borderLight,
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
                 },
               ]}
               onPress={onContactClick}
@@ -328,13 +328,14 @@ const styles = StyleSheet.create({
   heroContainer: {
     borderRadius: 16,
     borderWidth: 1, // Soft hairline 1px
-    marginBottom: SPACING.xl, // 32px (Scale 8px mb-8)
+    padding: SPACING.cardPadding, // 24px standardized card padding
+    marginBottom: SPACING.gap, // 20px gap
     width: '100%',
   },
   twoColumnWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: SPACING.xl, // 32px pemisah antar elemen yang lega
+    gap: SPACING.gap, // 20px standardized gap
     width: '100%',
   },
   twoColumnWrapperMobile: {
@@ -472,21 +473,24 @@ const styles = StyleSheet.create({
   },
   ctaRow: {
     flexDirection: 'row',
-    gap: SPACING.md,
+    gap: 12,
     width: '100%',
+    marginTop: 4,
   },
   ctaRowMobile: {
     flexDirection: 'column',
     width: '100%',
+    gap: 10,
   },
   primaryCtaBtn: {
     flex: 1,
+    minHeight: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 11,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     gap: 8,
   },
   primaryCtaText: {
@@ -496,12 +500,13 @@ const styles = StyleSheet.create({
   },
   secondaryCtaBtn: {
     flex: 1,
+    minHeight: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 11,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     gap: 8,
   },

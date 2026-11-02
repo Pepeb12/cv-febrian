@@ -40,11 +40,11 @@ export default function StageSectionDivider({
           style={[
             styles.stageBadge,
             {
-              backgroundColor: isDark ? '#1E293B' : '#0F172A',
+              backgroundColor: theme.primary,
             },
           ]}
         >
-          <Text style={styles.stageBadgeText}>TAHAP {stageNumber}</Text>
+          <Text style={[styles.stageBadgeText, { color: theme.textInverted }]}>TAHAP {stageNumber}</Text>
         </View>
 
         <View style={styles.titleCol}>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: SPACING.md, // 16px
     paddingHorizontal: SPACING.lg, // 24px
-    marginVertical: SPACING.xl, // 32px (mb-8)
+    marginVertical: SPACING.gap, // 20px standardized gap
   },
   contentRow: {
     flexDirection: 'row',

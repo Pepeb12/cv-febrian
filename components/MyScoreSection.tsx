@@ -308,10 +308,11 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 16,
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: SPACING.gap, // 20px standardized gap
+    width: '100%',
   },
   identityCard: {
     borderRadius: 12,

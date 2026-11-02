@@ -92,12 +92,12 @@ export default function IdentityDetailCard({ data, profile, theme }: IdentityDet
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING.xl, // 32px (mb-8)
+    marginBottom: 0,
     width: '100%',
   },
   card: {
-    borderRadius: 14,
-    padding: SPACING.xl, // 32px (Scale 8px: mb-8, py-8)
+    borderRadius: SPACING.cardRadius, // 16px standardized card radius
+    padding: SPACING.cardPadding, // 24px standardized card padding
     borderWidth: 1,
   },
   timelineContainer: {

@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   innerWrapper: {
     width: '100%',
-    maxWidth: 1024,
+    maxWidth: 1200, // Standardized 1200px container
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

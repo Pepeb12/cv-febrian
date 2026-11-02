@@ -1,13 +1,22 @@
 import { Platform } from 'react-native';
 
 /**
- * MINIMALIST TECH DESIGN SYSTEM & DESIGN TOKENS
- * - Font Utama: 'Inter' (Inter_400Regular s.d. Inter_900Black)
- * - Teks Utama: Dark Slate (#0F172A)
- * - Teks Sekunder: Slate Gray (#475569 / #64748B)
- * - Spacing Scale: 8px (sm: 8, md: 16, lg: 24, xl: 32 [mb-8], xxxl: 48 [py-12])
- * - Card Styling: Flat, tanpa border keras, zero drop shadow
- * - Kontras Hierarki: H1 (34px/900), H2 (22px/800), H3 (16px/600), Body (14px/400)
+ * RETRO OLIVE & BEIGE DESIGN SYSTEM & DESIGN TOKENS
+ *
+ * Palet Warna Terang (Light Mode - Retro Olive & Beige):
+ * - Background Utama: #EAE4D3 (Warm Beige)
+ * - Background Card & Navbar: #F4F1E8 (Light Cream Surface)
+ * - Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
+ * - Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
+ * - Teks Utama & Heading: #363C2E (Deep Dark Olive)
+ * - Teks Sekunder: #5A604E
+ *
+ * Palet Warna Malam (Dark Mode):
+ * - Background Utama: #20251D (Dark Forest)
+ * - Background Card & Navbar: #30372A (Deep Olive)
+ * - Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
+ * - Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
+ * - Teks Sekunder: #A8A48E
  */
 
 export const FONTS = {
@@ -28,84 +37,94 @@ export const FONTS = {
 
 export const LIGHT_THEME = {
   isDark: false,
-  // Tech Minimalist Primary Accent (Deep Tech Slate / Emerald)
-  primary: '#0F172A',         // Slate 900
-  primaryLight: '#F1F5F9',    // Slate 100
-  primaryHover: '#1E293B',
-  primaryBorder: '#E2E8F0',   // Subtle soft divider
+  // Aksen Utama, Tombol & Progress Bar: #62684D (Medium Olive)
+  primary: '#62684D',
+  primaryLight: 'rgba(98, 104, 77, 0.12)',
+  primaryHover: '#52573F',
+  primaryBorder: '#939675',
 
-  // Structural Surfaces (Minimalist Tech)
-  background: '#F8FAFC',      // Slate 50 clean backdrop
-  surface: '#FFFFFF',         // Pure flat white card
-  surfaceMuted: '#F1F5F9',    // Slate 100
-  surfaceSubtle: '#F8FAFC',
-  border: '#E2E8F0',          // Soft 1px hairline separator (no harsh borders)
-  borderLight: '#F1F5F9',
+  // Background Utama: #EAE4D3 (Warm Beige)
+  background: '#EAE4D3',
+  // Background Card & Navbar: #F4F1E8 (Light Cream Surface)
+  surface: '#F4F1E8',
+  surfaceMuted: '#E5DFCE',
+  surfaceSubtle: '#ECE7D8',
 
-  // Typography (Dark Slate & Muted Gray/Slate)
-  textPrimary: '#0F172A',     // Dark Slate (bukan pure black)
-  textSecondary: '#475569',   // Slate 600 (gray/slate lebih muda)
-  textMuted: '#64748B',       // Slate 500
-  textLight: '#94A3B8',       // Slate 400
+  // Border, Chip & Elemen Sekunder: #939675 (Sage Olive)
+  border: '#939675',
+  borderLight: 'rgba(147, 150, 117, 0.45)',
 
-  // Secondary & Badges
-  secondary: '#0F172A',
-  accentEmerald: '#059669',
-  accentMint: '#10B981',
-  accentCyan: '#0284C7',
-  accentAmber: '#D97706',
+  // Teks Utama & Heading: #363C2E (Deep Dark Olive)
+  textPrimary: '#363C2E',
+  // Teks Sekunder: #5A604E
+  textSecondary: '#5A604E',
+  textMuted: '#707762',
+  textLight: '#8C927E',
+  textInverted: '#F4F1E8',
 
-  // Feedback Colors
-  success: '#059669',
-  successLight: '#F0FDF4',
-  successBorder: '#BBF7D0',
-  successText: '#065F46',
-  error: '#DC2626',
-  errorLight: '#FEF2F2',
+  // Secondary & Accents
+  secondary: '#939675',
+  accentOlive: '#62684D',
+  accentSage: '#939675',
+  accentBeige: '#EAE4D3',
+  accentAmber: '#9C6F32',
 
-  cardHeaderBanner: '#0F172A',
-  inputBackground: '#F8FAFC',
+  // Feedback Colors harmonized with Retro Olive
+  success: '#4A6B41',
+  successLight: '#E8F0E4',
+  successBorder: '#8CAE82',
+  successText: '#2D4825',
+  error: '#A83B3B',
+  errorLight: '#FBEBEB',
+
+  cardHeaderBanner: '#F4F1E8',
+  inputBackground: '#EAE4D3',
 };
 
 export const DARK_THEME = {
   isDark: true,
-  // Tech Minimalist Dark Accent
-  primary: '#F8FAFC',         // Slate 50
-  primaryLight: '#1E293B',    // Slate 800
-  primaryHover: '#E2E8F0',
-  primaryBorder: '#334155',
+  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
+  primary: '#D8D2B8',
+  primaryLight: 'rgba(216, 210, 184, 0.15)',
+  primaryHover: '#ECE7D3',
+  primaryBorder: '#62694F',
 
-  // Structural Surfaces (Deep Minimalist Tech Dark)
-  background: '#090D16',      // Deepest Tech Slate
-  surface: '#0F172A',         // Slate 900
-  surfaceMuted: '#1E293B',    // Slate 800
-  surfaceSubtle: '#090D16',
-  border: '#1E293B',          // Slate 800 subtle hairline
-  borderLight: '#141E33',
+  // Background Utama: #20251D (Dark Forest)
+  background: '#20251D',
+  // Background Card & Navbar: #30372A (Deep Olive)
+  surface: '#30372A',
+  surfaceMuted: '#272D22',
+  surfaceSubtle: '#1C2119',
 
-  // Typography (Light Slate & Muted Gray)
-  textPrimary: '#F8FAFC',     // Slate 50
-  textSecondary: '#CBD5E1',   // Slate 300
-  textMuted: '#94A3B8',       // Slate 400
-  textLight: '#64748B',       // Slate 500
+  // Border, Badge & Elemen Sekunder: #62694F (Muted Olive)
+  border: '#62694F',
+  borderLight: 'rgba(98, 105, 79, 0.45)',
 
-  // Secondary & Badges
-  secondary: '#38BDF8',
-  accentEmerald: '#10B981',
-  accentMint: '#34D399',
-  accentCyan: '#38BDF8',
-  accentAmber: '#FBBF24',
+  // Teks Utama, Heading & Aksen Aktif: #D8D2B8 (Soft Beige)
+  textPrimary: '#D8D2B8',
+  // Teks Sekunder: #A8A48E
+  textSecondary: '#A8A48E',
+  textMuted: '#8D8973',
+  textLight: '#736F5C',
+  textInverted: '#20251D',
 
-  // Feedback Colors
-  success: '#10B981',
-  successLight: '#064E3B',
-  successBorder: '#065F46',
-  successText: '#34D399',
-  error: '#EF4444',
-  errorLight: '#450A0A',
+  // Secondary & Accents
+  secondary: '#62694F',
+  accentOlive: '#8C9472',
+  accentSage: '#62694F',
+  accentBeige: '#D8D2B8',
+  accentAmber: '#C99A52',
 
-  cardHeaderBanner: '#0F172A',
-  inputBackground: '#111827',
+  // Feedback Colors harmonized
+  success: '#6B945A',
+  successLight: '#1E2C1A',
+  successBorder: '#4E733F',
+  successText: '#BDE3AE',
+  error: '#D95858',
+  errorLight: '#381B1B',
+
+  cardHeaderBanner: '#30372A',
+  inputBackground: '#20251D',
 };
 
 export type Theme = typeof LIGHT_THEME;
@@ -114,16 +133,19 @@ export const getTheme = (isDark = false): Theme => (isDark ? DARK_THEME : LIGHT_
 
 export const COLORS = LIGHT_THEME;
 
-// Scale 8px Spacing (misal mb-8 = 32px, py-12 = 48px)
+// Spacing & Layout Standard (Container maxWidth 1200px, gap 20px, card padding 24px, card radius 16px)
 export const SPACING = {
-  xs: 4,      // 0.5x
-  sm: 8,      // 1x (8px)
-  md: 16,     // 2x (16px)
-  lg: 24,     // 3x (24px)
-  xl: 32,     // 4x (32px = mb-8)
-  xxl: 40,    // 5x (40px)
-  xxxl: 48,   // 6x (48px = py-12)
-  huge: 64,   // 8x (64px)
+  xs: 4,       // 4px
+  sm: 8,       // 8px
+  md: 16,      // 16px
+  gap: 20,     // 20px (Standard inter-element gap)
+  lg: 24,      // 24px (Standard card padding)
+  xl: 32,      // 32px (mb-8)
+  xxl: 40,     // 40px
+  xxxl: 48,    // 48px
+  huge: 64,    // 64px
+  cardPadding: 24,
+  cardRadius: 16,
 };
 
 // Hierarki Heading Kontras (H1, H2, H3, Body)
@@ -175,7 +197,7 @@ export const TYPOGRAPHY = {
   },
 };
 
-// Zero/minimal shadow: Dilarang menambahkan gradient warna atau efek bayangan (drop shadow) berlebihan
+// Minimalist Flat Shadow System
 export const SHADOWS = {
   sm: {},
   md: {},
