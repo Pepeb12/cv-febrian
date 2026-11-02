@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Platform,
   Alert,
   useWindowDimensions,
+  Modal,
+  Pressable,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, FONTS } from '../theme';
@@ -38,6 +40,7 @@ export default function ProfileCard({
 }: ProfileCardProps) {
   const { width } = useWindowDimensions();
   const isMobile = width < 680;
+  const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
   const student = data || profile;
   const currentTheme = theme || COLORS;
@@ -92,7 +95,7 @@ export default function ProfileCard({
       <View style={[styles.twoColumnWrapper, isMobile && styles.twoColumnWrapperMobile]}>
         {/* KOLOM KIRI (30%): FOTO PROFIL ROUNDED-XL DENGAN RASIO 1:1 */}
         <View style={[styles.leftColumn, isMobile && styles.leftColumnMobile]}>
-          <View
+          <TouchableOpacity
             style={[
               styles.avatarFrame,
               {
@@ -100,6 +103,11 @@ export default function ProfileCard({
                 borderColor: currentTheme.borderLight,
               },
             ]}
+            activeOpacity={0.85}
+            onPress={() => setIsPhotoZoomed(true)}
+            accessibilityRole="button"
+            accessibilityLabel={`Foto profil ${student.nama || student.fullName}. Ketuk untuk memperbesar`}
+            accessibilityHint="Membuka foto profil ukuran penuh di tengah layar"
           >
             <Image
               source={require('../assets/profile.png')}
@@ -107,7 +115,11 @@ export default function ProfileCard({
               resizeMode="cover"
               accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
             />
-          </View>
+            {/* Indikator Tombol Zoom di Sudut Foto */}
+            <View style={styles.zoomHintBadge}>
+              <Ionicons name="expand-outline" size={13} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
 
           {/* Status Badge Ringkas */}
           <View
@@ -320,6 +332,93 @@ export default function ProfileCard({
           </View>
         </View>
       </View>
+
+      {/* ========================================================
+          MODAL LIGHTBOX: ZOOM FOTO PROFIL DI TENGAH LAYAR
+          ======================================================== */}
+      <Modal
+        visible={isPhotoZoomed}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsPhotoZoomed(false)}
+      >
+        <Pressable
+          style={styles.zoomBackdrop}
+          onPress={() => setIsPhotoZoomed(false)}
+          accessibilityRole="button"
+          accessibilityLabel="Tutup tampilan foto besar"
+        >
+          <Pressable
+            style={[
+              styles.zoomCard,
+              {
+                backgroundColor: currentTheme.surface,
+                borderColor: currentTheme.border,
+              },
+            ]}
+            onPress={(e) => e.stopPropagation()}
+          >
+            {/* Tombol Tutup X di Sudut Kanan Atas */}
+            <TouchableOpacity
+              style={[
+                styles.zoomCloseBtn,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+              onPress={() => setIsPhotoZoomed(false)}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Tutup tampilan foto"
+            >
+              <Ionicons name="close" size={20} color={currentTheme.textPrimary} />
+            </TouchableOpacity>
+
+            {/* Frame Foto Besar Terpusat */}
+            <View
+              style={[
+                styles.zoomImageFrame,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+            >
+              <Image
+                source={require('../assets/profile.png')}
+                style={styles.zoomImage}
+                resizeMode="cover"
+                accessibilityLabel={`Foto profil ${student.nama || student.fullName} ukuran besar`}
+              />
+            </View>
+
+            {/* Keterangan & Identitas di Bawah Foto */}
+            <View style={styles.zoomCaption}>
+              <Text style={[styles.zoomName, { color: currentTheme.textPrimary }]}>
+                {student.nama || student.fullName}
+              </Text>
+              <Text style={[styles.zoomSubtitle, { color: currentTheme.textSecondary }]}>
+                {student.nim ? `NIM: ${student.nim} • ` : ''}Sistem Informasi Masoem University
+              </Text>
+              <View
+                style={[
+                  styles.zoomBadge,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.borderLight,
+                  },
+                ]}
+              >
+                <Ionicons name="shield-checkmark" size={13} color={currentTheme.primary} />
+                <Text style={[styles.zoomBadgeText, { color: currentTheme.textSecondary }]}>
+                  Foto Profil Resmi Mahasiswa
+                </Text>
+              </View>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -360,6 +459,23 @@ const styles = StyleSheet.create({
     borderRadius: 20, // Rounded-xl
     borderWidth: 1,
     overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer' as any,
+      },
+    }),
+  },
+  zoomHintBadge: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -514,5 +630,98 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontSize: 13,
     fontWeight: '600',
+  },
+  // ZOOM LIGHTBOX MODAL STYLES
+  zoomBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(8px)' as any,
+        cursor: 'default' as any,
+      },
+    }),
+  },
+  zoomCard: {
+    width: '100%',
+    maxWidth: 380,
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: 20,
+    alignItems: 'center',
+    position: 'relative',
+    ...Platform.select({
+      web: {
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)' as any,
+      },
+      default: {
+        elevation: 8,
+      },
+    }),
+  },
+  zoomCloseBtn: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    ...Platform.select({
+      web: {
+        cursor: 'pointer' as any,
+      },
+    }),
+  },
+  zoomImageFrame: {
+    width: '100%',
+    maxWidth: 300,
+    aspectRatio: 1,
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: 'hidden',
+    marginTop: 18,
+  },
+  zoomImage: {
+    width: '100%',
+    height: '100%',
+  },
+  zoomCaption: {
+    alignItems: 'center',
+    marginTop: 16,
+    width: '100%',
+    gap: 4,
+  },
+  zoomName: {
+    fontFamily: FONTS.bold,
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  zoomSubtitle: {
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  zoomBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 6,
+  },
+  zoomBadgeText: {
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+    fontWeight: '500',
   },
 });
