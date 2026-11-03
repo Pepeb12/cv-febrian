@@ -2,16 +2,23 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, FONTS } from '../theme';
-import { ContactItem } from '../types';
+import { COLORS, SPACING, FONTS } from '../theme';
+import { ContactItem, ThemeColors } from '../types';
 
 interface ContactGridCardProps {
   contactItems?: ContactItem[];
-  theme: Theme;
+  theme?: ThemeColors | any;
 }
 
+/**
+ * ContactGridCard Component (Kanal Kontak & Jaringan)
+ * - Email Mahasiswa 1 baris penuh (100% width) agar alamat email utuh tanpa elipsis
+ * - 4 item lainnya (WhatsApp, GitHub, Domisili, Kampus) dalam Grid 2x2
+ * - Box Status Kolaborasi di bagian paling bawah (marginTop: 'auto')
+ * - flex: 1 dan tinggi rata sejajar dengan Card Form Pesan di kanan
+ */
 export default function ContactGridCard({ contactItems = [], theme }: ContactGridCardProps) {
-  const isDark = theme.isDark;
+  const currentTheme = theme || COLORS;
 
   const handleContactPress = (item: ContactItem) => {
     const message = `${item.label}:\n${item.value}`;
@@ -22,50 +29,17 @@ export default function ContactGridCard({ contactItems = [], theme }: ContactGri
     }
   };
 
-  // 4 Default Items with authentic data
-  const defaultItems = [
-    {
-      label: 'Email',
-      value: 'febrianrahman902@gmail.com',
-      icon: 'mail-outline',
-      sub: 'Respon Cepat',
-    },
-    {
-      label: 'WhatsApp / Telepon',
-      value: '089512336537',
-      icon: 'logo-whatsapp',
-      sub: 'Pesan Singkat & Diskusi',
-    },
-    {
-      label: 'GitHub Repository',
-      value: 'github.com/pepeb12',
-      icon: 'logo-github',
-      sub: 'Karya Kode Terbuka',
-    },
-    {
-      label: 'Domisili & Status',
-      value: 'Rancaekek / Sumedang, Jawa Barat',
-      icon: 'location-outline',
-      sub: 'Mahasiswa Masoem University',
-    },
-  ];
-
-  const items = contactItems && contactItems.length >= 4
-    ? contactItems.slice(0, 4).map((c, i) => ({
-        label: c.label,
-        value: c.displayValue || c.value,
-        icon: c.icon || defaultItems[i]?.icon || 'chatbubble-outline',
-        sub: defaultItems[i]?.sub || 'Info Kontak',
-      }))
-    : defaultItems;
+  // Pisahkan Email dari 4 item lainnya
+  const emailItem = contactItems.find((i) => i.type === 'email');
+  const otherItems = contactItems.filter((i) => i.type !== 'email');
 
   return (
     <View
       style={[
         styles.card,
         {
-          backgroundColor: theme.surface,
-          borderColor: theme.border,
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
         },
       ]}
       accessibilityRole="region"
@@ -76,59 +50,115 @@ export default function ContactGridCard({ contactItems = [], theme }: ContactGri
         subtitle="Komunikasi & Kolaborasi Profesional"
         icon="share-social-outline"
         badgeText="Kontak"
-        theme={theme}
+        theme={currentTheme}
       />
 
-      {/* 4 Tumpukan Kartu Info Kontak Vertikal dengan Kotak Ikon Indigo di Sisi Kiri */}
-      <View style={styles.verticalCardsStack}>
-        {items.map((item, idx) => (
+      <View style={styles.contentWrapper}>
+        {/* 1. EMAIL MAHASISWA — 1 BARIS PENUH (100% WIDTH, UTUH TANPA TERPOTONG) */}
+        {emailItem && (
           <TouchableOpacity
-            key={idx}
             style={[
-              styles.contactInfoCard,
+              styles.fullWidthItem,
               {
-                backgroundColor: isDark ? 'rgba(22, 27, 51, 0.7)' : 'rgba(248, 250, 252, 0.85)',
-                borderColor: theme.border,
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.border,
               },
             ]}
-            onPress={() => handleContactPress(item as any)}
-            activeOpacity={0.75}
+            activeOpacity={0.7}
+            onPress={() => handleContactPress(emailItem)}
             accessibilityRole="button"
-            accessibilityLabel={`${item.label}: ${item.value}`}
+            accessibilityLabel={`${emailItem.label}: ${emailItem.displayValue}`}
           >
-            {/* Kotak Ikon Indigo di Kiri */}
             <View
               style={[
-                styles.indigoIconBox,
+                styles.iconCircle,
                 {
-                  backgroundColor: isDark ? 'rgba(99, 102, 241, 0.16)' : 'rgba(79, 70, 229, 0.1)',
-                  borderColor: theme.primary,
+                  backgroundColor: currentTheme.surface,
+                  borderColor: currentTheme.border,
                 },
               ]}
             >
-              <Ionicons name={item.icon as any} size={18} color={theme.primary} />
+              <Ionicons name="mail-outline" size={17} color={currentTheme.primary} />
             </View>
-
-            {/* Informasi Teks */}
-            <View style={styles.infoTextCol}>
-              <View style={styles.labelRow}>
-                <Text style={[styles.itemLabel, { color: theme.textMuted }]}>
-                  {item.label}
-                </Text>
-                <Text style={[styles.itemSub, { color: theme.secondary }]}>
-                  {item.sub}
-                </Text>
-              </View>
+            <View style={styles.textContainer}>
+              <Text style={[styles.itemLabel, { color: currentTheme.textMuted }]}>
+                {emailItem.label}
+              </Text>
               <Text
-                style={[styles.itemValue, { color: theme.textPrimary }]}
+                style={[styles.itemValueEmail, { color: currentTheme.textPrimary }]}
                 selectable={true}
-                numberOfLines={1}
               >
-                {item.value}
+                {emailItem.displayValue || emailItem.value}
               </Text>
             </View>
           </TouchableOpacity>
-        ))}
+        )}
+
+        {/* 2. GRID 2x2 UNTUK 4 ITEM SISANYA (WhatsApp, GitHub, Domisili, Kampus) */}
+        <View style={styles.grid2x2}>
+          {otherItems.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.gridItem,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+              activeOpacity={0.7}
+              onPress={() => handleContactPress(item)}
+              accessibilityRole="button"
+              accessibilityLabel={`${item.label}: ${item.displayValue}`}
+            >
+              <View
+                style={[
+                  styles.iconCircle,
+                  {
+                    backgroundColor: currentTheme.surface,
+                    borderColor: currentTheme.border,
+                  },
+                ]}
+              >
+                <Ionicons name={(item.icon as any) || 'link-outline'} size={16} color={currentTheme.primary} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={[styles.itemLabel, { color: currentTheme.textMuted }]}>
+                  {item.label}
+                </Text>
+                <Text
+                  style={[styles.itemValue, { color: currentTheme.textPrimary }]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {item.displayValue}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* 3. BOX STATUS KOLABORASI & KETERSEDIAAN DI BAGIAN PALING BAWAH (marginTop: 'auto') */}
+        <View
+          style={[
+            styles.statusCollabBox,
+            {
+              backgroundColor: currentTheme.surfaceMuted,
+              borderColor: currentTheme.borderLight,
+              borderLeftColor: currentTheme.primary,
+            },
+          ]}
+        >
+          <View style={styles.statusCollabTop}>
+            <View style={[styles.statusDot, { backgroundColor: currentTheme.success }]} />
+            <Text style={[styles.statusCollabHeading, { color: currentTheme.textPrimary }]}>
+              Status Ketersediaan &amp; Kolaborasi
+            </Text>
+          </View>
+          <Text style={[styles.statusCollabDesc, { color: currentTheme.textSecondary }]}>
+            Aktif — Terbuka untuk diskusi proyek pengembangan aplikasi mobile React Native, rekayasa UI/UX, dan analisis sistem informasi.
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -136,75 +166,150 @@ export default function ContactGridCard({ contactItems = [], theme }: ContactGri
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 22,
-    padding: 24,
+    borderRadius: SPACING.cardRadius,
+    padding: SPACING.cardPadding,
     borderWidth: 1,
+    marginBottom: 0,
+    flex: 1,
     width: '100%',
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
-      } as any,
-      default: {
-        elevation: 4,
-      },
-    }),
   },
-  verticalCardsStack: {
-    gap: 14,
-    marginTop: 8,
+  contentWrapper: {
+    flex: 1,
+    gap: 12,
+    marginTop: 4,
+    justifyContent: 'space-between',
   },
-  contactInfoCard: {
+  // EMAIL FULL WIDTH ITEM
+  fullWidthItem: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 16,
+    padding: 12,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 14,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer' as any,
-        transition: 'transform 0.15s ease, border-color 0.15s ease' as any,
-      },
-    }),
+    gap: 12,
   },
-  indigoIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    borderWidth: 1.2,
+  // GRID 2x2
+  grid2x2: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'space-between',
+  },
+  gridItem: {
+    width: '48.5%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 11,
+    borderRadius: 10,
+    borderWidth: 1,
+    gap: 10,
+  },
+  iconCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexShrink: 0,
-    ...Platform.select({
-      web: {
-        boxShadow: '0 0 12px rgba(99, 102, 241, 0.25)',
-      } as any,
-    }),
   },
-  infoTextCol: {
+  textContainer: {
     flex: 1,
-    gap: 3,
-  },
-  labelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   itemLabel: {
     fontFamily: FONTS.semiBold,
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
+    marginBottom: 2,
   },
-  itemSub: {
-    fontFamily: FONTS.medium,
-    fontSize: 10.5,
+  itemValueEmail: {
+    fontFamily: FONTS.bold,
+    fontSize: 13,
+    fontWeight: '700',
   },
   itemValue: {
     fontFamily: FONTS.bold,
-    fontSize: 13.5,
+    fontSize: 12,
     fontWeight: '700',
+  },
+  // STATUS COLLABORATION BOX
+  statusCollabBox: {
+    padding: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderLeftWidth: 3,
+    marginTop: 'auto',
+    gap: 6,
+  },
+  statusCollabTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
+  statusDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+  },
+  statusCollabHeading: {
+    fontFamily: FONTS.bold,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  statusCollabDesc: {
+    fontFamily: FONTS.regular,
+    fontSize: 11.5,
+    lineHeight: 17,
+  },
+  // COLLABORATION BANNER (GAMBAR_6_CONTACT)
+  collabBannerFrame: {
+    width: '100%',
+    height: 140,
+    borderRadius: 12,
+    borderWidth: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#000000',
+    marginBottom: 4,
+  },
+  collabBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  collabBannerOverlay: {
+    position: 'absolute',
+    bottom: 8,
+    left: 8,
+    right: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 2,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(8px)' as any,
+      },
+    }),
+  },
+  collabBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  collabDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  collabBadgeTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 11.5,
+    fontWeight: '700',
+  },
+  collabBadgeSub: {
+    fontFamily: FONTS.medium,
+    fontSize: 10.5,
   },
 });

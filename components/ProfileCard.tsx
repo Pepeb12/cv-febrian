@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,22 +11,25 @@ import {
   useWindowDimensions,
   Modal,
   Pressable,
-  Animated,
-  Easing,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme, FONTS } from '../theme';
-import { StudentProfile } from '../types';
+import { COLORS, SPACING, FONTS } from '../theme';
+import { StudentProfile, ThemeColors } from '../types';
 import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface ProfileCardProps {
   data?: StudentProfile | any;
   profile?: StudentProfile | any;
-  theme: Theme;
+  theme?: ThemeColors | any;
   onExploreScore?: () => void;
   onContactClick?: () => void;
 }
 
+/**
+ * ProfileCard Component (Hero Profile Card - 65% Bento Column)
+ * - Kolom Kiri: Foto Profil rasio 1:1 (rounded-xl) dengan zoom modal
+ * - Kolom Kanan: Nama (H1), Badge NIM (242505024), Role, Tombol Kontak, Deskripsi, Badges & CTA
+ */
 export default function ProfileCard({
   data,
   profile,
@@ -35,132 +38,38 @@ export default function ProfileCard({
   onContactClick,
 }: ProfileCardProps) {
   const { width } = useWindowDimensions();
-  const isDesktop = width >= 1024;
   const isMobile = width < 768;
-
-  const student = data || profile;
-  const isDark = theme.isDark;
-
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false);
 
-  // Typewriter animation state for role
-  const fullRoleText = student?.profesi || 'Junior Systems Analyst & Mobile App Developer';
-  const [typedRole, setTypedRole] = useState('');
-  const [cursorVisible, setCursorVisible] = useState(true);
-
-  // Floating orbit badges animation
-  const floatAnim1 = useRef(new Animated.Value(0)).current;
-  const floatAnim2 = useRef(new Animated.Value(0)).current;
-  const meshRotateAnim = useRef(new Animated.Value(0)).current;
-
-  // Typewriter effect
-  useEffect(() => {
-    let currentIdx = 0;
-    let isDeleting = false;
-    let timer: any = null;
-
-    const tick = () => {
-      if (!isDeleting) {
-        setTypedRole(fullRoleText.slice(0, currentIdx + 1));
-        currentIdx++;
-        if (currentIdx === fullRoleText.length) {
-          timer = setTimeout(() => {
-            isDeleting = true;
-            tick();
-          }, 3500);
-          return;
-        }
-      } else {
-        setTypedRole(fullRoleText.slice(0, currentIdx - 1));
-        currentIdx--;
-        if (currentIdx === 0) {
-          isDeleting = false;
-        }
-      }
-      const speed = isDeleting ? 30 : 70;
-      timer = setTimeout(tick, speed);
-    };
-
-    timer = setTimeout(tick, 200);
-
-    // Blinking cursor
-    const cursorInterval = setInterval(() => {
-      setCursorVisible((prev) => !prev);
-    }, 530);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(cursorInterval);
-    };
-  }, [fullRoleText]);
-
-  // Floating animations
-  useEffect(() => {
-    const loop1 = Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnim1, {
-          toValue: -10,
-          duration: 2800,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-        Animated.timing(floatAnim1, {
-          toValue: 0,
-          duration: 2800,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-      ])
-    );
-
-    const loop2 = Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnim2, {
-          toValue: 8,
-          duration: 3200,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-        Animated.timing(floatAnim2, {
-          toValue: 0,
-          duration: 3200,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-      ])
-    );
-
-    const loopRotate = Animated.loop(
-      Animated.timing(meshRotateAnim, {
-        toValue: 1,
-        duration: 30000,
-        easing: Easing.linear,
-        useNativeDriver: Platform.OS !== 'web',
-      })
-    );
-
-    loop1.start();
-    loop2.start();
-    loopRotate.start();
-
-    return () => {
-      loop1.stop();
-      loop2.stop();
-      loopRotate.stop();
-    };
-  }, [floatAnim1, floatAnim2, meshRotateAnim]);
-
-  const spin = meshRotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
+  const student = data || profile;
+  const currentTheme = theme || COLORS;
+  const isDark = currentTheme.isDark;
 
   const handleOpenGitHub = () => {
-    const url = student?.githubUrl || 'https://github.com/pepeb12';
+    const url = 'https://github.com/pepeb12';
     if (Platform.OS === 'web') {
       window.open(url, '_blank');
     } else {
       Linking.openURL(url).catch(() => Alert.alert('GitHub', `Akun GitHub: pepeb12\n${url}`));
+    }
+  };
+
+  const handleOpenEmail = () => {
+    const email = 'febrianrahman902@gmail.com';
+    if (Platform.OS === 'web') {
+      window.open(`mailto:${email}`, '_blank');
+    } else {
+      Linking.openURL(`mailto:${email}`).catch(() => Alert.alert('Email', `Email: ${email}`));
+    }
+  };
+
+  const handleOpenContact = () => {
+    const phone = '089512336537';
+    const waUrl = 'https://wa.me/6289512336537';
+    if (Platform.OS === 'web') {
+      window.open(waUrl, '_blank');
+    } else {
+      Linking.openURL(waUrl).catch(() => Alert.alert('Kontak / WA', `Nomor Kontak: ${phone}`));
     }
   };
 
@@ -171,256 +80,279 @@ export default function ProfileCard({
       style={[
         styles.heroContainer,
         {
-          backgroundColor: theme.surface,
-          borderColor: theme.border,
-          padding: isMobile ? 18 : 28,
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
+          padding: isMobile ? SPACING.md : SPACING.cardPadding,
         },
       ]}
       accessibilityRole="region"
       accessibilityLabel="Header Profil Mahasiswa"
     >
-      <View style={[styles.asymmetricLayout, isDesktop ? styles.rowDesktop : styles.columnMobile]}>
-        {/* ========================================================
-            KOLOM KIRI (55%): BADGE STATUS, NAMA BESAR, TYPEWRITER, PARAGRAF, TOMBOL
-            ======================================================== */}
-        <View style={[styles.leftContentCol, isDesktop && styles.leftContentColDesktop]}>
-          {/* 1. Badge Status dengan Titik Hijau Menyala */}
-          <View
-            style={[
-              styles.statusBadge,
-              {
-                backgroundColor: isDark ? 'rgba(34, 197, 94, 0.12)' : 'rgba(22, 163, 74, 0.08)',
-                borderColor: isDark ? 'rgba(34, 197, 94, 0.35)' : 'rgba(22, 163, 74, 0.25)',
-              },
-            ]}
-          >
-            <View style={styles.greenPulseDot} />
-            <Text
-              style={[
-                styles.statusText,
-                { color: isDark ? '#4ADE80' : '#15803D' },
-              ]}
-            >
-              {student.status || 'Mahasiswa Aktif'} • Semester {student.semester || 5}
-            </Text>
-          </View>
-
-          {/* 2. Nama Lengkap Besar (fontSize 48 di Desktop) dengan Aksen Indigo */}
-          <Text style={[styles.heroName, { color: theme.textPrimary }]}>
-            Febrian Iradatul{' '}
-            <Text style={{ color: theme.textHighlight }}>
-              Rahman
-            </Text>
-          </Text>
-
-          {/* 3. Role dengan Efek Ketik (Typewriter) Emas Amber & Kursor Berkedip */}
-          <View style={styles.typewriterRow}>
-            <Text style={[styles.typewriterText, { color: theme.secondary }]}>
-              {typedRole}
-            </Text>
-            <Text
-              style={[
-                styles.blinkingCursor,
-                {
-                  color: theme.secondary,
-                  opacity: cursorVisible ? 1 : 0,
-                },
-              ]}
-            >
-              |
-            </Text>
-          </View>
-
-          {/* 4. Paragraf Deskripsi Profil Asli */}
-          <Text style={[styles.heroDescription, { color: theme.textSecondary }]}>
-            {student.deskripsi}
-          </Text>
-
-          {/* 5. Baris Tombol Aksi: Kapsul Solid Indigo & Frosted Outline */}
-          <View style={styles.actionButtonsRow}>
-            {onExploreScore && (
-              <TouchableOpacity
-                style={[
-                  styles.primaryCapsuleBtn,
-                  { backgroundColor: theme.primaryButton },
-                ]}
-                onPress={onExploreScore}
-                activeOpacity={0.8}
-                accessibilityRole="button"
-                accessibilityLabel="Lihat Capaian Akademik My Score"
-              >
-                <Ionicons name="school-outline" size={17} color="#FFFFFF" />
-                <Text style={styles.primaryBtnText}>Lihat My Score</Text>
-              </TouchableOpacity>
-            )}
-
-            {onContactClick && (
-              <TouchableOpacity
-                style={[
-                  styles.outlineCapsuleBtn,
-                  {
-                    borderColor: theme.borderStrong,
-                    backgroundColor: isDark ? 'rgba(30, 37, 70, 0.5)' : 'rgba(238, 242, 255, 0.7)',
-                  },
-                ]}
-                onPress={onContactClick}
-                activeOpacity={0.8}
-                accessibilityRole="button"
-                accessibilityLabel="Hubungi Saya"
-              >
-                <Ionicons name="mail-outline" size={16} color={theme.textPrimary} />
-                <Text style={[styles.outlineBtnText, { color: theme.textPrimary }]}>
-                  Hubungi Saya
-                </Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              style={[
-                styles.outlineCapsuleBtn,
-                {
-                  borderColor: theme.border,
-                  backgroundColor: isDark ? 'rgba(22, 27, 51, 0.6)' : 'rgba(241, 245, 249, 0.8)',
-                },
-              ]}
-              onPress={handleOpenGitHub}
-              activeOpacity={0.8}
-              accessibilityRole="button"
-              accessibilityLabel="Buka Profil GitHub"
-            >
-              <Ionicons name="logo-github" size={16} color={theme.textPrimary} />
-              <Text style={[styles.outlineBtnText, { color: theme.textPrimary }]}>
-                GitHub
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* ========================================================
-            KOLOM KANAN (45%): FOTO PROFIL, WIREFRAME MESH ORBIT & 4 FLOATING BADGES
-            ======================================================== */}
-        <View style={[styles.rightVisualCol, isDesktop && styles.rightVisualColDesktop]}>
-          {/* Wireframe Mesh Spirograph Orbit di belakang foto */}
-          <Animated.View
-            style={[
-              styles.meshOrbitRing,
-              {
-                borderColor: isDark ? 'rgba(99, 102, 241, 0.3)' : 'rgba(79, 70, 229, 0.16)',
-                transform: [{ rotate: spin }],
-              },
-            ]}
-          >
-            <View
-              style={[
-                styles.meshOrbitInner,
-                {
-                  borderColor: isDark ? 'rgba(245, 158, 11, 0.25)' : 'rgba(217, 119, 6, 0.14)',
-                },
-              ]}
-            />
-          </Animated.View>
-
-          {/* Avatar Profile Frame */}
+      {/* ========================================================
+          FLEXBOX DUA KOLOM: FOTO DI KIRI & INFORMASI DI KANAN
+          ======================================================== */}
+      <View style={[styles.twoColumnWrapper, isMobile && styles.twoColumnWrapperMobile]}>
+        {/* KOLOM KIRI (30%): FOTO PROFIL ROUNDED-XL DENGAN RASIO 1:1 */}
+        <View style={[styles.leftColumn, isMobile && styles.leftColumnMobile]}>
           <TouchableOpacity
             style={[
-              styles.avatarContainer,
+              styles.avatarFrame,
               {
-                borderColor: theme.primary,
-                backgroundColor: theme.surfaceMuted,
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.border,
               },
             ]}
+            activeOpacity={0.85}
             onPress={() => setIsPhotoZoomed(true)}
-            activeOpacity={0.9}
             accessibilityRole="button"
-            accessibilityLabel={`Foto profil ${student.nama}. Ketuk untuk memperbesar.`}
+            accessibilityLabel={`Foto profil ${student.nama || student.fullName}. Ketuk untuk memperbesar`}
+            accessibilityHint="Membuka foto profil ukuran penuh di tengah layar"
           >
             <Image
               source={SECTION_IMAGES.GAMBAR_1_HOME.source}
               style={styles.avatarImage}
               resizeMode="cover"
+              accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
             />
-            {/* Overlay hint */}
+            {/* Floating NIM Badge Overlay */}
+            <View
+              style={[
+                styles.floatingNimBadge,
+                {
+                  backgroundColor: currentTheme.primary,
+                },
+              ]}
+            >
+              <Text style={[styles.floatingNimText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
+                NIM: {student.nim || '242505024'}
+              </Text>
+            </View>
+            {/* Indikator Tombol Zoom di Sudut Foto */}
             <View style={styles.zoomHintBadge}>
-              <Ionicons name="scan-outline" size={14} color="#FFFFFF" />
+              <Ionicons name="expand-outline" size={13} color="#FFFFFF" />
             </View>
           </TouchableOpacity>
 
-          {/* BADGE 1: Kiri Atas (NIM) */}
-          <Animated.View
+          {/* Status Badge Mahasiswa Aktif */}
+          <View
             style={[
-              styles.floatingBadge,
-              styles.badgeTopLeft,
+              styles.statusPill,
               {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-                transform: [{ translateY: floatAnim1 }],
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
               },
             ]}
           >
-            <View style={[styles.dotPill, { backgroundColor: '#6366F1' }]} />
-            <Text style={[styles.floatingBadgeText, { color: theme.textPrimary }]}>
-              NIM: {student.nim}
+            <View style={[styles.statusDot, { backgroundColor: currentTheme.success }]} />
+            <Text style={[styles.statusText, { color: currentTheme.textSecondary }]}>
+              AKTIF • SMT 5
             </Text>
-          </Animated.View>
+          </View>
+        </View>
 
-          {/* BADGE 2: Kanan Atas (IPK & SKS) */}
-          <Animated.View
-            style={[
-              styles.floatingBadge,
-              styles.badgeTopRight,
-              {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-                transform: [{ translateY: floatAnim2 }],
-              },
-            ]}
-          >
-            <View style={[styles.dotPill, { backgroundColor: '#F59E0B' }]} />
-            <Text style={[styles.floatingBadgeText, { color: theme.textPrimary }]}>
-              IPK 3.84 • SKS 92
+        {/* KOLOM KANAN (70%): NAMA, NIM, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
+        <View style={[styles.rightColumn, isMobile && styles.rightColumnMobile]}>
+          {/* 1. H1 NAMA MAHASISWA & BADGE NIM WAJIB UTS */}
+          <View style={[styles.nameNimContainer, isMobile && styles.nameNimContainerMobile]}>
+            <Text
+              style={[
+                styles.nameText,
+                {
+                  color: currentTheme.textPrimary,
+                  textAlign: isMobile ? 'center' : 'left',
+                },
+              ]}
+            >
+              {student.nama || student.fullName}
             </Text>
-          </Animated.View>
+            <View
+              style={[
+                styles.nimBadge,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+            >
+              <Ionicons name="id-card-outline" size={13} color={currentTheme.primary} />
+              <Text style={[styles.nimBadgeText, { color: currentTheme.textPrimary }]}>
+                NIM: {student.nim || '242505024'}
+              </Text>
+            </View>
+          </View>
 
-          {/* BADGE 3: Kiri Bawah (React Native) */}
-          <Animated.View
+          {/* 2. ROLE & BIDANG KEAHLIAN */}
+          <Text
             style={[
-              styles.floatingBadge,
-              styles.badgeBottomLeft,
+              styles.roleText,
               {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-                transform: [{ translateY: floatAnim2 }],
+                color: currentTheme.textSecondary,
+                textAlign: isMobile ? 'center' : 'left',
               },
             ]}
           >
-            <View style={[styles.dotPill, { backgroundColor: '#38BDF8' }]} />
-            <Text style={[styles.floatingBadgeText, { color: theme.textPrimary }]}>
-              React Native & Expo
-            </Text>
-          </Animated.View>
+            Systems Analysis &amp; Mobile Developer
+          </Text>
 
-          {/* BADGE 4: Kanan Bawah (Masoem University) */}
-          <Animated.View
+          {/* 3. TOMBOL KONTAK (GitHub, Email, Kontak) */}
+          <View style={[styles.socialPillsRow, isMobile && styles.socialPillsRowMobile]}>
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+              onPress={handleOpenGitHub}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Buka GitHub pepeb12"
+            >
+              <Ionicons name="logo-github" size={15} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
+                GitHub
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+              onPress={handleOpenEmail}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Kirim email ke febrianrahman902@gmail.com"
+            >
+              <Ionicons name="mail-outline" size={15} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
+                Email
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.socialPill,
+                {
+                  backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+              onPress={handleOpenContact}
+              activeOpacity={0.7}
+              accessibilityRole="link"
+              accessibilityLabel="Hubungi kontak WhatsApp 089512336537"
+            >
+              <Ionicons name="send-outline" size={14} color={currentTheme.primary} />
+              <Text style={[styles.socialPillText, { color: currentTheme.textPrimary }]}>
+                Kontak
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* 4. DESKRIPSI SINGKAT 'TENTANG SAYA' (Leading Relaxed) */}
+          <Text
             style={[
-              styles.floatingBadge,
-              styles.badgeBottomRight,
+              styles.bioText,
               {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-                transform: [{ translateY: floatAnim1 }],
+                color: currentTheme.textSecondary,
+                textAlign: isMobile ? 'center' : 'left',
               },
             ]}
           >
-            <View style={[styles.dotPill, { backgroundColor: '#22C55E' }]} />
-            <Text style={[styles.floatingBadgeText, { color: theme.textPrimary }]}>
-              Masoem University
-            </Text>
-          </Animated.View>
+            Menjembatani <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>analisis proses bisnis</Text> dengan solusi <Text style={[styles.boldText, { color: currentTheme.textPrimary }]}>aplikasi mobile modern</Text>. Mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University yang berfokus pada pengembangan React Native, UI/UX, dan arsitektur database relasional.
+          </Text>
+
+          {/* 5. DERETAN BADGE CAPAIAN AKADEMIK & STATUS */}
+          <View style={[styles.badgeFlexRow, isMobile && styles.badgeFlexRowMobile]}>
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
+                IPK: 3.84
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
+                Nilai: 90 (Grade A)
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
+                19.000 LP
+              </Text>
+            </View>
+
+            <View
+              style={[
+                styles.subtleBadge,
+                { backgroundColor: isDark ? currentTheme.surfaceMuted : currentTheme.surfaceSubtle },
+              ]}
+            >
+              <Text style={[styles.subtleBadgeText, { color: currentTheme.textSecondary }]}>
+                Masoem Univ • SMT 5
+              </Text>
+            </View>
+          </View>
+
+          {/* 6. CALL TO ACTION BUTTONS */}
+          <View style={[styles.ctaRow, isMobile && styles.ctaRowMobile]}>
+            <TouchableOpacity
+              style={[styles.primaryCtaBtn, { backgroundColor: currentTheme.primary }]}
+              onPress={onExploreScore}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Lihat Capaian Nilai UTS"
+            >
+              <Ionicons name="school-outline" size={16} color={currentTheme.textInverted} />
+              <Text style={[styles.primaryCtaText, { color: currentTheme.textInverted }]}>
+                Capaian Nilai UTS (90/A)
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.secondaryCtaBtn,
+                {
+                  backgroundColor: currentTheme.surfaceSecondary || currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderStrong || currentTheme.primaryBorder,
+                },
+              ]}
+              onPress={onContactClick}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Kirim Pesan"
+            >
+              <Ionicons name="mail-outline" size={16} color={currentTheme.textPrimary} />
+              <Text style={[styles.secondaryCtaText, { color: currentTheme.textPrimary }]}>
+                Kirim Pesan
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
       {/* ========================================================
-          MODAL INTERAKTIF: ZOOM FOTO DI TENGAH LAYAR
+          MODAL LIGHTBOX: ZOOM FOTO PROFIL DI TENGAH LAYAR
           ======================================================== */}
       <Modal
         visible={isPhotoZoomed}
@@ -429,47 +361,80 @@ export default function ProfileCard({
         onRequestClose={() => setIsPhotoZoomed(false)}
       >
         <Pressable
-          style={styles.modalBackdrop}
+          style={styles.zoomBackdrop}
           onPress={() => setIsPhotoZoomed(false)}
           accessibilityRole="button"
-          accessibilityLabel="Tutup tampilan foto"
+          accessibilityLabel="Tutup tampilan foto besar"
         >
-          <View
+          <Pressable
             style={[
-              styles.zoomModalContent,
+              styles.zoomCard,
               {
-                backgroundColor: theme.surface,
-                borderColor: theme.borderStrong,
+                backgroundColor: currentTheme.surface,
+                borderColor: currentTheme.border,
               },
             ]}
+            onPress={(e) => e.stopPropagation()}
           >
-            {/* Header Modal */}
-            <View style={styles.modalHeader}>
-              <View style={styles.modalTitleBlock}>
-                <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>
-                  {student.nama}
-                </Text>
-                <Text style={[styles.modalSubtitle, { color: theme.textSecondary }]}>
-                  NIM: {student.nim} • {student.prodi}
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={[styles.closeModalBtn, { backgroundColor: theme.surfaceMuted }]}
-                onPress={() => setIsPhotoZoomed(false)}
-                accessibilityRole="button"
-                accessibilityLabel="Tutup modal"
-              >
-                <Ionicons name="close" size={20} color={theme.textPrimary} />
-              </TouchableOpacity>
+            {/* Tombol Tutup X di Sudut Kanan Atas */}
+            <TouchableOpacity
+              style={[
+                styles.zoomCloseBtn,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+              onPress={() => setIsPhotoZoomed(false)}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Tutup tampilan foto"
+            >
+              <Ionicons name="close" size={20} color={currentTheme.textPrimary} />
+            </TouchableOpacity>
+
+            {/* Frame Foto Besar Terpusat */}
+            <View
+              style={[
+                styles.zoomImageFrame,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
+                },
+              ]}
+            >
+              <Image
+                source={require('../assets/profile.png')}
+                style={styles.zoomImage}
+                resizeMode="cover"
+                accessibilityLabel={`Foto profil ${student.nama || student.fullName} ukuran besar`}
+              />
             </View>
 
-            {/* Foto Resolusi Penuh */}
-            <Image
-              source={SECTION_IMAGES.GAMBAR_1_HOME.source}
-              style={styles.zoomedImage}
-              resizeMode="contain"
-            />
-          </View>
+            {/* Keterangan & Identitas di Bawah Foto */}
+            <View style={styles.zoomCaption}>
+              <Text style={[styles.zoomName, { color: currentTheme.textPrimary }]}>
+                {student.nama || student.fullName}
+              </Text>
+              <Text style={[styles.zoomSubtitle, { color: currentTheme.textSecondary }]}>
+                {student.nim ? `NIM: ${student.nim} • ` : ''}Sistem Informasi Masoem University
+              </Text>
+              <View
+                style={[
+                  styles.zoomBadge,
+                  {
+                    backgroundColor: currentTheme.surfaceMuted,
+                    borderColor: currentTheme.borderLight,
+                  },
+                ]}
+              >
+                <Ionicons name="shield-checkmark" size={13} color={currentTheme.primary} />
+                <Text style={[styles.zoomBadgeText, { color: currentTheme.textSecondary }]}>
+                  Foto Profil Resmi Mahasiswa
+                </Text>
+              </View>
+            </View>
+          </Pressable>
         </Pressable>
       </Modal>
     </View>
@@ -478,294 +443,344 @@ export default function ProfileCard({
 
 const styles = StyleSheet.create({
   heroContainer: {
-    width: '100%',
-    borderRadius: 22,
+    borderRadius: 16,
     borderWidth: 1,
-    overflow: 'hidden',
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.15)',
-      } as any,
-      default: {
-        elevation: 6,
-      },
-    }),
-  },
-  asymmetricLayout: {
     width: '100%',
-    alignItems: 'center',
-    gap: 28,
+    flex: 1,
   },
-  rowDesktop: {
+  twoColumnWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: SPACING.gap,
+    width: '100%',
+    flex: 1,
   },
-  columnMobile: {
+  twoColumnWrapperMobile: {
     flexDirection: 'column',
     alignItems: 'center',
+    gap: SPACING.md,
   },
-  // Kiri 55%
-  leftContentCol: {
+  // KOLOM KIRI: FOTO PROFIL
+  leftColumn: {
+    width: '30%',
+    maxWidth: 220,
+    alignItems: 'center',
+  },
+  leftColumnMobile: {
     width: '100%',
-    gap: 14,
-  },
-  leftContentColDesktop: {
-    flex: 5.5,
-  },
-  statusBadge: {
-    flexDirection: 'row',
+    maxWidth: 180,
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    borderWidth: 1,
-    gap: 8,
   },
-  greenPulseDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#22C55E',
-  },
-  statusText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 12,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
-  heroName: {
-    fontFamily: FONTS.extraBold,
-    fontSize: Platform.OS === 'web' ? 46 : 38,
-    fontWeight: '800',
-    letterSpacing: -1,
-    lineHeight: Platform.OS === 'web' ? 52 : 46,
-  },
-  typewriterRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    minHeight: 28,
-  },
-  typewriterText: {
-    fontFamily: FONTS.bold,
-    fontSize: 17,
-    fontWeight: '700',
-    letterSpacing: -0.2,
-  },
-  blinkingCursor: {
-    fontSize: 18,
-    fontWeight: '800',
-    marginLeft: 2,
-  },
-  heroDescription: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    lineHeight: 23,
-    letterSpacing: 0.1,
-  },
-  actionButtonsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginTop: 6,
-  },
-  primaryCapsuleBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 999,
-    gap: 8,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer' as any,
-        transition: 'transform 0.15s ease' as any,
-      },
-    }),
-  },
-  primaryBtnText: {
-    fontFamily: FONTS.bold,
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  outlineCapsuleBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 999,
-    borderWidth: 1,
-    gap: 8,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer' as any,
-        transition: 'all 0.15s ease' as any,
-      },
-    }),
-  },
-  outlineBtnText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 12.5,
-    fontWeight: '600',
-  },
-  // Kanan 45%
-  rightVisualCol: {
-    position: 'relative',
+  avatarFrame: {
     width: '100%',
-    minHeight: 330,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rightVisualColDesktop: {
-    flex: 4.5,
-    minHeight: 380,
-  },
-  meshOrbitRing: {
-    position: 'absolute',
-    width: 290,
-    height: 290,
-    borderRadius: 145,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  meshOrbitInner: {
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    borderWidth: 1,
-    borderStyle: 'dotted',
-  },
-  avatarContainer: {
-    width: 210,
-    height: 210,
-    borderRadius: 105,
-    borderWidth: 3,
+    aspectRatio: 1,
+    borderTopLeftRadius: 48,
+    borderTopRightRadius: 48,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    borderWidth: 2,
     overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'relative',
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        boxShadow: '0 12px 32px rgba(99, 102, 241, 0.3)',
-      } as any,
-      default: {
-        elevation: 8,
+        transition: 'transform 0.25s ease, box-shadow 0.25s ease' as any,
+        boxShadow: '0 8px 24px rgba(181, 137, 61, 0.2)' as any,
       },
     }),
   },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
+  floatingNimBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  floatingNimText: {
+    fontFamily: FONTS.bold,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   zoomHintBadge: {
     position: 'absolute',
     bottom: 8,
     right: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
-    padding: 6,
-    borderRadius: 12,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  // 4 Floating Badges surrounding photo
-  floatingBadge: {
-    position: 'absolute',
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
     borderWidth: 1,
-    gap: 7,
-    zIndex: 10,
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 6px 18px rgba(0, 0, 0, 0.15)',
-      } as any,
-      default: {
-        elevation: 4,
-      },
-    }),
+    gap: 6,
+    marginTop: 10,
   },
-  dotPill: {
+  statusDot: {
     width: 7,
     height: 7,
     borderRadius: 3.5,
   },
-  floatingBadgeText: {
+  statusText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 11.5,
+    fontSize: 10.5,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  // KOLOM KANAN: INFORMASI PROFIL
+  rightColumn: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  rightColumnMobile: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  nameNimContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 4,
+  },
+  nameNimContainerMobile: {
+    justifyContent: 'center',
+  },
+  nameText: {
+    fontFamily: FONTS.black,
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: -0.6,
+    lineHeight: 34,
+  },
+  nimBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  nimBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  roleText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 14.5,
+    fontWeight: '600',
+    letterSpacing: 0.1,
+    marginBottom: 12,
+  },
+  socialPillsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 12,
+  },
+  socialPillsRowMobile: {
+    justifyContent: 'center',
+  },
+  socialPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  socialPillText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
     fontWeight: '600',
   },
-  badgeTopLeft: {
-    top: 10,
-    left: '4%',
+  bioText: {
+    fontFamily: FONTS.regular,
+    fontSize: 13.5,
+    lineHeight: 22,
+    marginBottom: 14,
   },
-  badgeTopRight: {
-    top: 20,
-    right: '2%',
+  boldText: {
+    fontFamily: FONTS.bold,
+    fontWeight: '700',
   },
-  badgeBottomLeft: {
-    bottom: 20,
-    left: '2%',
+  badgeFlexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
   },
-  badgeBottomRight: {
-    bottom: 10,
-    right: '4%',
+  badgeFlexRowMobile: {
+    justifyContent: 'center',
   },
-  // Modal Zoom
-  modalBackdrop: {
+  subtleBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 0,
+  },
+  subtleBadgeText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.2,
+  },
+  ctaRow: {
+    flexDirection: 'row',
+    gap: 10,
+    width: '100%',
+    marginTop: 'auto',
+  },
+  ctaRowMobile: {
+    flexDirection: 'column',
+    width: '100%',
+    gap: 8,
+  },
+  primaryCtaBtn: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    gap: 8,
+  },
+  primaryCtaText: {
+    fontFamily: FONTS.bold,
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+  secondaryCtaBtn: {
+    flex: 1,
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    gap: 8,
+  },
+  secondaryCtaText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 12.5,
+    fontWeight: '600',
+  },
+  // ZOOM LIGHTBOX MODAL STYLES
+  zoomBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(8px)' as any,
+        cursor: 'default' as any,
+      },
+    }),
   },
-  zoomModalContent: {
+  zoomCard: {
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 380,
     borderRadius: 20,
     borderWidth: 1,
     padding: 20,
-    gap: 16,
+    alignItems: 'center',
+    position: 'relative',
     ...Platform.select({
       web: {
-        boxShadow: '0 24px 60px rgba(0, 0, 0, 0.5)',
-      } as any,
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)' as any,
+      },
+      default: {
+        elevation: 8,
+      },
     }),
   },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  modalTitleBlock: {
-    gap: 2,
-  },
-  modalTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  modalSubtitle: {
-    fontFamily: FONTS.medium,
-    fontSize: 12,
-  },
-  closeModalBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  zoomCloseBtn: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 10,
+    ...Platform.select({
+      web: {
+        cursor: 'pointer' as any,
+      },
+    }),
   },
-  zoomedImage: {
+  zoomImageFrame: {
     width: '100%',
-    height: 380,
-    borderRadius: 14,
+    maxWidth: 300,
+    aspectRatio: 1,
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: 'hidden',
+    marginTop: 18,
+  },
+  zoomImage: {
+    width: '100%',
+    height: '100%',
+  },
+  zoomCaption: {
+    alignItems: 'center',
+    marginTop: 16,
+    width: '100%',
+    gap: 4,
+  },
+  zoomName: {
+    fontFamily: FONTS.bold,
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  zoomSubtitle: {
+    fontFamily: FONTS.regular,
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  zoomBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 6,
+  },
+  zoomBadgeText: {
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+    fontWeight: '500',
   },
 });

@@ -7,11 +7,10 @@ import {
   StyleSheet,
   Alert,
   Platform,
-  useWindowDimensions,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, FONTS } from '../theme';
+import { Theme, SPACING, SHADOWS, FONTS } from '../theme';
 
 interface ContactFormCardProps {
   recipientName?: string;
@@ -19,14 +18,15 @@ interface ContactFormCardProps {
   theme: Theme;
 }
 
+/**
+ * ContactFormCard Component (Level 4, Level 5, Level 10: Interactive Contact Form)
+ * Styled with Emerald – Cream – White – Mint luxury palette & Lato fonts.
+ */
 export default function ContactFormCard({
   recipientName = 'Febrian',
   onMessageSent,
   theme,
 }: ContactFormCardProps) {
-  const { width } = useWindowDimensions();
-  const isMobile = width < 768;
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -135,13 +135,13 @@ export default function ContactFormCard({
           style={[
             styles.successContainer,
             {
-              backgroundColor: isDark ? 'rgba(22, 27, 51, 0.7)' : 'rgba(241, 245, 249, 0.85)',
-              borderColor: theme.primary,
+              backgroundColor: theme.surfaceMuted,
+              borderColor: theme.primaryBorder,
             },
           ]}
         >
           <View style={styles.successHeader}>
-            <Ionicons name="checkmark-circle" size={24} color="#22C55E" />
+            <MaterialCommunityIcons name="check-circle" size={24} color={theme.primary} />
             <View style={styles.successHeaderText}>
               <Text style={[styles.successTitle, { color: theme.textPrimary }]}>
                 Pesan Berhasil Diterima
@@ -179,7 +179,7 @@ export default function ContactFormCard({
             style={[
               styles.resetButton,
               {
-                backgroundColor: theme.surfaceMuted,
+                backgroundColor: theme.surface,
                 borderColor: theme.border,
               },
             ]}
@@ -188,7 +188,7 @@ export default function ContactFormCard({
             accessibilityRole="button"
             accessibilityLabel="Kirim pesan baru"
           >
-            <Ionicons name="refresh" size={15} color={theme.primary} />
+            <MaterialCommunityIcons name="refresh" size={15} color={theme.primary} />
             <Text style={[styles.resetButtonText, { color: theme.primary }]}>
               Kirim Pesan Baru
             </Text>
@@ -197,66 +197,63 @@ export default function ContactFormCard({
       ) : (
         // Input Form
         <View style={styles.formContainer}>
-          {/* BARIS ATAS: INPUT NAMA & INPUT EMAIL BERDAMPINGAN 2 KOLOM */}
-          <View style={[styles.topRowTwoCols, isMobile && styles.topRowTwoColsMobile]}>
-            {/* Input Nama */}
-            <View style={[styles.inputGroupCol, isMobile ? styles.fullWidth : styles.halfWidth]}>
-              <Text style={[styles.inputLabel, { color: theme.textPrimary }]}>
-                Nama Lengkap Pengirim <Text style={{ color: theme.error }}>*</Text>
-              </Text>
-              <TextInput
-                style={[
-                  styles.textInput,
-                  {
-                    backgroundColor: isDark ? 'rgba(15, 19, 40, 0.85)' : 'rgba(248, 250, 252, 0.85)',
-                    borderColor: errors.name ? theme.error : theme.border,
-                    color: theme.textPrimary,
-                  },
-                ]}
-                placeholder="Masukkan nama lengkap Anda..."
-                placeholderTextColor={theme.textLight}
-                value={name}
-                onChangeText={(text) => {
-                  setName(text);
-                  if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
-                }}
-              />
-              {errors.name && (
-                <Text style={[styles.errorHelper, { color: theme.error }]}>{errors.name}</Text>
-              )}
-            </View>
-
-            {/* Input Email */}
-            <View style={[styles.inputGroupCol, isMobile ? styles.fullWidth : styles.halfWidth]}>
-              <Text style={[styles.inputLabel, { color: theme.textPrimary }]}>
-                Alamat Email <Text style={{ color: theme.error }}>*</Text>
-              </Text>
-              <TextInput
-                style={[
-                  styles.textInput,
-                  {
-                    backgroundColor: isDark ? 'rgba(15, 19, 40, 0.85)' : 'rgba(248, 250, 252, 0.85)',
-                    borderColor: errors.email ? theme.error : theme.border,
-                    color: theme.textPrimary,
-                  },
-                ]}
-                placeholder="nama@email.com..."
-                placeholderTextColor={theme.textLight}
-                value={email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                onChangeText={(text) => {
-                  setEmail(text);
-                  if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
-                }}
-              />
-              {errors.email && (
-                <Text style={[styles.errorHelper, { color: theme.error }]}>{errors.email}</Text>
-              )}
-            </View>
+          {/* Input Nama */}
+          <View style={styles.inputGroup}>
+            <Text style={[styles.inputLabel, { color: theme.textPrimary }]}>
+              Nama Lengkap Pengirim <Text style={{ color: theme.error }}>*</Text>
+            </Text>
+            <TextInput
+              style={[
+                styles.textInput,
+                {
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.name ? theme.error : (theme.inputBorder || theme.border),
+                  color: theme.textPrimary,
+                },
+              ]}
+              placeholder="Masukkan nama lengkap Anda..."
+              placeholderTextColor={theme.textLight}
+              value={name}
+              onChangeText={(text) => {
+                setName(text);
+                if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+              }}
+            />
+            {errors.name && (
+              <Text style={[styles.errorHelper, { color: theme.error }]}>{errors.name}</Text>
+            )}
           </View>
 
-          {/* BARIS BAWAH: INPUT PESAN (TEXTAREA) */}
+          {/* Input Email */}
+          <View style={styles.inputGroup}>
+            <Text style={[styles.inputLabel, { color: theme.textPrimary }]}>
+              Alamat Email <Text style={{ color: theme.error }}>*</Text>
+            </Text>
+            <TextInput
+              style={[
+                styles.textInput,
+                {
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.email ? theme.error : (theme.inputBorder || theme.border),
+                  color: theme.textPrimary,
+                },
+              ]}
+              placeholder="nama@email.com..."
+              placeholderTextColor={theme.textLight}
+              value={email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(text) => {
+                setEmail(text);
+                if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+              }}
+            />
+            {errors.email && (
+              <Text style={[styles.errorHelper, { color: theme.error }]}>{errors.email}</Text>
+            )}
+          </View>
+
+          {/* Input Pesan */}
           <View style={styles.inputGroup}>
             <Text style={[styles.inputLabel, { color: theme.textPrimary }]}>
               Pesan / Pertanyaan <Text style={{ color: theme.error }}>*</Text>
@@ -265,8 +262,8 @@ export default function ContactFormCard({
               style={[
                 styles.textArea,
                 {
-                  backgroundColor: isDark ? 'rgba(15, 19, 40, 0.85)' : 'rgba(248, 250, 252, 0.85)',
-                  borderColor: errors.message ? theme.error : theme.border,
+                  backgroundColor: theme.inputBackground || theme.surfaceMuted,
+                  borderColor: errors.message ? theme.error : (theme.inputBorder || theme.border),
                   color: theme.textPrimary,
                 },
               ]}
@@ -275,7 +272,6 @@ export default function ContactFormCard({
               value={message}
               multiline={true}
               numberOfLines={4}
-              maxLength={500}
               textAlignVertical="top"
               onChangeText={(text) => {
                 setMessage(text);
@@ -287,25 +283,19 @@ export default function ContactFormCard({
             )}
           </View>
 
-          {/* BARIS FOOTER FORM: PENGHITUNG KARAKTER DI KIRI & TOMBOL KIRIM KAPSUL INDIGO DI KANAN */}
-          <View style={styles.formFooterRow}>
-            <Text style={[styles.charCounter, { color: theme.textMuted }]}>
-              {message.length}/500
+          {/* Submit Button */}
+          <TouchableOpacity
+            style={[styles.submitButton, { backgroundColor: theme.primary }]}
+            activeOpacity={0.8}
+            onPress={handleSubmit}
+            accessibilityRole="button"
+            accessibilityLabel="Kirim Pesan"
+          >
+            <MaterialCommunityIcons name="send" size={15} color={theme.textInverted} />
+            <Text style={[styles.submitButtonText, { color: theme.textInverted }]}>
+              Kirim Pesan Sekarang
             </Text>
-
-            <TouchableOpacity
-              style={[styles.submitCapsuleBtn, { backgroundColor: theme.primaryButton }]}
-              activeOpacity={0.8}
-              onPress={handleSubmit}
-              accessibilityRole="button"
-              accessibilityLabel="Kirim Pesan"
-            >
-              <Text style={styles.submitBtnText}>
-                Kirim Pesan
-              </Text>
-              <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -314,157 +304,113 @@ export default function ContactFormCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 22,
-    padding: 24,
-    borderWidth: 1,
-    width: '100%',
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
-      } as any,
-      default: {
-        elevation: 4,
-      },
-    }),
-  },
-  formContainer: {
-    gap: 16,
-    marginTop: 8,
-  },
-  topRowTwoCols: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 16,
-    width: '100%',
-  },
-  topRowTwoColsMobile: {
-    flexDirection: 'column',
-    gap: 14,
-  },
-  inputGroupCol: {
-    gap: 6,
-  },
-  halfWidth: {
+    borderRadius: SPACING.cardRadius, // 16px
+    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderWidth: 1, // Soft hairline, no harsh border
+    marginBottom: 0,
     flex: 1,
   },
-  fullWidth: {
-    width: '100%',
+  formContainer: {
+    gap: 10,
   },
   inputGroup: {
-    gap: 6,
-    width: '100%',
+    gap: 4,
   },
   inputLabel: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 12.5,
-    fontWeight: '600',
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
   textInput: {
-    height: 44,
+    fontFamily: FONTS.body,
+    height: 40,
     borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-  },
-  textArea: {
-    minHeight: 110,
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-  },
-  errorHelper: {
-    fontFamily: FONTS.regular,
-    fontSize: 11,
-    marginTop: 2,
-  },
-  formFooterRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
-  },
-  charCounter: {
-    fontFamily: FONTS.medium,
+    borderRadius: 8,
+    paddingHorizontal: 12,
     fontSize: 12,
   },
-  submitCapsuleBtn: {
+  textArea: {
+    fontFamily: FONTS.body,
+    minHeight: 76,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 12,
+  },
+  errorHelper: {
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
+  },
+  submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 22,
-    borderRadius: 999,
-    gap: 8,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer' as any,
-        transition: 'transform 0.15s ease' as any,
-        boxShadow: '0 4px 14px rgba(79, 70, 229, 0.3)',
-      } as any,
-    }),
+    justifyContent: 'center',
+    height: 42,
+    borderRadius: 9,
+    gap: 6,
+    marginTop: 4,
   },
-  submitBtnText: {
-    fontFamily: FONTS.bold,
-    fontSize: 13.5,
+  submitButtonText: {
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
-    color: '#FFFFFF',
   },
-  // Success state
   successContainer: {
-    padding: 20,
-    borderRadius: 16,
+    padding: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 14,
+    gap: 10,
   },
   successHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
   },
   successHeaderText: {
-    gap: 2,
+    flex: 1,
   },
   successTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 16,
+    fontFamily: FONTS.heading,
+    fontSize: 12.5,
     fontWeight: '700',
   },
   successSubtitle: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
+    fontFamily: FONTS.body,
+    fontSize: 10.5,
+    marginTop: 1,
   },
   summaryBox: {
-    padding: 14,
-    borderRadius: 12,
+    padding: 10,
+    borderRadius: 7,
     borderWidth: 1,
-    gap: 8,
+    gap: 6,
   },
   summaryItem: {
     gap: 2,
   },
   summaryLabel: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 11,
+    fontFamily: FONTS.heading,
+    fontSize: 10,
+    fontWeight: '700',
   },
   summaryVal: {
-    fontFamily: FONTS.regular,
-    fontSize: 13,
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    lineHeight: 15,
   },
   resetButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: 10,
+    paddingVertical: 8,
+    borderRadius: 7,
     borderWidth: 1,
     gap: 6,
   },
   resetButtonText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 13,
+    fontFamily: FONTS.heading,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
 });

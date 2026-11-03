@@ -25,20 +25,19 @@ import {
 // Import Data Lokal Format JSON (100% Data Asli Terjaga)
 import profileData from './data/profile.json';
 import initialAcademicScoreData from './data/academicScore.json';
+import { PERSONAL_PHOTOS } from './data/personalPhotos';
 
 // Import Services & Persistence Layer
 import StorageService from './services/storageService';
 import AcademicService from './services/academicService';
 
-// Import Theme System (Cosmic Indigo & Golden Amber Glassmorphism)
+// Import Theme System (Retro Mustard & Brown)
 import { getTheme, SPACING, FONTS } from './theme';
 
 // Import Komponen UI Modular
-import CosmicCanvasBackground from './components/CosmicCanvasBackground';
 import NavigationTabBar, { TabKey } from './components/NavigationTabBar';
-import KineticScriptBanner from './components/KineticScriptBanner';
-import ProfileHeader from './components/ProfileHeader';
-import InfiniteMarqueeRibbon from './components/InfiniteMarqueeRibbon';
+import { VerticalPhotoReel, HorizontalPhotoReel } from './components/PersonalPhotoReel';
+import ProfileCard from './components/ProfileCard';
 import InteractiveEndorseBar from './components/InteractiveEndorseBar';
 import { AboutIntroCard, SpecializationCard } from './components/AboutSection';
 import SkillMatrixCard from './components/SkillMatrixCard';
@@ -46,11 +45,9 @@ import IdentityDetailCard from './components/IdentityDetailCard';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import HobbySection from './components/HobbySection';
 import PortfolioGallery from './components/PortfolioGallery';
-import ScoreAchievementImageCard from './components/ScoreAchievementImageCard';
 import MyScoreSection from './components/MyScoreSection';
 import ContactGridCard from './components/ContactGridCard';
 import ContactForm from './components/ContactForm';
-import CosmicFooter from './components/CosmicFooter';
 
 // Import Komponen Ketahanan & Feedback
 import ErrorBoundary from './components/ErrorBoundary';
@@ -61,8 +58,11 @@ import FeedbackToast from './components/FeedbackToast';
 
 export default function App() {
   const { width } = useWindowDimensions();
+  // 3-Zone Architecture breakpoint: width >= 1200px
+  const isWideDesktop = width >= 1200;
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
+  const isMobile = width < 768;
 
   // Load Google Font: Inter
   const [fontsLoaded] = useFonts({
@@ -78,11 +78,11 @@ export default function App() {
 
   // 1. State Single-Page Scroll, Section Positions & ScrollSpy
   const [scrollY, setScrollY] = useState(0);
-  const [activeSection, setActiveSection] = useState<TabKey>('home');
+  const [activeTab, setActiveTab] = useState<TabKey>('home');
   const sectionPositions = useRef<Record<string, number>>({});
 
-  // 2. State Tema Gelap (Cosmic Navy) / Terang (Soft Lavender White)
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  // 2. State Tema Gelap / Terang (Retro Mustard & Brown)
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = getTheme(isDarkMode);
 
   // 3. State Capaian Akademik & Simulasi API LMS
@@ -101,9 +101,7 @@ export default function App() {
     async function loadSavedPreferences() {
       try {
         const savedTheme = await StorageService.getThemeMode();
-        if (savedTheme === 'light') {
-          setIsDarkMode(false);
-        } else if (savedTheme === 'dark') {
+        if (savedTheme === 'dark') {
           setIsDarkMode(true);
         }
       } catch (err) {
@@ -121,677 +119,687 @@ export default function App() {
       await StorageService.setThemeMode(nextMode ? 'dark' : 'light');
       setToast({
         message: nextMode
-          ? 'Mode Gelap (Cosmic Navy & Indigo Glass) diaktifkan'
-          : 'Mode Terang (Soft Lavender White & Royal Indigo) diaktifkan',
+          ? 'Mode Malam (Deep Espresso & Retro Mustard) diaktifkan'
+          : 'Mode Terang (Warm Cream & Retro Mustard) diaktifkan',
         type: 'info',
       });
     } catch (err) {
-      console.warn('Gagal menyimpan tema:', err);
+      console.warn('Gagal menyimpan preferensi tema:', err);
     }
   };
 
-  // Pengambilan Data Skor & Simulasi Kehandalan
-  const fetchScores = useCallback(
-    async (options: { forceError?: boolean; forceEmpty?: boolean; isPullRefresh?: boolean } = {}) => {
-      const { forceError = false, forceEmpty = false, isPullRefresh = false } = options;
+  // Fetch Capaian Akademik
+  const fetchScores = useCallback(async ({ isPullRefresh = false } = {}) => {
+    if (isPullRefresh) setIsRefreshing(true);
+    else setIsLoadingAcademic(true);
+    setAcademicError(null);
 
+    try {
+      const data = await AcademicService.fetchAcademicScore();
+      setAcademicData(data);
+      setCurrentState('normal');
       if (isPullRefresh) {
-        setIsRefreshing(true);
-      } else {
-        setIsLoadingAcademic(true);
+        setToast({ message: 'Nilai akademik berhasil diperbarui dari LMS', type: 'success' });
       }
+    } catch (err: any) {
+      setAcademicError(err);
+      setCurrentState('error');
+      setToast({ message: 'Gagal memuat data nilai: Layanan LMS tidak merespons (503)', type: 'error' });
+    } finally {
+      if (isPullRefresh) setIsRefreshing(false);
+      else setIsLoadingAcademic(false);
+    }
+  }, []);
 
-      setAcademicError(null);
-
-      try {
-        const responseData = await AcademicService.fetchAcademicScore({
-          forceError,
-          forceEmpty,
-          delayMs: 600,
-        });
-
-        if (forceEmpty) {
-          setCurrentState('empty');
-          setAcademicData(responseData);
-          setToast({
-            message: 'Simulasi: Data capaian kosong (Empty State aktif)',
-            type: 'info',
-          });
-        } else {
-          setCurrentState('normal');
-          setAcademicData(responseData);
-          if (isPullRefresh) {
-            setToast({
-              message: 'Data akademik berhasil diperbarui dari LMS',
-              type: 'success',
-            });
-          }
-        }
-      } catch (err: any) {
-        setCurrentState('error');
-        setAcademicError(err);
-        setToast({
-          message: 'Simulasi: Gagal memuat data LMS (Error 503)',
-          type: 'error',
-        });
-      } finally {
-        setIsLoadingAcademic(false);
-        setIsRefreshing(false);
-      }
-    },
-    []
-  );
-
-  const handlePullToRefresh = () => {
-    fetchScores({ isPullRefresh: true });
-  };
+  const handlePullRefresh = () => fetchScores({ isPullRefresh: true });
 
   const handleTriggerNormal = () => {
-    fetchScores({ forceError: false, forceEmpty: false });
-  };
-
-  const handleTriggerError = () => {
-    fetchScores({ forceError: true });
+    setCurrentState('normal');
+    setAcademicError(null);
+    setAcademicData(initialAcademicScoreData);
+    setToast({ message: 'Simulasi: Menampilkan data capaian normal', type: 'info' });
   };
 
   const handleTriggerEmpty = () => {
-    fetchScores({ forceEmpty: true });
+    setCurrentState('empty');
+    setAcademicError(null);
+    setToast({ message: 'Simulasi: Menampilkan kondisi data kosong (Empty State)', type: 'info' });
   };
 
-  const handleMessageSent = () => {
-    setMessagesReceivedCount((prev) => prev + 1);
-    setToast({
-      message: 'Pesan Anda berhasil diterima dan disimpan.',
-      type: 'success',
+  const handleTriggerError = () => {
+    setCurrentState('error');
+    setAcademicError({
+      status: 503,
+      code: 'SERVICE_UNAVAILABLE',
+      message: 'Server LMS Masoem University sedang dalam pemeliharaan berkala.',
     });
+    setToast({ message: 'Simulasi: Menampilkan pesan error 503', type: 'error' });
   };
 
-  // Handler Navigasi Smooth Scroll ke Section
-  const handleNavigateToSection = (tabKey: TabKey) => {
-    setActiveSection(tabKey);
-    const targetY = sectionPositions.current[tabKey] ?? 0;
-    scrollViewRef.current?.scrollTo({
-      y: Math.max(0, targetY - 70),
-      animated: true,
-    });
+  // Navigasi Smooth Scroll ke Section
+  const scrollToSection = (tabKey: TabKey) => {
+    setActiveTab(tabKey);
+    const targetY = sectionPositions.current[tabKey];
+    if (targetY !== undefined && scrollViewRef.current) {
+      // Offset 72px for sticky navbar
+      const offsetTarget = Math.max(0, targetY - 72);
+      scrollViewRef.current.scrollTo({ y: offsetTarget, animated: true });
+    }
   };
 
-  const handleScrollToTop = () => {
-    scrollViewRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
-  };
-
-  // Handler ScrollSpy & Tracking scrollY
+  // ScrollSpy Tracker
   const handleScroll = (event: any) => {
-    const y = event.nativeEvent.contentOffset.y;
-    setScrollY(y);
+    const currentY = event.nativeEvent.contentOffset.y;
+    setScrollY(currentY);
 
-    const keys: TabKey[] = ['home', 'about', 'skills', 'portfolio', 'score', 'contact'];
-    let currentKey: TabKey = 'home';
+    const orderedTabs: TabKey[] = ['home', 'about', 'skills', 'portfolio', 'score', 'contact'];
+    let currentActive: TabKey = 'home';
 
-    for (let i = keys.length - 1; i >= 0; i--) {
-      const key = keys[i];
-      const pos = sectionPositions.current[key];
-      if (pos !== undefined && y >= pos - 200) {
-        currentKey = key;
+    for (let i = orderedTabs.length - 1; i >= 0; i--) {
+      const tab = orderedTabs[i];
+      const pos = sectionPositions.current[tab];
+      if (pos !== undefined && currentY >= pos - 140) {
+        currentActive = tab;
         break;
       }
     }
 
-    if (currentKey !== activeSection) {
-      setActiveSection(currentKey);
+    if (currentActive !== activeTab) {
+      setActiveTab(currentActive);
+    }
+  };
+
+  const scrollToTop = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
   };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        style={[
-          styles.safeArea,
-          {
-            backgroundColor: theme.background,
-          },
-        ]}
-        edges={['top', 'left', 'right', 'bottom']}
+        style={[styles.safeArea, { backgroundColor: theme.background }]}
+        edges={['top', 'left', 'right']}
       >
         <StatusBar style={isDarkMode ? 'light' : 'dark'} />
 
-        {/* Outer Container */}
-        <View
-          style={[
-            styles.appContainer,
-            {
-              backgroundColor: theme.background,
-            },
-          ]}
-        >
-          {/* 0. COSMIC CANVAS BACKGROUND (Stars, Wireframe Torus & Radial Halo Layer) */}
-          <CosmicCanvasBackground theme={theme} />
-
-          {/* Feedback Toast */}
-          {toast ? (
-            <FeedbackToast
-              message={toast.message}
-              type={toast.type}
-              onDismiss={() => setToast(null)}
-            />
-          ) : null}
-
-          {/* 1. FLOATING PILL NAVBAR (FIXED CENTER TOP, BORDER-RADIUS: 999px, GLASSMORPHISM) */}
-          <View style={styles.floatingTopNavFixed} pointerEvents="box-none">
+        <View style={[styles.appContainer, { backgroundColor: theme.background }]}>
+          {/* ========================================================
+              STICKY TOP NAVBAR (TETAP DI ATAS SAAT DI-SCROLL, ZERO OVERLAP)
+              ======================================================== */}
+          <View style={styles.topNavStickyWrapper}>
             <NavigationTabBar
-              activeTab={activeSection}
-              onTabChange={handleNavigateToSection}
+              activeTab={activeTab}
+              onTabChange={scrollToSection}
               theme={theme}
               isDarkMode={isDarkMode}
               onToggleTheme={handleToggleTheme}
             />
           </View>
 
-          {/* Error Boundary: Melindungi Seluruh Konten Aplikasi */}
-          <ErrorBoundary theme={theme} onReset={handleTriggerNormal}>
+          {/* Feedback Toast Notifikasi */}
+          <FeedbackToast
+            message={toast?.message}
+            type={toast?.type as any}
+            onDismiss={() => setToast(null)}
+          />
+
+          <ErrorBoundary>
             <ScrollView
               ref={scrollViewRef}
               style={styles.scrollView}
               contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={16}
               onScroll={handleScroll}
+              scrollEventThrottle={16}
+              showsVerticalScrollIndicator={false}
               refreshControl={
                 <RefreshControl
                   refreshing={isRefreshing}
-                  onRefresh={handlePullToRefresh}
-                  colors={[theme.primary, theme.secondary]}
+                  onRefresh={handlePullRefresh}
+                  colors={[theme.primary]}
                   tintColor={theme.primary}
                 />
               }
             >
-              {/* Responsive Container Wrapper: Maksimal 1240px di Layar Lebar */}
-              <View
-                style={[
-                  styles.responsiveContentWrapper,
-                  { paddingHorizontal: isDesktop ? 24 : 16 },
-                ]}
-              >
-                {/* ========================================================
-                    SECTION 1: HERO SECTION (55% Teks Kiri : 45% Visual Orbit Kanan)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['home'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Crafting Digital Solutions — Systems Analysis & Mobile Engineering"
-                    sectionTag="01 • HERO PROFILE"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['home'] || 0}
-                    direction="left"
+              {/* ========================================================
+                  ARSITEKTUR 3-ZONA: [FOTO KIRI] + [KONTEN UTAMA] + [FOTO KANAN]
+                  ======================================================== */}
+              <View style={styles.threeZoneWrapper}>
+                {/* 1. JALUR FOTO KIRI (Auto-Scroll ke ATAS, Desktop width >= 1200px) */}
+                {isWideDesktop && (
+                  <VerticalPhotoReel
+                    photos={PERSONAL_PHOTOS.leftPhotos}
+                    direction="up"
                     theme={theme}
                   />
+                )}
 
-                  {/* Hero Profile Card (Asymmetric 55% : 45% Orbit) */}
-                  <ProfileHeader
-                    data={profileData}
-                    theme={theme}
-                    onExploreScore={() => handleNavigateToSection('score')}
-                    onContactClick={() => handleNavigateToSection('contact')}
-                  />
+                {/* 2. KONTEN UTAMA CV (TENGAH, BEBAS HALANGAN) */}
+                <View style={styles.centerCvContent}>
+                  {/* ========================================================
+                      SECTION 1: HOME (Hero Profile & Bento KPI 2x2)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['home'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    <View style={[styles.bentoRow, isDesktop ? styles.bentoRowDesktop : styles.bentoRowMobile]}>
+                      {/* Kolom Kiri: Profil Hero (Foto 1:1, Nama, NIM, Bio, Social) */}
+                      <View style={[styles.bentoLeft, isDesktop && styles.bentoLeftDesktop]}>
+                        <ProfileCard
+                          data={profileData}
+                          theme={theme}
+                          onExploreScore={() => scrollToSection('score')}
+                          onContactClick={() => scrollToSection('contact')}
+                        />
+                      </View>
 
-                  {/* INFINITE MARQUEE RIBBON — BERJALAN OTOMATIS HORIZONTAL */}
-                  <InfiniteMarqueeRibbon
-                    items={[
-                      'React Native & Expo',
-                      'Systems Analysis (UML/DFD)',
-                      'TypeScript & ES6+',
-                      'UI/UX Design Systems (Figma)',
-                      'Database Architecture (MySQL)',
-                      'Masoem University',
-                      'Mobile App Engineering',
-                      'IPK 3.84 • SKS 92',
-                    ]}
-                    theme={theme}
-                  />
-
-                  {/* Row Tambahan: KPI Grid 2x2 & Dukungan Mahasiswa */}
-                  <View style={[styles.bentoRow, isDesktop ? styles.bentoRowDesktop : styles.bentoRowMobile]}>
-                    <View style={styles.kpiGrid}>
-                      {(profileData.academicMetrics || []).map((item: any, index: number) => (
-                        <View
-                          key={index}
-                          style={[
-                            styles.kpiCard,
-                            {
-                              backgroundColor: theme.surface,
-                              borderColor: theme.border,
-                            },
-                          ]}
-                        >
-                          <View
-                            style={[
-                              styles.kpiIconBox,
-                              {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
-                            ]}
-                          >
-                            <Ionicons name={item.icon as any} size={16} color={theme.primary} />
-                          </View>
-                          <Text style={[styles.kpiValue, { color: theme.textPrimary }]}>
-                            {item.value}
-                          </Text>
-                          <Text style={[styles.kpiLabel, { color: theme.textSecondary }]}>
-                            {item.label}
-                          </Text>
-                          {item.unit ? (
-                            <Text style={[styles.kpiUnit, { color: theme.textMuted }]}>
-                              {item.unit}
-                            </Text>
-                          ) : null}
+                      {/* Kolom Kanan: 2x2 Bento KPI & Endorsement Bar */}
+                      <View style={[styles.bentoRight, isDesktop && styles.bentoRightDesktop]}>
+                        <View style={styles.kpiGrid}>
+                          {(profileData as any).academicKPIs?.map((kpi: any) => (
+                            <View
+                              key={kpi.id}
+                              style={[
+                                styles.kpiCard,
+                                {
+                                  backgroundColor: theme.surface,
+                                  borderColor: theme.border,
+                                },
+                              ]}
+                            >
+                              <View
+                                style={[
+                                  styles.kpiIconBox,
+                                  {
+                                    backgroundColor: theme.surfaceMuted,
+                                    borderColor: theme.borderLight,
+                                  },
+                                ]}
+                              >
+                                <Ionicons name={kpi.icon as any} size={16} color={theme.primary} />
+                              </View>
+                              <Text style={[styles.kpiValue, { color: theme.textPrimary }]}>
+                                {kpi.value}
+                              </Text>
+                              <Text style={[styles.kpiLabel, { color: theme.textSecondary }]}>
+                                {kpi.label}
+                              </Text>
+                              <Text style={[styles.kpiUnit, { color: theme.textMuted }]}>
+                                {kpi.unit}
+                              </Text>
+                            </View>
+                          ))}
                         </View>
-                      ))}
+
+                        {/* Bar Dukungan / Rekomendasi Profil */}
+                        <InteractiveEndorseBar
+                          initialCount={48}
+                          studentName={profileData.nama}
+                          theme={theme}
+                        />
+                      </View>
                     </View>
 
-                    <InteractiveEndorseBar
-                      studentName={profileData.namaPanggilan}
-                      initialCount={profileData.initialEndorseCount}
-                      theme={theme}
-                    />
-                  </View>
-
-                  {/* 4 Card Navigasi Pintas */}
-                  <View style={styles.homeCardsGrid}>
-                    {[
-                      {
-                        tab: 'about' as TabKey,
-                        icon: 'person-outline',
-                        title: 'Tentang Saya & Riwayat Pendidikan',
-                        desc: 'Profil lengkap, visi karier, spesialisasi, dan riwayat jenjang pendidikan Masoem University.',
-                      },
-                      {
-                        tab: 'skills' as TabKey,
-                        icon: 'code-slash-outline',
-                        title: 'Keahlian Teknis & Hobi',
-                        desc: 'Kompetensi 3D Flip Card React Native, UI/UX, arsitektur database, dan hobi bermusik.',
-                      },
-                      {
-                        tab: 'portfolio' as TabKey,
-                        icon: 'briefcase-outline',
-                        title: 'Galeri Portofolio Proyek',
-                        desc: 'Eksplorasi karya rekayasa sistem informasi: SIMAK Mobile, inventaris lab, dan UI/UX modern.',
-                      },
-                      {
-                        tab: 'score' as TabKey,
-                        icon: 'school-outline',
-                        title: 'Dashboard Evaluasi My Score (90/A)',
-                        desc: 'Evaluasi capaian akademik UTS Pemrograman Mobile 2, 19.000 LP, dan progress belajar.',
-                      },
-                    ].map((card) => (
+                    {/* 4 Card Navigasi Cepat Home */}
+                    <View style={styles.homeCardsGrid}>
                       <TouchableOpacity
-                        key={card.tab}
                         style={[
                           styles.homeFeatureCard,
                           {
                             backgroundColor: theme.surface,
                             borderColor: theme.border,
-                            width: isDesktop ? '23.8%' : isTablet ? '48.5%' : '100%',
+                            width: isDesktop ? '23.5%' : isTablet ? '48%' : '100%',
                           },
                         ]}
-                        onPress={() => handleNavigateToSection(card.tab)}
-                        activeOpacity={0.7}
-                        accessibilityRole="button"
-                        accessibilityLabel={`Buka menu ${card.title}`}
+                        activeOpacity={0.8}
+                        onPress={() => scrollToSection('about')}
                       >
                         <View style={styles.homeFeatureTop}>
                           <View
                             style={[
                               styles.homeFeatureIconBox,
-                              {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
+                              { backgroundColor: theme.surfaceMuted, borderColor: theme.borderLight },
                             ]}
                           >
-                            <Ionicons name={card.icon as any} size={18} color={theme.primary} />
+                            <Ionicons name="person-outline" size={18} color={theme.primary} />
                           </View>
-                          <Ionicons name="chevron-forward" size={16} color={theme.textMuted} />
+                          <Ionicons name="arrow-forward" size={14} color={theme.textMuted} />
                         </View>
                         <View style={styles.homeFeatureBottom}>
-                          <Text
-                            style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}
-                            numberOfLines={2}
-                          >
-                            {card.title}
+                          <Text style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}>
+                            Tentang Saya
                           </Text>
                           <Text
-                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}
-                          >
-                            {card.desc}
+                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}>
+                            Latar belakang, visi & 4 jenjang pendidikan.
                           </Text>
                         </View>
                       </TouchableOpacity>
-                    ))}
-                  </View>
-                </View>
 
-                {/* ========================================================
-                    SECTION 2: ABOUT & BIDANG MINAT (Foto Ber-Badge & Grid 4 Kolom)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['about'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Tentang Saya — Mengubah Tantangan Proses Bisnis Menjadi Aplikasi Nyata"
-                    sectionTag="02 • ABOUT & VISION"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['about'] || 0}
-                    direction="right"
-                    theme={theme}
-                  />
-
-                  {/* Card Tentang Saya: Foto Ber-Badge (40%) + Intro & 3 KPI (60%) */}
-                  <AboutIntroCard data={profileData} theme={theme} />
-
-                  {/* Bidang Minat & Spesialisasi: Grid 4 Kolom Sejajar dengan Kotak Ikon Glow */}
-                  <SpecializationCard data={profileData} theme={theme} />
-                </View>
-
-                {/* ========================================================
-                    SECTION 3: KEAHLIAN TEKNIS (Interactive 3D Flip Cards & Timeline)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['skills'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Keahlian & Harmoni — Clean Architecture, Interactive UI & Musical Rhythm"
-                    sectionTag="03 • TECHNICAL MASTERY"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['skills'] || 0}
-                    direction="left"
-                    theme={theme}
-                  />
-
-                  {/* 3D Flip Cards Keahlian Teknis (6 Kolom Desktop / Filter / Putar Ulang) */}
-                  <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
-
-                  {/* DUAL VERTICAL GLOWING TIMELINE (50% Riwayat Pendidikan : 50% Pengalaman) */}
-                  <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
-                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                      <IdentityDetailCard data={profileData} theme={theme} />
-                    </View>
-                    <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
-                      <ExperienceTimeline experiences={profileData.experience} theme={theme} />
-                    </View>
-                  </View>
-
-                  {/* Minat & Hobi */}
-                  <HobbySection hobbies={profileData.hobbies} theme={theme} columns={4} />
-                </View>
-
-                {/* ========================================================
-                    SECTION 4: PORTFOLIO (Grid 3 Kolom + Lightbox Modal Prev/Next)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['portfolio'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Galeri Karya — Engineered with Precision, Logic & Aesthetic"
-                    sectionTag="04 • FEATURED PORTFOLIO"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['portfolio'] || 0}
-                    direction="right"
-                    theme={theme}
-                  />
-
-                  <PortfolioGallery portfolios={profileData.portfolios} theme={theme} />
-                </View>
-
-                {/* ========================================================
-                    SECTION 5: MY SCORE (Indigo Glassmorphism & Gradien Progress)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['score'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Capaian Akademik — Dedication, Discipline & Excellence"
-                    sectionTag="05 • ACADEMIC EXCELLENCE"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['score'] || 0}
-                    direction="left"
-                    theme={theme}
-                  />
-
-                  <View style={isDesktop ? styles.desktopGridScoreRow : styles.mobileColumn}>
-                    {/* Kolom Kiri 30%: Score Achievement Showcase Card */}
-                    <View style={isDesktop ? styles.desktopColScoreImg : styles.mobileFullWidth}>
-                      <ScoreAchievementImageCard theme={theme} />
-                    </View>
-
-                    {/* Kolom Kanan 70%: Simulator Bar + Capaian Akademik My Score */}
-                    <View style={isDesktop ? styles.desktopColScoreMain : styles.mobileFullWidth}>
-                      {/* Toolbar Simulasi Resiliensi State Data */}
-                      <View
+                      <TouchableOpacity
                         style={[
-                          styles.simulatorBar,
+                          styles.homeFeatureCard,
                           {
                             backgroundColor: theme.surface,
                             borderColor: theme.border,
+                            width: isDesktop ? '23.5%' : isTablet ? '48%' : '100%',
                           },
                         ]}
+                        activeOpacity={0.8}
+                        onPress={() => scrollToSection('skills')}
                       >
-                        <View style={styles.simulatorLeft}>
-                          <Ionicons name="pulse-outline" size={16} color={theme.primary} />
-                          <Text style={[styles.simulatorTitle, { color: theme.textPrimary }]}>
-                            Simulasi Resiliensi Data:
+                        <View style={styles.homeFeatureTop}>
+                          <View
+                            style={[
+                              styles.homeFeatureIconBox,
+                              { backgroundColor: theme.surfaceMuted, borderColor: theme.borderLight },
+                            ]}
+                          >
+                            <Ionicons name="code-slash-outline" size={18} color={theme.primary} />
+                          </View>
+                          <Ionicons name="arrow-forward" size={14} color={theme.textMuted} />
+                        </View>
+                        <View style={styles.homeFeatureBottom}>
+                          <Text style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}>
+                            Keahlian Teknis
+                          </Text>
+                          <Text
+                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}>
+                            23 keahlian teknis & 3 pengalaman organisasi.
                           </Text>
                         </View>
-                        <View style={styles.simulatorActions}>
-                          <TouchableOpacity
-                            style={[
-                              styles.miniSimBtn,
-                              currentState === 'normal' && !isLoadingAcademic && {
-                                backgroundColor: theme.primary,
-                                borderColor: theme.primary,
-                              },
-                              (currentState !== 'normal' || isLoadingAcademic) && {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
-                            ]}
-                            onPress={handleTriggerNormal}
-                            activeOpacity={0.7}
-                            accessibilityRole="button"
-                            accessibilityLabel="Simulasi Data Normal"
-                          >
-                            <Text
-                              style={[
-                                styles.miniSimBtnText,
-                                {
-                                  color:
-                                    currentState === 'normal' && !isLoadingAcademic
-                                      ? theme.textInverted
-                                      : theme.textPrimary,
-                                },
-                              ]}
-                            >
-                              Normal
-                            </Text>
-                          </TouchableOpacity>
+                      </TouchableOpacity>
 
-                          <TouchableOpacity
+                      <TouchableOpacity
+                        style={[
+                          styles.homeFeatureCard,
+                          {
+                            backgroundColor: theme.surface,
+                            borderColor: theme.border,
+                            width: isDesktop ? '23.5%' : isTablet ? '48%' : '100%',
+                          },
+                        ]}
+                        activeOpacity={0.8}
+                        onPress={() => scrollToSection('portfolio')}
+                      >
+                        <View style={styles.homeFeatureTop}>
+                          <View
                             style={[
-                              styles.miniSimBtn,
-                              isLoadingAcademic && {
-                                backgroundColor: theme.primary,
-                                borderColor: theme.primary,
-                              },
-                              !isLoadingAcademic && {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
+                              styles.homeFeatureIconBox,
+                              { backgroundColor: theme.surfaceMuted, borderColor: theme.borderLight },
                             ]}
-                            onPress={() => fetchScores({ isPullRefresh: false })}
-                            activeOpacity={0.7}
-                            accessibilityRole="button"
-                            accessibilityLabel="Simulasi Loading State"
                           >
-                            <Text
-                              style={[
-                                styles.miniSimBtnText,
-                                {
-                                  color: isLoadingAcademic ? theme.textInverted : theme.textPrimary,
-                                },
-                              ]}
-                            >
-                              Loading
-                            </Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={[
-                              styles.miniSimBtn,
-                              currentState === 'empty' && {
-                                backgroundColor: theme.primary,
-                                borderColor: theme.primary,
-                              },
-                              currentState !== 'empty' && {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
-                            ]}
-                            onPress={handleTriggerEmpty}
-                            activeOpacity={0.7}
-                            accessibilityRole="button"
-                            accessibilityLabel="Simulasi Data Kosong (Empty State)"
-                          >
-                            <Text
-                              style={[
-                                styles.miniSimBtnText,
-                                {
-                                  color: currentState === 'empty' ? theme.textInverted : theme.textPrimary,
-                                },
-                              ]}
-                            >
-                              Empty State
-                            </Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={[
-                              styles.miniSimBtn,
-                              currentState === 'error' && {
-                                backgroundColor: theme.error,
-                                borderColor: theme.error,
-                              },
-                              currentState !== 'error' && {
-                                backgroundColor: theme.surfaceMuted,
-                                borderColor: theme.borderLight,
-                              },
-                            ]}
-                            onPress={handleTriggerError}
-                            activeOpacity={0.7}
-                            accessibilityRole="button"
-                            accessibilityLabel="Simulasi Error 503"
-                          >
-                            <Text
-                              style={[
-                                styles.miniSimBtnText,
-                                {
-                                  color: currentState === 'error' ? '#FFFFFF' : theme.textPrimary,
-                                },
-                              ]}
-                            >
-                              Error (503)
-                            </Text>
-                          </TouchableOpacity>
+                            <Ionicons name="briefcase-outline" size={18} color={theme.primary} />
+                          </View>
+                          <Ionicons name="arrow-forward" size={14} color={theme.textMuted} />
                         </View>
+                        <View style={styles.homeFeatureBottom}>
+                          <Text style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}>
+                            Portofolio Proyek
+                          </Text>
+                          <Text
+                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}>
+                            Galeri aplikasi mobile, SIMAK & basis data.
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[
+                          styles.homeFeatureCard,
+                          {
+                            backgroundColor: theme.surface,
+                            borderColor: theme.border,
+                            width: isDesktop ? '23.5%' : isTablet ? '48%' : '100%',
+                          },
+                        ]}
+                        activeOpacity={0.8}
+                        onPress={() => scrollToSection('score')}
+                      >
+                        <View style={styles.homeFeatureTop}>
+                          <View
+                            style={[
+                              styles.homeFeatureIconBox,
+                              { backgroundColor: theme.surfaceMuted, borderColor: theme.borderLight },
+                            ]}
+                          >
+                            <Ionicons name="school-outline" size={18} color={theme.primary} />
+                          </View>
+                          <Ionicons name="arrow-forward" size={14} color={theme.textMuted} />
+                        </View>
+                        <View style={styles.homeFeatureBottom}>
+                          <Text style={[styles.homeFeatureTitle, { color: theme.textPrimary }]}>
+                            My Score & LMS
+                          </Text>
+                          <Text
+                            style={[styles.homeFeatureDesc, { color: theme.textSecondary }]}>
+                            Nilai UTS 90 (Grade A), 19.000 LP & resiliensi.
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+
+                    {/* Pada Layar HP & Tablet (< 1200px): Pita Horizontal Auto-Scroll Reels */}
+                    {!isWideDesktop && (
+                      <View style={{ marginTop: 12 }}>
+                        <HorizontalPhotoReel
+                          photos={[...PERSONAL_PHOTOS.leftPhotos, ...PERSONAL_PHOTOS.rightPhotos]}
+                          theme={theme}
+                        />
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ========================================================
+                      SECTION 2: ABOUT (2 Kolom Simetris 50% : 50% + Grid 2x2)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['about'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    {/* Baris 1: 50% Kiri: Tentang Saya | 50% Kanan: Riwayat Pendidikan (Tinggi Rata) */}
+                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <AboutIntroCard data={profileData} theme={theme} />
+                      </View>
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <IdentityDetailCard data={profileData} theme={theme} />
+                      </View>
+                    </View>
+
+                    {/* Baris 2: Bidang Minat & Spesialisasi (100% Lebar Penuh - Grid 2x2) */}
+                    <SpecializationCard data={profileData} theme={theme} />
+                  </View>
+
+                  {/* ========================================================
+                      SECTION 3: SKILLS (2 Kolom Simetris 50% : 50% + Hobi Full Width)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['skills'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    {/* Baris 1: Keahlian Teknis (50% Kiri) & Pengalaman Organisasi (50% Kanan) */}
+                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <SkillMatrixCard skills={profileData.technicalSkills} theme={theme} />
+                      </View>
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <ExperienceTimeline experiences={profileData.experience} theme={theme} />
+                      </View>
+                    </View>
+
+                    {/* Baris 2: Minat & Hobi (Grid 4 Kolom Sejajar Full Width) */}
+                    <HobbySection hobbies={profileData.hobbies} theme={theme} columns={4} />
+                  </View>
+
+                  {/* ========================================================
+                      SECTION 4: PORTFOLIO (Galeri Karya Proyek & Live Filter)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['portfolio'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    <PortfolioGallery portfolios={profileData.portfolios} theme={theme} />
+                  </View>
+
+                  {/* ========================================================
+                      SECTION 5: MY SCORE (100% Lebar Penuh Tanpa Ruang Kosong)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['score'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    {/* Toolbar Simulasi Resiliensi State Data */}
+                    <View
+                      style={[
+                        styles.simulatorBar,
+                        {
+                          backgroundColor: theme.surface,
+                          borderColor: theme.border,
+                        },
+                      ]}
+                    >
+                      <View style={styles.simulatorLeft}>
+                        <Ionicons name="pulse-outline" size={16} color={theme.primary} />
+                        <Text style={[styles.simulatorTitle, { color: theme.textPrimary }]}>
+                          Simulasi Resiliensi Data:
+                        </Text>
+                      </View>
+                      <View style={styles.simulatorActions}>
+                        <TouchableOpacity
+                          style={[
+                            styles.miniSimBtn,
+                            currentState === 'normal' && !isLoadingAcademic && {
+                              backgroundColor: theme.primary,
+                              borderColor: theme.primary,
+                            },
+                            (currentState !== 'normal' || isLoadingAcademic) && {
+                              backgroundColor: theme.surfaceMuted,
+                              borderColor: theme.borderLight,
+                            },
+                          ]}
+                          onPress={handleTriggerNormal}
+                          activeOpacity={0.7}
+                          accessibilityRole="button"
+                          accessibilityLabel="Simulasi Data Normal"
+                        >
+                          <Text
+                            style={[
+                              styles.miniSimBtnText,
+                              {
+                                color:
+                                  currentState === 'normal' && !isLoadingAcademic
+                                    ? theme.textInverted
+                                    : theme.textPrimary,
+                              },
+                            ]}
+                          >
+                            Normal
+                          </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.miniSimBtn,
+                            isLoadingAcademic && {
+                              backgroundColor: theme.primary,
+                              borderColor: theme.primary,
+                            },
+                            !isLoadingAcademic && {
+                              backgroundColor: theme.surfaceMuted,
+                              borderColor: theme.borderLight,
+                            },
+                          ]}
+                          onPress={() => fetchScores({ isPullRefresh: false })}
+                          activeOpacity={0.7}
+                          accessibilityRole="button"
+                          accessibilityLabel="Simulasi Loading State"
+                        >
+                          <Text
+                            style={[
+                              styles.miniSimBtnText,
+                              {
+                                color: isLoadingAcademic ? theme.textInverted : theme.textPrimary,
+                              },
+                            ]}
+                          >
+                            Loading
+                          </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.miniSimBtn,
+                            currentState === 'empty' && {
+                              backgroundColor: theme.primary,
+                              borderColor: theme.primary,
+                            },
+                            currentState !== 'empty' && {
+                              backgroundColor: theme.surfaceMuted,
+                              borderColor: theme.borderLight,
+                            },
+                          ]}
+                          onPress={handleTriggerEmpty}
+                          activeOpacity={0.7}
+                          accessibilityRole="button"
+                          accessibilityLabel="Simulasi Data Kosong (Empty State)"
+                        >
+                          <Text
+                            style={[
+                              styles.miniSimBtnText,
+                              {
+                                color: currentState === 'empty' ? theme.textInverted : theme.textPrimary,
+                              },
+                            ]}
+                          >
+                            Empty State
+                          </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.miniSimBtn,
+                            currentState === 'error' && {
+                              backgroundColor: theme.error,
+                              borderColor: theme.error,
+                            },
+                            currentState !== 'error' && {
+                              backgroundColor: theme.surfaceMuted,
+                              borderColor: theme.borderLight,
+                            },
+                          ]}
+                          onPress={handleTriggerError}
+                          activeOpacity={0.7}
+                          accessibilityRole="button"
+                          accessibilityLabel="Simulasi Error 503"
+                        >
+                          <Text
+                            style={[
+                              styles.miniSimBtnText,
+                              {
+                                color: currentState === 'error' ? '#FFFFFF' : theme.textPrimary,
+                              },
+                            ]}
+                          >
+                            Error (503)
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    {/* Konten Capaian Akademik My Score (100% Width) */}
+                    {isLoadingAcademic ? (
+                      <LoadingSkeleton theme={theme} />
+                    ) : currentState === 'error' ? (
+                      <ErrorBanner
+                        error={academicError}
+                        theme={theme}
+                        onRetry={() => fetchScores({ isPullRefresh: false })}
+                      />
+                    ) : currentState === 'empty' ? (
+                      <EmptyState
+                        theme={theme}
+                        title="Data Nilai Akademik Belum Tersedia"
+                        message="Nilai UTS Semester 5 Anda belum diunggah oleh Dosen Pengampu."
+                        actionLabel="Muat Ulang Data"
+                        onAction={() => fetchScores({ isPullRefresh: false })}
+                      />
+                    ) : (
+                      <MyScoreSection data={academicData} theme={theme} />
+                    )}
+                  </View>
+
+                  {/* ========================================================
+                      SECTION 6: CONTACT (2 Kolom 50% : 50% Tinggi Sama Rata)
+                      ======================================================== */}
+                  <View
+                    onLayout={(e) => {
+                      sectionPositions.current['contact'] = e.nativeEvent.layout.y;
+                    }}
+                    style={styles.sectionContainer}
+                  >
+                    <View style={isDesktop ? styles.desktopGrid2Col : styles.mobileColumn}>
+                      {/* Kolom Kiri 50%: Kanal Kontak & Jaringan */}
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
                       </View>
 
-                      {/* Konten Capaian Akademik My Score */}
-                      {isLoadingAcademic ? (
-                        <LoadingSkeleton theme={theme} />
-                      ) : currentState === 'error' ? (
-                        <ErrorBanner
-                          error={academicError}
-                          onRetry={handleTriggerNormal}
+                      {/* Kolom Kanan 50%: Form Kirim Pesan */}
+                      <View style={isDesktop ? styles.desktopColHalf : styles.mobileFullWidth}>
+                        <ContactForm
+                          data={profileData}
                           theme={theme}
+                          onMessageSent={(payload) => {
+                            setMessagesReceivedCount((prev) => prev + 1);
+                            setToast({
+                              message: `Pesan berhasil dikirim dari ${payload?.senderName || 'pengunjung'}!`,
+                              type: 'success',
+                            });
+                          }}
                         />
-                      ) : currentState === 'empty' ? (
-                        <EmptyState
-                          icon="chart-line"
-                          title="Belum Ada Capaian Akademik"
-                          message="Data nilai semester ini belum diinput atau sedang dalam proses rekapitulasi dosen."
-                          actionLabel="Sinkronkan Ulang Data LMS"
-                          onAction={handleTriggerNormal}
-                          theme={theme}
-                        />
-                      ) : (
-                        <MyScoreSection data={academicData} theme={theme} />
-                      )}
+                      </View>
                     </View>
+                  </View>
+
+                  {/* ========================================================
+                      FOOTER INSTITUSI (RINGKAS, RAPI & TOMBOL KEMBALI KE ATAS)
+                      ======================================================== */}
+                  <View
+                    style={[
+                      styles.footer,
+                      {
+                        borderTopColor: theme.borderLight,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.mottoText, { color: theme.textPrimary }]}>
+                      TEKUN • DISIPLIN • BERKELAS
+                    </Text>
+                    <Text style={[styles.mottoSubtext, { color: theme.textMuted }]}>
+                      Fakultas Ilmu Komputer • Masoem University
+                    </Text>
+                    <Text style={[styles.footerText, { color: theme.textSecondary }]}>
+                      UTS Pemrograman Mobile 2 • Dosen Pengampu: Iin, M.Kom • © 2026 {profileData.nama} ({profileData.nim})
+                    </Text>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.backToTopBtn,
+                        {
+                          backgroundColor: theme.surfaceMuted,
+                          borderColor: theme.border,
+                        },
+                      ]}
+                      onPress={scrollToTop}
+                      activeOpacity={0.8}
+                    >
+                      <Ionicons name="arrow-up" size={14} color={theme.primary} />
+                      <Text style={[styles.backToTopText, { color: theme.textPrimary }]}>
+                        Kembali ke atas ↑
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
 
-                {/* ========================================================
-                    SECTION 6: CONTACT (2 Kolom: Kiri 35% Info : Kanan 65% Form Pesan)
-                    ======================================================== */}
-                <View
-                  onLayout={(e) => {
-                    sectionPositions.current['contact'] = e.nativeEvent.layout.y;
-                  }}
-                  style={styles.sectionContainer}
-                >
-                  <KineticScriptBanner
-                    scriptText="Mari Berkolaborasi — Let's Build Impactful Technology Together"
-                    sectionTag="06 • GET IN TOUCH"
-                    scrollY={scrollY}
-                    sectionTop={sectionPositions.current['contact'] || 0}
-                    direction="right"
+                {/* 3. JALUR FOTO KANAN (Auto-Scroll ke BAWAH, Desktop width >= 1200px) */}
+                {isWideDesktop && (
+                  <VerticalPhotoReel
+                    photos={PERSONAL_PHOTOS.rightPhotos}
+                    direction="down"
                     theme={theme}
                   />
-
-                  <View style={[styles.contactTwoCols, isDesktop ? styles.rowDesktop : styles.columnMobile]}>
-                    {/* KIRI 35%: 4 KARTU INFO KONTAK */}
-                    <View style={[styles.contactLeftCol, isDesktop && styles.contactLeftColDesktop]}>
-                      <ContactGridCard contactItems={profileData.contactItems} theme={theme} />
-                    </View>
-
-                    {/* KANAN 65%: KARTU FORMULIR KIRIM PESAN */}
-                    <View style={[styles.contactRightCol, isDesktop && styles.contactRightColDesktop]}>
-                      <ContactForm
-                        data={profileData}
-                        onMessageSent={handleMessageSent}
-                        theme={theme}
-                      />
-                    </View>
-                  </View>
-                </View>
-
-                {/* ========================================================
-                    FOOTER 3 KOLOM + TOMBOL KEMBALI KE ATAS ↑
-                    ======================================================== */}
-                <CosmicFooter
-                  student={profileData}
-                  theme={theme}
-                  onNavigateSection={handleNavigateToSection}
-                  onScrollToTop={handleScrollToTop}
-                />
+                )}
               </View>
             </ScrollView>
           </ErrorBoundary>
@@ -811,93 +819,52 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
   },
-  floatingTopNavFixed: {
-    position: (Platform.OS === 'web' ? 'fixed' : 'absolute') as any,
-    top: 10,
-    left: 0,
-    right: 0,
+  topNavStickyWrapper: {
+    width: '100%',
     zIndex: 1000,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sectionContainer: {
-    width: '100%',
-    gap: 16,
-    paddingTop: 8,
-    paddingBottom: 24,
-  },
-  desktopGrid2Col: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    gap: 20,
-    width: '100%',
-  },
-  desktopColHalf: {
-    flex: 1,
-    display: 'flex',
-  },
-  mobileColumn: {
-    width: '100%',
-    gap: 20,
-  },
-  mobileFullWidth: {
-    width: '100%',
-  },
-  desktopGridScoreRow: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    gap: 20,
-    width: '100%',
-  },
-  desktopColScoreImg: {
-    flex: 3,
-  },
-  desktopColScoreMain: {
-    flex: 7,
-    gap: 16,
-  },
-  contactTwoCols: {
-    width: '100%',
-    gap: 20,
-  },
-  contactLeftCol: {
-    width: '100%',
-  },
-  contactLeftColDesktop: {
-    flex: 3.5,
-  },
-  contactRightCol: {
-    width: '100%',
-  },
-  contactRightColDesktop: {
-    flex: 6.5,
-  },
-  rowDesktop: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  columnMobile: {
-    flexDirection: 'column',
+    ...Platform.select({
+      web: {
+        position: 'sticky' as any,
+        top: 0,
+      },
+    }),
   },
   scrollView: {
     flex: 1,
     width: '100%',
   },
   scrollContent: {
-    paddingTop: 72,
+    paddingVertical: SPACING.md,
     paddingBottom: SPACING.huge,
   },
-  responsiveContentWrapper: {
+  // 3-ZONA WRAPPER
+  threeZoneWrapper: {
     width: '100%',
-    maxWidth: 1260,
+    maxWidth: 1460,
     marginHorizontal: 'auto',
     alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    gap: 20,
+    paddingHorizontal: 16,
+  },
+  centerCvContent: {
+    flex: 1,
+    maxWidth: 1040,
+    width: '100%',
     gap: 24,
   },
-  // BENTO ROW
-  bentoRow: {
+  sectionContainer: {
     width: '100%',
     gap: 18,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  // BENTO ROW (HOME SCREEN)
+  bentoRow: {
+    width: '100%',
+    gap: 20,
   },
   bentoRowDesktop: {
     flexDirection: 'row',
@@ -906,27 +873,38 @@ const styles = StyleSheet.create({
   bentoRowMobile: {
     flexDirection: 'column',
   },
+  bentoLeft: {
+    width: '100%',
+    display: 'flex',
+  },
+  bentoLeftDesktop: {
+    flex: 6.5,
+  },
+  bentoRight: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  bentoRightDesktop: {
+    flex: 3.5,
+  },
   // KPI GRID 2x2
   kpiGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
     justifyContent: 'space-between',
-    flex: 1,
+    width: '100%',
   },
   kpiCard: {
     width: '48%',
     padding: 14,
-    borderRadius: 16,
+    borderRadius: 14,
     borderWidth: 1,
     justifyContent: 'space-between',
     minHeight: 110,
     gap: 4,
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(10px)',
-      } as any,
-    }),
   },
   kpiIconBox: {
     width: 32,
@@ -961,7 +939,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   homeFeatureCard: {
-    borderRadius: 16,
+    borderRadius: 14,
     borderWidth: 1,
     padding: 16,
     gap: 12,
@@ -970,9 +948,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'transform 0.15s ease, border-color 0.15s ease' as any,
-        backdropFilter: 'blur(10px)',
-      } as any,
+        transition: 'transform 0.15s ease' as any,
+      },
     }),
   },
   homeFeatureTop: {
@@ -984,7 +961,7 @@ const styles = StyleSheet.create({
   homeFeatureIconBox: {
     width: 36,
     height: 36,
-    borderRadius: 10,
+    borderRadius: 9,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -1006,6 +983,24 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     flexShrink: 1,
   },
+  // DESKTOP & MOBILE MULTI-COLUMN GRIDS
+  desktopGrid2Col: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 20,
+    width: '100%',
+  },
+  desktopColHalf: {
+    flex: 1,
+    display: 'flex',
+  },
+  mobileColumn: {
+    width: '100%',
+    gap: 20,
+  },
+  mobileFullWidth: {
+    width: '100%',
+  },
   // SIMULATOR BAR (MY SCORE)
   simulatorBar: {
     flexDirection: 'row',
@@ -1013,15 +1008,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 16,
-    borderRadius: 14,
+    borderRadius: SPACING.cardRadius,
     borderWidth: 1,
     flexWrap: 'wrap',
     gap: 10,
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(10px)',
-      } as any,
-    }),
+    width: '100%',
   },
   simulatorLeft: {
     flexDirection: 'row',
@@ -1044,13 +1035,51 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    ...Platform.select({
-      web: { cursor: 'pointer' as any },
-    }),
   },
   miniSimBtnText: {
     fontFamily: FONTS.semiBold,
     fontSize: 11.5,
+    fontWeight: '600',
+  },
+  // FOOTER
+  footer: {
+    marginTop: 20,
+    alignItems: 'center',
+    paddingVertical: 20,
+    borderTopWidth: 1,
+    gap: 8,
+    width: '100%',
+  },
+  mottoText: {
+    fontFamily: FONTS.heading,
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+  },
+  mottoSubtext: {
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    textAlign: 'center',
+  },
+  footerText: {
+    fontFamily: FONTS.body,
+    fontSize: 11,
+    textAlign: 'center',
+  },
+  backToTopBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginTop: 8,
+  },
+  backToTopText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
     fontWeight: '600',
   },
 });

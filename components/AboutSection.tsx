@@ -2,36 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, useWindowDimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import { Theme, FONTS } from '../theme';
+import { COLORS, SPACING, FONTS } from '../theme';
 import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface AboutComponentProps {
   data?: any;
   profile?: any;
-  theme: Theme;
+  theme?: any;
 }
 
 /**
- * AboutIntroCard — Layout Foto Ber-Badge (40% Kiri) + Konten Teks & KPI (60% Kanan)
+ * Card Tentang Saya (Personal Introduction)
+ * Digunakan pada Baris 1 Halaman About (50% Kiri Sejajar dengan Riwayat Pendidikan)
  */
 export function AboutIntroCard({ data, profile, theme }: AboutComponentProps) {
   const student = data || profile;
-  const { width } = useWindowDimensions();
-  const isDesktop = width >= 1024;
-  const isMobile = width < 768;
+  const currentTheme = theme || COLORS;
 
   if (!student) return null;
-  const { deskripsi, introduction } = student;
-  const isDark = theme.isDark;
+  const { deskripsi, introduction, coreAttributes } = student;
 
   return (
     <View
       style={[
-        styles.aboutCard,
+        styles.card,
         {
-          backgroundColor: theme.surface,
-          borderColor: theme.border,
-          padding: isMobile ? 18 : 28,
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
+          flex: 1,
         },
       ]}
     >
@@ -39,499 +37,438 @@ export function AboutIntroCard({ data, profile, theme }: AboutComponentProps) {
         title="Tentang Saya"
         subtitle="Personal Introduction & Career Vision"
         icon="person-circle-outline"
-        badgeText="Profil"
-        theme={theme}
+        badgeText="Intro"
+        theme={currentTheme}
       />
 
-      <View style={[styles.aboutLayoutRow, isDesktop ? styles.rowDesktop : styles.columnMobile]}>
-        {/* ========================================================
-            KIRI (40%): FOTO DENGAN HALO INDIGO & 3 FLOATING PILL BADGE
-            ======================================================== */}
-        <View style={[styles.visualLeftCol, isDesktop && styles.visualLeftColDesktop]}>
-          {/* Indigo Halo Glow */}
-          <View
-            style={[
-              styles.indigoHalo,
-              {
-                backgroundColor: isDark ? 'rgba(99, 102, 241, 0.25)' : 'rgba(79, 70, 229, 0.14)',
-              },
-            ]}
-          />
-
-          {/* Frame Foto Utama About */}
-          <View
-            style={[
-              styles.photoFrame,
-              {
-                borderColor: theme.primary,
-                backgroundColor: theme.surfaceMuted,
-              },
-            ]}
-          >
-            <Image
-              source={SECTION_IMAGES.GAMBAR_2_ABOUT.source}
-              style={styles.photoImg}
-              resizeMode="cover"
-            />
-          </View>
-
-          {/* 3 FLOATING PILL BADGES */}
-          <View
-            style={[
-              styles.pillBadge,
-              styles.pillTopLeft,
-              {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-              },
-            ]}
-          >
-            <View style={[styles.badgeDot, { backgroundColor: '#6366F1' }]} />
-            <Text style={[styles.pillBadgeText, { color: theme.textPrimary }]}>
-              {student.prodi || 'Sistem Informasi'}
-            </Text>
-          </View>
-
-          <View
-            style={[
-              styles.pillBadge,
-              styles.pillMiddleRight,
-              {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-              },
-            ]}
-          >
-            <View style={[styles.badgeDot, { backgroundColor: '#F59E0B' }]} />
-            <Text style={[styles.pillBadgeText, { color: theme.textPrimary }]}>
-              {student.kampus || 'Masoem University'}
-            </Text>
-          </View>
-
-          <View
-            style={[
-              styles.pillBadge,
-              styles.pillBottomLeft,
-              {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-              },
-            ]}
-          >
-            <View style={[styles.badgeDot, { backgroundColor: '#22C55E' }]} />
-            <Text style={[styles.pillBadgeText, { color: theme.textPrimary }]}>
-              Semester {student.semester || 5} • Reguler
-            </Text>
-          </View>
-        </View>
-
-        {/* ========================================================
-            KANAN (60%): SUBJUDUL EMAS, HEADING, PARAGRAF, KUTIPAN & 3 KPI
-            ======================================================== */}
-        <View style={[styles.contentRightCol, isDesktop && styles.contentRightColDesktop]}>
-          {/* Subjudul Emas */}
-          <Text style={[styles.introSubheading, { color: theme.secondary }]}>
-            PERKENALAN DIRI & VISI PROFESIONAL
+      <View style={styles.introContent}>
+        {introduction?.headline && (
+          <Text style={[styles.headlineText, { color: currentTheme.textPrimary }]}>
+            {introduction.headline}
           </Text>
-
-          {/* Heading Perkenalan */}
-          <Text style={[styles.introHeadline, { color: theme.textPrimary }]}>
-            {introduction?.headline || `Halo! Saya ${student.nama}`}
+        )}
+        <Text style={[styles.paragraphText, { color: currentTheme.textSecondary }]}>
+          {deskripsi || introduction?.summary}
+        </Text>
+        {introduction?.detailedBio && (
+          <Text style={[styles.paragraphText, { color: currentTheme.textSecondary }]}>
+            {introduction.detailedBio}
           </Text>
+        )}
 
-          {/* Paragraf Utama */}
-          <Text style={[styles.introBody, { color: theme.textSecondary }]}>
-            {deskripsi || introduction?.summary}
-          </Text>
-
-          {introduction?.detailedBio && (
-            <Text style={[styles.introBody, { color: theme.textSecondary }]}>
-              {introduction.detailedBio}
+        {/* Kutipan / Personal Motto */}
+        {introduction?.motto && (
+          <View
+            style={[
+              styles.quoteBox,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderLeftColor: currentTheme.primary,
+              },
+            ]}
+          >
+            <Ionicons name="chatbubble-ellipses-outline" size={16} color={currentTheme.primary} />
+            <Text style={[styles.quoteText, { color: currentTheme.primary }]}>
+              "{introduction.motto}"
             </Text>
-          )}
-
-          {/* Kutipan / Motto */}
-          {introduction?.motto && (
-            <View
-              style={[
-                styles.quoteContainer,
-                {
-                  backgroundColor: isDark ? 'rgba(30, 37, 70, 0.45)' : 'rgba(238, 242, 255, 0.65)',
-                  borderLeftColor: theme.secondary,
-                },
-              ]}
-            >
-              <Ionicons name="chatbox-ellipses-outline" size={18} color={theme.secondary} />
-              <Text style={[styles.quoteText, { color: theme.textPrimary }]}>
-                {introduction.motto}
-              </Text>
-            </View>
-          )}
-
-          {/* 3 KPI / Info Cards Ringkas */}
-          <View style={styles.kpiRow}>
-            <View
-              style={[
-                styles.miniKpiCard,
-                {
-                  backgroundColor: isDark ? 'rgba(22, 27, 51, 0.8)' : 'rgba(241, 245, 249, 0.9)',
-                  borderColor: theme.border,
-                },
-              ]}
-            >
-              <Text style={[styles.kpiNumber, { color: theme.primary }]}>3.84</Text>
-              <Text style={[styles.kpiTitle, { color: theme.textSecondary }]}>IPK Kumulatif</Text>
-            </View>
-
-            <View
-              style={[
-                styles.miniKpiCard,
-                {
-                  backgroundColor: isDark ? 'rgba(22, 27, 51, 0.8)' : 'rgba(241, 245, 249, 0.9)',
-                  borderColor: theme.border,
-                },
-              ]}
-            >
-              <Text style={[styles.kpiNumber, { color: theme.secondary }]}>92 SKS</Text>
-              <Text style={[styles.kpiTitle, { color: theme.textSecondary }]}>SKS Tempuh</Text>
-            </View>
-
-            <View
-              style={[
-                styles.miniKpiCard,
-                {
-                  backgroundColor: isDark ? 'rgba(22, 27, 51, 0.8)' : 'rgba(241, 245, 249, 0.9)',
-                  borderColor: theme.border,
-                },
-              ]}
-            >
-              <Text style={[styles.kpiNumber, { color: '#22C55E' }]}>Aktif</Text>
-              <Text style={[styles.kpiTitle, { color: theme.textSecondary }]}>Status Kuliah</Text>
-            </View>
           </View>
-        </View>
+        )}
       </View>
+
+      {/* Core Attributes */}
+      {coreAttributes && (
+        <View
+          style={[
+            styles.attributesContainer,
+            { borderTopColor: currentTheme.borderLight },
+          ]}
+        >
+          {coreAttributes.map((attr: any, index: number) => (
+            <View key={index} style={styles.attributeItem}>
+              <View style={[styles.attrBullet, { backgroundColor: currentTheme.primary }]} />
+              <View style={styles.attrTextCol}>
+                <Text style={[styles.attrLabel, { color: currentTheme.textPrimary }]}>
+                  {attr.label}
+                </Text>
+                <Text style={[styles.attrDesc, { color: currentTheme.textMuted }]}>
+                  {attr.desc}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
 
 /**
- * SpecializationCard — Grid 4 Kolom Sejajar: Bidang Minat & Spesialisasi
+ * Card Bidang Minat & Spesialisasi (Areas of Interest)
+ * Digunakan pada Baris 2 Halaman About (100% Lebar Penuh dengan Grid 2x2 di Dalamnya)
  */
 export function SpecializationCard({ data, profile, theme }: AboutComponentProps) {
   const student = data || profile;
+  const currentTheme = theme || COLORS;
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
 
   if (!student) return null;
   const fieldsOfInterest = student.fieldsOfInterest || [];
-  const isDark = theme.isDark;
 
   return (
     <View
       style={[
-        styles.aboutCard,
+        styles.card,
         {
-          backgroundColor: theme.surface,
-          borderColor: theme.border,
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
           width: '100%',
-          padding: isDesktop ? 28 : 18,
         },
       ]}
     >
       <SectionHeading
         title="Bidang Minat & Spesialisasi"
-        subtitle="Areas of Interest & Core Engineering Competencies"
+        subtitle="Areas of Interest in Information Systems"
         icon="sparkles-outline"
         badgeText="Spesialisasi"
-        theme={theme}
+        theme={currentTheme}
       />
 
-      {/* GRID 4 KOLOM SEJAJAR DI DESKTOP */}
-      <View style={styles.grid4ColWrapper}>
-        {fieldsOfInterest.map((item: any, index: number) => {
-          const accentColor = item.accentColor || (index % 2 === 0 ? theme.primary : theme.secondary);
-          return (
-            <View
-              key={item.id || index}
-              style={[
-                styles.specializationGlassCard,
-                {
-                  backgroundColor: isDark ? 'rgba(22, 27, 51, 0.75)' : 'rgba(248, 250, 252, 0.85)',
-                  borderColor: theme.border,
-                  width: isDesktop ? '23.5%' : isTablet ? '48.5%' : '100%',
-                },
-              ]}
-            >
-              {/* Kotak Ikon Glow di Pojok Kiri Atas */}
+      {/* GRID 2x2 SPESIALISASI */}
+      <View style={styles.specializationGrid}>
+        {fieldsOfInterest.map((item: any) => (
+          <View
+            key={item.id}
+            style={[
+              styles.interestCard,
+              {
+                backgroundColor: currentTheme.surfaceMuted,
+                borderColor: currentTheme.borderLight,
+                borderLeftColor: currentTheme.primary,
+                width: isDesktop || isTablet ? '48.5%' : '100%',
+              },
+            ]}
+          >
+            <View style={styles.interestTopRow}>
               <View
                 style={[
-                  styles.glowIconBox,
-                  {
-                    backgroundColor: isDark ? 'rgba(99, 102, 241, 0.15)' : 'rgba(79, 70, 229, 0.1)',
-                    borderColor: accentColor,
-                  },
+                  styles.interestIconBox,
+                  { backgroundColor: currentTheme.surface, borderColor: currentTheme.borderLight },
                 ]}
               >
-                <Ionicons name={item.icon || 'code-slash-outline'} size={18} color={accentColor} />
+                <Ionicons
+                  name={item.icon || 'star-outline'}
+                  size={18}
+                  color={currentTheme.primary}
+                />
               </View>
-
-              <Text style={[styles.interestTitle, { color: theme.textPrimary }]}>
-                {item.title}
-              </Text>
-
-              {item.category && (
-                <Text style={[styles.interestCategory, { color: theme.secondary }]}>
+              <View style={styles.interestTitleCol}>
+                <Text style={[styles.interestTitle, { color: currentTheme.textPrimary }]}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.interestCategory, { color: currentTheme.textMuted }]}>
                   {item.category}
                 </Text>
-              )}
-
-              <Text style={[styles.interestDesc, { color: theme.textSecondary }]}>
-                {item.description}
-              </Text>
+              </View>
             </View>
-          );
-        })}
+
+            <Text style={[styles.interestDescription, { color: currentTheme.textSecondary }]}>
+              {item.description}
+            </Text>
+
+            {/* Tag / Chips Keahlian terkait Minat */}
+            <View style={styles.tagWrap}>
+              {item.tags.map((tag: string, tagIdx: number) => (
+                <View
+                  key={tagIdx}
+                  style={[
+                    styles.tagPill,
+                    {
+                      backgroundColor: currentTheme.surface,
+                      borderColor: currentTheme.borderLight,
+                    },
+                  ]}
+                >
+                  <Text style={[styles.tagPillText, { color: currentTheme.textSecondary }]}>
+                    {tag}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        ))}
       </View>
     </View>
   );
 }
 
 /**
- * AboutEditorialImageCard — Backward-compatibility placeholder for older references
+ * Card Editorial Showcase Foto (GAMBAR_2_ABOUT)
+ * Ditampilkan di Tengah Antara Tentang Saya & Riwayat Pendidikan (Grid 3 Kolom di Desktop)
  */
-export function AboutEditorialImageCard({ theme }: { theme: Theme }) {
-  return null;
+export function AboutEditorialImageCard({ theme }: { theme?: any }) {
+  const currentTheme = theme || COLORS;
+  const config = SECTION_IMAGES.GAMBAR_2_ABOUT;
+
+  return (
+    <View
+      style={[
+        styles.polaroidCard,
+        {
+          backgroundColor: currentTheme.surface,
+          borderColor: currentTheme.border,
+        },
+      ]}
+      accessibilityRole="region"
+      accessibilityLabel={config.alt}
+    >
+      <View style={styles.polaroidImageWrapper}>
+        <Image
+          source={config.source}
+          style={styles.polaroidImage}
+          resizeMode="cover"
+          accessibilityLabel={config.alt}
+        />
+        {/* Floating Tag */}
+        <View
+          style={[
+            styles.polaroidBadge,
+            {
+              backgroundColor: currentTheme.primary,
+            },
+          ]}
+        >
+          <Ionicons name="sparkles" size={11} color={currentTheme.textInverted || '#FFFDF7'} />
+          <Text style={[styles.polaroidBadgeText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
+            {config.badge}
+          </Text>
+        </View>
+      </View>
+
+      {/* Polaroid Caption Footer */}
+      <View style={styles.polaroidCaptionCol}>
+        <Text style={[styles.polaroidTitle, { color: currentTheme.textPrimary }]}>
+          {config.title}
+        </Text>
+        <Text style={[styles.polaroidSubtitle, { color: currentTheme.textSecondary }]}>
+          {config.subtitle}
+        </Text>
+        <Text style={[styles.polaroidDesc, { color: currentTheme.textMuted }]}>
+          {config.description}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+/**
+ * AboutSection Default Export (Menyatukan Intro & Spesialisasi jika dipanggil langsung)
+ */
+export default function AboutSection({ data, profile, theme }: AboutComponentProps) {
+  return (
+    <View style={styles.container}>
+      <AboutIntroCard data={data} profile={profile} theme={theme} />
+      <AboutEditorialImageCard theme={theme} />
+      <SpecializationCard data={data} profile={profile} theme={theme} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  aboutCard: {
+  container: {
+    gap: SPACING.gap,
+    marginBottom: 0,
     width: '100%',
-    borderRadius: 22,
+  },
+  card: {
+    borderRadius: SPACING.cardRadius,
+    padding: SPACING.cardPadding,
     borderWidth: 1,
-    overflow: 'hidden',
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
-      } as any,
-      default: {
-        elevation: 4,
-      },
-    }),
   },
-  aboutLayoutRow: {
-    width: '100%',
-    gap: 28,
-  },
-  rowDesktop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  columnMobile: {
-    flexDirection: 'column',
-  },
-  // Kiri 40%
-  visualLeftCol: {
-    position: 'relative',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 320,
-  },
-  visualLeftColDesktop: {
-    flex: 4,
-  },
-  indigoHalo: {
-    position: 'absolute',
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    ...Platform.select({
-      web: { filter: 'blur(45px)' } as any,
-    }),
-  },
-  photoFrame: {
-    width: 220,
-    height: 250,
-    borderRadius: 20,
-    borderWidth: 2,
-    overflow: 'hidden',
-    ...Platform.select({
-      web: {
-        boxShadow: '0 14px 34px rgba(0, 0, 0, 0.25)',
-      } as any,
-      default: {
-        elevation: 6,
-      },
-    }),
-  },
-  photoImg: {
-    width: '100%',
-    height: '100%',
-  },
-  pillBadge: {
-    position: 'absolute',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    borderWidth: 1,
-    gap: 7,
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
-      } as any,
-      default: {
-        elevation: 4,
-      },
-    }),
-  },
-  badgeDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 3.5,
-  },
-  pillBadgeText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 11.5,
-    fontWeight: '600',
-  },
-  pillTopLeft: {
-    top: 15,
-    left: '2%',
-  },
-  pillMiddleRight: {
-    top: '48%',
-    right: '2%',
-  },
-  pillBottomLeft: {
-    bottom: 15,
-    left: '4%',
-  },
-  // Kanan 60%
-  contentRightCol: {
-    width: '100%',
-    gap: 12,
-  },
-  contentRightColDesktop: {
-    flex: 6,
-  },
-  introSubheading: {
-    fontFamily: FONTS.bold,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1,
-  },
-  introHeadline: {
-    fontFamily: FONTS.bold,
-    fontSize: 22,
-    fontWeight: '700',
-    letterSpacing: -0.3,
-    lineHeight: 28,
-  },
-  introBody: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    lineHeight: 23,
-  },
-  quoteContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    padding: 14,
-    borderRadius: 12,
-    borderLeftWidth: 3,
+  introContent: {
     gap: 10,
+    marginTop: 4,
+  },
+  headlineText: {
+    fontFamily: FONTS.bold,
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 22,
+  },
+  paragraphText: {
+    fontFamily: FONTS.regular,
+    fontSize: 13.5,
+    lineHeight: 21,
+  },
+  quoteBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    gap: 8,
     marginVertical: 4,
   },
   quoteText: {
-    fontFamily: FONTS.medium,
-    fontSize: 13,
+    fontFamily: FONTS.semiBold,
+    fontSize: 12.5,
     fontStyle: 'italic',
-    lineHeight: 20,
+    flex: 1,
+    lineHeight: 18,
+  },
+  attributesContainer: {
+    borderTopWidth: 1,
+    paddingTop: 12,
+    marginTop: 12,
+    gap: 8,
+  },
+  attributeItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  attrBullet: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginTop: 6,
+  },
+  attrTextCol: {
     flex: 1,
   },
-  kpiRow: {
+  attrLabel: {
+    fontFamily: FONTS.bold,
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+  attrDesc: {
+    fontFamily: FONTS.regular,
+    fontSize: 11.5,
+    lineHeight: 16,
+  },
+  // SPESIALISASI GRID 2x2
+  specializationGrid: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+    flexWrap: 'wrap',
+    gap: 14,
     marginTop: 8,
-    flexWrap: 'wrap',
-  },
-  miniKpiCard: {
-    flex: 1,
-    minWidth: 100,
-    padding: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 3,
-  },
-  kpiNumber: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 18,
-    fontWeight: '800',
-  },
-  kpiTitle: {
-    fontFamily: FONTS.medium,
-    fontSize: 11,
-    fontWeight: '500',
-  },
-  // GRID 4 KOLOM SPESIALISASI
-  grid4ColWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    width: '100%',
     justifyContent: 'space-between',
   },
-  specializationGlassCard: {
-    padding: 18,
-    borderRadius: 16,
+  interestCard: {
+    borderRadius: 12,
     borderWidth: 1,
+    borderLeftWidth: 3,
+    padding: 16,
     gap: 10,
-    minHeight: 180,
-    ...Platform.select({
-      web: {
-        backdropFilter: 'blur(12px)',
-        transition: 'transform 0.18s ease, border-color 0.18s ease' as any,
-        cursor: 'default' as any,
-      },
-    }),
+    justifyContent: 'space-between',
   },
-  glowIconBox: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
+  interestTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  interestIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Platform.select({
-      web: {
-        boxShadow: '0 0 12px rgba(99, 102, 241, 0.2)',
-      } as any,
-    }),
+  },
+  interestTitleCol: {
+    flex: 1,
   },
   interestTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 14.5,
+    fontSize: 13.5,
     fontWeight: '700',
-    letterSpacing: -0.2,
   },
   interestCategory: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 11.5,
-    fontWeight: '600',
-    marginTop: -4,
+    fontFamily: FONTS.medium,
+    fontSize: 11,
   },
-  interestDesc: {
+  interestDescription: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
+  },
+  tagWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 2,
+  },
+  tagPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  tagPillText: {
+    fontFamily: FONTS.medium,
+    fontSize: 10.5,
+  },
+  // VINTAGE EDITORIAL POLAROID (GAMBAR_2_ABOUT)
+  polaroidCard: {
+    borderRadius: SPACING.cardRadius,
+    borderWidth: 1,
+    padding: 14,
+    gap: 12,
+    flex: 1,
+    width: '100%',
+    ...Platform.select({
+      web: {
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease' as any,
+      },
+    }),
+  },
+  polaroidImageWrapper: {
+    width: '100%',
+    height: 240,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#000000',
+  },
+  polaroidImage: {
+    width: '100%',
+    height: '100%',
+  },
+  polaroidBadge: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  polaroidBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 10.5,
+    fontWeight: '700',
+  },
+  polaroidCaptionCol: {
+    gap: 4,
+    paddingHorizontal: 4,
+  },
+  polaroidTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+  polaroidSubtitle: {
+    fontFamily: FONTS.medium,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  polaroidDesc: {
+    fontFamily: FONTS.regular,
+    fontSize: 11.5,
+    lineHeight: 16,
   },
 });
