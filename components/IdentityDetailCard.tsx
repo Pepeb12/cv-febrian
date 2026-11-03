@@ -1,166 +1,244 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import SectionHeading from './SectionHeading';
-import { COLORS, SPACING, FONTS } from '../theme';
+import { Theme, FONTS } from '../theme';
 
 interface IdentityDetailCardProps {
   data?: any;
   profile?: any;
-  theme?: any;
+  theme: Theme;
 }
 
 /**
- * IdentityDetailCard Component (Riwayat Pendidikan - Education Timeline)
+ * IdentityDetailCard Component — Riwayat Pendidikan (Vertical Glowing Timeline)
  */
 export default function IdentityDetailCard({ data, profile, theme }: IdentityDetailCardProps) {
   const student = data || profile;
-  const currentTheme = theme || COLORS;
-
   if (!student) return null;
 
   const educationList = student.educationHistory || student.education || [];
+  const isDark = theme.isDark;
 
   return (
-    <View style={styles.container}>
-      {/* SECTION: Riwayat Jenjang Pendidikan (Vertical Timeline Layout) */}
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: currentTheme.surface,
-            borderColor: currentTheme.border,
-          },
-        ]}
-      >
-        <SectionHeading
-          title="Riwayat Pendidikan"
-          subtitle="Education Timeline (2011 — Sekarang)"
-          icon="school-outline"
-          badgeText="Akademik"
-          theme={currentTheme}
-        />
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: theme.surface,
+          borderColor: theme.border,
+        },
+      ]}
+      accessibilityRole="region"
+      accessibilityLabel="Riwayat Pendidikan Mahasiswa"
+    >
+      <SectionHeading
+        title="Riwayat Pendidikan"
+        subtitle="Formal Education Journey (2011 — Sekarang)"
+        icon="school-outline"
+        badgeText="Akademik"
+        theme={theme}
+      />
 
-        <View style={styles.timelineContainer}>
-          {educationList.map((edu: any, index: number) => {
-            const isLatest = index === 0;
-            return (
-              <View key={index} style={styles.timelineItem}>
-                <View style={styles.timelineLeftCol}>
+      <View style={styles.timelineContainer}>
+        {educationList.map((edu: any, index: number) => {
+          const isLatest = index === 0;
+          const isLast = index === educationList.length - 1;
+
+          return (
+            <View key={index} style={styles.timelineRow}>
+              {/* Sisi Kiri: Garis Timeline Vertikal Bercahaya & Node Bulat Menyala */}
+              <View style={styles.leftCol}>
+                <View
+                  style={[
+                    styles.glowingNode,
+                    {
+                      backgroundColor: isLatest ? theme.primary : theme.surfaceSecondary,
+                      borderColor: theme.primary,
+                      ...Platform.select({
+                        web: {
+                          boxShadow: isLatest
+                            ? '0 0 12px rgba(99, 102, 241, 0.6)'
+                            : '0 0 6px rgba(99, 102, 241, 0.3)',
+                        } as any,
+                      }),
+                    },
+                  ]}
+                >
+                  <View style={[styles.innerNodeDot, { backgroundColor: '#FFFFFF' }]} />
+                </View>
+                {!isLast && (
                   <View
                     style={[
-                      styles.timelineDot,
+                      styles.glowingLine,
                       {
-                        backgroundColor: isLatest ? currentTheme.primary : currentTheme.surfaceMuted,
-                        borderColor: isLatest ? currentTheme.primary : currentTheme.primaryBorder,
+                        backgroundColor: theme.primary,
+                        opacity: isDark ? 0.35 : 0.25,
                       },
                     ]}
                   />
-                  {index < educationList.length - 1 && (
-                    <View style={[styles.timelineLine, { backgroundColor: currentTheme.borderLight }]} />
-                  )}
-                </View>
-                <View style={styles.timelineContent}>
-                  <View style={styles.timelineHeader}>
-                    {/* H3 HEADING */}
-                    <Text
-                      style={[
-                        styles.educationSchool,
-                        { color: currentTheme.textPrimary },
-                      ]}
-                    >
-                      {edu.school || edu.institution}
-                    </Text>
-                    <Text style={[styles.educationPeriod, { color: currentTheme.textMuted }]}>
+                )}
+              </View>
+
+              {/* Sisi Kanan: Kartu Glassmorphism dengan Badge Tahun, Judul, Deskripsi */}
+              <View
+                style={[
+                  styles.timelineItemCard,
+                  {
+                    backgroundColor: isDark ? 'rgba(22, 27, 51, 0.6)' : 'rgba(248, 250, 252, 0.85)',
+                    borderColor: theme.border,
+                  },
+                ]}
+              >
+                {/* Badge Tahun di Bagian Atas */}
+                <View style={styles.badgeRow}>
+                  <View
+                    style={[
+                      styles.yearBadge,
+                      {
+                        backgroundColor: isDark ? 'rgba(99, 102, 241, 0.18)' : 'rgba(79, 70, 229, 0.1)',
+                        borderColor: theme.primary,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.yearBadgeText, { color: theme.primary }]}>
                       {edu.period}
                     </Text>
                   </View>
-                  <Text style={[styles.educationLevel, { color: currentTheme.textSecondary }]}>
-                    {edu.level} {edu.major ? `• ${edu.major}` : ''}
+                  {edu.level && (
+                    <Text style={[styles.levelTag, { color: theme.secondary }]}>
+                      {edu.level}
+                    </Text>
+                  )}
+                </View>
+
+                {/* Judul Institusi & Jurusan */}
+                <Text style={[styles.schoolTitle, { color: theme.textPrimary }]}>
+                  {edu.school || edu.institution}
+                </Text>
+                {edu.major && (
+                  <Text style={[styles.majorSubtitle, { color: theme.textSecondary }]}>
+                    {edu.major}
                   </Text>
-                  <Text style={[styles.educationDesc, { color: currentTheme.textMuted }]}>
+                )}
+
+                {/* Deskripsi Asli */}
+                {edu.description && (
+                  <Text style={[styles.descText, { color: theme.textSecondary }]}>
                     {edu.description}
                   </Text>
-                </View>
+                )}
               </View>
-            );
-          })}
-        </View>
+            </View>
+          );
+        })}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 0,
-    width: '100%',
-    flex: 1,
-  },
   card: {
-    borderRadius: SPACING.cardRadius,
-    padding: SPACING.cardPadding,
+    borderRadius: 22,
+    padding: 24,
     borderWidth: 1,
     flex: 1,
-    justifyContent: 'flex-start',
+    width: '100%',
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+      } as any,
+      default: {
+        elevation: 4,
+      },
+    }),
   },
   timelineContainer: {
     paddingLeft: 4,
-    marginTop: SPACING.sm,
-    flex: 1,
+    marginTop: 8,
   },
-  timelineItem: {
+  timelineRow: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.lg,
+    marginBottom: 20,
   },
-  timelineLeftCol: {
-    width: 22,
+  leftCol: {
+    width: 26,
     alignItems: 'center',
+    position: 'relative',
   },
-  timelineDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+  glowingNode: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     borderWidth: 2,
-    marginTop: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 2,
+    marginTop: 8,
   },
-  timelineLine: {
+  innerNodeDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+  },
+  glowingLine: {
     position: 'absolute',
-    top: 15,
-    bottom: -24,
-    width: 1.5,
+    top: 24,
+    bottom: -22,
+    width: 2,
     zIndex: 1,
   },
-  timelineContent: {
+  timelineItemCard: {
     flex: 1,
-    paddingLeft: SPACING.md,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginLeft: 12,
+    gap: 6,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(10px)',
+      } as any,
+    }),
   },
-  timelineHeader: {
+  badgeRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 2,
   },
-  educationSchool: {
+  yearBadge: {
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  yearBadgeText: {
+    fontFamily: FONTS.bold,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  levelTag: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  schoolTitle: {
     fontFamily: FONTS.bold,
     fontSize: 14.5,
     fontWeight: '700',
+    letterSpacing: -0.2,
   },
-  educationPeriod: {
-    fontFamily: FONTS.semiBold,
-    fontSize: 11.5,
-    fontWeight: '600',
-  },
-  educationLevel: {
+  majorSubtitle: {
     fontFamily: FONTS.medium,
     fontSize: 12.5,
-    fontWeight: '500',
-    marginBottom: 2,
+    marginTop: -2,
   },
-  educationDesc: {
+  descText: {
     fontFamily: FONTS.regular,
-    fontSize: 11.5,
-    lineHeight: 17,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 2,
   },
 });

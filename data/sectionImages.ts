@@ -95,3 +95,4 @@ export const SECTION_IMAGES: Record<string, SectionImageConfig> = {
 };
 
 export default SECTION_IMAGES;
+

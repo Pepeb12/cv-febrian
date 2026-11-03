@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import SectionHeading from './SectionHeading';
-import { Theme, SPACING, FONTS } from '../theme';
+import { Theme, FONTS } from '../theme';
 
 interface ExperienceItem {
   id?: string | number;
@@ -19,10 +19,11 @@ interface ExperienceTimelineProps {
 }
 
 /**
- * ExperienceTimeline Component (Minimalist Tech: Flat, Scale 8px, Inter)
+ * ExperienceTimeline Component — Pengalaman & Organisasi (Vertical Glowing Timeline)
  */
 export default function ExperienceTimeline({ experiences = [], theme }: ExperienceTimelineProps) {
   if (!experiences || experiences.length === 0) return null;
+  const isDark = theme.isDark;
 
   return (
     <View
@@ -33,6 +34,8 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
           borderColor: theme.border,
         },
       ]}
+      accessibilityRole="region"
+      accessibilityLabel="Pengalaman & Organisasi Mahasiswa"
     >
       <SectionHeading
         title="Pengalaman & Organisasi"
@@ -44,43 +47,81 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
 
       <View style={styles.timelineContainer}>
         {experiences.map((exp, index) => {
+          const isLatest = index === 0;
           const isLast = index === experiences.length - 1;
 
           return (
-            <View key={exp.id || index} style={styles.timelineItem}>
-              {/* Sisi Kiri: Node Titik & Garis Penghubung */}
+            <View key={exp.id || index} style={styles.timelineRow}>
+              {/* Sisi Kiri: Garis Timeline Vertikal Bercahaya & Node Bulat Menyala */}
               <View style={styles.leftCol}>
                 <View
                   style={[
-                    styles.nodeCircle,
+                    styles.glowingNode,
                     {
-                      backgroundColor: theme.surfaceMuted,
-                      borderColor: theme.primaryBorder,
+                      backgroundColor: isLatest ? theme.primary : theme.surfaceSecondary,
+                      borderColor: theme.primary,
+                      ...Platform.select({
+                        web: {
+                          boxShadow: isLatest
+                            ? '0 0 12px rgba(99, 102, 241, 0.6)'
+                            : '0 0 6px rgba(99, 102, 241, 0.3)',
+                        } as any,
+                      }),
                     },
                   ]}
                 >
-                  <View style={[styles.nodeDot, { backgroundColor: theme.primary }]} />
+                  <View style={[styles.innerNodeDot, { backgroundColor: '#FFFFFF' }]} />
                 </View>
                 {!isLast && (
-                  <View style={[styles.connectingLine, { backgroundColor: theme.border }]} />
+                  <View
+                    style={[
+                      styles.glowingLine,
+                      {
+                        backgroundColor: theme.primary,
+                        opacity: isDark ? 0.35 : 0.25,
+                      },
+                    ]}
+                  />
                 )}
               </View>
 
-              {/* Sisi Kanan: Konten Pengalaman */}
-              <View style={styles.contentCol}>
-                <View style={styles.headerRow}>
-                  {/* H3 HEADING */}
-                  <Text style={[styles.roleText, { color: theme.textPrimary }]}>
-                    {exp.role}
-                  </Text>
-                  <Text style={[styles.periodText, { color: theme.textMuted }]}>
-                    {exp.period}
+              {/* Sisi Kanan: Kartu Glassmorphism dengan Badge Tahun, Judul, Deskripsi */}
+              <View
+                style={[
+                  styles.timelineItemCard,
+                  {
+                    backgroundColor: isDark ? 'rgba(22, 27, 51, 0.6)' : 'rgba(248, 250, 252, 0.85)',
+                    borderColor: theme.border,
+                  },
+                ]}
+              >
+                {/* Badge Tahun di Bagian Atas */}
+                <View style={styles.badgeRow}>
+                  <View
+                    style={[
+                      styles.yearBadge,
+                      {
+                        backgroundColor: isDark ? 'rgba(99, 102, 241, 0.18)' : 'rgba(79, 70, 229, 0.1)',
+                        borderColor: theme.primary,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.yearBadgeText, { color: theme.primary }]}>
+                      {exp.period}
+                    </Text>
+                  </View>
+                  <Text style={[styles.orgBadgeText, { color: theme.secondary }]}>
+                    {exp.organization}
                   </Text>
                 </View>
-                <Text style={[styles.orgText, { color: theme.textSecondary }]}>
-                  {exp.organization}
+
+                {/* Judul Posisi / Role */}
+                <Text style={[styles.roleTitle, { color: theme.textPrimary }]}>
+                  {exp.role}
                 </Text>
-                <Text style={[styles.descText, { color: theme.textMuted }]}>
+
+                {/* Deskripsi Asli */}
+                <Text style={[styles.descText, { color: theme.textSecondary }]}>
                   {exp.description}
                 </Text>
               </View>
@@ -94,27 +135,36 @@ export default function ExperienceTimeline({ experiences = [], theme }: Experien
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: SPACING.cardRadius, // 16px
-    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderRadius: 22,
+    padding: 24,
     borderWidth: 1,
-    marginBottom: 0,
     flex: 1,
     width: '100%',
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+      } as any,
+      default: {
+        elevation: 4,
+      },
+    }),
   },
   timelineContainer: {
-    paddingLeft: 2,
-    marginTop: SPACING.sm,
+    paddingLeft: 4,
+    marginTop: 8,
   },
-  timelineItem: {
+  timelineRow: {
     flexDirection: 'row',
     position: 'relative',
-    marginBottom: SPACING.lg, // 24px
+    marginBottom: 20,
   },
   leftCol: {
-    width: 22,
+    width: 26,
     alignItems: 'center',
+    position: 'relative',
   },
-  nodeCircle: {
+  glowingNode: {
     width: 16,
     height: 16,
     borderRadius: 8,
@@ -122,50 +172,65 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
+    marginTop: 8,
   },
-  nodeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+  innerNodeDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
-  connectingLine: {
+  glowingLine: {
     position: 'absolute',
-    top: 16,
-    bottom: -24,
-    width: 1.5,
+    top: 24,
+    bottom: -22,
+    width: 2,
     zIndex: 1,
   },
-  contentCol: {
+  timelineItemCard: {
     flex: 1,
-    paddingLeft: SPACING.md, // 16px
-    paddingBottom: SPACING.xs,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginLeft: 12,
+    gap: 6,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(10px)',
+      } as any,
+    }),
   },
-  headerRow: {
+  badgeRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 2,
-    flexWrap: 'wrap',
   },
-  roleText: {
+  yearBadge: {
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  yearBadgeText: {
     fontFamily: FONTS.bold,
-    fontSize: 13.5,
+    fontSize: 11,
     fontWeight: '700',
-    marginRight: 6,
   },
-  periodText: {
-    fontFamily: FONTS.regular,
-    fontSize: 11.5,
-  },
-  orgText: {
+  orgBadgeText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 12.5,
+    fontSize: 11,
     fontWeight: '600',
-    marginBottom: 4,
+  },
+  roleTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 14.5,
+    fontWeight: '700',
+    letterSpacing: -0.2,
   },
   descText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
+    marginTop: 2,
   },
 });

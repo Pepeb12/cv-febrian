@@ -9,11 +9,12 @@ import {
   ScrollView,
   Platform,
   useWindowDimensions,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
-import FeaturedProjectSpotlightBanner from './FeaturedProjectSpotlightBanner';
-import { Theme, SPACING, FONTS } from '../theme';
+import { Theme, FONTS } from '../theme';
+import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface ProjectItem {
   id: string | number;
@@ -34,9 +35,6 @@ interface PortfolioGalleryProps {
   theme: Theme;
 }
 
-/**
- * Helper untuk memastikan ikon selalu valid (tidak pernah muncul tanda tanya '?')
- */
 function getValidProjectIcon(proj: ProjectItem): keyof typeof Ionicons.glyphMap {
   const title = (proj.title || '').toLowerCase();
   const cat = (proj.category || '').toLowerCase();
@@ -56,21 +54,15 @@ function getValidProjectIcon(proj: ProjectItem): keyof typeof Ionicons.glyphMap 
   return 'briefcase-outline';
 }
 
-/**
- * PortfolioGallery Component (Galeri Portofolio Proyek)
- * - Search bar dan filter kategori sejajar 1 baris di Desktop
- * - Tombol filter aktif menggunakan warna aksen tema (#B5893D)
- * - Ikon valid tanpa '?'
- * - Grid 2x2 kartu proyek dengan tinggi sejajar rata
- */
 export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGalleryProps) {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
+  const isMobile = width < 768;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
+  const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
 
   const categories = [
     { key: 'ALL', label: 'Semua Proyek' },
@@ -93,14 +85,36 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
     return matchesCategory && matchesQuery;
   });
 
+  const activeProject =
+    activeProjectIndex !== null && filteredProjects[activeProjectIndex]
+      ? filteredProjects[activeProjectIndex]
+      : null;
+
+  const handlePrev = () => {
+    if (activeProjectIndex !== null && activeProjectIndex > 0) {
+      setActiveProjectIndex(activeProjectIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (
+      activeProjectIndex !== null &&
+      activeProjectIndex < filteredProjects.length - 1
+    ) {
+      setActiveProjectIndex(activeProjectIndex + 1);
+    }
+  };
+
+  const isDark = theme.isDark;
+
   return (
     <View
       style={[
-        styles.card,
+        styles.mainCard,
         {
           backgroundColor: theme.surface,
           borderColor: theme.border,
-          width: '100%',
+          padding: isDesktop ? 28 : 18,
         },
       ]}
       accessibilityRole="region"
@@ -108,27 +122,21 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
     >
       <SectionHeading
         title="Galeri Portofolio Proyek"
-        subtitle="Eksplorasi Proyek Nyata & Karya Rekayasa Perangkat Lunak"
+        subtitle="Eksplorasi Proyek Nyata & Rekayasa Perangkat Lunak"
         icon="briefcase-outline"
         badgeText={`${filteredProjects.length} Proyek`}
         theme={theme}
       />
 
-      {/* FEATURED PROJECT SPOTLIGHT BANNER (GAMBAR_4_PORTFOLIO) */}
-      <FeaturedProjectSpotlightBanner
-        theme={theme}
-        onExploreProject={() => portfolios.length > 0 && setActiveProject(portfolios[0])}
-      />
-
-      {/* TOP CONTROLS: SEARCH BAR (KIRI) & FILTER CHIPS (KANAN) - SEJAJAR 1 BARIS DI DESKTOP */}
+      {/* TOP CONTROLS: SEARCH BAR (KIRI) & FILTER CHIPS (KANAN) */}
       <View style={[styles.controlsRow, isDesktop ? styles.controlsRowDesktop : styles.controlsRowMobile]}>
         {/* Search Input Box */}
         <View
           style={[
             styles.searchBox,
             {
-              backgroundColor: theme.inputBackground || theme.surfaceMuted,
-              borderColor: theme.inputBorder || theme.border,
+              backgroundColor: isDark ? 'rgba(15, 19, 40, 0.85)' : 'rgba(241, 245, 249, 0.85)',
+              borderColor: theme.border,
               flex: isDesktop ? 1 : undefined,
               width: isDesktop ? undefined : '100%',
             },
@@ -193,7 +201,7 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
         </View>
       </View>
 
-      {/* PROJECT CARDS LIST (GRID 2x2 SEJAJAR DI DESKTOP / TABLET, 1 KOLOM DI MOBILE) */}
+      {/* PROJECT CARDS (GRID 3 KOLOM DI DESKTOP / 2 DI TABLET / 1 DI HP) */}
       {filteredProjects.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Ionicons name="folder-open-outline" size={32} color={theme.textLight} />
@@ -202,256 +210,358 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
           </Text>
         </View>
       ) : (
-        <View style={styles.projectsGrid}>
-          {filteredProjects.map((proj) => {
+        <View style={styles.projectsGrid3Col}>
+          {filteredProjects.map((proj, idx) => {
             const iconName = getValidProjectIcon(proj);
+            const cardWidth = isDesktop ? '31.8%' : isTablet ? '48.5%' : '100%';
 
             return (
               <View
                 key={proj.id}
                 style={[
-                  styles.projectCardWrapper,
+                  styles.projectCardItem,
                   {
-                    width: isDesktop || isTablet ? '48.8%' : '100%',
+                    width: cardWidth,
+                    backgroundColor: isDark ? 'rgba(22, 27, 51, 0.75)' : 'rgba(248, 250, 252, 0.9)',
+                    borderColor: theme.border,
                   },
                 ]}
               >
+                {/* Visual Thumbnail Preview Header */}
                 <View
                   style={[
-                    styles.projectCard,
+                    styles.thumbnailContainer,
                     {
-                      backgroundColor: theme.surfaceMuted,
-                      borderColor: theme.borderLight,
+                      backgroundColor: isDark ? 'rgba(30, 37, 70, 0.8)' : 'rgba(238, 242, 255, 0.85)',
+                      borderBottomColor: theme.borderLight,
                     },
                   ]}
                 >
-                  {/* Top Row: Icon + Title */}
-                  <View style={styles.projectTopRow}>
-                    <View
-                      style={[
-                        styles.projectIconCircle,
-                        {
-                          backgroundColor: theme.surface,
-                          borderColor: theme.border,
-                        },
-                      ]}
-                    >
-                      <Ionicons
-                        name={iconName}
-                        size={19}
-                        color={theme.primary}
-                      />
-                    </View>
-                    <View style={styles.projectTitleCol}>
-                      <Text style={[styles.projectTitle, { color: theme.textPrimary }]}>
-                        {proj.title}
-                      </Text>
-                      <Text style={[styles.projectMeta, { color: theme.textMuted }]}>
-                        {proj.category} • {proj.year} • {proj.role}
-                      </Text>
-                    </View>
+                  <View style={[styles.glowIconThumb, { borderColor: theme.primary }]}>
+                    <Ionicons name={iconName} size={24} color={theme.primary} />
                   </View>
+                  <View style={[styles.categoryBadgeOverlay, { backgroundColor: isDark ? 'rgba(15, 19, 40, 0.85)' : 'rgba(255, 255, 255, 0.9)' }]}>
+                    <Text style={[styles.categoryBadgeText, { color: theme.secondary }]}>
+                      {proj.category}
+                    </Text>
+                  </View>
+                </View>
 
-                  {/* Project Description */}
-                  <Text style={[styles.projectDesc, { color: theme.textSecondary }]}>
+                {/* Project Info Body */}
+                <View style={styles.projectBody}>
+                  <Text style={[styles.projectTitle, { color: theme.textPrimary }]}>
+                    {proj.title}
+                  </Text>
+                  <Text style={[styles.projectMeta, { color: theme.textMuted }]}>
+                    {proj.year} • {proj.role}
+                  </Text>
+                  <Text
+                    style={[styles.projectDesc, { color: theme.textSecondary }]}
+                    numberOfLines={3}
+                  >
                     {proj.shortDesc}
                   </Text>
 
-                  {/* Tech Stack Chips */}
-                  <View style={styles.techChipsRow}>
-                    {proj.technologies.map((tech, idx) => (
+                  {/* Tech stack chips preview */}
+                  <View style={styles.techPillRow}>
+                    {(proj.technologies || []).slice(0, 3).map((tech, tIdx) => (
                       <View
-                        key={idx}
+                        key={tIdx}
                         style={[
-                          styles.techChip,
+                          styles.techPill,
                           {
-                            backgroundColor: theme.surface,
+                            backgroundColor: isDark ? 'rgba(30, 37, 70, 0.6)' : 'rgba(238, 242, 255, 0.8)',
                             borderColor: theme.borderLight,
                           },
                         ]}
                       >
-                        <Text style={[styles.techChipText, { color: theme.textSecondary }]}>
+                        <Text style={[styles.techPillText, { color: theme.primary }]}>
                           {tech}
                         </Text>
                       </View>
                     ))}
+                    {(proj.technologies || []).length > 3 && (
+                      <Text style={[styles.moreTechText, { color: theme.textMuted }]}>
+                        +{proj.technologies.length - 3}
+                      </Text>
+                    )}
                   </View>
-
-                  {/* View Details CTA Button (Flush at bottom) */}
-                  <TouchableOpacity
-                    style={[
-                      styles.detailButton,
-                      {
-                        backgroundColor: theme.surfaceSecondary || theme.surfaceMuted,
-                        borderColor: theme.borderStrong || theme.primaryBorder,
-                      },
-                    ]}
-                    activeOpacity={0.8}
-                    onPress={() => setActiveProject(proj)}
-                    accessibilityRole="button"
-                    accessibilityLabel={`Lihat detail ${proj.title}`}
-                  >
-                    <Text style={[styles.detailButtonText, { color: theme.textPrimary }]}>
-                      Lihat Detail &amp; Fitur Proyek
-                    </Text>
-                    <Ionicons name="arrow-forward" size={14} color={theme.textPrimary} />
-                  </TouchableOpacity>
                 </View>
+
+                {/* Tombol Lihat Detail → */}
+                <TouchableOpacity
+                  style={[
+                    styles.detailBtn,
+                    {
+                      borderTopColor: theme.borderLight,
+                      backgroundColor: isDark ? 'rgba(15, 19, 40, 0.5)' : 'rgba(255, 255, 255, 0.7)',
+                    },
+                  ]}
+                  onPress={() => setActiveProjectIndex(idx)}
+                  activeOpacity={0.7}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Lihat detail proyek ${proj.title}`}
+                >
+                  <Text style={[styles.detailBtnText, { color: theme.primary }]}>
+                    Lihat detail
+                  </Text>
+                  <Ionicons name="arrow-forward" size={15} color={theme.primary} />
+                </TouchableOpacity>
               </View>
             );
           })}
         </View>
       )}
 
-      {/* MODAL DETAIL PROYEK */}
-      <Modal
-        visible={activeProject !== null}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setActiveProject(null)}
-      >
-        <View style={styles.modalBackdrop}>
-          <View
-            style={[
-              styles.modalCard,
-              {
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-              },
-            ]}
-          >
-            {activeProject && (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Modal Header */}
-                <View style={styles.modalHeader}>
-                  <View
-                    style={[
-                      styles.modalIconBox,
-                      {
-                        backgroundColor: theme.surfaceMuted,
-                        borderColor: theme.borderLight,
-                      },
-                    ]}
-                  >
-                    <Ionicons
-                      name={getValidProjectIcon(activeProject)}
-                      size={22}
-                      color={theme.primary}
-                    />
-                  </View>
-                  <View style={styles.modalTitleCol}>
-                    <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>
-                      {activeProject.title}
-                    </Text>
-                    <Text style={[styles.modalCategory, { color: theme.textMuted }]}>
-                      {activeProject.category} • {activeProject.year} • {activeProject.role}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    style={[styles.modalCloseIcon, { backgroundColor: theme.surfaceMuted }]}
-                    onPress={() => setActiveProject(null)}
-                    accessibilityRole="button"
-                    accessibilityLabel="Tutup detail proyek"
-                  >
-                    <Ionicons name="close" size={18} color={theme.textPrimary} />
-                  </TouchableOpacity>
+      {/* ========================================================
+          INTERACTIVE LIGHTBOX MODAL (PREV / NEXT + DUA KOLOM)
+          ======================================================== */}
+      {activeProject && (
+        <Modal
+          visible={true}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setActiveProjectIndex(null)}
+        >
+          <View style={styles.modalBackdrop}>
+            <View
+              style={[
+                styles.modalCard,
+                {
+                  backgroundColor: theme.surface,
+                  borderColor: theme.borderStrong,
+                },
+              ]}
+            >
+              {/* Modal Header Toolbar */}
+              <View style={styles.modalHeaderRow}>
+                <View style={styles.modalCategoryBadge}>
+                  <Text style={[styles.modalCatText, { color: theme.secondary }]}>
+                    {activeProject.category}
+                  </Text>
                 </View>
 
-                {/* Deskripsi Lengkap */}
-                <Text style={[styles.modalSectionLabel, { color: theme.textPrimary }]}>
-                  Tentang Proyek:
-                </Text>
-                <Text style={[styles.modalDescText, { color: theme.textSecondary }]}>
-                  {activeProject.fullDesc || activeProject.shortDesc}
-                </Text>
+                <TouchableOpacity
+                  style={[styles.closeModalBtn, { backgroundColor: theme.surfaceMuted }]}
+                  onPress={() => setActiveProjectIndex(null)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Tutup dialog proyek"
+                >
+                  <Ionicons name="close" size={20} color={theme.textPrimary} />
+                </TouchableOpacity>
+              </View>
 
-                {/* Fitur Utama */}
-                {activeProject.features && activeProject.features.length > 0 && (
-                  <>
-                    <Text style={[styles.modalSectionLabel, { color: theme.textPrimary }]}>
-                      Fitur Utama &amp; Implementasi Teknis:
-                    </Text>
-                    <View style={styles.modalFeaturesList}>
-                      {activeProject.features.map((feature, idx) => (
-                        <View key={idx} style={styles.featureItem}>
-                          <Ionicons
-                            name="checkmark-circle"
-                            size={15}
-                            color={theme.success}
-                            style={{ marginTop: 2 }}
-                          />
-                          <Text style={[styles.featureText, { color: theme.textSecondary }]}>
-                            {feature}
-                          </Text>
-                        </View>
-                      ))}
-                    </View>
-                  </>
-                )}
-
-                {/* Teknologi yang Digunakan */}
-                <Text style={[styles.modalSectionLabel, { color: theme.textPrimary }]}>
-                  Teknologi &amp; Tools:
-                </Text>
-                <View style={styles.techChipsRow}>
-                  {activeProject.technologies.map((tech, idx) => (
+              {/* Modal Body: 2 Kolom di Desktop (Kiri: Visual Besar, Kanan: Konten Lengkap) */}
+              <ScrollView style={styles.modalScrollBody} showsVerticalScrollIndicator={false}>
+                <View style={[styles.modalColsWrapper, !isMobile && styles.modalColsRow]}>
+                  {/* Kolom Kiri: Visual / Image Besar */}
+                  <View style={[styles.modalLeftCol, !isMobile && styles.modalLeftColDesktop]}>
                     <View
-                      key={idx}
                       style={[
-                        styles.techChip,
+                        styles.largeVisualBox,
                         {
-                          backgroundColor: theme.surfaceMuted,
-                          borderColor: theme.borderLight,
+                          backgroundColor: isDark ? 'rgba(30, 37, 70, 0.8)' : 'rgba(238, 242, 255, 0.85)',
+                          borderColor: theme.border,
                         },
                       ]}
                     >
-                      <Text style={[styles.techChipText, { color: theme.textPrimary }]}>
-                        {tech}
-                      </Text>
+                      <Image
+                        source={SECTION_IMAGES.GAMBAR_4_PORTFOLIO.source}
+                        style={styles.modalCoverImage}
+                        resizeMode="cover"
+                      />
+                      <View style={styles.visualOverlayGradient}>
+                        <Ionicons
+                          name={getValidProjectIcon(activeProject)}
+                          size={32}
+                          color="#FFFFFF"
+                        />
+                        <Text style={styles.visualOverlayTitle}>
+                          {activeProject.title}
+                        </Text>
+                      </View>
                     </View>
-                  ))}
-                </View>
+                  </View>
 
-                {/* Tombol Tutup */}
+                  {/* Kolom Kanan: Teks Lengkap, Fitur, Teknologi */}
+                  <View style={[styles.modalRightCol, !isMobile && styles.modalRightColDesktop]}>
+                    <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>
+                      {activeProject.title}
+                    </Text>
+
+                    <Text style={[styles.modalMeta, { color: theme.textMuted }]}>
+                      Tahun: {activeProject.year} • Peran: {activeProject.role}
+                    </Text>
+
+                    <Text style={[styles.modalSectionLabel, { color: theme.secondary }]}>
+                      DESKRIPSI PROYEK
+                    </Text>
+                    <Text style={[styles.modalDesc, { color: theme.textSecondary }]}>
+                      {activeProject.fullDesc || activeProject.shortDesc}
+                    </Text>
+
+                    {/* Fitur Utama */}
+                    {activeProject.features && activeProject.features.length > 0 && (
+                      <View style={styles.featuresBlock}>
+                        <Text style={[styles.modalSectionLabel, { color: theme.secondary }]}>
+                          FITUR UTAMA
+                        </Text>
+                        {activeProject.features.map((feature, fIdx) => (
+                          <View key={fIdx} style={styles.featureItemRow}>
+                            <Ionicons name="checkmark-circle" size={15} color="#22C55E" />
+                            <Text style={[styles.featureText, { color: theme.textSecondary }]}>
+                              {feature}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+
+                    {/* Teknologi yang Digunakan */}
+                    {activeProject.technologies && activeProject.technologies.length > 0 && (
+                      <View style={styles.techStackBlock}>
+                        <Text style={[styles.modalSectionLabel, { color: theme.secondary }]}>
+                          TEKNOLOGI
+                        </Text>
+                        <View style={styles.techPillGrid}>
+                          {activeProject.technologies.map((tech, tIdx) => (
+                            <View
+                              key={tIdx}
+                              style={[
+                                styles.modalTechPill,
+                                {
+                                  backgroundColor: isDark ? 'rgba(30, 37, 70, 0.7)' : 'rgba(238, 242, 255, 0.85)',
+                                  borderColor: theme.border,
+                                },
+                              ]}
+                            >
+                              <Text style={[styles.modalTechText, { color: theme.primary }]}>
+                                {tech}
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </ScrollView>
+
+              {/* MODAL FOOTER NAVIGATION: [← Sebelumnya]  1 / 4  [Berikutnya →] */}
+              <View
+                style={[
+                  styles.modalNavFooter,
+                  {
+                    borderTopColor: theme.borderLight,
+                    backgroundColor: isDark ? 'rgba(15, 19, 40, 0.6)' : 'rgba(248, 250, 252, 0.8)',
+                  },
+                ]}
+              >
                 <TouchableOpacity
                   style={[
-                    styles.modalCloseButton,
-                    { backgroundColor: theme.primary },
+                    styles.navBtn,
+                    activeProjectIndex === 0 && styles.navBtnDisabled,
+                    {
+                      backgroundColor: theme.surfaceMuted,
+                      borderColor: theme.border,
+                    },
                   ]}
-                  onPress={() => setActiveProject(null)}
+                  onPress={handlePrev}
+                  disabled={activeProjectIndex === 0}
                   accessibilityRole="button"
-                  accessibilityLabel="Tutup dialog detail proyek"
+                  accessibilityLabel="Proyek sebelumnya"
                 >
-                  <Text style={[styles.modalCloseButtonText, { color: theme.textInverted }]}>
-                    Tutup Detail
+                  <Ionicons
+                    name="chevron-back"
+                    size={16}
+                    color={activeProjectIndex === 0 ? theme.textMuted : theme.primary}
+                  />
+                  <Text
+                    style={[
+                      styles.navBtnText,
+                      { color: activeProjectIndex === 0 ? theme.textMuted : theme.primary },
+                    ]}
+                  >
+                    Sebelumnya
                   </Text>
                 </TouchableOpacity>
-              </ScrollView>
-            )}
+
+                {/* Indikator Urutan 1 / 4 */}
+                <View style={styles.counterBadge}>
+                  <Text style={[styles.counterText, { color: theme.textPrimary }]}>
+                    {(activeProjectIndex ?? 0) + 1} / {filteredProjects.length}
+                  </Text>
+                </View>
+
+                <TouchableOpacity
+                  style={[
+                    styles.navBtn,
+                    activeProjectIndex === filteredProjects.length - 1 && styles.navBtnDisabled,
+                    {
+                      backgroundColor: theme.surfaceMuted,
+                      borderColor: theme.border,
+                    },
+                  ]}
+                  onPress={handleNext}
+                  disabled={activeProjectIndex === filteredProjects.length - 1}
+                  accessibilityRole="button"
+                  accessibilityLabel="Proyek berikutnya"
+                >
+                  <Text
+                    style={[
+                      styles.navBtnText,
+                      {
+                        color:
+                          activeProjectIndex === filteredProjects.length - 1
+                            ? theme.textMuted
+                            : theme.primary,
+                      },
+                    ]}
+                  >
+                    Berikutnya
+                  </Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={16}
+                    color={
+                      activeProjectIndex === filteredProjects.length - 1
+                        ? theme.textMuted
+                        : theme.primary
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    borderRadius: SPACING.cardRadius,
-    padding: SPACING.cardPadding,
-    borderWidth: 1,
-    marginBottom: 0,
+  mainCard: {
     width: '100%',
+    borderRadius: 22,
+    borderWidth: 1,
+    overflow: 'hidden',
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+      } as any,
+      default: {
+        elevation: 4,
+      },
+    }),
   },
-  // CONTROLS ROW: SEARCH & FILTER
   controlsRow: {
-    marginBottom: SPACING.md,
-    gap: 12,
+    gap: 14,
+    marginBottom: 20,
+    alignItems: 'center',
   },
   controlsRowDesktop: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   controlsRowMobile: {
     flexDirection: 'column',
@@ -459,41 +569,37 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: Platform.OS === 'ios' ? 9 : 6,
-    borderRadius: 9,
+    paddingHorizontal: 14,
+    height: 42,
+    borderRadius: 999,
     borderWidth: 1,
     gap: 8,
-    minHeight: 40,
   },
   searchInput: {
     flex: 1,
-    fontSize: 13,
     fontFamily: FONTS.regular,
-    padding: 0,
-    ...Platform.select({
-      web: { outlineStyle: 'none' as any },
-    }),
+    fontSize: 13,
   },
   filterGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexShrink: 0,
   },
   filterContainer: {
     flexDirection: 'row',
+    gap: 8,
     alignItems: 'center',
-    gap: 6,
   },
   categoryChip: {
     paddingVertical: 7,
-    paddingHorizontal: 13,
-    borderRadius: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
     borderWidth: 1,
+    ...Platform.select({
+      web: { cursor: 'pointer' as any },
+    }),
   },
   categoryChipText: {
     fontSize: 12,
   },
-  // EMPTY STATE
   emptyContainer: {
     paddingVertical: 40,
     alignItems: 'center',
@@ -504,179 +610,314 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
   },
-  // PROJECTS GRID
-  projectsGrid: {
+  projectsGrid3Col: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
-    marginTop: 4,
-    justifyContent: 'space-between',
+    gap: 18,
+    width: '100%',
   },
-  projectCardWrapper: {
-    marginBottom: 0,
-  },
-  projectCard: {
-    borderRadius: 12,
+  projectCardItem: {
+    borderRadius: 18,
     borderWidth: 1,
-    padding: 16,
-    flex: 1,
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    minHeight: 220,
+    ...Platform.select({
+      web: {
+        transition: 'transform 0.18s ease, border-color 0.18s ease' as any,
+        backdropFilter: 'blur(10px)',
+      } as any,
+    }),
   },
-  projectTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 8,
-  },
-  projectIconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 9,
-    borderWidth: 1,
+  thumbnailContainer: {
+    width: '100%',
+    height: 130,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+    borderBottomWidth: 1,
   },
-  projectTitleCol: {
+  glowIconThumb: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      web: {
+        boxShadow: '0 0 16px rgba(99, 102, 241, 0.3)',
+      } as any,
+    }),
+  },
+  categoryBadgeOverlay: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+  },
+  categoryBadgeText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 10.5,
+    fontWeight: '600',
+  },
+  projectBody: {
+    padding: 16,
+    gap: 6,
     flex: 1,
   },
   projectTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
+    letterSpacing: -0.2,
   },
   projectMeta: {
-    fontFamily: FONTS.regular,
-    fontSize: 11,
-    marginTop: 2,
+    fontFamily: FONTS.medium,
+    fontSize: 11.5,
   },
   projectDesc: {
     fontFamily: FONTS.regular,
     fontSize: 12.5,
     lineHeight: 18,
-    marginBottom: 12,
+    marginTop: 2,
   },
-  techChipsRow: {
+  techPillRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 14,
+    marginTop: 8,
   },
-  techChip: {
+  techPill: {
     paddingVertical: 3,
     paddingHorizontal: 8,
-    borderRadius: 5,
+    borderRadius: 6,
     borderWidth: 1,
   },
-  techChipText: {
-    fontFamily: FONTS.medium,
-    fontSize: 10.5,
-  },
-  detailButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 9,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    gap: 6,
-    marginTop: 'auto',
-  },
-  detailButtonText: {
+  techPillText: {
     fontFamily: FONTS.semiBold,
-    fontSize: 12,
+    fontSize: 10.5,
     fontWeight: '600',
   },
-  // MODAL STYLES
+  moreTechText: {
+    fontFamily: FONTS.medium,
+    fontSize: 11,
+  },
+  detailBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    ...Platform.select({
+      web: { cursor: 'pointer' as any },
+    }),
+  },
+  detailBtnText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 12.5,
+    fontWeight: '600',
+  },
+  // Lightbox Modal
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(0, 0, 0, 0.78)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: SPACING.md,
+    padding: 16,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(10px)',
+      } as any,
+    }),
   },
   modalCard: {
     width: '100%',
-    maxWidth: 540,
-    maxHeight: '85%',
-    borderRadius: 16,
-    padding: SPACING.lg,
+    maxWidth: 820,
+    maxHeight: '90%',
+    borderRadius: 22,
     borderWidth: 1,
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    ...Platform.select({
+      web: {
+        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.45)',
+      } as any,
+    }),
   },
-  modalHeader: {
+  modalHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 12,
-    paddingBottom: 12,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(150, 150, 150, 0.2)',
+    borderBottomColor: 'rgba(99, 102, 241, 0.15)',
   },
-  modalIconBox: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  modalCategoryBadge: {
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    backgroundColor: 'rgba(245, 158, 11, 0.15)',
   },
-  modalTitleCol: {
-    flex: 1,
-  },
-  modalTitle: {
+  modalCatText: {
     fontFamily: FONTS.bold,
-    fontSize: 15.5,
+    fontSize: 11.5,
     fontWeight: '700',
   },
-  modalCategory: {
-    fontFamily: FONTS.regular,
-    fontSize: 11.5,
-    marginTop: 2,
-  },
-  modalCloseIcon: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+  closeModalBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Platform.select({
+      web: { cursor: 'pointer' as any },
+    }),
+  },
+  modalScrollBody: {
+    flex: 1,
+  },
+  modalColsWrapper: {
+    padding: 20,
+    gap: 20,
+  },
+  modalColsRow: {
+    flexDirection: 'row',
+  },
+  modalLeftCol: {
+    width: '100%',
+  },
+  modalLeftColDesktop: {
+    flex: 4.5,
+  },
+  largeVisualBox: {
+    width: '100%',
+    height: 250,
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    justifyContent: 'flex-end',
+  },
+  modalCoverImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  visualOverlayGradient: {
+    backgroundColor: 'rgba(11, 13, 30, 0.75)',
+    padding: 16,
+    gap: 4,
+  },
+  visualOverlayTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 14,
+    color: '#FFFFFF',
+  },
+  modalRightCol: {
+    width: '100%',
+    gap: 10,
+  },
+  modalRightColDesktop: {
+    flex: 5.5,
+  },
+  modalTitle: {
+    fontFamily: FONTS.extraBold,
+    fontSize: 20,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+  },
+  modalMeta: {
+    fontFamily: FONTS.medium,
+    fontSize: 12,
   },
   modalSectionLabel: {
     fontFamily: FONTS.bold,
-    fontSize: 12.5,
+    fontSize: 11,
     fontWeight: '700',
-    marginTop: 14,
-    marginBottom: 6,
+    letterSpacing: 0.8,
+    marginTop: 6,
   },
-  modalDescText: {
+  modalDesc: {
     fontFamily: FONTS.regular,
     fontSize: 13,
-    lineHeight: 19,
+    lineHeight: 20,
   },
-  modalFeaturesList: {
+  featuresBlock: {
     gap: 6,
-    marginBottom: 6,
   },
-  featureItem: {
+  featureItemRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 8,
   },
   featureText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     flex: 1,
-    lineHeight: 18,
   },
-  modalCloseButton: {
-    marginTop: 20,
-    paddingVertical: 11,
-    borderRadius: 10,
+  techStackBlock: {
+    gap: 6,
+  },
+  techPillGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  modalTechPill: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  modalTechText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  // Modal Navigation Footer
+  modalNavFooter: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderTopWidth: 1,
   },
-  modalCloseButtonText: {
+  navBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    borderWidth: 1,
+    gap: 6,
+    ...Platform.select({
+      web: { cursor: 'pointer' as any },
+    }),
+  },
+  navBtnDisabled: {
+    opacity: 0.4,
+  },
+  navBtnText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  counterBadge: {
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  counterText: {
     fontFamily: FONTS.bold,
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
   },
 });

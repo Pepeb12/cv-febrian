@@ -12,7 +12,7 @@ interface SectionHeadingProps {
 }
 
 /**
- * SectionHeading Component (Minimalist Tech Design: H2 Contrast Hierarchy with Inter)
+ * SectionHeading Component — Judul Section dengan Garis Aksen Horizontal Emas/Indigo (64x4px)
  */
 export default function SectionHeading({
   title,
@@ -66,13 +66,23 @@ export default function SectionHeading({
           {subtitle}
         </Text>
       ) : null}
+
+      {/* Garis Aksen Emas/Indigo (width: 64, height: 4) */}
+      <View
+        style={[
+          styles.accentBar,
+          {
+            backgroundColor: currentTheme.primary,
+          },
+        ]}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   headingContainer: {
-    marginBottom: SPACING.lg, // 24px (scale 8px)
+    marginBottom: SPACING.md,
   },
   topRow: {
     flexDirection: 'row',
@@ -118,5 +128,11 @@ const styles = StyleSheet.create({
     fontSize: 13.5,
     lineHeight: 20,
     marginTop: 2,
+  },
+  accentBar: {
+    width: 64,
+    height: 4,
+    borderRadius: 2,
+    marginTop: 8,
   },
 });

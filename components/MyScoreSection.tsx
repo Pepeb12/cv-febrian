@@ -316,11 +316,20 @@ export default function MyScoreSection({ data, theme }: MyScoreSectionProps) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: SPACING.cardRadius, // 16px
-    padding: SPACING.cardPadding, // 24px standardized card padding
+    borderRadius: 22,
+    padding: SPACING.cardPadding,
     borderWidth: 1,
-    marginBottom: SPACING.gap, // 20px standardized gap
+    marginBottom: SPACING.gap,
     width: '100%',
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+      } as any,
+      default: {
+        elevation: 4,
+      },
+    }),
   },
   identityCard: {
     borderRadius: 12,
@@ -597,8 +606,10 @@ const styles = StyleSheet.create({
   progressBarFill: {
     height: '100%',
     borderRadius: 3,
+    backgroundColor: '#6366F1',
     ...Platform.select({
       web: {
+        backgroundImage: 'linear-gradient(90deg, #6366F1 0%, #F59E0B 100%)',
         transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' as any,
       },
     }),

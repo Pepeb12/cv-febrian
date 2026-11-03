@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme, SPACING, FONTS } from '../theme';
+import { Theme, FONTS } from '../theme';
 
 export type TabKey = 'home' | 'about' | 'skills' | 'portfolio' | 'score' | 'contact';
 
@@ -38,8 +38,8 @@ interface NavigationTabBarProps {
 }
 
 /**
- * NavigationTabBar — Satu Baris Penuh (Single Sticky Top Header Bar)
- * Menyatukan Brand, 6 Menu Navigasi, dan Toggle Mode Malam/Siang.
+ * Floating Pill Navbar di Tengah Atas (Fixed Center Top, border-radius: 999px, Glassmorphism)
+ * Menampilkan identitas, menu dengan garis bawah aktif #6366F1, dan toggle tema lingkaran.
  */
 export default function NavigationTabBar({
   activeTab,
@@ -53,20 +53,20 @@ export default function NavigationTabBar({
   const isMobile = width < 768;
 
   return (
-    <View
-      style={[
-        styles.navContainer,
-        {
-          backgroundColor: theme.surface,
-          borderBottomColor: theme.border,
-          paddingHorizontal: isDesktop ? 24 : 16,
-        },
-      ]}
-      accessibilityRole="navigation"
-      accessibilityLabel="Navigasi Menu Utama"
-    >
-      <View style={styles.innerWrapper}>
-        {/* BRAND [Personal CV + Febrian Iradatul Rahman] - Tanpa Logo Koding */}
+    <View style={styles.floatingContainer}>
+      <View
+        style={[
+          styles.pillWrapper,
+          {
+            backgroundColor: theme.surface,
+            borderColor: theme.border,
+            paddingHorizontal: isDesktop ? 22 : 14,
+          },
+        ]}
+        accessibilityRole="navigation"
+        accessibilityLabel="Navigasi Menu Utama"
+      >
+        {/* BRAND [Personal CV + Febrian Iradatul Rahman] */}
         <TouchableOpacity
           style={styles.brandGroup}
           onPress={() => onTabChange('home')}
@@ -77,7 +77,12 @@ export default function NavigationTabBar({
           <Text style={[styles.brandTitle, { color: theme.textPrimary }]}>
             Personal CV
           </Text>
-          <Text style={[styles.brandSubtitle, { color: theme.textSecondary }]}>
+          <Text
+            style={[
+              styles.brandSubtitle,
+              { color: theme.textSecondary, fontSize: isMobile ? 10 : 11 },
+            ]}
+          >
             Febrian Iradatul Rahman
           </Text>
         </TouchableOpacity>
@@ -98,15 +103,9 @@ export default function NavigationTabBar({
                 key={tab.key}
                 style={[
                   styles.tabItem,
-                  isActive
-                    ? {
-                        backgroundColor: theme.primary,
-                        borderColor: theme.primary,
-                      }
-                    : {
-                        backgroundColor: 'transparent',
-                        borderColor: 'transparent',
-                      },
+                  isActive && {
+                    backgroundColor: theme.isDark ? 'rgba(99, 102, 241, 0.14)' : 'rgba(79, 70, 229, 0.08)',
+                  },
                 ]}
                 onPress={() => onTabChange(tab.key)}
                 activeOpacity={0.75}
@@ -117,13 +116,13 @@ export default function NavigationTabBar({
                 <Ionicons
                   name={isActive ? tab.activeIcon : tab.icon}
                   size={15}
-                  color={isActive ? theme.textInverted : theme.textSecondary}
+                  color={isActive ? theme.primary : theme.textSecondary}
                 />
                 <Text
                   style={[
                     styles.tabLabel,
                     {
-                      color: isActive ? theme.textInverted : theme.textSecondary,
+                      color: isActive ? theme.primary : theme.textSecondary,
                       fontFamily: isActive ? FONTS.bold : FONTS.medium,
                       fontWeight: isActive ? '700' : '500',
                     },
@@ -131,12 +130,22 @@ export default function NavigationTabBar({
                 >
                   {tab.label}
                 </Text>
+
+                {/* Garis bawah aktif Indigo bergeser mengikuti posisi scroll */}
+                {isActive && (
+                  <View
+                    style={[
+                      styles.activeIndicator,
+                      { backgroundColor: theme.primary },
+                    ]}
+                  />
+                )}
               </TouchableOpacity>
             );
           })}
         </ScrollView>
 
-        {/* DIVIDER & TOMBOL TOGGLE TEMA [🌙 / ☀️] */}
+        {/* DIVIDER & TOMBOL TOGGLE TEMA [🌙 / ☀️] BERBENTUK LINGKARAN */}
         {onToggleTheme && (
           <View style={styles.rightGroup}>
             <View style={[styles.divider, { backgroundColor: theme.border }]} />
@@ -144,7 +153,7 @@ export default function NavigationTabBar({
               style={[
                 styles.themeBtn,
                 {
-                  backgroundColor: theme.surfaceMuted,
+                  backgroundColor: theme.isDark ? 'rgba(30, 37, 70, 0.8)' : 'rgba(238, 242, 255, 0.9)',
                   borderColor: theme.border,
                 },
               ]}
@@ -167,49 +176,53 @@ export default function NavigationTabBar({
 }
 
 const styles = StyleSheet.create({
-  navContainer: {
+  floatingContainer: {
     width: '100%',
-    borderBottomWidth: 1,
-    paddingVertical: 10,
-    ...Platform.select({
-      web: {
-        position: 'sticky' as any,
-        top: 0,
-        zIndex: 100,
-        backdropFilter: 'blur(16px)' as any,
-      },
-      default: {
-        elevation: 4,
-      },
-    }),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
   },
-  innerWrapper: {
+  pillWrapper: {
     width: '100%',
-    maxWidth: 1360,
-    alignSelf: 'center',
+    maxWidth: 1140,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 12,
+    borderRadius: 999,
+    borderWidth: 1,
+    paddingVertical: 8,
+    gap: 8,
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12), 0 0 1px rgba(99, 102, 241, 0.2)',
+      } as any,
+      default: {
+        elevation: 6,
+      },
+    }),
   },
   brandGroup: {
     justifyContent: 'center',
-    marginRight: 10,
+    paddingLeft: 4,
+    marginRight: 6,
     gap: 1,
   },
   brandTitle: {
     fontFamily: FONTS.bold,
-    fontSize: 14,
+    fontSize: 13.5,
     fontWeight: '700',
     letterSpacing: -0.3,
-    lineHeight: 18,
+    lineHeight: 17,
   },
   brandSubtitle: {
     fontFamily: FONTS.medium,
-    fontSize: 11,
+    fontSize: 10.5,
     fontWeight: '500',
     letterSpacing: 0.1,
-    lineHeight: 14,
+    lineHeight: 13,
   },
   scrollContainer: {
     flexDirection: 'row',
@@ -221,45 +234,57 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabItem: {
+    position: 'relative',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 7,
-    paddingHorizontal: 13,
-    borderRadius: 10,
-    borderWidth: 1,
+    paddingHorizontal: 12,
+    borderRadius: 999,
     gap: 6,
-    minHeight: 36,
+    minHeight: 34,
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,
-        transition: 'all 0.15s ease' as any,
+        transition: 'all 0.18s ease' as any,
       },
     }),
   },
   tabLabel: {
-    fontSize: 13,
+    fontSize: 12.5,
     letterSpacing: -0.1,
+  },
+  activeIndicator: {
+    position: 'absolute',
+    bottom: 2,
+    left: 14,
+    right: 14,
+    height: 2.2,
+    borderRadius: 2,
   },
   rightGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
+    paddingRight: 2,
   },
   divider: {
     width: 1,
-    height: 20,
-    opacity: 0.6,
+    height: 18,
+    opacity: 0.5,
   },
   themeBtn: {
     width: 36,
     height: 36,
-    borderRadius: 9,
+    borderRadius: 18,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
-      web: { cursor: 'pointer' as any },
+      web: {
+        cursor: 'pointer' as any,
+        transition: 'transform 0.15s ease' as any,
+      },
     }),
   },
 });
