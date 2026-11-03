@@ -32,6 +32,7 @@ interface ProjectItem {
 interface PortfolioGalleryProps {
   portfolios?: ProjectItem[];
   theme: Theme;
+  showBanner?: boolean;
 }
 
 /**
@@ -63,7 +64,11 @@ function getValidProjectIcon(proj: ProjectItem): keyof typeof Ionicons.glyphMap 
  * - Ikon valid tanpa '?'
  * - Grid 2x2 kartu proyek dengan tinggi sejajar rata
  */
-export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGalleryProps) {
+export default function PortfolioGallery({
+  portfolios = [],
+  theme,
+  showBanner = true,
+}: PortfolioGalleryProps) {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
@@ -115,10 +120,12 @@ export default function PortfolioGallery({ portfolios = [], theme }: PortfolioGa
       />
 
       {/* FEATURED PROJECT SPOTLIGHT BANNER (GAMBAR_4_PORTFOLIO) */}
-      <FeaturedProjectSpotlightBanner
-        theme={theme}
-        onExploreProject={() => portfolios.length > 0 && setActiveProject(portfolios[0])}
-      />
+      {showBanner && (
+        <FeaturedProjectSpotlightBanner
+          theme={theme}
+          onExploreProject={() => portfolios.length > 0 && setActiveProject(portfolios[0])}
+        />
+      )}
 
       {/* TOP CONTROLS: SEARCH BAR (KIRI) & FILTER CHIPS (KANAN) - SEJAJAR 1 BARIS DI DESKTOP */}
       <View style={[styles.controlsRow, isDesktop ? styles.controlsRowDesktop : styles.controlsRowMobile]}>

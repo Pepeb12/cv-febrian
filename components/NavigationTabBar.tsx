@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
       web: {
         position: 'sticky' as any,
         top: 0,
-        zIndex: 1000,
+        zIndex: 100,
         backdropFilter: 'blur(16px)' as any,
       },
       default: {

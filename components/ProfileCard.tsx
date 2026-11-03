@@ -23,6 +23,7 @@ interface ProfileCardProps {
   theme?: ThemeColors | any;
   onExploreScore?: () => void;
   onContactClick?: () => void;
+  hidePhoto?: boolean;
 }
 
 /**
@@ -36,6 +37,7 @@ export default function ProfileCard({
   theme,
   onExploreScore,
   onContactClick,
+  hidePhoto = false,
 }: ProfileCardProps) {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
@@ -93,65 +95,73 @@ export default function ProfileCard({
           ======================================================== */}
       <View style={[styles.twoColumnWrapper, isMobile && styles.twoColumnWrapperMobile]}>
         {/* KOLOM KIRI (30%): FOTO PROFIL ROUNDED-XL DENGAN RASIO 1:1 */}
-        <View style={[styles.leftColumn, isMobile && styles.leftColumnMobile]}>
-          <TouchableOpacity
-            style={[
-              styles.avatarFrame,
-              {
-                backgroundColor: currentTheme.surfaceMuted,
-                borderColor: currentTheme.border,
-              },
-            ]}
-            activeOpacity={0.85}
-            onPress={() => setIsPhotoZoomed(true)}
-            accessibilityRole="button"
-            accessibilityLabel={`Foto profil ${student.nama || student.fullName}. Ketuk untuk memperbesar`}
-            accessibilityHint="Membuka foto profil ukuran penuh di tengah layar"
-          >
-            <Image
-              source={SECTION_IMAGES.GAMBAR_1_HOME.source}
-              style={styles.avatarImage}
-              resizeMode="cover"
-              accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
-            />
-            {/* Floating NIM Badge Overlay */}
+        {!hidePhoto && (
+          <View style={[styles.leftColumn, isMobile && styles.leftColumnMobile]}>
+            <TouchableOpacity
+              style={[
+                styles.avatarFrame,
+                {
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.border,
+                },
+              ]}
+              activeOpacity={0.85}
+              onPress={() => setIsPhotoZoomed(true)}
+              accessibilityRole="button"
+              accessibilityLabel={`Foto profil ${student.nama || student.fullName}. Ketuk untuk memperbesar`}
+              accessibilityHint="Membuka foto profil ukuran penuh di tengah layar"
+            >
+              <Image
+                source={SECTION_IMAGES.GAMBAR_1_HOME.source}
+                style={styles.avatarImage}
+                resizeMode="cover"
+                accessibilityLabel={`Foto profil ${student.nama || student.fullName}`}
+              />
+              {/* Floating NIM Badge Overlay */}
+              <View
+                style={[
+                  styles.floatingNimBadge,
+                  {
+                    backgroundColor: currentTheme.primary,
+                  },
+                ]}
+              >
+                <Text style={[styles.floatingNimText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
+                  NIM: {student.nim || '242505024'}
+                </Text>
+              </View>
+              {/* Indikator Tombol Zoom di Sudut Foto */}
+              <View style={styles.zoomHintBadge}>
+                <Ionicons name="expand-outline" size={13} color="#FFFFFF" />
+              </View>
+            </TouchableOpacity>
+
+            {/* Status Badge Mahasiswa Aktif */}
             <View
               style={[
-                styles.floatingNimBadge,
+                styles.statusPill,
                 {
-                  backgroundColor: currentTheme.primary,
+                  backgroundColor: currentTheme.surfaceMuted,
+                  borderColor: currentTheme.borderLight,
                 },
               ]}
             >
-              <Text style={[styles.floatingNimText, { color: currentTheme.textInverted || '#FFFDF7' }]}>
-                NIM: {student.nim || '242505024'}
+              <View style={[styles.statusDot, { backgroundColor: currentTheme.success }]} />
+              <Text style={[styles.statusText, { color: currentTheme.textSecondary }]}>
+                AKTIF • SMT 5
               </Text>
             </View>
-            {/* Indikator Tombol Zoom di Sudut Foto */}
-            <View style={styles.zoomHintBadge}>
-              <Ionicons name="expand-outline" size={13} color="#FFFFFF" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Status Badge Mahasiswa Aktif */}
-          <View
-            style={[
-              styles.statusPill,
-              {
-                backgroundColor: currentTheme.surfaceMuted,
-                borderColor: currentTheme.borderLight,
-              },
-            ]}
-          >
-            <View style={[styles.statusDot, { backgroundColor: currentTheme.success }]} />
-            <Text style={[styles.statusText, { color: currentTheme.textSecondary }]}>
-              AKTIF • SMT 5
-            </Text>
           </View>
-        </View>
+        )}
 
-        {/* KOLOM KANAN (70%): NAMA, NIM, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
-        <View style={[styles.rightColumn, isMobile && styles.rightColumnMobile]}>
+        {/* KOLOM KANAN: NAMA, NIM, ROLE, TOMBOL KONTAK, DESKRIPSI & BADGES */}
+        <View
+          style={[
+            styles.rightColumn,
+            hidePhoto && { flex: 1, width: '100%' },
+            isMobile && styles.rightColumnMobile,
+          ]}
+        >
           {/* 1. H1 NAMA MAHASISWA & BADGE NIM WAJIB UTS */}
           <View style={[styles.nameNimContainer, isMobile && styles.nameNimContainerMobile]}>
             <Text

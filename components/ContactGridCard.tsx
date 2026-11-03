@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeading from './SectionHeading';
 import { COLORS, SPACING, FONTS } from '../theme';
 import { ContactItem, ThemeColors } from '../types';
+import { SECTION_IMAGES } from '../data/sectionImages';
 
 interface ContactGridCardProps {
   contactItems?: ContactItem[];
@@ -54,6 +55,37 @@ export default function ContactGridCard({ contactItems = [], theme }: ContactGri
       />
 
       <View style={styles.contentWrapper}>
+        {/* VISUAL COLLABORATION BANNER (GAMBAR_6_CONTACT) */}
+        <View style={[styles.collabBannerFrame, { borderColor: currentTheme.borderLight }]}>
+          <Image
+            source={SECTION_IMAGES.GAMBAR_6_CONTACT.source}
+            style={styles.collabBannerImage}
+            resizeMode="cover"
+            accessibilityLabel={SECTION_IMAGES.GAMBAR_6_CONTACT.alt}
+          />
+          <View
+            style={[
+              styles.collabBannerOverlay,
+              {
+                backgroundColor: currentTheme.isDark
+                  ? 'rgba(34, 27, 20, 0.78)'
+                  : 'rgba(250, 245, 232, 0.86)',
+                borderColor: currentTheme.borderLight,
+              },
+            ]}
+          >
+            <View style={styles.collabBadgeRow}>
+              <View style={[styles.collabDot, { backgroundColor: currentTheme.primary }]} />
+              <Text style={[styles.collabBadgeTitle, { color: currentTheme.textPrimary }]}>
+                {SECTION_IMAGES.GAMBAR_6_CONTACT.title}
+              </Text>
+            </View>
+            <Text style={[styles.collabBadgeSub, { color: currentTheme.textSecondary }]}>
+              {SECTION_IMAGES.GAMBAR_6_CONTACT.subtitle}
+            </Text>
+          </View>
+        </View>
+
         {/* 1. EMAIL MAHASISWA — 1 BARIS PENUH (100% WIDTH, UTUH TANPA TERPOTONG) */}
         {emailItem && (
           <TouchableOpacity
