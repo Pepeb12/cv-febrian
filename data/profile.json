@@ -1,33 +1,33 @@
 {
   "nim": "242505024",
   "nama": "Febrian Iradatul Rahman",
-  "namaPanggilan": "Febrian",
-  "fullName": "Febrian Iradatul Rahman",
-  "shortName": "Febrian",
+  "namaPanggilan": "Pepeb",
+  "fullName": "Febrian Iradatul rahman",
+  "shortName": "Pepeb",
   "prodi": "Sistem Informasi",
   "studyProgram": "Sistem Informasi",
-  "fakultas": "Fakultas Ilmu Komputer",
-  "faculty": "Fakultas Ilmu Komputer",
+  "fakultas": "Fakultas Komputer",
+  "faculty": "Fakultas Komputer",
   "kampus": "Masoem University",
   "university": "Masoem University",
   "semester": 5,
   "tahunAkademik": "2024/2025 - Gasal",
   "academicYear": "2024/2025 - Gasal",
   "status": "Mahasiswa Aktif",
-  "profesi": "Junior Systems Analyst & Mobile App Developer",
-  "professionTitle": "Junior Systems Analyst & Mobile App Developer",
+  "profesi": "Junior Developer",
+  "professionTitle": "Junior Developer",
   "github": "pepeb12",
   "githubUrl": "https://github.com/pepeb12",
   "email": "febrianrahman902@gmail.com",
   "gmail": "febrianrahman902@gmail.com",
   "kontak": "089512336537",
   "phone": "089512336537",
-  "tagline": "Bridging Business Logic & Modern Mobile Experiences",
-  "deskripsi": "Saya adalah mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University dengan dedikasi tinggi dalam menjembatani kebutuhan proses bisnis dengan solusi teknologi perangkat lunak yang inovatif, efisien, dan ramah pengguna.",
+  "tagline": "Developer Laravel & Web Applications",
+  "deskripsi": "Saya merupakan mahasiswa Program Studi Sistem Informasi yang memiliki ketertarikan pada bidang teknologi informasi, khususnya pengembangan aplikasi dan sistem informasi berbasis web. Memiliki pengetahuan dalam pemrograman, pengelolaan basis data, serta analisis kebutuhan sistem. Terbiasa mengerjakan proyek pengembangan aplikasi menggunakan teknologi seperti Laravel, PHP, MySQL, dan JavaScript. Saya memiliki semangat belajar yang tinggi, mampu bekerja secara mandiri maupun dalam tim, serta memiliki komitmen untuk terus mengembangkan kemampuan dan memberikan kontribusi positif dalam lingkungan kerja. Di luar bidang akademik dan teknologi, saya juga memiliki hobi bermain alat musik, khususnya gitar dan drum, sebagai sarana menyalurkan kreativitas dan mengembangkan kemampuan bermusik.",
   "introduction": {
-    "headline": "Halo! Saya Febrian Iradatul Rahman",
-    "summary": "Saya adalah mahasiswa semester 5 Program Studi Sistem Informasi di Masoem University dengan dedikasi tinggi dalam menjembatani kebutuhan proses bisnis dengan solusi teknologi perangkat lunak yang inovatif, efisien, dan ramah pengguna.",
-    "detailedBio": "Fokus utama saya saat ini terpusat pada pengembangan aplikasi mobile modern menggunakan React Native dan Expo, perancangan antarmuka pengguna (UI/UX), serta analisis sistem informasi berbasis database relasional. Saya memiliki komitmen kuat terhadap arsitektur kode yang bersih dan terstandarisasi.",
+    "headline": "Halo! Saya Febrian Iradatul Rahman (Pepeb)",
+    "summary": "Saya merupakan mahasiswa Program Studi Sistem Informasi yang memiliki ketertarikan pada bidang teknologi informasi, khususnya pengembangan aplikasi dan sistem informasi berbasis web.",
+    "detailedBio": "Saya merupakan mahasiswa Program Studi Sistem Informasi yang memiliki ketertarikan pada bidang teknologi informasi, khususnya pengembangan aplikasi dan sistem informasi berbasis web. Memiliki pengetahuan dalam pemrograman, pengelolaan basis data, serta analisis kebutuhan sistem. Terbiasa mengerjakan proyek pengembangan aplikasi menggunakan teknologi seperti Laravel, PHP, MySQL, dan JavaScript. Saya memiliki semangat belajar yang tinggi, mampu bekerja secara mandiri maupun dalam tim, serta memiliki komitmen untuk terus mengembangkan kemampuan dan memberikan kontribusi positif dalam lingkungan kerja. Di luar bidang akademik dan teknologi, saya juga memiliki hobi bermain alat musik, khususnya gitar dan drum, sebagai sarana menyalurkan kreativitas dan mengembangkan kemampuan bermusik.",
     "motto": "“Mengubah tantangan proses bisnis menjadi aplikasi digital yang bernilai nyata.”"
   },
   "academicMetrics": [
@@ -64,27 +64,27 @@
       "color": "#2563EB"
     },
     {
-      "name": "JavaScript (ES6+) & JSX",
+      "name": "JavaScript (ES6+) & PHP",
       "level": "Advanced",
       "percentage": 88,
       "color": "#D97706"
     },
     {
-      "name": "Systems Analysis (UML/DFD)",
+      "name": "Web Dev (Laravel)",
+      "level": "Intermediate",
+      "percentage": 86,
+      "color": "#DC2626"
+    },
+    {
+      "name": "Systems Analysis (Use Case)",
       "level": "Advanced",
       "percentage": 90,
       "color": "#059669"
     },
     {
-      "name": "UI/UX Design (Figma)",
+      "name": "Database (MySQL & Postgres)",
       "level": "Intermediate",
-      "percentage": 80,
-      "color": "#7C3AED"
-    },
-    {
-      "name": "Database & SQL (MySQL)",
-      "level": "Intermediate",
-      "percentage": 82,
+      "percentage": 84,
       "color": "#0284C7"
     }
   ],
@@ -96,71 +96,73 @@
       "icon": "phone-portrait-outline",
       "accentColor": "#2563EB",
       "bgColor": "#EFF6FF",
-      "description": "Pengembangan aplikasi mobile lintas platform (Android & iOS) dengan React Native, Expo, dan integrasi RESTful API.",
+      "description": "Pengembangan aplikasi mobile lintas platform dengan React Native, Expo, dan JavaScript.",
       "tags": [
         "React Native",
         "Expo",
-        "JavaScript (ES6+)",
+        "JavaScript",
         "Mobile UI"
       ]
     },
     {
       "id": "interest-2",
-      "title": "Systems & Business Analysis",
-      "category": "System Engineering",
-      "icon": "analytics-outline",
-      "accentColor": "#059669",
-      "bgColor": "#ECFDF5",
-      "description": "Analisis kebutuhan pengguna, pemodelan proses bisnis, pembuatan diagram alir sistem (DFD, UML Use Case, ERD), dan penyusunan SRS.",
+      "title": "Web Development",
+      "category": "Backend & Web Apps",
+      "icon": "globe-outline",
+      "accentColor": "#DC2626",
+      "bgColor": "#FEF2F2",
+      "description": "Pengembangan sistem informasi dan aplikasi web berbasis framework Laravel, PHP, dan basis data relasional.",
       "tags": [
-        "UML",
-        "DFD",
-        "BPMN",
-        "Business Requirements"
+        "Laravel",
+        "PHP",
+        "MySQL",
+        "PostgreSQL"
       ]
     },
     {
       "id": "interest-3",
-      "title": "UI/UX & Interactive Design",
-      "category": "Product Design",
-      "icon": "color-palette-outline",
-      "accentColor": "#7C3AED",
-      "bgColor": "#F5F3FF",
-      "description": "Perancangan wireframe interaktif, user flow, dan desain antarmuka aplikasi yang ergonomis serta mengutamakan user experience.",
+      "title": "Musik & Seni Instrumental",
+      "category": "Kreativitas & Seni",
+      "icon": "musical-notes-outline",
+      "accentColor": "#059669",
+      "bgColor": "#ECFDF5",
+      "description": "Eksplorasi musik instrumental sebagai gitaris tingkat menengah dan drummer untuk melatih daya kreativitas serta ketepatan ritme.",
       "tags": [
-        "Figma",
-        "Design System",
-        "Wireframing",
-        "User Research"
+        "Gitaris Menengah",
+        "Bermain Drum",
+        "Harmoni Lagu",
+        "Musikalitas"
       ]
     },
     {
       "id": "interest-4",
-      "title": "Database Management & SQL",
-      "category": "Data Management",
+      "title": "Analisis Sistem & Basis Data",
+      "category": "Software Engineering",
       "icon": "server-outline",
-      "accentColor": "#D97706",
-      "bgColor": "#FFFBEB",
-      "description": "Perancangan relasional basis data, normalisasi data, query SQL teroptimasi, dan integritas data untuk sistem enterprise.",
+      "accentColor": "#7C3AED",
+      "bgColor": "#F5F3FF",
+      "description": "Perancangan arsitektur sistem berbasis Use Case bisnis, Class Diagram, dan pemodelan ERD database.",
       "tags": [
-        "MySQL",
-        "PostgreSQL",
+        "Use Case Bisnis",
+        "Class Diagram",
         "ERD Modeling",
-        "Data Flow"
+        "MySQL & Postgres"
       ]
     }
   ],
   "portfolios": [
     {
       "id": "proj-1",
-      "title": "Personal CV & Score App",
+      "title": "Personal CV & Academic Score App",
       "category": "Mobile App",
       "role": "Lead Mobile Developer",
       "year": "2026",
       "icon": "phone-portrait",
-      "accentColor": "#2563EB",
-      "shortDesc": "Aplikasi digital identitas mahasiswa, portofolio interaktif, dan capaian akademik berbasis React Native & Expo.",
-      "fullDesc": "Aplikasi komprehensif yang dirancang sebagai identitas digital mahasiswa Masoem University. Memadukan modular architecture, visual progress bars, validasi formulir kontak interaktif, integrasi data JSON lokal, dan fitur pengubah tema gelap/terang.",
+      "accentColor": "#843F4B",
+      "imageUrl": "assets/project_cv.jpg",
+      "imageCaption": "Tampilan Aplikasi Mobile React Native & Dashboard Akademik UTS",
+      "shortDesc": "Aplikasi CV digital dan dashboard akademik UTS Pemrograman Mobile 2.",
+      "fullDesc": "Aplikasi komprehensif yang dirancang sebagai identitas digital mahasiswa Masoem University. Memadukan arsitektur modular, visual progress bar, validasi formulir kontak interaktif, integrasi data JSON lokal, dan fitur pengubah tema gelap/terang.",
       "technologies": [
         "React Native",
         "Expo SDK",
@@ -169,113 +171,104 @@
         "Local JSON"
       ],
       "features": [
-        "Pemisahan data murni melalui profile.json",
+        "Pemisahan data murni melalui profile.json dan academicScore.json",
         "Formulir kontak interaktif dengan validasi real-time",
-        "Filter keahlian dinamis dan sistem progress bar",
-        "Dukungan tampilan ganda Android dan Web"
+        "Filter kategori dan pencarian proyek dinamis",
+        "Dashboard nilai UTS dan learning points lengkap"
       ]
     },
     {
       "id": "proj-2",
-      "title": "Sistem Akademik Kampus (SIMAK)",
-      "category": "Web System",
-      "role": "Systems Analyst & UI Designer",
+      "title": "Sistem Informasi Pendaftaran Mahasiswa Baru Universitas Ma'soem",
+      "category": "Web Developer",
+      "role": "Full Stack Web Developer",
       "year": "2025",
       "icon": "globe",
-      "accentColor": "#059669",
-      "shortDesc": "Analisis dan rancang bangun sistem informasi manajemen nilai, KRS, dan absensi mahasiswa.",
-      "fullDesc": "Proyek perancangan sistem informasi akademik untuk otomatisasi proses pengisian KRS dan rekapitulasi nilai. Dilengkapi diagram UML lengkap (Use Case, Activity, Sequence) dan skema ERD basis data terenkripsi.",
+      "accentColor": "#35634F",
+      "imageUrl": "assets/project_pmb_masoem.jpg",
+      "imageCaption": "Antarmuka Portal Penerimaan Mahasiswa Baru Masoem University",
+      "shortDesc": "Membuat sistem informasi yang dapat diakses oleh pendaftar mahasiswa baru Masoem University.",
+      "fullDesc": "Sistem informasi berbasis web yang memfasilitasi proses registrasi calon mahasiswa baru Masoem University secara daring, mulai dari pengisian biodata, upload berkas persyaratan, hingga verifikasi dan pengumuman hasil seleksi.",
       "technologies": [
-        "Systems Analysis",
-        "UML",
-        "BPMN",
+        "Laravel",
+        "PHP",
         "MySQL",
-        "Figma"
+        "Bootstrap",
+        "Blade"
       ],
       "features": [
-        "Dokumentasi Software Requirements Specification (SRS)",
-        "Pemodelan DFD & Diagram Alir Data",
-        "Perancangan 12 tabel relasional ternormalisasi (3NF)",
-        "Prototyping interaktif antarmuka portal mahasiswa"
+        "Modul registrasi akun calon mahasiswa baru",
+        "Upload dan validasi dokumen berkas pendaftaran",
+        "Dashboard admin verifikator panitia PMB",
+        "Manajemen basis data pendaftar ternormalisasi di MySQL"
       ]
     },
     {
       "id": "proj-3",
-      "title": "Masoem Student Mobile Hub (UI/UX)",
-      "category": "UI/UX Design",
-      "role": "UI/UX Designer",
-      "year": "2025",
-      "icon": "color-palette",
-      "accentColor": "#7C3AED",
-      "shortDesc": "Desain antarmuka mobile modern untuk portal terintegrasi mahasiswa dan kegiatan kampus.",
-      "fullDesc": "Riset pengalaman pengguna (UX research) dan perancangan antarmuka mobile beresolusi tinggi (High-Fidelity) di Figma. Menerapkan Human Interface Guidelines dan Material Design 3 dengan komponen auto-layout.",
-      "technologies": [
-        "Figma",
-        "User Journey",
-        "Wireframing",
-        "Design System"
-      ],
-      "features": [
-        "Pembuatan 24+ layar aplikasi mobile interaktif",
-        "Design System dengan 40+ varian reusable component",
-        "Pengujian usabilitas (Usability Testing) kepada 15 mahasiswa",
-        "Skor SUS (System Usability Scale) mencapai 84.5"
-      ]
-    },
-    {
-      "id": "proj-4",
-      "title": "Inventory & Logistics Information System",
-      "category": "Database System",
-      "role": "Database Architect",
-      "year": "2024",
+      "title": "Rancang Bangun Sistem Informasi Peminjaman Inventaris Barang",
+      "category": "Web Developer",
+      "role": "Full Stack Web Developer",
+      "year": "2026",
       "icon": "server",
-      "accentColor": "#D97706",
-      "shortDesc": "Perancangan arsitektur basis data relasional untuk sistem pergudangan dan pencatatan stok barang.",
-      "fullDesc": "Implementasi basis data terdistribusi yang mengelola pencatatan stok masuk, stok keluar, purchase order, dan alert stok minimum menggunakan stored procedure dan database trigger.",
+      "accentColor": "#843F4B",
+      "imageUrl": "assets/project_inventaris.jpg",
+      "imageCaption": "Sistem Manajemen Inventaris & Peminjaman Barang Kecamatan Cicalengka",
+      "shortDesc": "Membangun Sistem Informasi berbasis website untuk Kecamatan Cicalengka.",
+      "fullDesc": "Aplikasi sistem informasi berbasis web yang dirancang untuk mengelola inventarisasi aset dan prosedur peminjaman barang kantor di Kecamatan Cicalengka, memastikan riwayat peminjaman tercatat secara akurat dan transparan.",
       "technologies": [
+        "Laravel 12",
+        "PHP",
         "MySQL",
-        "Stored Procedure",
-        "SQL Query Optimization",
-        "ERD"
+        "Tailwind CSS",
+        "JavaScript"
       ],
       "features": [
-        "Penerapan Indexing untuk percepatan query transaksi besar",
-        "Otomatisasi trigger audit log histori mutasi barang",
-        "Pencegahan deadlock dengan transaksi ACID yang ketat",
-        "Integrasi backup otomatis dan restore recovery plan"
+        "Katalog digital inventaris aset dan sarana prasarana",
+        "Formulir pengajuan peminjaman barang dinamis",
+        "Pencatatan status ketersediaan barang dan jadwal pengembalian",
+        "Laporan rekapitulasi inventaris berkala untuk pihak kecamatan"
       ]
     }
   ],
   "experience": [
     {
       "id": "exp-1",
-      "role": "Anggota Divisi Pengembangan Teknologi",
-      "organization": "Himpunan Mahasiswa Sistem Informasi (HIMASI)",
-      "period": "2024 - Sekarang",
-      "type": "Organisasi Kampus",
-      "icon": "people",
-      "color": "#2563EB",
-      "description": "Mengembangkan inisiatif workshop pemrograman mobile dan mentoring coding bagi mahasiswa baru Sistem Informasi Masoem University."
+      "role": "Managemen sound system Eskul Musik SMA PGRI CICALENGKA",
+      "position": "Managemen sound system Eskul Musik SMA PGRI CICALENGKA",
+      "organization": "Eskul Musik SMA PGRI CICALENGKA",
+      "period": "2022 - 2024",
+      "year": "2022 - 2024",
+      "type": "Organisasi Musik Sekolah",
+      "icon": "musical-notes-outline",
+      "description": "Mengatur sound system agar suara lebih detail dan jernih untuk pertunjukan.",
+      "imageUrl": "assets/eskul_musik.jpg",
+      "imageCaption": "Dokumentasi Penampilan Musik Acara Ramadhanku Berkualitas Eskul Musik SMA PGRI Cicalengka"
     },
     {
       "id": "exp-2",
-      "role": "Ketua Tim Proyek Riset Rekayasa Perangkat Lunak",
-      "organization": "Fakultas Ilmu Komputer Masoem University",
-      "period": "2025",
-      "type": "Akademik & Riset",
-      "icon": "bulb",
-      "color": "#059669",
-      "description": "Memimpin tim 4 mahasiswa dalam merancang arsitektur perangkat lunak mobile untuk digitalisasi layanan akademik."
+      "role": "Anggota Eskul Marching Band SMA PGRI CICALENGKA",
+      "position": "Anggota Eskul Marching Band SMA PGRI CICALENGKA",
+      "organization": "Eskul Marching Band SMA PGRI CICALENGKA",
+      "period": "2023 - 2025",
+      "year": "2023 - 2025",
+      "type": "Marching Band Sekolah",
+      "icon": "volume-medium-outline",
+      "description": "Melakukan monitoring agar nada selaras pada anggota eskul.",
+      "imageUrl": "assets/marching_band.jpg",
+      "imageCaption": "Dokumentasi Penampilan Anggota Eskul Marching Band SMA PGRI Cicalengka"
     },
     {
       "id": "exp-3",
-      "role": "Peserta Pelatihan Mobile App Development",
-      "organization": "Digital Talent & Technology Bootcamp",
-      "period": "2024",
-      "type": "Pelatihan Eksternal",
-      "icon": "ribbon",
-      "color": "#7C3AED",
-      "description": "Menyelesaikan kurikulum intensif React Native, API consumption, dan state management modern."
+      "role": "Anggota UKM TEMAHOLIC MA'SOEM UNIVERSITY",
+      "position": "Anggota UKM TEMAHOLIC MA'SOEM UNIVERSITY",
+      "organization": "MA'SOEM UNIVERSITY",
+      "period": "2026 - Sekarang",
+      "year": "2026 - Sekarang",
+      "type": "UKM Teater & Musik Kampus",
+      "icon": "people-outline",
+      "description": "Mempelajari irama antara musik dan gerakan teater.",
+      "imageUrl": "assets/ukm_temaholic.jpg",
+      "imageCaption": "Dokumentasi Kebersamaan Anggota UKM TEMAHOLIC Masoem University"
     }
   ],
   "hobbies": [
@@ -285,15 +278,7 @@
       "icon": "musical-notes",
       "color": "#065F46",
       "bg": "#ECFDF5",
-      "desc": "Mengeksplorasi progresi akord, fingerstyle, dan melodi lagu pada instrumen gitar akustik & elektrik."
-    },
-    {
-      "id": "hobby-keyboard",
-      "name": "Bermain Keyboard",
-      "icon": "musical-note",
-      "color": "#065F46",
-      "bg": "#F5F5DC",
-      "desc": "Memainkan tangga nada, harmoni tuts piano keyboard, dan improvisasi musik instrumental modern."
+      "desc": "Gitaris tingkat menengah yang mengeksplorasi progresi akord, fingerstyle, dan melodi lagu favorit."
     },
     {
       "id": "hobby-drum",
@@ -301,29 +286,37 @@
       "icon": "disc",
       "color": "#065F46",
       "bg": "#ECFDF5",
-      "desc": "Melatih ketepatan ritme, sinkronisasi tempo, dan dinamika ketukan instrumen perkusi drum."
+      "desc": "Melatih ketepatan ritme, dinamika ketukan tempo, dan koordinasi motorik pada instrumen drum."
     },
     {
       "id": "hobby-mobile",
-      "name": "Mobile App Tinkering",
+      "name": "Eksplorasi Koding Mobile",
+      "icon": "phone-portrait",
+      "color": "#065F46",
+      "bg": "#FAF9F3",
+      "desc": "Mempelajari arsitektur React Native, Expo SDK, dan eksplorasi antarmuka aplikasi mobile modern."
+    },
+    {
+      "id": "hobby-web",
+      "name": "Web Development & Laravel",
       "icon": "code-slash",
       "color": "#065F46",
       "bg": "#FAF9F3",
-      "desc": "Mengeksplorasi ekosistem React Native, Expo SDK, dan arsitektur UI mobile modern."
+      "desc": "Mengeksplorasi ekosistem Laravel, PHP, dan perancangan database relasional MySQL & PostgreSQL."
     }
   ],
   "coreAttributes": [
     {
       "label": "Problem Solving",
-      "desc": "Kemampuan memecah permasalahan sistem menjadi komponen logika yang terstruktur dan mudah diimplementasi."
+      "desc": "Kemampuan memecahkan masalah dengan berpikir melalui celah solusi yang akan didapat."
     },
     {
-      "label": "Team Collaboration",
-      "desc": "Mampu berkolaborasi aktif dalam tim pengembangan sistem dan proyek akademik."
+      "label": "Teamwork",
+      "desc": "Senang berkolaborasi aktif dalam tim untuk mencapai hasil terbaik."
     },
     {
       "label": "Continuous Learner",
-      "desc": "Selalu antusias memperdalam dokumentasi resmi Expo dan perkembangan arsitektur React Native."
+      "desc": "Cepat mempelajari teknologi baru dan beradaptasi dengan perkembangan sistem."
     }
   ],
   "address": {
@@ -345,25 +338,25 @@
     },
     {
       "level": "SMA / Sederajat",
-      "school": "SMA",
-      "major": "MIPA / IPS",
+      "school": "SMA PGRI Cicalengka",
+      "major": "IPA",
       "period": "2021 - 2024",
       "status": "Lulus",
-      "description": "Menyelesaikan pendidikan menengah dengan fondasi matematika dan logika yang kuat."
+      "description": "Menyelesaikan pendidikan menengah peminatan IPA dengan penguatan logika sains & matematika."
     },
     {
       "level": "SMP / Sederajat",
-      "school": "SMP",
+      "school": "SMP PGRI Cicalengka",
       "period": "2018 - 2021",
       "status": "Lulus",
-      "description": "Menyelesaikan pendidikan dasar lanjutan dengan aktif dalam kegiatan ekstrakurikuler."
+      "description": "Menyelesaikan pendidikan dasar lanjutan dengan aktif dalam kegiatan sekolah."
     },
     {
       "level": "SD / Sederajat",
-      "school": "SD",
+      "school": "SDN Cicalengka 04",
       "period": "2011 - 2018",
       "status": "Lulus",
-      "description": "Menyelesaikan pendidikan dasar dengan predikat kelulusan baik."
+      "description": "Menyelesaikan pendidikan dasar 6 tahun dengan predikat kelulusan baik."
     }
   ],
   "contactItems": [
@@ -391,6 +384,15 @@
       "value": "https://github.com/pepeb12",
       "displayValue": "github.com/pepeb12",
       "icon": "logo-github",
+      "color": "#065F46",
+      "bgColor": "#ECFDF5"
+    },
+    {
+      "type": "instagram",
+      "label": "Instagram Resmi",
+      "value": "https://instagram.com/febrianrhmn_2",
+      "displayValue": "@febrianrhmn_2",
+      "icon": "logo-instagram",
       "color": "#065F46",
       "bgColor": "#ECFDF5"
     },

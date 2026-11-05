@@ -1,21 +1,32 @@
-The MIT License (MIT)
+HAK CIPTA & LISENSI KARYA AKADEMIK (PROPRIETARY ACADEMIC LICENSE)
+===================================================================
 
-Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
+Hak Cipta (c) 2026 Febrian Iradatul Rahman
+NIM: 242505024
+Program Studi: S1 Sistem Informasi, Fakultas Komputer
+Institusi: Universitas Ma'soem (Masoem University)
+Proyek: UTS Pemrograman Mobile 2 — Personal CV & Academic Portfolio App
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+DILARANG MENYALIN ATAU MENGGUNAKAN TANPA IZIN (ALL RIGHTS RESERVED)
+-------------------------------------------------------------------
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. PERLINDUNGAN KARYA ORISINIL:
+Seluruh kode sumber, arsitektur perangkat lunak, aset dokumentasi, desain antarmuka,
+dan materi evaluasi di dalam repositori ini merupakan hak cipta murni dan karya
+orisinal dari Febrian Iradatul Rahman (242505024) yang diajukan sebagai pemenuhan
+Ujian Tengah Semester (UTS) mata kuliah Pemrograman Mobile 2 di Universitas Ma'soem.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. KETENTUAN HAK AKSES & PEMERIKSAAN KODE:
+- Repositori ini bersifat TERBUKA UNTUK DILIHAT (READ-ONLY INSPECTION) khusus
+  bagi dosen penilai, asisten laboratorium, dan institusi akademik untuk keperluan
+  evaluasi dan verifikasi portofolio.
+- Siapapun diperbolehkan melihat struktur folder, struktur file, dan alur kode program.
+
+3. LARANGAN PLAGIARISME & PENYALINAN (ANTI-COPY / ANTI-PLAGIARISM):
+- DILARANG KERAS menyalin, menduplikasi, memodifikasi sebagian atau seluruh kode program
+  ini untuk diserahkan sebagai tugas/UTS/UAS pihak lain.
+- DILARANG KERAS mengklaim atau memperjualbelikan karya ini tanpa izin tertulis resmi
+  dari pemilik hak cipta.
+- Setiap bentuk pelanggaran hak cipta dan plagiarisme akademik akan diproses sesuai
+  dengan kode etik akademik perguruan tinggi dan peraturan perundang-undangan
+  hak cipta yang berlaku di Republik Indonesia.

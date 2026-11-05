@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "personal-cv-app",
-    "slug": "personal-cv-app",
+    "name": "CV FEBRIAN",
+    "slug": "cv-febrian",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,8 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "name": "CV FEBRIAN"
     },
     "plugins": [
       "expo-font"
