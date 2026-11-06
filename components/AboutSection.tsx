@@ -19,6 +19,7 @@ interface AboutSectionProps {
   profile?: StudentProfile | any;
   theme?: Theme | any;
   onLayoutSkills?: (y: number) => void;
+  filterSection?: 'all' | 'about' | 'skills';
 }
 
 /**
@@ -70,7 +71,13 @@ function getExpPhotoSource(exp: any, idx: number): any {
   return typeof fallback === 'string' ? { uri: fallback } : fallback;
 }
 
-export default function AboutSection({ data, profile, theme, onLayoutSkills }: AboutSectionProps) {
+export default function AboutSection({
+  data,
+  profile,
+  theme,
+  onLayoutSkills,
+  filterSection = 'all',
+}: AboutSectionProps) {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
   const isTablet = width >= 768 && width < 1024;
@@ -126,6 +133,7 @@ export default function AboutSection({ data, profile, theme, onLayoutSkills }: A
   return (
     <View style={styles.container}>
       {/* SECTION 1: TENTANG SAYA & KARAKTER UTAMA (LEVEL 2) */}
+      {(filterSection === 'all' || filterSection === 'about') && (
       <View
         style={[
           styles.card,
@@ -194,8 +202,10 @@ export default function AboutSection({ data, profile, theme, onLayoutSkills }: A
           ))}
         </View>
       </View>
+      )}
 
       {/* SECTION 2: KEAHLIAN TEKNIS & SPESIALISASI (LEVEL 3) */}
+      {(filterSection === 'all' || filterSection === 'skills') && (
       <View
         nativeID="section-skills"
         testID="section-skills"
@@ -304,8 +314,10 @@ export default function AboutSection({ data, profile, theme, onLayoutSkills }: A
           ))}
         </View>
       </View>
+      )}
 
       {/* SECTION 3: RIWAYAT PENDIDIKAN & HOBI MUSIK (LEVEL 5 & 6) */}
+      {filterSection === 'all' ? (
       <View style={[styles.twoColRow, isMobile && styles.twoColRowMobile]}>
         {/* Kolom Kiri: Riwayat Pendidikan */}
         <View
@@ -493,8 +505,143 @@ export default function AboutSection({ data, profile, theme, onLayoutSkills }: A
           </View>
         </View>
       </View>
+      ) : filterSection === 'about' ? (
+        /* Tampilan Khusus Halaman About: Riwayat Pendidikan */
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: currentTheme.surface,
+              borderColor: currentTheme.border,
+            },
+          ]}
+        >
+          <View style={styles.cardHeader}>
+            <View style={[styles.headerIconBox, { backgroundColor: currentTheme.surface2 }]}>
+              <Ionicons name="school-outline" size={20} color={currentTheme.accent} />
+            </View>
+            <View style={styles.headerTextGroup}>
+              <Text style={[styles.cardTitle, { color: currentTheme.textPrimary }]}>
+                Riwayat Pendidikan
+              </Text>
+              <Text style={[styles.cardSubtitle, { color: currentTheme.textSecondary }]}>
+                Jejak Pendidikan Formal
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.timelineList}>
+            {educationList.map((item: any, i: number) => (
+              <View
+                key={i}
+                style={styles.timelineItem}
+              >
+                <View style={styles.timelineIconCol}>
+                  <View style={[styles.timelineNode, { borderColor: currentTheme.accent, backgroundColor: currentTheme.surface2 }]}>
+                    <Ionicons name="checkmark-sharp" size={11} color={currentTheme.accent} />
+                  </View>
+                  {i < educationList.length - 1 && (
+                    <View style={[styles.timelineLine, { backgroundColor: currentTheme.border }]} />
+                  )}
+                </View>
+                <View style={styles.timelineContent}>
+                  <View style={styles.timelineLevelRow}>
+                    <Text style={[styles.timelineLevelText, { color: currentTheme.accent }]}>
+                      {item.level}
+                    </Text>
+                    <Text style={[styles.timelineYearText, { color: currentTheme.textSecondary }]}>
+                      {item.year || item.period}
+                    </Text>
+                  </View>
+                  <Text style={[styles.timelineSchoolText, { color: currentTheme.textPrimary }]}>
+                    {item.school || item.institution}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : (
+        /* Tampilan Khusus Halaman Skills: Hobi Musik & Spotify */
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: currentTheme.surface,
+              borderColor: currentTheme.border,
+            },
+          ]}
+        >
+          <View style={styles.cardHeader}>
+            <View style={[styles.headerIconBox, { backgroundColor: currentTheme.surface2 }]}>
+              <Ionicons name="musical-notes-outline" size={20} color={currentTheme.accent} />
+            </View>
+            <View style={styles.headerTextGroup}>
+              <Text style={[styles.cardTitle, { color: currentTheme.textPrimary }]}>
+                Minat & Hobi Musik
+              </Text>
+              <Text style={[styles.cardSubtitle, { color: currentTheme.textSecondary }]}>
+                Kreativitas di Luar Koding
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.hobbyList}>
+            <View style={[styles.hobbyRow, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}>
+              <Ionicons name="musical-note" size={18} color={currentTheme.accent} />
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.hobbyTitle, { color: currentTheme.textPrimary }]}>Bermain Gitar</Text>
+                <Text style={[styles.hobbyDesc, { color: currentTheme.textSecondary }]}>Gitaris tingkat menengah • fingerstyle & harmoni akord.</Text>
+              </View>
+            </View>
+            <View style={[styles.hobbyRow, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}>
+              <Ionicons name="disc-outline" size={18} color={currentTheme.accent} />
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.hobbyTitle, { color: currentTheme.textPrimary }]}>Bermain Drum</Text>
+                <Text style={[styles.hobbyDesc, { color: currentTheme.textSecondary }]}>Melatih ketepatan tempo, sinkronisasi ketukan & ritme.</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={[styles.spotifyCard, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border, marginTop: 12 }]}>
+            <View style={styles.spotifyHeaderRow}>
+              <View style={{ flex: 1 }}>
+                <View style={styles.nowPlayingRow}>
+                  {isPlayingMusic && (
+                    <View
+                      style={[styles.pulseDot, { backgroundColor: currentTheme.success }]}
+                    />
+                  )}
+                  <Text style={[styles.spotifyNowPlaying, { color: isPlayingMusic ? currentTheme.success : currentTheme.accent }]}>
+                    {isPlayingMusic ? 'SEDANG MEMUTAR PREVIEW' : 'PUTARAN SPOTIFY FAVORIT'}
+                  </Text>
+                </View>
+                <Text style={[styles.spotifySongTitle, { color: currentTheme.textPrimary }]}>
+                  Anything You Want
+                </Text>
+                <Text style={[styles.spotifyArtist, { color: currentTheme.textSecondary }]}>
+                  Reality Club • 03:02
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                style={[styles.playPauseBtn, { backgroundColor: currentTheme.primary }]}
+                onPress={() => setIsPlayingMusic(!isPlayingMusic)}
+                activeOpacity={0.8}
+              >
+                <Ionicons
+                  name={isPlayingMusic ? 'pause' : 'play'}
+                  size={16}
+                  color={currentTheme.isDark ? '#25191D' : '#FFFFFF'}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
 
       {/* SECTION 4: PENGALAMAN & ORGANISASI (LEVEL 7 - BAGIAN B) */}
+      {(filterSection === 'all' || filterSection === 'about') && (
       <View
         style={[
           styles.card,
@@ -675,6 +822,7 @@ export default function AboutSection({ data, profile, theme, onLayoutSkills }: A
           ))}
         </View>
       </View>
+      )}
 
       {/* Lightbox Modal Foto Dokumentasi Pengalaman Organisasi */}
       <Modal
