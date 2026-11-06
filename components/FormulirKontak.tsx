@@ -289,83 +289,120 @@ export default function ContactForm({
           <View style={styles.channelList}>
             {/* WhatsApp */}
             <TouchableOpacity
-              style={[styles.channelItem, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}
+              style={[
+                styles.channelItem,
+                isMobile && styles.channelItemMobile,
+                { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border },
+              ]}
               onPress={handleOpenWA}
               activeOpacity={0.7}
               {...(Platform.OS === 'web' ? { className: 'interactive-card' } : {})}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: currentTheme.isDark ? 'rgba(128, 198, 155, 0.16)' : 'rgba(57, 123, 87, 0.14)' }]}>
-                <Ionicons name="logo-whatsapp" size={20} color={currentTheme.success} />
+              <View style={[styles.channelIconBox, isMobile && styles.channelIconBoxMobile, { backgroundColor: currentTheme.isDark ? 'rgba(128, 198, 155, 0.16)' : 'rgba(57, 123, 87, 0.14)' }]}>
+                <Ionicons name="logo-whatsapp" size={isMobile ? 18 : 20} color={currentTheme.success} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>WhatsApp Aktif</Text>
-                <Text style={[styles.channelValue, { color: currentTheme.textPrimary }]}>0895-1233-6537</Text>
+                <Text style={[styles.channelValue, isMobile && styles.channelValueMobile, { color: currentTheme.textPrimary }]} numberOfLines={1}>
+                  0895-1233-6537
+                </Text>
               </View>
               <Ionicons name="open-outline" size={16} color={currentTheme.textMuted} />
             </TouchableOpacity>
 
             {/* Email */}
             <TouchableOpacity
-              style={[styles.channelItem, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}
+              style={[
+                styles.channelItem,
+                isMobile && styles.channelItemMobile,
+                { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border },
+              ]}
               onPress={handleOpenEmail}
               activeOpacity={0.7}
               {...(Platform.OS === 'web' ? { className: 'interactive-card' } : {})}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: currentTheme.isDark ? 'rgba(193, 123, 136, 0.16)' : 'rgba(132, 63, 75, 0.14)' }]}>
-                <Ionicons name="mail" size={20} color={currentTheme.primary} />
+              <View style={[styles.channelIconBox, isMobile && styles.channelIconBoxMobile, { backgroundColor: currentTheme.isDark ? 'rgba(193, 123, 136, 0.16)' : 'rgba(132, 63, 75, 0.14)' }]}>
+                <Ionicons name="mail" size={isMobile ? 18 : 20} color={currentTheme.primary} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>Email Resmi</Text>
-                <Text style={[styles.channelValue, { color: currentTheme.textPrimary }]}>febrianrahman902@gmail.com</Text>
+                <Text
+                  style={[
+                    styles.channelValue,
+                    isMobile && styles.channelValueEmailMobile,
+                    { color: currentTheme.textPrimary },
+                  ]}
+                  numberOfLines={1}
+                >
+                  febrianrahman902@gmail.com
+                </Text>
               </View>
               <Ionicons name="open-outline" size={16} color={currentTheme.textMuted} />
             </TouchableOpacity>
 
             {/* Instagram */}
             <TouchableOpacity
-              style={[styles.channelItem, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}
+              style={[
+                styles.channelItem,
+                isMobile && styles.channelItemMobile,
+                { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border },
+              ]}
               onPress={handleOpenIG}
               activeOpacity={0.7}
               {...(Platform.OS === 'web' ? { className: 'interactive-card' } : {})}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: currentTheme.isDark ? 'rgba(240, 139, 145, 0.16)' : 'rgba(168, 63, 70, 0.14)' }]}>
-                <Ionicons name="logo-instagram" size={20} color={currentTheme.danger} />
+              <View style={[styles.channelIconBox, isMobile && styles.channelIconBoxMobile, { backgroundColor: currentTheme.isDark ? 'rgba(240, 139, 145, 0.16)' : 'rgba(168, 63, 70, 0.14)' }]}>
+                <Ionicons name="logo-instagram" size={isMobile ? 18 : 20} color={currentTheme.danger} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>Instagram</Text>
-                <Text style={[styles.channelValue, { color: currentTheme.textPrimary }]}>@febrianrhmn_2</Text>
+                <Text style={[styles.channelValue, isMobile && styles.channelValueMobile, { color: currentTheme.textPrimary }]} numberOfLines={1}>
+                  @febrianrhmn_2
+                </Text>
               </View>
               <Ionicons name="open-outline" size={16} color={currentTheme.textMuted} />
             </TouchableOpacity>
 
             {/* GitHub */}
             <TouchableOpacity
-              style={[styles.channelItem, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}
+              style={[
+                styles.channelItem,
+                isMobile && styles.channelItemMobile,
+                { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border },
+              ]}
               onPress={handleOpenGitHub}
               activeOpacity={0.7}
               {...(Platform.OS === 'web' ? { className: 'interactive-card' } : {})}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: currentTheme.isDark ? 'rgba(193, 123, 136, 0.16)' : 'rgba(132, 63, 75, 0.14)' }]}>
-                <Ionicons name="logo-github" size={20} color={currentTheme.primary} />
+              <View style={[styles.channelIconBox, isMobile && styles.channelIconBoxMobile, { backgroundColor: currentTheme.isDark ? 'rgba(193, 123, 136, 0.16)' : 'rgba(132, 63, 75, 0.14)' }]}>
+                <Ionicons name="logo-github" size={isMobile ? 18 : 20} color={currentTheme.primary} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>Profil GitHub</Text>
-                <Text style={[styles.channelValue, { color: currentTheme.textPrimary }]}>pepeb12</Text>
+                <Text style={[styles.channelValue, isMobile && styles.channelValueMobile, { color: currentTheme.textPrimary }]} numberOfLines={1}>
+                  pepeb12
+                </Text>
               </View>
               <Ionicons name="open-outline" size={16} color={currentTheme.textMuted} />
             </TouchableOpacity>
 
             {/* Domisili */}
             <View
-              style={[styles.channelItem, { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border }]}
+              style={[
+                styles.channelItem,
+                isMobile && styles.channelItemMobile,
+                { backgroundColor: currentTheme.surface2, borderColor: currentTheme.border },
+              ]}
               {...(Platform.OS === 'web' ? { className: 'interactive-card' } : {})}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: currentTheme.surfaceHover }]}>
-                <Ionicons name="location" size={20} color={currentTheme.primary} />
+              <View style={[styles.channelIconBox, isMobile && styles.channelIconBoxMobile, { backgroundColor: currentTheme.surfaceHover }]}>
+                <Ionicons name="location" size={isMobile ? 18 : 20} color={currentTheme.primary} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>Domisili Mahasiswa</Text>
-                <Text style={[styles.channelValue, { color: currentTheme.textPrimary }]}>Kp Babakan Stasiun, Cicalengka</Text>
+                <Text style={[styles.channelValue, isMobile && styles.channelValueMobile, { color: currentTheme.textPrimary }]} numberOfLines={1}>
+                  Kp Babakan Stasiun, Cicalengka
+                </Text>
               </View>
             </View>
           </View>
@@ -520,12 +557,22 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  channelItemMobile: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    gap: 10,
+  },
   channelIconBox: {
     width: 36,
     height: 36,
     borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  channelIconBoxMobile: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
   },
   channelLabel: {
     fontFamily: FONTS.mono,
@@ -538,5 +585,12 @@ const styles = StyleSheet.create({
     fontSize: 12.5,
     fontWeight: '700',
     marginTop: 2,
+  },
+  channelValueMobile: {
+    fontSize: 11.5,
+  },
+  channelValueEmailMobile: {
+    fontSize: 11,
+    letterSpacing: -0.2,
   },
 });

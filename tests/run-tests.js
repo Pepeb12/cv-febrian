@@ -6,9 +6,13 @@
 const fs = require('fs');
 const path = require('path');
 
-// Read JSON files
-const profilePath = path.join(__dirname, '..', 'data', 'profile.json');
-const academicPath = path.join(__dirname, '..', 'data', 'academicScore.json');
+// Read JSON files (Bahasa Indonesia)
+const profilePath = fs.existsSync(path.join(__dirname, '..', 'data', 'profil.json'))
+  ? path.join(__dirname, '..', 'data', 'profil.json')
+  : path.join(__dirname, '..', 'data', 'profile.json');
+const academicPath = fs.existsSync(path.join(__dirname, '..', 'data', 'nilaiAkademik.json'))
+  ? path.join(__dirname, '..', 'data', 'nilaiAkademik.json')
+  : path.join(__dirname, '..', 'data', 'academicScore.json');
 
 const profileData = JSON.parse(fs.readFileSync(profilePath, 'utf8'));
 const academicData = JSON.parse(fs.readFileSync(academicPath, 'utf8'));

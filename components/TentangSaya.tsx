@@ -700,23 +700,31 @@ export default function AboutSection({
               ]}
               {...(Platform.OS === 'web' ? { className: `interactive-card stagger-${idx + 1}` } : {})}
             >
-              <View style={styles.experienceCardTop}>
-                <View style={[styles.experienceIconBox, { backgroundColor: currentTheme.surface, borderColor: currentTheme.border }]}>
-                  <Ionicons
-                    name={idx === 0 ? 'musical-notes' : idx === 1 ? 'volume-medium' : 'people'}
-                    size={16}
-                    color={currentTheme.accent}
-                  />
+              <View style={[styles.experienceCardTop, isMobile && styles.experienceCardTopMobile]}>
+                <View style={styles.experienceCardTitleRow}>
+                  <View style={[styles.experienceIconBox, { backgroundColor: currentTheme.surface, borderColor: currentTheme.border }]}>
+                    <Ionicons
+                      name={idx === 0 ? 'musical-notes' : idx === 1 ? 'volume-medium' : 'people'}
+                      size={16}
+                      color={currentTheme.accent}
+                    />
+                  </View>
+                  <View style={{ flex: 1, minWidth: 0 }}>
+                    <Text style={[styles.experienceRole, isMobile && styles.experienceRoleMobile, { color: currentTheme.heading }]}>
+                      {exp.role || exp.position}
+                    </Text>
+                    <Text style={[styles.experienceOrg, isMobile && styles.experienceOrgMobile, { color: currentTheme.accent }]}>
+                      {exp.organization}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={[styles.experienceRole, { color: currentTheme.heading }]}>
-                    {exp.role || exp.position}
-                  </Text>
-                  <Text style={[styles.experienceOrg, { color: currentTheme.accent }]}>
-                    {exp.organization}
-                  </Text>
-                </View>
-                <View style={[styles.experiencePeriodBadge, { backgroundColor: currentTheme.surface, borderColor: currentTheme.border }]}>
+                <View
+                  style={[
+                    styles.experiencePeriodBadge,
+                    isMobile && styles.experiencePeriodBadgeMobile,
+                    { backgroundColor: currentTheme.surface, borderColor: currentTheme.border },
+                  ]}
+                >
                   <Text style={[styles.experiencePeriodText, { color: currentTheme.textSecondary }]}>
                     {exp.period || exp.year}
                   </Text>
@@ -1213,8 +1221,22 @@ const styles = StyleSheet.create({
   experienceCardTop: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 10,
-    flexWrap: 'wrap',
+    width: '100%',
+  },
+  experienceCardTopMobile: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  experienceCardTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    flex: 1,
+    minWidth: 0,
+    width: '100%',
   },
   experienceIconBox: {
     width: 32,
@@ -1223,22 +1245,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 1,
   },
   experienceRole: {
     fontFamily: FONTS.display,
     fontSize: 13.5,
     fontWeight: '700',
   },
+  experienceRoleMobile: {
+    fontSize: 13,
+    lineHeight: 18,
+  },
   experienceOrg: {
     fontFamily: FONTS.mono,
     fontSize: 11.5,
     fontWeight: '600',
+  },
+  experienceOrgMobile: {
+    fontSize: 11,
+    marginTop: 2,
   },
   experiencePeriodBadge: {
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
     borderWidth: 1,
+  },
+  experiencePeriodBadgeMobile: {
+    alignSelf: 'flex-start',
+    marginLeft: 42,
+    marginTop: 0,
   },
   experiencePeriodText: {
     fontFamily: FONTS.mono,

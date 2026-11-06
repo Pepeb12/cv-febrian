@@ -44,6 +44,12 @@ export default function ProfileHeader({
   const student = data || profile || {};
   const currentTheme: Theme = theme || COLORS;
 
+  const bioDescription =
+    student.deskripsi ||
+    student.bio?.detailedBio ||
+    student.bio?.summary ||
+    'Saya merupakan mahasiswa Program Studi Sistem Informasi yang memiliki ketertarikan pada bidang teknologi informasi, khususnya pengembangan aplikasi dan sistem informasi berbasis web. Memiliki pengetahuan dalam pemrograman, pengelolaan basis data, serta analisis kebutuhan sistem. Terbiasa mengerjakan proyek pengembangan aplikasi menggunakan teknologi seperti Laravel, PHP, MySQL, dan JavaScript. Saya memiliki semangat belajar yang tinggi, mampu bekerja secara mandiri maupun dalam tim, serta memiliki komitmen untuk terus mengembangkan kemampuan dan memberikan kontribusi positif dalam lingkungan kerja. Di luar bidang akademik dan teknologi, saya juga memiliki hobi bermain alat musik, khususnya gitar dan drum, sebagai sarana menyalurkan kreativitas dan mengembangkan kemampuan bermusik.';
+
   // Role Profesi Dinamis (Mesin Tik)
   const ROLES = [
     'Pengembang Aplikasi Mobile & Web',
@@ -361,6 +367,27 @@ export default function ProfileHeader({
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* TEKS DESKRIPSI SINGKAT MAHASISWA (SESUAI GAMBAR 2) */}
+          <View
+            style={[
+              styles.bioContainer,
+              { borderTopColor: currentTheme.borderLight },
+              isMobile && styles.bioContainerMobile,
+            ]}
+          >
+            <Text
+              style={[
+                styles.bioText,
+                {
+                  color: currentTheme.textSecondary,
+                  textAlign: isMobile ? 'justify' : 'left',
+                },
+              ]}
+            >
+              {bioDescription}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -430,7 +457,7 @@ const styles = StyleSheet.create({
   },
   heroContentWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 28,
     width: '100%',
   },
@@ -662,5 +689,21 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.body,
     fontSize: 12,
     textAlign: 'center',
+  },
+  bioContainer: {
+    marginTop: 14,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    width: '100%',
+  },
+  bioContainerMobile: {
+    marginTop: 14,
+    paddingTop: 12,
+  },
+  bioText: {
+    fontFamily: FONTS.body,
+    fontSize: 13,
+    lineHeight: 21,
+    letterSpacing: 0.15,
   },
 });

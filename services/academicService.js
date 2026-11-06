@@ -4,8 +4,8 @@
  * penanganan status error (503/404), empty state, serta POST submit feedback.
  */
 
-import rawProfileData from '../data/profile.json';
-import rawAcademicData from '../data/academicScore.json';
+import rawProfileData from '../data/profil.json';
+import rawAcademicData from '../data/nilaiAkademik.json';
 
 // Kelas Custom Error untuk penanganan error standar industri
 export class ApiError extends Error {

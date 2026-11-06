@@ -11,8 +11,8 @@ import {
   formatLP,
   calculateOverallProgress,
 } from '../utils/helpers.js';
-import profileData from '../data/profile.json';
-import academicData from '../data/academicScore.json';
+import profileData from '../data/profil.json';
+import academicData from '../data/nilaiAkademik.json';
 
 export async function runAllTests() {
   const results = [];

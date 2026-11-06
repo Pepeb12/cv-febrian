@@ -60,8 +60,6 @@ Aplikasi ini dibangun secara bertahap dan menyeluruh memenuhi seluruh 10 tingkat
 v UTS FEBRIAN
   v .github/workflows
     deploy.yml               <-- Otomatisasi CI/CD GitHub Pages
-  v app
-    index.tsx                <-- Entry point Expo Router
   v assets
     eskul_musik.jpg          <-- Dokumentasi Eskul Musik SMA PGRI Cicalengka
     marching_band.jpg        <-- Dokumentasi Marching Band SMA PGRI Cicalengka
@@ -71,30 +69,30 @@ v UTS FEBRIAN
     project_pmb_masoem.jpg   <-- Screenshot Proyek PMB Masoem University
     ukm_temaholic.jpg        <-- Dokumentasi UKM Temaholic Masoem University
   v components
-    AboutSection.tsx         <-- Bagian Tentang Saya, Riwayat & Organisasi
-    ContactForm.tsx          <-- Formulir kontak interaktif
-    CosmicFooter.tsx         <-- Footer identitas institusi & pengembang
-    ErrorBoundary.tsx        <-- Proteksi runtime crash
-    FeedbackToast.tsx        <-- Notifikasi umpan balik
-    GlobalAnimations.tsx     <-- Sistem animasi CSS web
-    Level10Showcase.tsx      <-- Tampilan demonstrasi Level 10 Industri
-    MyScoreSection.tsx       <-- Dashboard nilai akademik UTS
-    NavigationTabBar.tsx     <-- Header navigasi satu baris floating pill
-    PortfolioGallery.tsx     <-- Galeri portofolio proyek
-    ProfileHeader.tsx        <-- Header hero profil mahasiswa
+    AnimasiGlobal.tsx        <-- Sistem animasi CSS web & transisi
+    BilahNavigasi.tsx        <-- Header navigasi satu baris floating pill
+    FooterAplikasi.tsx       <-- Footer identitas institusi & pengembang
+    FormulirKontak.tsx       <-- Formulir kontak interaktif & validasi
+    GaleriPortofolio.tsx     <-- Galeri portofolio proyek dinamis
+    HeaderProfil.tsx         <-- Header hero profil singkat mahasiswa
+    NilaiAkademik.tsx        <-- Dashboard nilai akademik & LP UTS
+    NotifikasiToast.tsx      <-- Notifikasi umpan balik aksi pengguna
+    PenangananError.tsx      <-- Proteksi crash runtime (Error Boundary)
+    TentangSaya.tsx          <-- Biodata, pendidikan, keahlian & organisasi
   v data
-    academicScore.json       <-- Data kontrak nilai UTS Masoem University
-    profile.json             <-- Data profil, portofolio & pengalaman
+    nilaiAkademik.json       <-- Data kontrak nilai akademik UTS Masoem University
+    profil.json              <-- Data identitas profil, portofolio & pengalaman
   v services
-    academicService.js       <-- Service API, latensi & penanganan error 503
-    storageService.js        <-- Abstraksi AsyncStorage persistensi lokal
+    academicService.js       <-- Service API, latensi & penanganan error
+    storageService.js        <-- Abstraksi persistensi storage lokal
   v tests
     run-tests.js             <-- 10 Automated unit test suite
   v theme
-    index.ts                 <-- Token warna resmi Burgundy Classic
+    index.ts                 <-- Token warna resmi Burgundy Classic & tipografi
+  App.tsx                    <-- Komponen akar aplikasi (Multi-screen CV)
   LICENSE                    <-- Lisensi perlindungan hak cipta akademik
-  package.json
-  tsconfig.json
+  package.json               <-- Manajemen dependensi & skrip proyek
+  tsconfig.json              <-- Konfigurasi strict TypeScript
 ```
 
 ---

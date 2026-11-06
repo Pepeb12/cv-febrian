@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform, Linking, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme, FONTS } from '../theme';
-import { TabKey } from './NavigationTabBar';
+import { TabKey } from './BilahNavigasi';
 
 interface CosmicFooterProps {
   theme: Theme;
@@ -25,7 +25,7 @@ export default function CosmicFooter({
   studentNim = '242505024',
 }: CosmicFooterProps) {
   const { width } = useWindowDimensions();
-  const isMobile = width < 768;
+  const isMobile = width < 860;
   const isDark = theme.isDark;
 
   const handleOpenLink = (url: string) => {
@@ -40,6 +40,7 @@ export default function CosmicFooter({
     <View
       style={[
         styles.footerContainer,
+        isMobile && styles.footerContainerMobile,
         {
           backgroundColor: theme.surface,
           borderTopColor: theme.border,
@@ -50,29 +51,43 @@ export default function CosmicFooter({
       <View
         style={[
           styles.institutionStrip,
+          isMobile && styles.institutionStripMobile,
           {
             backgroundColor: theme.surface2,
             borderColor: theme.border,
           },
         ]}
       >
-        <View style={styles.institutionLeft}>
-          <View style={[styles.mottoPill, { backgroundColor: theme.primaryLight, borderColor: theme.borderLight }]}>
-            <Ionicons name="school" size={14} color={theme.accent} />
-            <Text style={[styles.mottoText, { color: theme.accent }]}>
-              TEKUN • DISIPLIN • BERKELAS
-            </Text>
-          </View>
-          <Text style={[styles.institutionText, { color: theme.textSecondary }]}>
-            Fakultas Komputer • Masoem University
+        <View style={[styles.mottoPill, { backgroundColor: theme.primaryLight, borderColor: theme.borderLight }]}>
+          <Ionicons name="school" size={13} color={theme.accent} />
+          <Text style={[styles.mottoText, { color: theme.accent }]}>
+            TEKUN • DISIPLIN • BERKELAS
           </Text>
         </View>
 
-        <View style={styles.institutionRight}>
-          <Text style={[styles.courseMetaText, { color: theme.textMuted }]}>
-            UTS Pemrograman Mobile 2
-          </Text>
-        </View>
+        <Text
+          style={[
+            styles.institutionText,
+            isMobile && styles.institutionTextMobile,
+            { color: theme.textSecondary },
+          ]}
+        >
+          Fakultas Komputer • Masoem University
+        </Text>
+
+        {!isMobile && (
+          <View style={[styles.dotDivider, { backgroundColor: theme.borderLight }]} />
+        )}
+
+        <Text
+          style={[
+            styles.courseMetaText,
+            isMobile && styles.courseMetaTextMobile,
+            { color: theme.textMuted },
+          ]}
+        >
+          UTS Pemrograman Mobile 2
+        </Text>
       </View>
 
       {/* 2. MAIN FOOTER CONTENT WRAPPER */}
@@ -82,7 +97,7 @@ export default function CosmicFooter({
           <View style={styles.brandRow}>
             <Text style={[styles.terminalPrompt, { color: theme.primary }]}>{'>_'}</Text>
             <Text style={[styles.brandTitle, { color: theme.heading }]}>
-              pepeb's<Text style={{ color: theme.primary }}>developer</Text>
+              pepeb's <Text style={{ color: theme.primary }}>developer</Text>
             </Text>
           </View>
           <Text style={[styles.tagline, { color: theme.textSecondary }]}>
@@ -139,20 +154,6 @@ export default function CosmicFooter({
             {...(Platform.OS === 'web' ? { className: 'footer-hover-link' } : {})}
           >
             <Text style={[styles.navLinkText, { color: theme.textSecondary }]}>Kontak</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (Platform.OS === 'web') {
-                const el = document.getElementById('section-level10');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            style={styles.navLink}
-            {...(Platform.OS === 'web' ? { className: 'footer-hover-link' } : {})}
-          >
-            <Text style={[styles.navLinkText, { color: theme.primary, fontWeight: '700' }]}>
-              ★ Level 10 Showcase
-            </Text>
           </TouchableOpacity>
         </View>
 
@@ -235,33 +236,51 @@ export default function CosmicFooter({
 const styles = StyleSheet.create({
   footerContainer: {
     width: '100%',
-    borderTopWidth: 1,
-    paddingTop: 32,
-    paddingBottom: 40,
-    paddingHorizontal: 20,
-    marginTop: 32,
+    maxWidth: 1150,
+    alignSelf: 'center',
+    borderWidth: 1,
+    paddingTop: 28,
+    paddingBottom: 36,
+    paddingHorizontal: 28,
+    marginTop: 28,
     borderRadius: 20,
   },
+  footerContainerMobile: {
+    paddingHorizontal: 14,
+    paddingTop: 20,
+    paddingBottom: 28,
+    marginTop: 20,
+    borderRadius: 16,
+  },
   institutionStrip: {
-    width: '100%',
-    maxWidth: 1200,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 14,
+    justifyContent: 'center',
+    paddingVertical: 7,
+    paddingHorizontal: 18,
+    borderRadius: 999,
     borderWidth: 1,
-    marginBottom: 32,
-    flexWrap: 'wrap',
+    marginBottom: 30,
     gap: 12,
+    maxWidth: 780,
   },
-  institutionLeft: {
-    flexDirection: 'row',
+  institutionStripMobile: {
+    flexDirection: 'column',
     alignItems: 'center',
-    gap: 12,
-    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    width: '100%',
+    maxWidth: 380,
+    marginBottom: 22,
+  },
+  dotDivider: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
   mottoPill: {
     flexDirection: 'row',
@@ -274,25 +293,31 @@ const styles = StyleSheet.create({
   },
   mottoText: {
     fontFamily: FONTS.mono,
-    fontSize: 11,
+    fontSize: 10.5,
     fontWeight: '700',
     letterSpacing: 0.8,
   },
   institutionText: {
     fontFamily: FONTS.bodyMedium,
-    fontSize: 12.5,
+    fontSize: 12,
+    flexShrink: 1,
   },
-  institutionRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  institutionTextMobile: {
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 18,
   },
   courseMetaText: {
     fontFamily: FONTS.mono,
-    fontSize: 11,
+    fontSize: 10.5,
+  },
+  courseMetaTextMobile: {
+    textAlign: 'center',
+    fontSize: 10.5,
   },
   innerWrapper: {
     width: '100%',
-    maxWidth: 1200,
+    maxWidth: 1050,
     alignSelf: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -300,37 +325,38 @@ const styles = StyleSheet.create({
     gap: 28,
   },
   brandCol: {
-    flex: 1.4,
+    flex: 1.3,
     minWidth: 260,
     gap: 10,
   },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
   },
   terminalPrompt: {
     color: '#38BDF8',
     fontFamily: FONTS.mono,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '700',
   },
   brandTitle: {
     fontFamily: FONTS.display,
     fontSize: 20,
     fontWeight: '800',
-    letterSpacing: -0.5,
+    letterSpacing: -0.3,
   },
   tagline: {
     fontFamily: FONTS.body,
     fontSize: 13,
     lineHeight: 20,
-    maxWidth: 420,
+    maxWidth: 380,
   },
   copyright: {
     fontFamily: FONTS.mono,
     fontSize: 11,
-    marginTop: 6,
+    lineHeight: 16,
+    marginTop: 4,
   },
   navCol: {
     minWidth: 130,
