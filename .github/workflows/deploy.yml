@@ -34,7 +34,9 @@ jobs:
         run: node tests/run-tests.js
 
       - name: Export static web bundle
-        run: npx expo export -p web
+        run: |
+          npx expo export -p web
+          touch dist/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
