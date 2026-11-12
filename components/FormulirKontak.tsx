@@ -135,7 +135,8 @@ export default function ContactForm({
             {
               backgroundColor: currentTheme.surface,
               borderColor: currentTheme.border,
-              flex: 1.2,
+              flex: isMobile ? undefined : 1.2,
+              width: isMobile ? '100%' : undefined,
             },
           ]}
           {...(Platform.OS === 'web' ? { className: 'fade-in-left' } : {})}
@@ -267,7 +268,8 @@ export default function ContactForm({
             {
               backgroundColor: currentTheme.surface,
               borderColor: currentTheme.border,
-              flex: 0.9,
+              flex: isMobile ? undefined : 0.9,
+              width: isMobile ? '100%' : undefined,
             },
           ]}
           {...(Platform.OS === 'web' ? { className: 'fade-in-right' } : {})}
@@ -419,9 +421,14 @@ const styles = StyleSheet.create({
   twoColRow: {
     flexDirection: 'row',
     gap: 20,
+    alignItems: 'flex-start',
+    width: '100%',
   },
   twoColRowMobile: {
     flexDirection: 'column',
+    gap: 20,
+    alignItems: 'stretch',
+    width: '100%',
   },
   card: {
     borderRadius: SPACING.cardRadius,
@@ -542,6 +549,7 @@ const styles = StyleSheet.create({
   },
   channelList: {
     gap: 10,
+    width: '100%',
   },
   channelItem: {
     flexDirection: 'row',
@@ -550,6 +558,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     gap: 12,
+    width: '100%',
     ...Platform.select({
       web: {
         cursor: 'pointer' as any,

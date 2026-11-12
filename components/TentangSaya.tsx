@@ -326,7 +326,8 @@ export default function AboutSection({
             {
               backgroundColor: currentTheme.surface,
               borderColor: currentTheme.border,
-              flex: 1,
+              flex: isMobile ? undefined : 1,
+              width: isMobile ? '100%' : undefined,
             },
           ]}
           {...(Platform.OS === 'web' ? { className: 'fade-in-left' } : {})}
@@ -385,7 +386,8 @@ export default function AboutSection({
             {
               backgroundColor: currentTheme.surface,
               borderColor: currentTheme.border,
-              flex: 1,
+              flex: isMobile ? undefined : 1,
+              width: isMobile ? '100%' : undefined,
             },
           ]}
           {...(Platform.OS === 'web' ? { className: 'fade-in-right' } : {})}
@@ -1051,9 +1053,14 @@ const styles = StyleSheet.create({
   twoColRow: {
     flexDirection: 'row',
     gap: 20,
+    alignItems: 'flex-start',
+    width: '100%',
   },
   twoColRowMobile: {
     flexDirection: 'column',
+    gap: 20,
+    alignItems: 'stretch',
+    width: '100%',
   },
   timelineList: {
     gap: 16,

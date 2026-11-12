@@ -60,6 +60,8 @@ Aplikasi ini dibangun secara bertahap dan menyeluruh memenuhi seluruh 10 tingkat
 v UTS FEBRIAN
   v .github/workflows
     deploy.yml               <-- Otomatisasi CI/CD GitHub Pages
+  v app
+    index.tsx                <-- Komponen akar aplikasi (Multi-screen CV)
   v assets
     eskul_musik.jpg          <-- Dokumentasi Eskul Musik SMA PGRI Cicalengka
     marching_band.jpg        <-- Dokumentasi Marching Band SMA PGRI Cicalengka
@@ -82,14 +84,13 @@ v UTS FEBRIAN
   v data
     nilaiAkademik.json       <-- Data kontrak nilai akademik UTS Masoem University
     profil.json              <-- Data identitas profil, portofolio & pengalaman
-  v services
-    academicService.js       <-- Service API, latensi & penanganan error
-    storageService.js        <-- Abstraksi persistensi storage lokal
   v tests
     run-tests.js             <-- 10 Automated unit test suite
   v theme
     index.ts                 <-- Token warna resmi Burgundy Classic & tipografi
-  App.tsx                    <-- Komponen akar aplikasi (Multi-screen CV)
+  v types
+    index.ts                 <-- Definisi tipe data TypeScript
+  index.js                   <-- Entry point aplikasi Expo
   LICENSE                    <-- Lisensi perlindungan hak cipta akademik
   package.json               <-- Manajemen dependensi & skrip proyek
   tsconfig.json              <-- Konfigurasi strict TypeScript

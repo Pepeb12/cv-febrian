@@ -22,25 +22,25 @@ import {
 } from '@expo-google-fonts/inter';
 
 // Data Lokal JSON (Bahasa Indonesia)
-import profileData from './data/profil.json';
-import academicData from './data/nilaiAkademik.json';
+import profileData from '../data/profil.json';
+import academicData from '../data/nilaiAkademik.json';
 
-// Tema Dark Space & Cyan Glow
-import { getTheme, SPACING } from './theme';
+// Tema Burgundy Classic
+import { getTheme, SPACING } from '../theme';
 
 // Komponen Utama Sesuai Struktur UTS (Bahasa Indonesia)
-import HeaderProfil from './components/HeaderProfil';
-import TentangSaya from './components/TentangSaya';
-import GaleriPortofolio from './components/GaleriPortofolio';
-import NilaiAkademik from './components/NilaiAkademik';
-import FormulirKontak from './components/FormulirKontak';
+import HeaderProfil from '../components/HeaderProfil';
+import TentangSaya from '../components/TentangSaya';
+import GaleriPortofolio from '../components/GaleriPortofolio';
+import NilaiAkademik from '../components/NilaiAkademik';
+import FormulirKontak from '../components/FormulirKontak';
 
 // Komponen Pendukung Navigasi & Tampilan (Bahasa Indonesia)
-import BilahNavigasi, { TabKey } from './components/BilahNavigasi';
-import FooterAplikasi from './components/FooterAplikasi';
-import NotifikasiToast from './components/NotifikasiToast';
-import AnimasiGlobal from './components/AnimasiGlobal';
-import PenangananError from './components/PenangananError';
+import BilahNavigasi, { TabKey } from '../components/BilahNavigasi';
+import FooterAplikasi from '../components/FooterAplikasi';
+import NotifikasiToast from '../components/NotifikasiToast';
+import AnimasiGlobal from '../components/AnimasiGlobal';
+import PenangananError from '../components/PenangananError';
 
 export default function App() {
   const { width } = useWindowDimensions();
@@ -118,14 +118,12 @@ export default function App() {
         document.querySelector(`[id*="${tab}"]`);
 
       if (targetElement) {
-        // Immediately reveal target section so it is completely visible without delay
         targetElement.classList.add('revealed');
         const children = targetElement.querySelectorAll(
           '.scroll-reveal, .fade-in-up, .scale-fade, .slide-up, .fade-in-left, .fade-in-right'
         );
         children.forEach((c) => c.classList.add('revealed'));
 
-        // Instant scroll direct to target section
         targetElement.scrollIntoView({ behavior: 'instant', block: 'start' });
         return;
       }
@@ -147,7 +145,6 @@ export default function App() {
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
-    // Set judul tab browser resmi
     document.title = 'CV FEBRIAN';
 
     const handleWebScroll = () => {
@@ -219,103 +216,103 @@ export default function App() {
         <PenangananError theme={theme}>
           <ScrollView
             ref={scrollViewRef}
-          style={styles.scrollView}
-          contentContainerStyle={[
-            styles.scrollContent,
-            { paddingHorizontal: isMobile ? 12 : isTablet ? 18 : 24 },
-          ]}
-          onScroll={handleScroll}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-              tintColor={theme.accent}
-              colors={[theme.accent]}
-            />
-          }
-        >
-          {/* SATU CONTAINER UTAMA MAX-WIDTH SIMETRIS & TERPUSAT (MAX-WIDTH 1150PX) */}
-          <View style={[styles.mainContentWrapper, { width: containerWidthPercent as any }]}>
-            {/* 1. HOME: CUKUP PROFIL SINGKAT */}
-            {activeTab === 'home' && (
-              <View style={styles.sectionBlock}>
-                <HeaderProfil
-                  data={profileData}
-                  theme={theme}
-                  onContactClick={() => handleTabChange('contact')}
-                />
-              </View>
-            )}
+            style={styles.scrollView}
+            contentContainerStyle={[
+              styles.scrollContent,
+              { paddingHorizontal: isMobile ? 12 : isTablet ? 18 : 24 },
+            ]}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                tintColor={theme.accent}
+                colors={[theme.accent]}
+              />
+            }
+          >
+            {/* SATU CONTAINER UTAMA MAX-WIDTH SIMETRIS & TERPUSAT (MAX-WIDTH 1150PX) */}
+            <View style={[styles.mainContentWrapper, { width: containerWidthPercent as any }]}>
+              {/* 1. HOME: CUKUP PROFIL SINGKAT */}
+              {activeTab === 'home' && (
+                <View style={styles.sectionBlock}>
+                  <HeaderProfil
+                    data={profileData}
+                    theme={theme}
+                    onContactClick={() => handleTabChange('contact')}
+                  />
+                </View>
+              )}
 
-            {/* 2. ABOUT: CUKUP INFORMASI PRIBADI & PENGALAMAN ORGANISASI */}
-            {activeTab === 'about' && (
-              <View style={styles.sectionBlock}>
-                <TentangSaya
-                  data={profileData}
-                  theme={theme}
-                  filterSection="about"
-                />
-              </View>
-            )}
+              {/* 2. ABOUT: CUKUP INFORMASI PRIBADI & PENGALAMAN ORGANISASI */}
+              {activeTab === 'about' && (
+                <View style={styles.sectionBlock}>
+                  <TentangSaya
+                    data={profileData}
+                    theme={theme}
+                    filterSection="about"
+                  />
+                </View>
+              )}
 
-            {/* 3. SKILLS: CUKUP DAFTAR KETERAMPILAN & HOBI MUSIK */}
-            {activeTab === 'skills' && (
-              <View style={styles.sectionBlock}>
-                <TentangSaya
-                  data={profileData}
-                  theme={theme}
-                  filterSection="skills"
-                />
-              </View>
-            )}
+              {/* 3. SKILLS: CUKUP DAFTAR KETERAMPILAN & HOBI MUSIK */}
+              {activeTab === 'skills' && (
+                <View style={styles.sectionBlock}>
+                  <TentangSaya
+                    data={profileData}
+                    theme={theme}
+                    filterSection="skills"
+                  />
+                </View>
+              )}
 
-            {/* 4. PORTFOLIO: CUKUP DAFTAR PROYEK */}
-            {activeTab === 'portfolio' && (
-              <View style={styles.sectionBlock}>
-                <GaleriPortofolio
-                  portfolios={profileData.portfolios}
-                  theme={theme}
-                />
-              </View>
-            )}
+              {/* 4. PORTFOLIO: CUKUP DAFTAR PROYEK */}
+              {activeTab === 'portfolio' && (
+                <View style={styles.sectionBlock}>
+                  <GaleriPortofolio
+                    portfolios={profileData.portfolios}
+                    theme={theme}
+                  />
+                </View>
+              )}
 
-            {/* 5. MY SCORE: CUKUP ACADEMIC DASHBOARD */}
-            {activeTab === 'score' && (
-              <View style={styles.sectionBlock}>
-                <NilaiAkademik
-                  data={academicData}
-                  theme={theme}
-                />
-              </View>
-            )}
+              {/* 5. MY SCORE: CUKUP ACADEMIC DASHBOARD */}
+              {activeTab === 'score' && (
+                <View style={styles.sectionBlock}>
+                  <NilaiAkademik
+                    data={academicData}
+                    theme={theme}
+                  />
+                </View>
+              )}
 
-            {/* 6. CONTACT: CUKUP FORMULIR KONTAK */}
-            {activeTab === 'contact' && (
-              <View style={styles.sectionBlock}>
-                <FormulirKontak
-                  data={profileData}
-                  recipientName={profileData.nama}
-                  theme={theme}
-                  onMessageSent={() =>
-                    setToast({
-                      message: 'Pesan Anda berhasil dikirim ke Febrian!',
-                      type: 'success',
-                    })
-                  }
-                />
-              </View>
-            )}
+              {/* 6. CONTACT: CUKUP FORMULIR KONTAK */}
+              {activeTab === 'contact' && (
+                <View style={styles.sectionBlock}>
+                  <FormulirKontak
+                    data={profileData}
+                    recipientName={profileData.nama}
+                    theme={theme}
+                    onMessageSent={() =>
+                      setToast({
+                        message: 'Pesan Anda berhasil dikirim ke Febrian!',
+                        type: 'success',
+                      })
+                    }
+                  />
+                </View>
+              )}
 
-            {/* SECTION 4: FOOTER IDENTITAS MAHASISWA & MASOEM UNIVERSITY */}
-            <FooterAplikasi
-              theme={theme}
-              onNavigate={handleTabChange}
-              onScrollToTop={() => handleTabChange('home')}
-            />
-          </View>
-        </ScrollView>
+              {/* SECTION 4: FOOTER IDENTITAS MAHASISWA & MASOEM UNIVERSITY */}
+              <FooterAplikasi
+                theme={theme}
+                onNavigate={handleTabChange}
+                onScrollToTop={() => handleTabChange('home')}
+              />
+            </View>
+          </ScrollView>
         </PenangananError>
 
         {/* TOAST FEEDBACK NOTIFIKASI */}
