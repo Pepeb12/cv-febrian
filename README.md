@@ -1,5 +1,5 @@
 # Personal CV & Academic Portfolio App
-> Aplikasi Mobile & Web Portofolio Mahasiswa berbasis Expo React Native dan TypeScript  
+> Aplikasi Mobile & Web Portofolio Mahasiswa berbasis Expo React Native 
 > Universitas Ma'soem (Masoem University)
 
 ---
