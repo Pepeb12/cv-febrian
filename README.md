@@ -1,7 +1,7 @@
 # Personal CV & Academic Portfolio App
 > Aplikasi Mobile & Web Portofolio Mahasiswa berbasis Expo React Native 
 > Universitas Ma'soem (Masoem University)
-
+LINK VERCEL: https://cvfebrian.vercel.app/
 ---
 
 ## 👨‍💻 Profil Mahasiswa
