@@ -62,7 +62,7 @@ interface MyScoreSectionProps {
  * MyScoreSection Component — LEVEL 8 (Academic Dashboard & Capaian Belajar)
  * - Menerima data capaian akademik murni dari data/academicScore.json melalui Props
  * - Menampilkan Identitas Akademik lengkap (Nama, NIM, MK, Dosen Pengampu)
- * - Count-up smooth animation untuk Score (90) dan Learning Points (19.000 LP)
+ * - Count-up smooth animation untuk Score (98.38) dan Learning Points (19.000 LP)
  * - Animated progress fill untuk Attendance, Practice, Quest, Challenge
  */
 export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps) {
@@ -79,7 +79,7 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
   };
 
   const currentScore: CurrentScore = data.currentScore || {
-    score: 90,
+    score: 98.38,
     grade: 'A',
     status: 'Sangat Memuaskan',
     description: 'Capaian akademik istimewa pada mata kuliah Pemrograman Mobile 2.',
@@ -99,7 +99,8 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
     { name: 'Challenge', label: 'Challenge Projek UTS', percentage: 100, icon: 'flame-outline', details: 'Penyelesaian projek UTS secara komprehensif' },
   ];
 
-  const targetScore = currentScore.score ?? 90;
+  const targetScore = currentScore.score ?? 98.38;
+  const isDecimalScore = !Number.isInteger(targetScore);
   const targetPoints = points.total ?? 19000;
 
   const [displayedScore, setDisplayedScore] = useState(0);
@@ -115,7 +116,11 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
       const progress = Math.min(elapsed / duration, 1);
       const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
 
-      setDisplayedScore(Math.round(ease * targetScore));
+      setDisplayedScore(
+        isDecimalScore
+          ? Number((ease * targetScore).toFixed(2))
+          : Math.round(ease * targetScore)
+      );
       setDisplayedPoints(Math.round(ease * targetPoints));
 
       if (progress >= 1) {
@@ -133,7 +138,7 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
       clearInterval(timer);
       clearTimeout(progTimer);
     };
-  }, [targetScore, targetPoints]);
+  }, [targetScore, targetPoints, isDecimalScore]);
 
   return (
     <View
@@ -203,12 +208,6 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
             </Text>
           </View>
           <View style={styles.identityItem}>
-            <Text style={[styles.identityItemLabel, { color: theme.textMuted }]}>NIM RESMI</Text>
-            <Text style={[styles.identityItemValue, { color: theme.primary }]} numberOfLines={1}>
-              {identity.nim || '242505024'}
-            </Text>
-          </View>
-          <View style={styles.identityItem}>
             <Text style={[styles.identityItemLabel, { color: theme.textMuted }]}>PERGURUAN TINGGI</Text>
             <Text style={[styles.identityItemValue, { color: theme.heading }]} numberOfLines={1}>
               {identity.university || 'Masoem University'}
@@ -231,7 +230,7 @@ export default function MyScoreSection({ data = {}, theme }: MyScoreSectionProps
           </View>
           <View style={styles.scoreValuesRow}>
             <Text style={[styles.scoreNumber, { color: theme.heading }]}>
-              {displayedScore}
+              {isDecimalScore ? displayedScore.toFixed(2) : displayedScore}
             </Text>
             <View style={[styles.gradeBadge, { backgroundColor: theme.primary }]}>
               <Text style={[styles.gradeText, { color: theme.isDark ? '#25191D' : '#FFFFFF' }]}>
@@ -486,6 +485,7 @@ const styles = StyleSheet.create({
   scoreValuesRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
+    flexWrap: 'wrap',
     gap: 10,
   },
   scoreNumber: {

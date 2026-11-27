@@ -214,7 +214,7 @@ export default function ProfileHeader({
           style={[styles.infoColumn, isMobile && styles.infoColumnMobile]}
           {...(Platform.OS === 'web' ? { className: 'fade-in-right' } : {})}
         >
-          {/* H1 NAMA MAHASISWA & BADGE NIM */}
+          {/* H1 NAMA MAHASISWA */}
           <View
             style={[styles.nameNimRow, isMobile && styles.nameNimRowMobile]}
             {...(Platform.OS === 'web' ? { className: 'slide-up' } : {})}
@@ -230,20 +230,6 @@ export default function ProfileHeader({
             >
               {student.nama || student.fullName || 'Febrian Iradatul Rahman'}
             </Text>
-            <View
-              style={[
-                styles.nimBadge,
-                {
-                  backgroundColor: currentTheme.surface2,
-                  borderColor: currentTheme.border,
-                },
-              ]}
-            >
-              <Ionicons name="id-card-outline" size={13} color={currentTheme.primary} />
-              <Text style={[styles.nimBadgeText, { color: currentTheme.textPrimary }]}>
-                NIM: {student.nim || '242505024'}
-              </Text>
-            </View>
           </View>
 
           {/* DYNAMIC ROLE DENGAN KURSOR MENGETIK */}
@@ -430,7 +416,7 @@ export default function ProfileHeader({
               resizeMode="cover"
             />
             <Text style={[styles.avatarModalCaption, { color: currentTheme.textSecondary }]}>
-              Febrian Iradatul Rahman — Universitas Ma'soem (NIM: 242505024)
+              Febrian Iradatul Rahman — Universitas Ma&apos;soem
             </Text>
           </View>
         </TouchableOpacity>

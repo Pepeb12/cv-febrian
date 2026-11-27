@@ -100,17 +100,14 @@ export default function NavigationTabBar({
               onPress={() => onTabChange('home')}
               activeOpacity={0.8}
               accessibilityRole="button"
-              accessibilityLabel="pepeb'sdeveloper Personal CV Febrian"
+              accessibilityLabel="CV FEBRIAN"
             >
               <View style={styles.brandTitleRow}>
                 <View style={[styles.brandDot, { backgroundColor: theme.primary }]} />
                 <Text style={[styles.brandTitleMobile, { color: theme.heading }]} numberOfLines={1}>
-                  pepeb's<Text style={{ color: theme.primary }}>developer</Text>
+                  CV <Text style={{ color: theme.primary }}>FEBRIAN</Text>
                 </Text>
               </View>
-              <Text style={[styles.brandSubtitleMobile, { color: theme.textSecondary }]} numberOfLines={1}>
-                Personal CV • Febrian
-              </Text>
             </TouchableOpacity>
 
             {onToggleTheme && (
@@ -207,19 +204,16 @@ export default function NavigationTabBar({
             },
           ]}
         >
-          {/* BRAND [pepeb'sdeveloper + Personal CV Febrian] */}
+          {/* BRAND [CV FEBRIAN] */}
           <TouchableOpacity
             style={styles.brandGroup}
             onPress={() => onTabChange('home')}
             activeOpacity={0.8}
             accessibilityRole="button"
-            accessibilityLabel="pepeb'sdeveloper Personal CV Febrian"
+            accessibilityLabel="CV FEBRIAN"
           >
             <Text style={[styles.brandTitle, { color: theme.heading }]} numberOfLines={1}>
-              pepeb's<Text style={{ color: theme.primary }}>developer</Text>
-            </Text>
-            <Text style={[styles.brandSubtitle, { color: theme.textSecondary }]} numberOfLines={1}>
-              Personal CV • Febrian
+              CV <Text style={{ color: theme.primary }}>FEBRIAN</Text>
             </Text>
           </TouchableOpacity>
 

@@ -99,10 +99,10 @@ const tests = [
       profileData.portfolios.length >= 3,
   },
   {
-    name: 'Test 7: academicScore.json UTS Contract (Score 90, Grade A, 19000 LP)',
+    name: 'Test 7: academicScore.json UTS Contract (Score 98.38, Grade A, 19000 LP)',
     run: () =>
       academicData.studentIdentity.nim === '242505024' &&
-      academicData.currentScore.score === 90 &&
+      academicData.currentScore.score === 98.38 &&
       academicData.currentScore.grade === 'A' &&
       academicData.learningPoints.total === 19000,
   },

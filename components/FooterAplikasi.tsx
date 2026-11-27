@@ -22,7 +22,6 @@ export default function CosmicFooter({
   onNavigate = () => {},
   onScrollToTop = () => {},
   studentName = 'Febrian Iradatul Rahman',
-  studentNim = '242505024',
 }: CosmicFooterProps) {
   const { width } = useWindowDimensions();
   const isMobile = width < 860;
@@ -97,14 +96,14 @@ export default function CosmicFooter({
           <View style={styles.brandRow}>
             <Text style={[styles.terminalPrompt, { color: theme.primary }]}>{'>_'}</Text>
             <Text style={[styles.brandTitle, { color: theme.heading }]}>
-              pepeb's <Text style={{ color: theme.primary }}>developer</Text>
+              CV <Text style={{ color: theme.primary }}>FEBRIAN</Text>
             </Text>
           </View>
           <Text style={[styles.tagline, { color: theme.textSecondary }]}>
             Membangun pengalaman mobile dan web modern dengan presisi kode, tipografi tajam, dan interaksi dimensi yang responsif.
           </Text>
           <Text style={[styles.copyright, { color: theme.textMuted }]}>
-            © 2026 {studentName} ({studentNim}). Hak cipta dilindungi undang-undang.
+            © 2026 {studentName}. Hak cipta dilindungi undang-undang.
           </Text>
         </View>
 

@@ -37,7 +37,7 @@ LINK VERCEL: https://cvfebrian.vercel.app/
    - Galeri proyek nyata (Personal CV App, PMB Masoem University, Sistem Inventaris Cicalengka) dengan filter dan modal detail.
    - Dokumentasi foto asli pengalaman organisasi (Eskul Musik, Marching Band, UKM Temaholic).
 5. **Dashboard Akademik (My Score):**
-   - Kartu nilai UTS (Skor 90, Mutu A, 19.000 Learning Points) beranimasi *count-up*.
+   - Kartu nilai UTS (Skor 98.38, Mutu A, 19.000 Learning Points) beranimasi *count-up*.
    - Progres indikator capaian belajar (kehadiran, tugas, dan keaktifan).
 6. **Formulir Kontak Terverifikasi:**
    - Validasi *real-time* format email menggunakan standar regex RFC 5322.
