@@ -204,7 +204,7 @@ export default function CosmicFooter({
                 { backgroundColor: theme.surface2, borderColor: theme.border },
               ]}
               {...(Platform.OS === 'web' ? { className: 'social-icon-btn' } : {})}
-              onPress={() => handleOpenLink('https://instagram.com/febrianrhmn_2')}
+              onPress={() => handleOpenLink('https://instagram.com/febrrianrhmn_')}
               accessibilityRole="link"
               accessibilityLabel="Instagram"
             >

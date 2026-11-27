@@ -114,7 +114,7 @@ export default function ContactForm({
   };
 
   const handleOpenIG = () => {
-    const url = 'https://instagram.com/febrianrhmn_2';
+    const url = 'https://instagram.com/febrrianrhmn_';
     if (Platform.OS === 'web') window.open(url, '_blank');
     else Linking.openURL(url).catch(() => {});
   };
@@ -359,7 +359,7 @@ export default function ContactForm({
               <View style={{ flex: 1, minWidth: 0 }}>
                 <Text style={[styles.channelLabel, { color: currentTheme.textSecondary }]}>Instagram</Text>
                 <Text style={[styles.channelValue, isMobile && styles.channelValueMobile, { color: currentTheme.textPrimary }]} numberOfLines={1}>
-                  @febrianrhmn_2
+                  @febrrianrhmn_
                 </Text>
               </View>
               <Ionicons name="open-outline" size={16} color={currentTheme.textMuted} />

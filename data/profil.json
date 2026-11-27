@@ -39,7 +39,7 @@
     },
     {
       "label": "IPK Kumulatif",
-      "value": "3.84",
+      "value": "3.67",
       "unit": "Skala 4.00",
       "icon": "ribbon-outline"
     },
@@ -390,8 +390,8 @@
     {
       "type": "instagram",
       "label": "Instagram Resmi",
-      "value": "https://instagram.com/febrianrhmn_2",
-      "displayValue": "@febrianrhmn_2",
+      "value": "https://instagram.com/febrrianrhmn_",
+      "displayValue": "@febrrianrhmn_",
       "icon": "logo-instagram",
       "color": "#065F46",
       "bgColor": "#ECFDF5"

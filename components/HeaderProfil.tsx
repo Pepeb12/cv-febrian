@@ -126,11 +126,11 @@ export default function ProfileHeader({
   };
 
   const handleOpenInstagram = () => {
-    const url = 'https://instagram.com/febrianrhmn_2';
+    const url = 'https://instagram.com/febrrianrhmn_';
     if (Platform.OS === 'web') {
       window.open(url, '_blank');
     } else {
-      Linking.openURL(url).catch(() => Alert.alert('Instagram', '@febrianrhmn_2'));
+      Linking.openURL(url).catch(() => Alert.alert('Instagram', '@febrrianrhmn_'));
     }
   };
 
